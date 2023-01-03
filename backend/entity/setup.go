@@ -28,4 +28,21 @@ func SetupDatabase() {
 	)
 
 	db = database
+
+	// ทำการเพิ่ม Dummy Role ผู้ดูแลระบบ
+	admin := Role{
+		Name: "admin",
+	}
+
+	db.Model(&Role{}).Create(&admin)
+
+	// ทำการเพิ่ม Dummy user ผู้ดูแลระบบ
+
+	userAdmin := User{
+		Name:     "Admin",
+		Password: "123456",
+		Role:     admin,
+	}
+	db.Model(&User{}).Create(&userAdmin)
+
 }

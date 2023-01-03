@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sut65/team07/controller"
 	"github.com/sut65/team07/entity"
 )
 
@@ -37,6 +38,8 @@ func main() {
 
 	//Controller
 
+	r.POST("/role", controller.CreateRole)
+	r.POST("/signup", controller.Signup)
 	//Run server using gin gonic
 	r.Run()
 }
