@@ -1,6 +1,6 @@
-// in structure will be have UserId Username Password Role
 package entity
 
+// in structure will be have UserId Username Password Role
 import (
 	"gorm.io/gorm"
 )
@@ -14,6 +14,8 @@ type User struct {
 	RoleID *uint
 	//easier to reference for edit or add from User table
 	Role Role
+
+	Employee []Employee `gorm:"foreignKey:UserID"`
 }
 
 type Role struct {
