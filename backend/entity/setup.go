@@ -25,6 +25,11 @@ func SetupDatabase() {
 		// signin & signup
 		&User{},
 		&Role{},
+
+		&Education{},
+		&Employee{},
+		&WorkingArea{},
+		&Status{},
 	)
 
 	db = database
