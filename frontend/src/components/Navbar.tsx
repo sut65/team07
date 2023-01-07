@@ -12,8 +12,11 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
+//icon
+import HomeIcon from '@mui/icons-material/Home';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
+
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [state, setState] = React.useState(false);
@@ -37,7 +40,7 @@ function Navbar() {
 
   var menu: any[] = [];
   menu = [
-    { name: "หน้าแรก",icon: "icon", path: "/" },
+    { name: "หน้าแรก",icon: <HomeIcon/>, path: "/" },
 
     {
       name: "รายการบันทึกข้อมูลใช้รถ",
@@ -99,8 +102,7 @@ function Navbar() {
                       <ListItemIcon>
                         {text.icon}
                       </ListItemIcon>
-                      <ListItemText />
-                      {text.name} 
+                      <ListItemText primary={text.name} />
                     </ListItemButton>
                   </ListItem>
                 ))}
