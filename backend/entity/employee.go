@@ -9,7 +9,7 @@ import (
 type Education struct {
 	gorm.Model
 	Path  string
-	Level string
+	Level string `gorm:"uniqueIndex"`
 
 	//For Link Foreign key
 	Employees []Employee `gorm:"foreignKey:EducationID"`
@@ -17,14 +17,14 @@ type Education struct {
 
 type WorkingArea struct {
 	gorm.Model
-	WorkingArea string
+	WorkingArea string `gorm:"uniqueIndex"`
 	//For Link Foreign key
 	Employees []Employee `gorm:"foreignKey:WorkingAreaID"`
 }
 
 type Status struct {
 	gorm.Model
-	Status string
+	Status string `gorm:"uniqueIndex"`
 	//For Link Foreign key
 	Employees []Employee `gorm:"foreignKey:StatusID"`
 }
