@@ -50,4 +50,40 @@ func SetupDatabase() {
 	}
 	db.Model(&User{}).Create(&userAdmin)
 
+	voc := Education{
+		Path:  "สายอาชีพ",
+		Level: "ปวช",
+	}
+
+	dip := Education{
+		Path:  "สายอาชีพ",
+		Level: "ปวส",
+	}
+
+	bacDeg := Education{
+		Path:  "ปริญญา",
+		Level: "ปริญญาตรี",
+	}
+
+	db.Model(&Education{}).Create(&voc)
+	db.Model(&Education{}).Create(&dip)
+	db.Model(&Education{}).Create(&bacDeg)
+
+	ready := Status{
+		Status: "Ready",
+	}
+	working := Status{
+		Status: "Working",
+	}
+	rest := Status{
+		Status: "Rest",
+	}
+	offline := Status{
+		Status: "Offline",
+	}
+	db.Model(&Status{}).Create(&ready)
+	db.Model(&Status{}).Create(&working)
+	db.Model(&Status{}).Create(&rest)
+	db.Model(&Status{}).Create(&offline)
+
 }

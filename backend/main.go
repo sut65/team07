@@ -40,6 +40,37 @@ func main() {
 
 	r.POST("/role", controller.CreateRole)
 	r.POST("/signup", controller.Signup)
+
+	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
+
+	// ----------------- Working Area ----------------------------
+	// List
+	r.GET("/workingareas", controller.ListWorkingArea)
+	// Get by id
+	r.GET("/workingarea/:id", controller.GetWorkingArea)
+	// Create
+	r.POST("/workingarea", controller.CreateWorkingArea)
+	// UPDATE
+	r.PATCH("/workingarea", controller.UpdateWorkingArea)
+	// Delete
+	r.DELETE("/workingarea/:id", controller.DeleteWorkingArea)
+	// ----------------- Working Area ----------------------------
+
+	// ----------------- Employee ----------------------------
+	// List
+	r.GET("/employees", controller.ListEmployee)
+	// Get by id
+	r.GET("/employee/:id", controller.GetEmployee)
+	// Create
+	r.POST("/employee", controller.CreateEmployee)
+	// UPDATE
+	r.PATCH("/employee", controller.UpdateEmployee)
+	// DELETE
+	r.DELETE("/employee/:id", controller.DeleteEmployee)
+	// ----------------- Employee ----------------------------
+
+	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
+
 	//Run server using gin gonic
 	r.Run()
 }
