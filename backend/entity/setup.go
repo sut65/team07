@@ -30,6 +30,11 @@ func SetupDatabase() {
 		&Employee{},
 		&WorkingArea{},
 		&Status{},
+
+		// ระบบจัดซื้อรถพยาบาล
+		&Company{},
+		&TypeAbl{},
+		&Ambulance{},
 	)
 
 	db = database
@@ -85,5 +90,24 @@ func SetupDatabase() {
 	db.Model(&Status{}).Create(&working)
 	db.Model(&Status{}).Create(&rest)
 	db.Model(&Status{}).Create(&offline)
+
+
+	// ระบบจัดซื้อรถพยาบาล ---------------------------------------------
+	var company = []Company{
+		{Name: "A_Company"},
+		{Name: "B_Company"},
+		{Name: "C_Company"},
+	}
+	db.CreateInBatches(company, 3)
+
+	var typeAbl = []TypeAbl{
+		{Name: "Isolation Ambulance"},
+		{Name: "First Responder Ambulance"},
+		{Name: "Advanced Life Support Ambulance"},
+		{Name: "Basic Life Support Ambulance"},
+		{Name: "Bariatric Ambulance"},
+	}
+	db.CreateInBatches(typeAbl, 5)
+	// ระบบจัดซื้อรถพยาบาล ---------------------------------------------
 
 }

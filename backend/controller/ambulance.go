@@ -8,7 +8,7 @@ import (
 )
 
 // POST /students
-func CreateStudent(c *gin.Context) {
+func CreateAmbulance(c *gin.Context) {
 
 	var ambulance entity.Ambulance
 	var company entity.Company
@@ -61,7 +61,7 @@ func CreateStudent(c *gin.Context) {
 }
 
 // GET /ambulance/:id
-func GetStudent(c *gin.Context) {
+func GetAmbulance(c *gin.Context) {
 
 	var ambulance entity.Ambulance
 	id := c.Param("id")
@@ -76,7 +76,7 @@ func GetStudent(c *gin.Context) {
 }
 
 // GET /ambulance/:eid
-func GetStudentByUser(c *gin.Context) {
+func GetAmbulanceByEmployee(c *gin.Context) {
 
 	var ambulance entity.Ambulance
 	employee_id := c.Param("employee_id")
@@ -91,7 +91,7 @@ func GetStudentByUser(c *gin.Context) {
 }
 
 // GET /ambulances
-func ListStudents(c *gin.Context) {
+func ListAmbulances(c *gin.Context) {
 
 	var ambulances []entity.Ambulance
 
@@ -105,7 +105,7 @@ func ListStudents(c *gin.Context) {
 }
 
 // DELETE /ambulance/:id
-func DeleteStudent(c *gin.Context) {
+func DeleteAmbulance(c *gin.Context) {
 
 	id := c.Param("id")
 
