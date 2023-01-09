@@ -71,6 +71,23 @@ func main() {
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 
+
+
+	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
+
+	// List
+	r.GET("/ambulances", controller.ListAmbulances)
+	// Get by eid
+	r.GET("/ambulance/:employee_id", controller.GetAmbulanceByEmployee)
+	// Create
+	r.POST("/ambulance", controller.CreateAmbulance)
+	// DELETE
+	r.DELETE("/ambulance/:id", controller.DeleteAmbulance)
+
+	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
+
+
+
 	//Run server using gin gonic
 	r.Run()
 }
