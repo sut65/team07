@@ -75,7 +75,7 @@ func main() {
 
 	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
 
-	// List
+	// List ambulances
 	r.GET("/ambulances", controller.ListAmbulances)
 	// Get by eid
 	r.GET("/ambulance/:employee_id", controller.GetAmbulanceByEmployee)
@@ -83,6 +83,13 @@ func main() {
 	r.POST("/ambulance", controller.CreateAmbulance)
 	// DELETE
 	r.DELETE("/ambulance/:id", controller.DeleteAmbulance)
+	// UPDATE
+	r.PATCH("/ambulance", controller.UpdateAmbulance)
+
+	// List companies
+	r.GET("/companies", controller.ListCompanies)
+	// List type_abls
+	r.GET("/type_abls", controller.ListTypeAbls)
 
 	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
 
