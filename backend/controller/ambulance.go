@@ -8,7 +8,7 @@ import (
 	"github.com/sut65/team07/entity"
 )
 
-// POST /students
+// POST /ambulance
 func CreateAmbulance(c *gin.Context) {
 
 	var ambulance entity.Ambulance
@@ -16,32 +16,32 @@ func CreateAmbulance(c *gin.Context) {
 	var typeAbl entity.TypeAbl
 	var employee entity.Employee
 
-	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 9 จะถูก bind เข้าตัวแปร watchVideo
+	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 7 จะถูก bind เข้าตัวแปร ambulance
 	if err := c.ShouldBindJSON(&ambulance); err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// 10: ค้นหา advisor ด้วย id
+	// 8: ค้นหา company ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "video not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "companies not found"})
 		return
 	}
 
-	// 11: ค้นหา faculty ด้วย id
+	// 9: ค้นหา typeAbl ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "resolution not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "type_abls not found"})
 		return
 	}
 
-	// 12: ค้นหา year ด้วย id
+	// 10: ค้นหา employee ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "playlist not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "employees not found"})
 		return
 	}
 
-	// 14: สร้าง WatchVideo
+	// 11: สร้าง ambulance
 	st := entity.Ambulance{
 		Company:  company,            // โยงความสัมพันธ์กับ Entity Company
 		TypeAbl:  typeAbl,            // โยงความสัมพันธ์กับ Entity TypeAbl
@@ -51,7 +51,7 @@ func CreateAmbulance(c *gin.Context) {
 		Date:     ambulance.Date,     // ตั้งค่าฟิลด์ Date
 	}
 
-	// 15: บันทึก
+	// 12: บันทึก
 	if err := entity.DB().Create(&st).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -88,7 +88,7 @@ func GetAmbulanceByEmployee(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": ambulance, "status": "getstudentbyid success "})
+	c.JSON(http.StatusOK, gin.H{"data": ambulance, "status": "getambulancebyemployee success "})
 }
 
 // GET /ambulances
@@ -112,7 +112,7 @@ func DeleteAmbulance(c *gin.Context) {
 
 	if tx := entity.DB().Exec("DELETE FROM ambulances WHERE id = ?", id); tx.RowsAffected == 0 {
 
-		c.JSON(http.StatusBadRequest, gin.H{"error": "student not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
 		return
 	}
 
