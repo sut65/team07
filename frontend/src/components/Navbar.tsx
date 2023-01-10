@@ -12,10 +12,14 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+
+
 //icon
 import HomeIcon from '@mui/icons-material/Home';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
+import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -40,8 +44,14 @@ function Navbar() {
 
   var menu: any[] = [];
   menu = [
-    { name: "หน้าแรก",icon: <HomeIcon/>, path: "/" },
+    { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
 
+    {
+      name: "รายการข้อมูลจัดซื้อรถพยาบาล",
+      icon: <AirportShuttleIcon />,
+      path: "/AmbulanceCreate",
+    },
+    
     {
       name: "รายการบันทึกข้อมูลใช้รถ",
       icon: <TimeToLeaveIcon />,
@@ -49,10 +59,12 @@ function Navbar() {
     },
 
     {
-        name: "รายการตรวจเช็คสภาพรถ",
-        icon: <LibraryBooksIcon />,
-        path: "/VehicleInspectionHistory",
-      },
+      name: "รายการตรวจเช็คสภาพรถ",
+      icon: <LibraryBooksIcon />,
+      path: "/VehicleInspectionHistory",
+    },
+
+    
   ];
 
   return (
@@ -72,7 +84,7 @@ function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            AMBULANCE 
+            AMBULANCE
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex" }}>
@@ -97,14 +109,18 @@ function Navbar() {
             >
               <List>
                 {menu.map((text, index) => (
-                  <ListItem key={text.name} disablePadding>
+                  <Link
+                  to={text.path}
+                  key={text.name}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <ListItem  disablePadding>
                     <ListItemButton>
-                      <ListItemIcon>
-                        {text.icon}
-                      </ListItemIcon>
+                      <ListItemIcon> {text.icon} </ListItemIcon>
                       <ListItemText primary={text.name} />
                     </ListItemButton>
                   </ListItem>
+                  </Link>
                 ))}
               </List>
             </Box>
