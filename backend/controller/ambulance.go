@@ -129,6 +129,7 @@ func UpdateAmbulance(c *gin.Context) {
 	//relation
 	var company entity.Company
 	var typeAbl entity.TypeAbl
+	var employee entity.Employee
 
 	// Bind Json to var emp
 	if err := c.ShouldBindJSON(&ambulance); err != nil {
@@ -190,7 +191,22 @@ func UpdateAmbulance(c *gin.Context) {
 		ambulance.TypeAbl = typeAbl
 	}
 
-	// Update emp in database
+	// if new have employee_id
+	if ambulance.EmployeeID != nil {
+		if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+			return
+		}
+		ambulance.Employee = employee
+	} else {
+		if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+			return
+		}
+		ambulance.Employee = employee
+	}
+
+	// Update abl in database
 	if err := entity.DB().Save(&ambulance).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		c.Abort()
