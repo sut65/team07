@@ -91,7 +91,6 @@ func SetupDatabase() {
 	db.Model(&Status{}).Create(&rest)
 	db.Model(&Status{}).Create(&offline)
 
-
 	// ระบบจัดซื้อรถพยาบาล ---------------------------------------------
 	var company = []Company{
 		{Name: "A_Company"},
@@ -110,4 +109,18 @@ func SetupDatabase() {
 	db.CreateInBatches(typeAbl, 5)
 	// ระบบจัดซื้อรถพยาบาล ---------------------------------------------
 
+	// ระบบเเจ้งเหตุ ----------------------------------------------------
+	var emergency = []Emergency{
+		{Name: "อุบัติหตุทั้วไป"},
+		{Name: "เพลิงไหม้"},
+		{Name: "สารเคมีรั่วไหล่"},
+	}
+	db.CreateInBatches(emergency, 3)
+
+	var gender = []Gender{
+		{Name: "ชาย"},
+		{Name: "หญิง"},
+	}
+	db.CreateInBatches(gender, 2)
+	// ระบบเเจ้งเหตุ ----------------------------------------------------
 }
