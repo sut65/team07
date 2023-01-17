@@ -35,6 +35,11 @@ func SetupDatabase() {
 		&Company{},
 		&TypeAbl{},
 		&Ambulance{},
+
+		//ระบบเเจ้งเหตุ
+		&Emergency{},
+		&Gender{},
+		&Case{},
 	)
 
 	db = database
