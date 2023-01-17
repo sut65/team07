@@ -24,9 +24,9 @@ type TypeAbl struct {
 
 type Ambulance struct {
 	gorm.Model
-	Clp 		string  // Car License Plate
-	Date 		time.Time
-	CarBrand 	string
+	Clp      string // Car License Plate
+	Date     time.Time
+	CarBrand string
 
 	// Save Company area ID in FK
 	CompanyID *uint
@@ -42,9 +42,6 @@ type Ambulance struct {
 	EmployeeID *uint
 	// to eaiser for add FK
 	Employee Employee
+
+	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:AmbulanceID"`
 }
-
-
-
-
-

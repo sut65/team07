@@ -11,7 +11,7 @@ type Emergency struct {
 	Name string
 
 	//For Link Foreign key
-	Case []Case 		`gorm:"foreignKey:EmergencyID"`
+	Case []Case `gorm:"foreignKey:EmergencyID"`
 }
 
 type Gender struct {
@@ -19,16 +19,16 @@ type Gender struct {
 	Name string
 
 	//For Link Foreign key
-	Case []Case 		`gorm:"foreignKey:GenderID"`
+	Case []Case `gorm:"foreignKey:GenderID"`
 }
 
 type Case struct {
 	gorm.Model
-	Location 	string
-	Patient 	string
-	Age			int
-	Status		string
-	Datetime	time.Time
+	Location string
+	Patient  string
+	Age      int
+	Status   string
+	Datetime time.Time
 
 	// Save Emergency area ID in FK
 	EmergencyID *uint
@@ -39,4 +39,6 @@ type Case struct {
 	GenderID *uint
 	// to eaiser for add FK
 	Gender Gender
+
+	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:CaseID"`
 }
