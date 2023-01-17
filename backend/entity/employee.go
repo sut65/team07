@@ -58,4 +58,6 @@ type Employee struct {
 	EducationID *uint
 	// to eaiser for add FK
 	Education Education
+
+	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:EmployeeID"`
 }
