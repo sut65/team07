@@ -49,9 +49,9 @@ function Navbar() {
     {
       name: "รายการข้อมูลจัดซื้อรถพยาบาล",
       icon: <AirportShuttleIcon />,
-      path: "/AmbulanceCreate",
+      path: "/Ambulance",
     },
-    
+
     {
       name: "รายการบันทึกข้อมูลใช้รถ",
       icon: <TimeToLeaveIcon />,

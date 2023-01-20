@@ -96,7 +96,7 @@ func ListAmbulances(c *gin.Context) {
 
 	var ambulances []entity.Ambulance
 
-	if err := entity.DB().Raw("SELECT * FROM ambulances").Scan(&ambulances).Error; err != nil {
+	if err := entity.DB().Preload("Company").Preload("TypeAbl").Raw("SELECT * FROM ambulances").Find(&ambulances).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

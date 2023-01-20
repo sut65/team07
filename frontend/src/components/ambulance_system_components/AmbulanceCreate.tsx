@@ -16,6 +16,7 @@ import { AmbulancesInterface } from '../../models/ambulance_system_models/ambula
 
 import { ListCompanies, ListTypeAbls, CreatAmbulances } from '../../services/ambulance_system_services/HttpClientService';
 
+
 function AmbulanceCreate() {
 
     const [success, setSuccess] = useState(false);
@@ -66,12 +67,12 @@ function AmbulanceCreate() {
             [name]: event.target.value,
         });
     };
-
+    
     async function submit() {
         let data = {
             CompanyID: convertType(ambulance.CompanyID),
             TypeAblID: convertType(ambulance.TypeAblID),
-            EmployeeID: 1, //test
+            EmployeeID: Math.floor(Math.random() * 10)+1, //test
             Clp: ambulance.Clp,
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
@@ -84,7 +85,6 @@ function AmbulanceCreate() {
             setError(true);
         }
     }
-
 
 
     useEffect(() => {
@@ -236,7 +236,7 @@ function AmbulanceCreate() {
                         variant="contained"
                         color="secondary"
                         component={RouterLink}
-                        to="/"
+                        to="/Ambulance"
                     >
                         ถอยกลับ
                     </Button>

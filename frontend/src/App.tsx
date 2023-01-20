@@ -7,9 +7,10 @@ import { PaletteOptions } from "@mui/material/styles/createPalette";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AmbulanceCreate from "./components/ambulance_system_components/AmbulanceCreate";
-import RecordTimeOutCreate from "./components/recordtimeout_system_components/RecordTimeOutCreate";
-import RecordTimeOutHistory from "./components/recordtimeout_system_components/RecordTimeOutHistory";
-import RecordTimeOutUpdate from "./components/recordtimeout_system_components/RecordTimeOutUpdate";
+import Ambulance from "./components/ambulance_system_components/Ambulance";
+// import RecordTimeOutCreate from "./components/recordtimeout_system_components/RecordTimeOutCreate";
+// import RecordTimeOutHistory from "./components/recordtimeout_system_components/RecordTimeOutHistory";
+// import RecordTimeOutUpdate from "./components/recordtimeout_system_components/RecordTimeOutUpdate";
 import Signin from "./components/Signin";
 
 export default function App() {
@@ -43,9 +44,10 @@ export default function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
+            <Route path="/Ambulance/AmbulanceCreate" element={<AmbulanceCreate />} />
+            <Route path="/Ambulance" element={<Ambulance />} />
             <Route path="/Signin" element={<Signin />} />
-            <Route
+            {/* <Route
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}
             />
@@ -56,7 +58,7 @@ export default function App() {
             <Route
               path="/RecordTimeOutUpdate"
               element={<RecordTimeOutUpdate />}
-            />
+            /> */}
           </Routes>
         </div>
       </ThemeProvider>

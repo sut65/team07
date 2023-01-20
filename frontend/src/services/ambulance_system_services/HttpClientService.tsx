@@ -95,9 +95,32 @@ async function ListTypeAbls() {
     return res;
 }
 
+async function ListAmbulances() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/ambulances`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 export {
     CreatAmbulances,
     GetAmbulanceByEmployee,
     ListCompanies,
     ListTypeAbls,
+    ListAmbulances,
 }
