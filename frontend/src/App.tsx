@@ -52,7 +52,7 @@ export default function App() {
               <Route path="/Ambulance/AmbulanceCreate" element={<AmbulanceCreate />} />
               <Route path="/Ambulance" element={<Ambulance />} />
               <Route path="/Signin" element={<Signin />} />
-              {/* <Route path="/Employee" element={<EmployeeList />} />
+              <Route path="/Employee" element={<EmployeeList />} />
               {/* <Route
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}
