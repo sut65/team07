@@ -1,8 +1,8 @@
-import { Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React from 'react'
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee'
 import { Role } from '../../models/role'
-import { ListEmployees, ListRoles } from '../../services/employeeSystemServices/EmployeeHttpClient'
+import { DeleteEmployee, ListEmployees, ListRoles } from '../../services/employeeSystemServices/EmployeeHttpClient'
 
 import "./EmployeeList.css"
 
@@ -10,7 +10,7 @@ export default function EmployeeList() {
 
     //Employee State
     const [employee, setEmployee] = React.useState<EmployeeInterface[]>([])
-    const getEmployee = async () =>{
+    const getEmployee = async () => {
         let res = await ListEmployees();
         if (res) {
             setEmployee(res)
@@ -21,7 +21,7 @@ export default function EmployeeList() {
 
     //Role State
     const [role, setRole] = React.useState<Role[]>([])
-    const getRoles = async () =>{
+    const getRoles = async () => {
         let res = await ListRoles();
         if (res) {
             setRole(res)
@@ -31,18 +31,65 @@ export default function EmployeeList() {
     }
 
 
+    //For Delete state 
+    const [deleteID, setDeleteID] = React.useState<number>(0)
+
+    // For Set dialog open
+    const [openDelete, setOpenDelete] = React.useState(false);
+
+
+
     React.useEffect(() => {
         getEmployee();
         getRoles();
-        
-    },[])
+
+    }, [])
 
 
-    const convertDateFormat = (date : Date) => {
+    const convertDateFormat = (date: Date) => {
         const newDate = new Date(date)
-        
+
         return `${newDate.getDate()} / ${newDate.getMonth()} / ${newDate.getFullYear()} | ${newDate.getHours()} : ${newDate.getMinutes()}`
     }
+
+    const selectStatus = (status: string, statusID: number) => {
+        if (statusID === 1) {
+            return (
+                <>
+                    <span className=''></span>
+                </>
+            )
+        }
+    }
+
+    const handleDialogDeleteOpen = (ID: number) => {
+        setDeleteID(ID)
+        setOpenDelete(true)
+    }
+
+    const handleDialogDeleteclose = () => {
+        setOpenDelete(false)
+        setTimeout(() => {
+            setDeleteID(0)
+        }, 500)
+    }
+
+
+    const handleDelete = async () => {
+        let res = await DeleteEmployee(deleteID)
+        if (res) {
+            console.log(res.data)
+        }else{
+            console.log(res.data)
+        }
+        getEmployee();
+        setOpenDelete(false)
+
+    }
+
+    // const debughandle = () => {
+    //     console.log(deleteID)
+    // }
 
     return (
         <Container maxWidth="lg">
@@ -71,13 +118,13 @@ export default function EmployeeList() {
                                     employee.map((item) => (
                                         <TableRow
                                             key={item.ID}
-                                            sx={{'&:last-child td, &:last-child th': { border: 0 }}}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell>{item.Name}</TableCell>
                                             <TableCell>{item.Surname}</TableCell>
                                             <TableCell>
                                                 {
-                                                    role.filter((role)=> {
+                                                    role.filter((role) => {
                                                         return item.User.RoleID == role.ID
                                                     }).at(0)?.Name
                                                 }
@@ -86,7 +133,28 @@ export default function EmployeeList() {
                                             <TableCell>{item.Age}</TableCell>
                                             <TableCell>{item.Education.Level}</TableCell>
                                             <TableCell>{convertDateFormat(item.Date)}</TableCell>
-                                            <TableCell>{item.Status.Status}</TableCell>
+                                            <TableCell>
+                                                {
+                                                    <div>
+                                                        <span className={
+                                                            (item.StatusID === 1) ? "green-dot" : (
+                                                                (item.StatusID === 2) ? "yellow-dot" : (
+                                                                    (item.StatusID === 3) ? "red-dot" : "offline-dot"
+                                                                )
+                                                            )
+                                                        }></span>
+                                                        {item.Status.Status}
+                                                    </div>
+                                                }
+                                            </TableCell>
+
+                                            <TableCell></TableCell>
+                                            <TableCell>
+                                                {
+                                                    <Button variant='outlined' onClick={() => { handleDialogDeleteOpen(item.ID) }}>Delete</Button>
+                                                }
+                                            </TableCell>
+
 
                                         </TableRow>
                                     ))
@@ -99,6 +167,32 @@ export default function EmployeeList() {
                     Test
                 </Grid> */}
             </Grid>
+            <Dialog
+                open={openDelete}
+                onClose={handleDialogDeleteclose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {`คุณต้องการลบข้อมูลของพนักงาน ${employee.filter((emp) => (emp.ID === deleteID)).at(0)?.Name} จริงหรือไม่`}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        หากคุณลบข้อมูลนี้แล้วนั้น คุณจะไม่สามารถกู้คืนได้อีก คุณต้องการลบข้อมูลนี้ใช่หรือไม่
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogDeleteclose}>ยกเลิก</Button>
+                    <Button onClick={handleDelete} className="bg-red" autoFocus>
+                        ยืนยัน
+                    </Button>
+                </DialogActions>
+
+            </Dialog>
+
+            {/* <Button onClick={debughandle}>Test</Button> */}
         </Container>
+
+
     )
 }
