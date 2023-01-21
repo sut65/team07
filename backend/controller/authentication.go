@@ -34,7 +34,7 @@ func Signin(c *gin.Context) {
 	}
 
 	//ค้นหา login ด้วย Username ที่ผู้ใช้กรอกมา
-	if err := entity.DB().Raw("SELECT * FROM user WHERE name = ?", payload.User).Scan(&user).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM users WHERE name = ?", payload.User).Scan(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
