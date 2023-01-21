@@ -24,7 +24,29 @@ async function ListEmployees() {
     return res
 }
 
-//List Role
+// Delete
+async function DeleteEmployee(ID:number) {
+    const reqOpt = {
+        method: "DELETE",
+        headers:{
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        }
+    };
+    
+    let res = await fetch(`${apiUrl}/employee/${ID}`, reqOpt)
+    .then((response) => response.json())
+    .then((res) => {
+        if(res.data){
+            return res.data
+        } else{
+            return false
+        }
+    })
+    return res
+}
+
+// List Role
 async function ListRoles() {
     const reqOpt = {
         method: "GET",
@@ -46,4 +68,4 @@ async function ListRoles() {
 }
 
 
-export {ListEmployees, ListRoles}
+export {ListEmployees, ListRoles, DeleteEmployee}
