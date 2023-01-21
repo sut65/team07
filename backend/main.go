@@ -39,6 +39,7 @@ func main() {
 	//Controller
 
 	r.POST("/role", controller.CreateRole)
+	r.GET("/roles", controller.ListRole)
 	r.POST("/signup", controller.Signup)
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
