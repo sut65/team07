@@ -32,6 +32,21 @@ func CreateRole(c *gin.Context) {
 
 }
 
+func ListRole(c *gin.Context) {
+	var role []entity.Role
+
+	if err := entity.DB().Raw("SELECT * FROM roles").Find(&role).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": role,
+	})
+}
+
 // ---------------------------------------------- ฟังก์ชัน Signup ของ User ------------------------
 
 type signup struct {

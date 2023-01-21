@@ -19,6 +19,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
+import PeopleIcon from '@mui/icons-material/People';
+
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -49,9 +51,9 @@ function Navbar() {
     {
       name: "รายการข้อมูลจัดซื้อรถพยาบาล",
       icon: <AirportShuttleIcon />,
-      path: "/AmbulanceCreate",
+      path: "/Ambulance",
     },
-    
+
     {
       name: "รายการบันทึกข้อมูลใช้รถ",
       icon: <TimeToLeaveIcon />,
@@ -63,6 +65,12 @@ function Navbar() {
       icon: <LibraryBooksIcon />,
       path: "/VehicleInspectionHistory",
     },
+
+    {
+      name: "ข้อมูลพนักงาน",
+      icon: <PeopleIcon/>,
+      path: "/Employee"
+    }
 
     
   ];
