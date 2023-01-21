@@ -25,7 +25,7 @@ type CarDepot struct {
 	Ambulances []Ambulance `gorm:"foreignKey:CarDepotID"`
 	Employees  []Employee  `gorm:"foreignKey:CarDepotID"`
 
-	// Save Company area ID in FK
+	// Save Park ID in FK
 	ParkID *uint
 	// to eaiser for add FK
 	Park Park
