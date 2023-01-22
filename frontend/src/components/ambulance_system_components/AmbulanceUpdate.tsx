@@ -11,11 +11,10 @@ import './AmbulanceCreate.css';
 import { CompaniesInterface } from '../../models/ambulance_system_models/company';
 import { TypeAblsInterface } from '../../models/ambulance_system_models/typeAbl';
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
+import { ListCompanies, ListTypeAbls, GetAmbulanceByID, UpdateAmbulance } from '../../services/ambulance_system_services/HttpClientService';
 
-import { ListCompanies, ListTypeAbls, CreatAmbulances } from '../../services/ambulance_system_services/HttpClientService';
 
-
-function AmbulanceCreate() {
+function AmbulanceUpdate() {
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -25,7 +24,6 @@ function AmbulanceCreate() {
         let res = await ListCompanies();
         if (res) {
             setCompanies(res);
-            console.log(res)
         }
     };
 
@@ -34,7 +32,6 @@ function AmbulanceCreate() {
         let res = await ListTypeAbls();
         if (res) {
             setTypeAbls(res);
-            console.log(res)
         }
     };
 
@@ -44,6 +41,15 @@ function AmbulanceCreate() {
         CarBrand: "",
     });
 
+    const getAmbulanceDataByID = async () => {
+        let res = await GetAmbulanceByID();
+        if (res) {
+            setAmbulance(res);
+            console.log(res)
+
+        }
+    };
+
     const convertType = (data: string | number | undefined | null) => {
         let val = typeof data === "string" ? parseInt(data) : data;
         return val;
@@ -51,6 +57,7 @@ function AmbulanceCreate() {
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name as keyof typeof ambulance;
+        console.log(name)
         setAmbulance({
             ...ambulance,
             [name]: event.target.value,
@@ -67,16 +74,18 @@ function AmbulanceCreate() {
     };
 
     async function submit() {
+
         let data = {
+            ID: convertType(ambulance.ID),
             CompanyID: convertType(ambulance.CompanyID),
             TypeAblID: convertType(ambulance.TypeAblID),
-            EmployeeID: convertType(localStorage.getItem("id")),
+            EmployeeID: convertType(localStorage.getItem("id")), //Math.floor(Math.random() * 10)+1,
             Clp: ambulance.Clp,
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
         };
         console.log(data)
-        let res = await CreatAmbulances(data);
+        let res = await UpdateAmbulance(data);
         if (res) {
             setSuccess(true);
         } else {
@@ -84,14 +93,13 @@ function AmbulanceCreate() {
         }
     }
 
-
     useEffect(() => {
 
         getCompanies();
         getTypeAbls();
+        getAmbulanceDataByID();
 
     }, []);
-
 
     return (
         <div>
@@ -114,11 +122,11 @@ function AmbulanceCreate() {
                         color="secondary"
                         sx={{ fontWeight: 'bold' }}
                     >
-                        บันทึกข้อมูลการจัดซื้อรถพยาบาล
+                        แก้ไขข้อมูล  รถพยาบาล  ID {ambulance?.ID}
                     </Typography>
                 </Stack>
                 <Grid container spacing={2} >
-                    <Grid item={true} xs={12}>
+                    <Grid item={true} xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <Typography className='StyledTypography'> ประเภทรถ </Typography>
                             <Select
@@ -143,7 +151,7 @@ function AmbulanceCreate() {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item={true} xs={12}>
+                    <Grid item={true} xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <Typography className='StyledTypography'> บริษัท </Typography>
                             <Select
@@ -168,7 +176,7 @@ function AmbulanceCreate() {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item={true} xs={12}>
+                    <Grid item={true} xs={6}>
                         <Typography className='StyledTypography'> เลขทะเบียนรถ </Typography>
                         <TextField className='StyledTextField'
                             id="Name"
@@ -180,9 +188,10 @@ function AmbulanceCreate() {
                             inputProps={{
                                 name: "Clp",
                             }}
+                            value={ambulance.Clp}
                         />
                     </Grid>
-                    <Grid item={true} xs={12}>
+                    <Grid item={true} xs={6}>
                         <Typography className='StyledTypography'> ยี่ห้อรถ </Typography>
                         <TextField className='StyledTextField'
                             id="Name"
@@ -194,6 +203,7 @@ function AmbulanceCreate() {
                             inputProps={{
                                 name: "CarBrand",
                             }}
+                            value={ambulance.CarBrand}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -228,20 +238,18 @@ function AmbulanceCreate() {
                         component={RouterLink}
                         to="/Ambulance"
                     >
-                        ถอยกลับ
+                        ยกเลิก
                     </Button>
                     <Button
                         variant="contained"
                         color="secondary"
                         onClick={submit}
                     >
-                        บันทึกข้อมูล
+                        อัพเดตข้อมูล
                     </Button>
-
                 </Stack>
             </Container>
         </div>
     )
 }
-
-export default AmbulanceCreate
+export default AmbulanceUpdate

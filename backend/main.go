@@ -13,7 +13,7 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE, PATCH")
 
 		if c.Request.Method == "OPTIONS" {
 
@@ -76,8 +76,10 @@ func main() {
 
 	// List ambulances
 	r.GET("/ambulances", controller.ListAmbulances)
+	// Get by id
+	r.GET("/ambulances/:id", controller.GetAmbulance)
 	// Get by eid
-	r.GET("/ambulance/:employee_id", controller.GetAmbulanceByEmployee)
+	r.GET("/ambulance/:eid", controller.GetAmbulanceByEmployee)
 	// Create
 	r.POST("/ambulance", controller.CreateAmbulance)
 	// DELETE
