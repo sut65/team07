@@ -114,3 +114,20 @@ func Signup(c *gin.Context) {
 	})
 
 }
+
+// -------------------- User --------------------
+func ListUser(c *gin.Context) {
+	var users []entity.User
+	if err := entity.DB().Preload("Role").Raw("SELECT * FROM users").Find(&users).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": users,
+	})
+}
+
+// -------------------- User --------------------

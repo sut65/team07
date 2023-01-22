@@ -41,6 +41,7 @@ func main() {
 	r.POST("/role", controller.CreateRole)
 	r.GET("/roles", controller.ListRole)
 	r.POST("/signup", controller.Signup)
+	r.GET("/users", controller.ListUser)
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 
@@ -56,6 +57,21 @@ func main() {
 	// Delete
 	r.DELETE("/workingarea/:id", controller.DeleteWorkingArea)
 	// ----------------- Working Area ----------------------------
+
+	// ----------------- Education ------------------------
+	// List
+	r.GET("/educations", controller.ListEducation)
+	// Get by id
+	r.GET("/education/:id", controller.GetEducation)
+	// ----------------- Education ------------------------
+
+	// ------------------- Status -------------------------
+	// List Status
+	r.GET("/statuses", controller.ListStatus)
+	// Get by id
+	r.GET("/status/:id", controller.GetStatus)
+
+	// ------------------- Status -------------------------
 
 	// ----------------- Employee ----------------------------
 	// List

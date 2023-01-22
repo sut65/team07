@@ -17,15 +17,16 @@ import EmployeeList from "./components/employeeSystemComponents/EmployeeList";
 
 //import css
 import "./App.css";
+import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
 
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
     primary: {
-      main: "#3443EB",
+      main: "#3F70EB",
     },
     secondary: {
-      main: "#2461D4",
+      main: "#2AA6F6",
     },
     warning: {
       main: orange[500],
@@ -33,6 +34,12 @@ export default function App() {
     success: {
       main: green[500],
     },
+    error: {
+      main: "#F65A5A",
+    },
+    text:{
+      primary: "#233333"
+    }
   };
   const theme = createTheme({
     palette: palette,
@@ -70,7 +77,9 @@ export default function App() {
                 element={<AmbulanceUpdate />}
               />
               <Route path="/Ambulance" element={<Ambulance />} />
-              <Route path="/Employee" element={<EmployeeList />} />
+              <Route path="/employee" element={<EmployeeList />} />
+              <Route path="/employee/create" element={<EmployeeCreate />} />
+
               {/* <Route
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}

@@ -1,8 +1,10 @@
-import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee'
 import { Role } from '../../models/role'
 import { DeleteEmployee, ListEmployees, ListRoles } from '../../services/employeeSystemServices/EmployeeHttpClient'
+import { Link as RouterLink } from "react-router-dom";
+
 
 import "./EmployeeList.css"
 
@@ -52,15 +54,7 @@ export default function EmployeeList() {
         return `${newDate.getDate()} / ${newDate.getMonth()} / ${newDate.getFullYear()} | ${newDate.getHours()} : ${newDate.getMinutes()}`
     }
 
-    const selectStatus = (status: string, statusID: number) => {
-        if (statusID === 1) {
-            return (
-                <>
-                    <span className=''></span>
-                </>
-            )
-        }
-    }
+
 
     const handleDialogDeleteOpen = (ID: number) => {
         setDeleteID(ID)
@@ -79,7 +73,7 @@ export default function EmployeeList() {
         let res = await DeleteEmployee(deleteID)
         if (res) {
             console.log(res.data)
-        }else{
+        } else {
             console.log(res.data)
         }
         getEmployee();
@@ -93,7 +87,27 @@ export default function EmployeeList() {
 
     return (
         <Container maxWidth="lg">
-            <Grid container spacing={5} >
+            <Grid container spacing={3} >
+                <Grid item xs={10} >
+                    <Typography
+                        component="h3"
+                        variant="h5"
+                        color="text"
+                        gutterBottom
+                    >
+                        ข้อมูลพนักงาน
+                    </Typography>
+                </Grid>
+                <Grid item xs={2} >
+                    <Button
+                        variant='contained'
+                        color='primary'
+                        component={RouterLink}
+                        to="/employee/create"
+                    >
+                        เพิ่มข้อมูลพนักงาน
+                    </Button>
+                </Grid>
                 <Grid item xs={12}>
                     <TableContainer component={Paper}>
                         <Table>
@@ -125,7 +139,7 @@ export default function EmployeeList() {
                                             <TableCell>
                                                 {
                                                     role.filter((role) => {
-                                                        return item.User.RoleID == role.ID
+                                                        return item.User.RoleID === role.ID
                                                     }).at(0)?.Name
                                                 }
                                             </TableCell>{/* Role Get From Searching*/}
@@ -151,7 +165,7 @@ export default function EmployeeList() {
                                             <TableCell></TableCell>
                                             <TableCell>
                                                 {
-                                                    <Button variant='outlined' onClick={() => { handleDialogDeleteOpen(item.ID) }}>Delete</Button>
+                                                    <Button variant='outlined' color='error' onClick={() => { handleDialogDeleteOpen(item.ID) }}>Delete</Button>
                                                 }
                                             </TableCell>
 

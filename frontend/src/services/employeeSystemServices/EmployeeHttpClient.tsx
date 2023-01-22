@@ -50,10 +50,10 @@ async function GetEmployee(ID: number) {
 }
 
 // Create Employee
-async function PostEmployee(emp:EmployeeInterface) {
+async function PostEmployee(emp:Partial<EmployeeInterface>) {
     let data = {
-        Name: convertType(emp.Name),
-        Surname: convertType(emp.Surname),
+        Name: emp.Name,
+        Surname: emp.Surname,
         Age: convertType(emp.Age),
         Date: new Date(),
         UserID:convertType(emp.UserID),
@@ -61,6 +61,7 @@ async function PostEmployee(emp:EmployeeInterface) {
         StatusID: convertType(emp.StatusID),
         EducationID : convertType(emp.EducationID)
     }
+    
 
     const reqOpt = {
         method: "POST",
@@ -70,15 +71,12 @@ async function PostEmployee(emp:EmployeeInterface) {
         },
         body: JSON.stringify(data)
     }
+    
 
     let res = await fetch(`${apiUrl}/employee`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
-        if(res.data){
-            return res.data
-        }else{
-            return false
-        }
+        return res
     })
     return res
 
@@ -165,4 +163,103 @@ async function ListRoles() {
 }
 
 
-export {ListEmployees, ListRoles, DeleteEmployee, PostEmployee}
+// GET ALL DATA FOR Select
+
+async function ListEducation() {
+    const reqOpt = {
+        method: "GET",
+        header: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        }
+    }
+    let res = await fetch(`${apiUrl}/educations`, reqOpt)
+    .then((response) => response.json())
+    .then((res) => {
+        if(res.data){
+            return res.data
+        } else{
+            return false
+        }
+    })
+    return res
+}
+
+
+async function ListStatus() {
+    const reqOpt = {
+        method: "GET",
+        header: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        }
+    }
+    let res = await fetch(`${apiUrl}/statuses`, reqOpt)
+    .then((response) => response.json())
+    .then((res) => {
+        if(res.data){
+            return res.data
+        } else{
+            return false
+        }
+    })
+    return res
+}
+
+async function ListWorkingArea() {
+    const reqOpt = {
+        method: "GET",
+        header: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        }
+    }
+    let res = await fetch(`${apiUrl}/workingareas`, reqOpt)
+    .then((response) => response.json())
+    .then((res) => {
+        if(res.data){
+            return res.data
+        } else{
+            return false
+        }
+    })
+    return res
+}
+
+// List User
+async function ListUser() {
+    const reqOpt = {
+        method: "GET",
+        header: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        }
+    }
+    let res = await fetch(`${apiUrl}/users`, reqOpt)
+    .then((response) => response.json())
+    .then((res) => {
+        if(res.data){
+            return res.data
+        } else{
+            return false
+        }
+    })
+    return res
+}
+
+
+
+
+
+export {
+    ListEmployees, 
+    ListRoles, 
+    DeleteEmployee, 
+    PostEmployee, 
+    UpdateEmployee, 
+    GetEmployee, 
+    ListStatus, 
+    ListWorkingArea,
+    ListEducation,
+    ListUser
+}

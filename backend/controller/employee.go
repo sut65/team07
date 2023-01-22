@@ -369,4 +369,75 @@ func DeleteEmployee(c *gin.Context) {
 
 }
 
-// --------------- Education -------------- (Maybe)
+// --------------- Education --------------
+
+// List Education
+// GET /educations
+func ListEducation(c *gin.Context) {
+	var educations []entity.Education
+	if err := entity.DB().Raw("SELECT * FROM educations").Find(&educations).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": educations,
+	})
+}
+
+// GET By ID
+// GET /edcation/:id
+func GetEducation(c *gin.Context) {
+	var education entity.Education
+	id := c.Param("id")
+	if err := entity.DB().Raw("SELECT * FROM educations WHERE id = ?", id).Find(&education).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": education,
+	})
+}
+
+// --------------- Education --------------
+
+// --------------- Status -----------------
+// List Status
+// GET /statuses
+func ListStatus(c *gin.Context) {
+	var statuses []entity.Status
+	if err := entity.DB().Raw("SELECT * FROM statuses").Find(&statuses).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": statuses,
+	})
+}
+
+// Get by ID
+// GET /status/:id
+func GetStatus(c *gin.Context) {
+	var status entity.Status
+	id := c.Param("id")
+	if err := entity.DB().Raw("SELECT * FROM statuses WHERE id = ?", id).Find(&status).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": status,
+	})
+}
+
+// --------------- Status -----------------
