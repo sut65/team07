@@ -12,37 +12,52 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-
-
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import MenuList from "@mui/material/MenuList";
 //icon
-import HomeIcon from '@mui/icons-material/Home';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
-import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
+import HomeIcon from "@mui/icons-material/Home";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
+import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
+import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
+import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import PeopleIcon from '@mui/icons-material/People';
 
 import { Link } from "react-router-dom";
 
 function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
+
   const [state, setState] = React.useState(false);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleClose = (event: Event | React.SyntheticEvent) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setOpen(false);
   };
 
-  const toggleDrawer =
-    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
+  const toggleDrawer = (open: boolean) => (
+    event: React.KeyboardEvent | React.MouseEvent
+  ) => {
+    if (
+      event.type === "keydown" &&
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
+    ) {
+      return;
+    }
 
-      setState(open);
-    };
+    setState(open);
+  };
 
   var menu: any[] = [];
   menu = [
@@ -71,14 +86,40 @@ function Navbar() {
       icon: <PeopleIcon/>,
       path: "/Employee"
     }
-
-    
   ];
+
+  const list = [
+    {
+      name: "Profile",
+      icon: <PersonOutlineTwoToneIcon />,
+      click: () => profile(),
+    },
+    {
+      name: "Logout",
+      icon: <LogoutTwoToneIcon />,
+      click: () => signout(),
+    },
+  ];
+
+  const profile = () => {
+    // setSuccess(true);
+    window.location.href = "/";
+    console.log("profile");
+    alert("profile");
+  };
+
+  const signout = () => {
+    // setSuccess(true);
+    localStorage.clear();
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar variant="dense">
           <IconButton
             size="large"
             edge="start"
@@ -97,10 +138,93 @@ function Navbar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex" }}>
             {/* <IconButton size="large" color="inherit"> */}
-
-            <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <IconButton
+              onClick={() => setOpen((open) => !open)}
+              size="small"
+              sx={{ ml: 2 }}
+              color="info"
+              ref={anchorRef}
+              id="composition-button"
+              aria-controls={open ? "composition-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-haspopup="true"
+            >
+              <Avatar sx={{ width: 32, height: 32 }}>
+                {/* test */}
+                {localStorage
+                  ?.getItem("role")
+                  ?.charAt(0)
+                  .toUpperCase()}
+              </Avatar>
             </IconButton>
+            <Popper
+              open={open}
+              anchorEl={anchorRef.current}
+              role={undefined}
+              placement="bottom-start"
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === "bottom-start" ? "right top" : "right top",
+                  }}
+                >
+                  <Paper
+                    sx={{
+                      overflow: "visible",
+                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                      mt: 1.5,
+                      "& .MuiAvatar-root": {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      "&:before": {
+                        content: '""',
+                        display: "block",
+                        position: "absolute",
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: "background.paper",
+                        transform: "translateY(-50%) rotate(45deg)",
+                        zIndex: 0,
+                      },
+                    }}
+                  >
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList
+                        autoFocusItem={open}
+                        id="composition-menu"
+                        aria-labelledby="composition-button"
+                        disablePadding
+                      >
+                        <List>
+                          {list.map((item, index) => (
+                            <ListItem
+                              disablePadding
+                              onClick={item.click}
+                              key={index}
+                            >
+                              <ListItemButton>
+                                <ListItemIcon> {item.icon} </ListItemIcon>
+                                <ListItemText primary={item.name} />
+                              </ListItemButton>
+                            </ListItem>
+                          ))}
+                        </List>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
           </Box>
 
           <SwipeableDrawer
@@ -118,16 +242,16 @@ function Navbar() {
               <List>
                 {menu.map((text, index) => (
                   <Link
-                  to={text.path}
-                  key={text.name}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <ListItem  disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon> {text.icon} </ListItemIcon>
-                      <ListItemText primary={text.name} />
-                    </ListItemButton>
-                  </ListItem>
+                    to={text.path}
+                    key={text.name}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <ListItem disablePadding>
+                      <ListItemButton>
+                        <ListItemIcon> {text.icon} </ListItemIcon>
+                        <ListItemText primary={text.name} />
+                      </ListItemButton>
+                    </ListItem>
                   </Link>
                 ))}
               </List>
