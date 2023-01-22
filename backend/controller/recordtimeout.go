@@ -8,9 +8,7 @@ import (
 )
 
 // POST /users
-
 func CreateRecordTimeOut(c *gin.Context) {
-
 	var recordtimeout entity.RecordTimeOUT
 	var ambulances entity.Ambulance
 	var cases entity.Case
@@ -19,7 +17,6 @@ func CreateRecordTimeOut(c *gin.Context) {
 	if err := c.ShouldBindJSON(&recordtimeout); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-
 	}
 	if tx := entity.DB().Where("id = ?", recordtimeout.AmbulanceID).First(&ambulances); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
@@ -45,24 +42,18 @@ func CreateRecordTimeOut(c *gin.Context) {
 	}
 
 	//บันทึก
-
 	if err := entity.DB().Create(&rec).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-
 	}
-
 	c.JSON(http.StatusOK, gin.H{"data": rec})
 }
 
 // GET /user/:id
-
 func GetRecordTimeOut(c *gin.Context) {
-
 	var recordtimeout entity.RecordTimeOUT
-
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM record_time_out WHERE id = ?", id).Scan(&recordtimeout).Error; err != nil {
+	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Employee").Raw("SELECT * FROM record_time_outs WHERE id = ?", id).Find(&recordtimeout).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -71,12 +62,9 @@ func GetRecordTimeOut(c *gin.Context) {
 }
 
 // GET /users
-
 func ListRecordTimeOuts(c *gin.Context) {
-
 	var recordtimeouts []entity.RecordTimeOUT
-
-	if err := entity.DB().Raw("SELECT * FROM record_time_out").Scan(&recordtimeouts).Error; err != nil {
+	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Employee").Raw("SELECT * FROM record_time_outs").Find(&recordtimeouts).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -86,10 +74,8 @@ func ListRecordTimeOuts(c *gin.Context) {
 // DELETE /users/:id
 
 func DeleteRecordTimeOut(c *gin.Context) {
-
 	id := c.Param("id")
-
-	if tx := entity.DB().Exec("DELETE FROM record_time_out WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM record_time_outs WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "recordtimeout not found"})
 		return
 	}
@@ -109,27 +95,22 @@ func UpdateRecordTimeOut(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	if tx := entity.DB().Where("id = ?", recordtimeout.ID).First(&recordtimeout); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "recordtimeout not found"})
 		return
 	}
-
 	if tx := entity.DB().Where("id = ?", cases.ID).First(&cases); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "case not found"})
 		return
 	}
-
 	if tx := entity.DB().Where("id = ?", ambulance.ID).First(&ambulance); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
 		return
 	}
-
 	if tx := entity.DB().Where("id = ?", employee.ID).First(&employee); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
 		return
 	}
-
 	UpdatingRecordTimeOut := entity.RecordTimeOUT{
 		Annotation:            recordtimeout.Annotation,
 		OdoMeter:              recordtimeout.OdoMeter,
@@ -143,8 +124,8 @@ func UpdateRecordTimeOut(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"status": "Updating success!!",
-		"data":   UpdatingRecordTimeOut})
+		"data":   UpdatingRecordTimeOut,
+	})
 }
