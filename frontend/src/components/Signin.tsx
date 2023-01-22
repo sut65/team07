@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ambulance from "./image/Ambulance.png";
 import { SigninInterface } from "../models/user";
+import {apiUrl} from "../../src/services/utility"
 function Copyright(props: any) {
   return (
     <Typography
@@ -54,7 +55,7 @@ export default function Signin() {
       body: JSON.stringify(signin),
     };
 
-    await fetch(`http://localhost:8080/signin`, requestOptions)
+    await fetch(`${apiUrl}/signin`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
         if (res.data) {
