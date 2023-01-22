@@ -36,9 +36,6 @@ type Employee struct {
 	Age     int
 	Date    time.Time
 
-	//For Link Foreign key
-	Ambulances []Ambulance `gorm:"foreignKey:EmployeeID"`
-
 	// Save User ID in FK
 	UserID *uint `gorm:"uniqueIndex"` //Set 1-1 relational database
 	// To eaiser for add FK
@@ -59,5 +56,7 @@ type Employee struct {
 	// to eaiser for add FK
 	Education Education
 
+	//For Link Foreign key
+	Ambulances    []Ambulance     `gorm:"foreignKey:EmployeeID"`
 	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:EmployeeID"`
 }
