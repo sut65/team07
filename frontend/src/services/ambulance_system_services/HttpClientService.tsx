@@ -1,4 +1,5 @@
 import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
+import { convertType } from "../utility"
 
 const apiUrl = "http://localhost:8080";
 
@@ -25,8 +26,8 @@ async function CreatAmbulances(data: AmbulancesInterface) {
     return res;
 }
 
-async function GetAmbulanceByEmployee() {
-    let eid = localStorage.getItem("eid");
+async function GetAmbulanceByID() {
+    let aid = localStorage.getItem("aid");
     const requestOptions = {
         method: "GET",
         headers: {
@@ -36,7 +37,34 @@ async function GetAmbulanceByEmployee() {
     };
 
     let res = await fetch(
-        `${apiUrl}/ambulance/${eid}`,
+        `${apiUrl}/ambulances/${aid}`,
+        requestOptions
+    )
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+
+}
+
+async function GetAmbulanceByEmployee() {
+    let id = localStorage.getItem("id");
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(
+        `${apiUrl}/ambulance/${id}`,
         requestOptions
     )
         .then((response) => response.json())
@@ -117,10 +145,35 @@ async function ListAmbulances() {
     return res;
 }
 
+async function UpdateAmbulance(data: AmbulancesInterface) {
+    
+    const requestOptions = {
+        method: "PATCH",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    }
+
+    let res = await fetch(`${apiUrl}/ambulance`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data
+            } else {
+                return false
+            }
+        })
+    return res
+}
+
 export {
     CreatAmbulances,
+    GetAmbulanceByID,
     GetAmbulanceByEmployee,
     ListCompanies,
     ListTypeAbls,
     ListAmbulances,
+    UpdateAmbulance,
 }

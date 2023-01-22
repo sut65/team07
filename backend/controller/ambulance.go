@@ -79,10 +79,10 @@ func GetAmbulance(c *gin.Context) {
 // GET /ambulance/:eid
 func GetAmbulanceByEmployee(c *gin.Context) {
 
-	var ambulance entity.Ambulance
-	employee_id := c.Param("employee_id")
+	var ambulance []entity.Ambulance
+	employee_id := c.Param("eid")
 
-	if err := entity.DB().Preload("Company").Preload("TypeAbl").Preload("Employee").Raw("SELECT * FROM ambulances WHERE employee_id = ?", employee_id).Find(&ambulance).Error; err != nil {
+	if err := entity.DB().Preload("Company").Preload("TypeAbl").Raw("SELECT * FROM ambulances WHERE employee_id = ?", employee_id).Find(&ambulance).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
