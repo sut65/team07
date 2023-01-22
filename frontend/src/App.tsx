@@ -12,9 +12,13 @@ import Ambulance from "./components/ambulance_system_components/Ambulance";
 // import RecordTimeOutHistory from "./components/recordtimeout_system_components/RecordTimeOutHistory";
 // import RecordTimeOutUpdate from "./components/recordtimeout_system_components/RecordTimeOutUpdate";
 import Signin from "./components/Signin";
+import EmployeeList from "./components/employeeSystemComponents/EmployeeList";
+
+//import css
+import "./App.css";
 
 export default function App() {
-  const [token, setToken] = React.useState<string>("")
+  const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
     primary: {
       main: "#3443EB",
@@ -37,15 +41,15 @@ export default function App() {
     },
   });
 
-  React.useEffect(()=> {
-    const token = localStorage.getItem('token') ;
-    if(token){
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
       setToken(token);
     }
-  }, [])
+  }, []);
 
-  if(!token){
-    return <Signin/>
+  if (!token) {
+    return <Signin />;
   }
 
   return (
@@ -53,12 +57,16 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <div>
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Ambulance/AmbulanceCreate" element={<AmbulanceCreate />} />
-            <Route path="/Ambulance" element={<Ambulance />} />
-            {/* <Route path="/Signin" element={<Signin />} /> */}
-            {/* <Route
+          <div className="container-router">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route
+                path="/Ambulance/AmbulanceCreate"
+                element={<AmbulanceCreate />}
+              />
+              <Route path="/Ambulance" element={<Ambulance />} />
+              <Route path="/Employee" element={<EmployeeList />} />
+              {/* <Route
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}
             />
@@ -70,7 +78,8 @@ export default function App() {
               path="/RecordTimeOutUpdate"
               element={<RecordTimeOutUpdate />}
             /> */}
-          </Routes>
+            </Routes>
+          </div>
         </div>
       </ThemeProvider>
     </Router>

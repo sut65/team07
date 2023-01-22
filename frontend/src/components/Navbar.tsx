@@ -24,6 +24,8 @@ import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
 import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
+import PeopleIcon from '@mui/icons-material/People';
+
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -78,6 +80,12 @@ function Navbar() {
       icon: <LibraryBooksIcon />,
       path: "/VehicleInspectionHistory",
     },
+
+    {
+      name: "ข้อมูลพนักงาน",
+      icon: <PeopleIcon/>,
+      path: "/Employee"
+    }
   ];
 
   const list = [

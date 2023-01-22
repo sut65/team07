@@ -1,0 +1,44 @@
+.debugBorder {
+    border: 2px solid red;
+}
+
+.green-dot {
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: #00ff00;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.red-dot{
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: #ff0000;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.yellow-dot{
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: #db9718;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.offline-dot{
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.bg-red{
+    background-color: #ff0000 !important;
+    color: white !important;
+}
