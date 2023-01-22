@@ -14,6 +14,7 @@ import Ambulance from "./components/ambulance_system_components/Ambulance";
 import Signin from "./components/Signin";
 
 export default function App() {
+  const [token, setToken] = React.useState<string>("")
   const palette: PaletteOptions = {
     primary: {
       main: "#3443EB",
@@ -36,17 +37,27 @@ export default function App() {
     },
   });
 
+  React.useEffect(()=> {
+    const token = localStorage.getItem('token') ;
+    if(token){
+      setToken(token);
+    }
+  }, [])
+
+  if(!token){
+    return <Signin/>
+  }
+
   return (
     <Router>
       <ThemeProvider theme={theme}>
         <div>
           <Navbar />
-
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/Ambulance/AmbulanceCreate" element={<AmbulanceCreate />} />
             <Route path="/Ambulance" element={<Ambulance />} />
-            <Route path="/Signin" element={<Signin />} />
+            {/* <Route path="/Signin" element={<Signin />} /> */}
             {/* <Route
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}

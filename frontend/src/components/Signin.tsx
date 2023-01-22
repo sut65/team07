@@ -13,7 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ambulance from "./image/Ambulance.png";
-import { User } from "../models/user";
+import { SigninInterface } from "../models/user";
 function Copyright(props: any) {
   return (
     <Typography
@@ -32,7 +32,7 @@ function Copyright(props: any) {
 }
 
 export default function Signin() {
-  const [signin, setSignin] = React.useState<Partial<User>>();
+  const [signin, setSignin] = React.useState<Partial<SigninInterface>>();
   
   const [success, setSuccess] = React.useState<boolean>(false);
   const [error, setError] = React.useState<boolean>(false);

@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -40,6 +41,9 @@ func SetupDatabase() {
 		&Emergency{},
 		&Gender{},
 		&Case{},
+
+		//ระบบบันทึกเวลาใช้รถขาออกของพนักงานขับรถ
+		&RecordTimeOUT{},
 	)
 
 	db = database
@@ -52,10 +56,13 @@ func SetupDatabase() {
 	db.Model(&Role{}).Create(&admin)
 
 	// ทำการเพิ่ม Dummy user ผู้ดูแลระบบ
-
+	pw, err := bcrypt.GenerateFromPassword([]byte("123456"), bcrypt.DefaultCost)
+	if err != nil {
+		return
+	}
 	userAdmin := User{
 		Name:     "Admin",
-		Password: "123456",
+		Password: string(pw),
 		Role:     admin,
 	}
 	db.Model(&User{}).Create(&userAdmin)
