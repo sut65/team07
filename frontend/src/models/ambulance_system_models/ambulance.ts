@@ -1,18 +1,20 @@
 import { CompaniesInterface } from "./company";
 import { TypeAblsInterface } from "./typeAbl";
+import { EmployeeInterface } from "../employeeSystemModel/IEmployee";
 
 export interface AmbulancesInterface {
 
-    ID?: number,
+    ID?: number | null,
     Clp: string | null,
     Date: Date | null,
     CarBrand: string | null,
 
-    CompanyID?: number,
+    CompanyID?: number | null,
     Company?: CompaniesInterface,
 
-    TypeAblID?: number,
+    TypeAblID?: number | null,
     TypeAbl?: TypeAblsInterface,
     
-    EmployeeID?: number, //test
+    EmployeeID?: number | null,
+    EmployeeInterface?: EmployeeInterface,
 }

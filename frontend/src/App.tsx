@@ -7,6 +7,7 @@ import { PaletteOptions } from "@mui/material/styles/createPalette";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AmbulanceCreate from "./components/ambulance_system_components/AmbulanceCreate";
+import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 // import RecordTimeOutCreate from "./components/recordtimeout_system_components/RecordTimeOutCreate";
 // import RecordTimeOutHistory from "./components/recordtimeout_system_components/RecordTimeOutHistory";
@@ -16,15 +17,16 @@ import EmployeeList from "./components/employeeSystemComponents/EmployeeList";
 
 //import css
 import "./App.css";
+import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
 
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
     primary: {
-      main: "#3443EB",
+      main: "#3F70EB",
     },
     secondary: {
-      main: "#2461D4",
+      main: "#2AA6F6",
     },
     warning: {
       main: orange[500],
@@ -32,6 +34,12 @@ export default function App() {
     success: {
       main: green[500],
     },
+    error: {
+      main: "#F65A5A",
+    },
+    text:{
+      primary: "#233333"
+    }
   };
   const theme = createTheme({
     palette: palette,
@@ -64,8 +72,14 @@ export default function App() {
                 path="/Ambulance/AmbulanceCreate"
                 element={<AmbulanceCreate />}
               />
+              <Route
+                path="/Ambulance/AmbulanceUpdate"
+                element={<AmbulanceUpdate />}
+              />
               <Route path="/Ambulance" element={<Ambulance />} />
-              <Route path="/Employee" element={<EmployeeList />} />
+              <Route path="/employee" element={<EmployeeList />} />
+              <Route path="/employee/create" element={<EmployeeCreate />} />
+
               {/* <Route
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}
