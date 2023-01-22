@@ -92,6 +92,12 @@ func main() {
 
 	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
 
+	r.GET("/recordtimeouts", controller.ListRecordTimeOuts)
+	r.GET("/recordtimeout/:id", controller.GetRecordTimeOut)
+	r.POST("/recordtimeout", controller.CreateRecordTimeOut)
+	r.DELETE("/recordtimeout/:id", controller.DeleteRecordTimeOut)
+	r.PATCH("/recordtimeout", controller.UpdateRecordTimeOut)
+
 	r.POST("/signin", controller.Signin)
 
 	//Run server using gin gonic
