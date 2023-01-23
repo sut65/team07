@@ -4,6 +4,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"time"
 
+	"time"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -43,11 +45,6 @@ func SetupDatabase() {
 		&Emergency{},
 		&Gender{},
 		&Case{},
-
-		//ระบบบันทึกเวลาใช้รถขาออกของพนักงานขับรถ
-		&RecordTimeOUT{},
-		//ระบบบันทึกการใช้รถขาเข้าของพนักงานขับรถ
-		&RecordTimeIn{},
 	)
 
 	db = database

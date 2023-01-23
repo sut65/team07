@@ -8,6 +8,12 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AmbulanceCreate from "./components/ambulance_system_components/AmbulanceCreate";
 import Signin from "./components/Signin";
+import RecordTimeInCreate from "./components/recordtimein_system_components/RecordTimeInCreate";
+import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
+import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
+import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
+
+
 // import Signin from "./components/Signin/Signin";
 // import RecordTimeOutHistory from "./components/RecordTimeOutHistory";
 export default function App() {
@@ -62,6 +68,10 @@ export default function App() {
             <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
             {/* <Route path="/" element={<Signin />} />
             <Route path="/recordTimeOutHistory" element={<RecordTimeOutHistory />} /> */}
+            <Route path="/RecordTimeInCreate" element={<RecordTimeInCreate />} />
+            <Route path="/RecordTimeInHistory" element={<RecordTimeInHistory />} />
+            <Route path="/RecordTimeInEdit" element={<RecordTimeInEdit />} />
+            <Route path="/RecordTimeInUpdate" element={<RecordTimeInUpdate />} />
           </Routes>
         </div>
       

@@ -126,6 +126,18 @@ func main() {
 	// UPDATE
 	r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
 	// ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+	// ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+	r.GET("/recordtimeins", controller.ListRecordTimeIns)
+	// Get by eid
+	r.GET("/recordtimein/:employee_id", controller.GetRecordTimeInByEmployee)
+	// Create
+	r.POST("/recordtimein", controller.CreateRecordTimeIn)
+	// DELETE
+	r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
+	// UPDATE
+	r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
+	// ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+
 
 
 	r.POST("/signin", controller.Signin)
