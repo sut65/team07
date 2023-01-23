@@ -3,8 +3,8 @@ import { AmbulancesInterface } from "../ambulance_system_models/ambulance";
 export interface RecordTimeOutInterface {
   ID?: number;
   Annotation?: string;
-  Odo_Meter?: number;
-  Record_Time_Out_Datetime?: Date;
+  OdoMeter?: number;
+  RecordTimeOutDatetime?: Date ;
   AmbulanceID?: number;
   Ambulance?: AmbulancesInterface;
 
