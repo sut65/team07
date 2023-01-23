@@ -1,7 +1,7 @@
 import * as React from "react";
 import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-
+import { Snackbar, Button } from "@mui/material";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -9,16 +9,41 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 //icon
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-export default function RecordTimeOutDelete() {
+import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
+import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+export default function RecordTimeOutDelete(props: any) {
+  const { params } = props;
   const [open, setOpen] = React.useState(false);
+
+  const [success, setSuccess] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
+ 
 
   const handleClose = () => {
     setOpen(false);
+    setSuccess(false);
+    setError(false)
   };
+  async function submit() {
+    try {
+      let res = await HttpClientServices.delete(`/recordtimeout/${params}`);
+      console.log(res.data);
+      setSuccess(true);
+    } catch (err) {
+      setError(true);
+      console.log(err);
+    }
+  }
 
   return (
     <div>
@@ -36,19 +61,42 @@ export default function RecordTimeOutDelete() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Are You Sure ?</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          คุณต้องการลบรายการบันทึกเวลาใช้รถใช่ไหม ?
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are You Sure ?
+            คุณต้องการลบรายการบันทึกเวลาใช้รถใช่ไหม ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>cancel</Button>
-          <Button onClick={handleClose} autoFocus>
-            Yes,
+          <Button onClick={handleClose}>ยกเลิก</Button>
+          <Button onClick={submit} autoFocus>
+            ยืนยัน
           </Button>
         </DialogActions>
+        <Snackbar
+        open={success}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="success">
+          ลบข้อมูลสำเร็จ
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={error}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="error">
+          ลบข้อมูลไม่สำเร็จ
+        </Alert>
+      </Snackbar>
       </Dialog>
+      
     </div>
   );
 }

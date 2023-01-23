@@ -55,7 +55,7 @@ function RecordTimeOutHistory() {
       },
     },
     {
-      field: "Ambulance.TypeAbl",
+      field: "Ambulance.CarBrand",
       headerName: "รถพยาบาล",
       width: 120,
       align: "center",
@@ -75,7 +75,7 @@ function RecordTimeOutHistory() {
       },
     },
     {
-      field: "record_time_out_datetime",
+      field: "RecordTimeOutDatetime",
       headerName: "วัน/เวลา",
       width: 220,
       align: "center",
@@ -83,9 +83,9 @@ function RecordTimeOutHistory() {
       renderCell: (params: GridRenderCellParams<any>) => {
         return (
           <>
-            {`วันที่: ${moment(params.row.record_time_out_datetime).format(
+            {`วันที่: ${moment(params.row.RecordTimeOutDatetime).format(
               "DD/MM/YYYY"
-            )} เวลา: ${moment(params.row.record_time_out_datetime).format(
+            )} เวลา: ${moment(params.row.RecordTimeOutDatetime).format(
               "HH:mm"
             )} น.`}
           </>
@@ -109,7 +109,7 @@ function RecordTimeOutHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <RecordTimeOutDelete />;
+        return <RecordTimeOutDelete params={params.row.ID} />;
       },
       sortable: false,
       description: "ลบ",
