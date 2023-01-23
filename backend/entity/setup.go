@@ -44,6 +44,8 @@ func SetupDatabase() {
 		&Emergency{},
 		&Gender{},
 		&Case{},
+
+		&RecordTimeOUT{},
 	)
 
 	db = database
@@ -136,39 +138,38 @@ func SetupDatabase() {
 	db.CreateInBatches(gender, 2)
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
 
-	// //ระบบบันทึกการใช้รถขาเข้าของพนักงานขับรถ ----------------------------------------------------
-	emp1 := Employee{
+	//Dummy
+	emp := Employee{
 		Name: "BB",
 	}
-	db.Model(&Employee{}).Create(&emp1)
+	db.Model(&Employee{}).Create((&emp))
+
+	abl := Ambulance{
+		TypeAbl: typeAbl[2],
+		Clp:     "BB3677",
+	}
+	db.Model(&Ambulance{}).Create((&abl))
 
 	case1 := Case{
-		Location: "ปค4",
+		Emergency: emergency[2],
 	}
-	db.Model(&Case{}).Create(&case1)
-
-	ambulance1 := Ambulance{
-		CarBrand: "BB",
-	}
-	db.Model(&Ambulance{}).Create(&ambulance1)
-
 	recordtimeout_1 := RecordTimeOUT{
-		Annotation: "ฝนตกหนัก",
-		OdoMeter:   2000,
-		Employee:   emp1,
-		Case:       case1,
-		Ambulance:  ambulance1,
+		Annotation:            "ฝนตกหนัก ถนนลื่น",
+		OdoMeter:              2000,
+		RecordTimeOutDatetime: time.Now(),
+		Employee:              emp,
+		Case:                  case1,
+		Ambulance:             abl,
 	}
 	db.Model(&RecordTimeOUT{}).Create(&recordtimeout_1)
 
-	recordtimeIN_1 := RecordTimeIn{
-		TimeIn:        time.Now(),
-		Odo:           123,
-		Note:          "-",
-		Employee:      emp1,
-		RecordTimeOUT: recordtimeout_1,
-		Ambulance:     ambulance1,
+	recordtimeout_2 := RecordTimeOUT{
+		Annotation:            "ถนนลื่น",
+		OdoMeter:              4568,
+		RecordTimeOutDatetime: time.Now(),
+		Employee:              emp,
+		Case:                  case1,
+		Ambulance:             abl,
 	}
-	db.Model(&RecordTimeIn{}).Create(&recordtimeIN_1)
-	// //ระบบบันทึกการใช้รถขาเข้าของพนักงานขับรถ ----------------------------------------------------
+	db.Model(&RecordTimeOUT{}).Create(&recordtimeout_2)
 }

@@ -103,15 +103,17 @@ function AmbulanceCreate() {
                     mb: 2,
                     p: 2,
                     boxShadow: 3,
-                    bgcolor: '#E3E3E3'
-                }}>
+                    bgcolor: '#F1F6F5'
+                }}
+                disableGutters={true}
+            >
                 <CssBaseline />
                 <Stack
                     sx={{ p: 0, m: 0, mb: 3 }}
                 >
                     <Typography
                         variant="h5"
-                        color="secondary"
+                        color="primary"
                         sx={{ fontWeight: 'bold' }}
                     >
                         บันทึกข้อมูลการจัดซื้อรถพยาบาล
@@ -232,7 +234,7 @@ function AmbulanceCreate() {
                     </Button>
                     <Button
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         onClick={submit}
                     >
                         บันทึกข้อมูล

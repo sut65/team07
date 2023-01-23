@@ -111,7 +111,7 @@ function AmbulanceUpdate() {
                     mb: 2,
                     p: 2,
                     boxShadow: 3,
-                    bgcolor: '#E3E3E3'
+                    bgcolor: '#F1F6F5'
                 }}>
                 <CssBaseline />
                 <Stack
@@ -119,7 +119,7 @@ function AmbulanceUpdate() {
                 >
                     <Typography
                         variant="h5"
-                        color="secondary"
+                        color="primary"
                         sx={{ fontWeight: 'bold' }}
                     >
                         แก้ไขข้อมูล  รถพยาบาล  ID {ambulance?.ID}
@@ -242,7 +242,7 @@ function AmbulanceUpdate() {
                     </Button>
                     <Button
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         onClick={submit}
                     >
                         อัพเดตข้อมูล

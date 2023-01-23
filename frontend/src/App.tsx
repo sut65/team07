@@ -7,22 +7,23 @@ import { PaletteOptions } from "@mui/material/styles/createPalette";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AmbulanceCreate from "./components/ambulance_system_components/AmbulanceCreate";
+// import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
+// import Ambulance from "./components/ambulance_system_components/Ambulance";
+import RecordTimeOutCreate from "./components/recordtimeout_system_components/RecordTimeOutCreate";
+import RecordTimeOutHistory from "./components/recordtimeout_system_components/RecordTimeOutHistory";
 import Signin from "./components/Signin";
 import EmployeeList from "./components/employeeSystemComponents/EmployeeList";
-// import RecordTimeInCreate from "./components/recordtimein_system_components/RecordTimeInCreate";
-// import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
-// import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
-// import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
+import RecordTimeInCreate from "./components/recordtimein_system_components/RecordTimeInCreate";
+import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
+import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
+import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
 
-import "./App.css"
+import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
 import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 
-
-// import Signin from "./components/Signin/Signin";
-// import RecordTimeOutHistory from "./components/RecordTimeOutHistory";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -42,8 +43,8 @@ export default function App() {
       main: "#F65A5A",
     },
     text: {
-      primary: "#233333"
-    }
+      primary: "#233333",
+    },
   };
   const theme = createTheme({
     palette: palette,
@@ -67,18 +68,17 @@ export default function App() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-
         <Navbar />
         <div className="container-router">
-          <Routes >
+          <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
             <Route path="/" element={<Signin />} />
 
             {/* //Employee */}
             <Route path="/Employee" element={<EmployeeList />} />
-            <Route path="/employee/create" element={<EmployeeCreate/>}/>
-            <Route path="/employee/update/:id" element={<EmployeeUpdate/>}/>
+            <Route path="/employee/create" element={<EmployeeCreate />} />
+            <Route path="/employee/update/:id" element={<EmployeeUpdate />} />
 
             <Route path="/Ambulance" element={<Ambulance />} />
             <Route path="/Ambulance/AmbulanceCreate" element={<AmbulanceCreate/>}/>
@@ -92,9 +92,7 @@ export default function App() {
             <Route path="/RecordTimeInUpdate" element={<RecordTimeInUpdate />} /> */}
 
           </Routes>
-
         </div>
-
       </ThemeProvider>
     </Router>
   );
