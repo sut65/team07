@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"time"
+
 	"golang.org/x/crypto/bcrypt"
 
 	"gorm.io/driver/sqlite"
@@ -135,4 +137,39 @@ func SetupDatabase() {
 	}
 	db.CreateInBatches(gender, 2)
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
+
+	//Dummy
+	emp := Employee{
+		Name: "BB",
+	}
+	db.Model(&Employee{}).Create((&emp))
+
+	abl := Ambulance{
+		TypeAbl: typeAbl[2],
+		Clp:     "BB3677",
+	}
+	db.Model(&Ambulance{}).Create((&abl))
+
+	case1 := Case{
+		Emergency: emergency[2],
+	}
+	recordtimeout_1 := RecordTimeOUT{
+		Annotation:            "ฝนตกหนัก ถนนลื่น",
+		OdoMeter:              2000,
+		RecordTimeOutDatetime: time.Now(),
+		Employee:              emp,
+		Case:                  case1,
+		Ambulance:             abl,
+	}
+	db.Model(&RecordTimeOUT{}).Create(&recordtimeout_1)
+
+	recordtimeout_2 := RecordTimeOUT{
+		Annotation:            "ถนนลื่น",
+		OdoMeter:              4568,
+		RecordTimeOutDatetime: time.Now(),
+		Employee:              emp,
+		Case:                  case1,
+		Ambulance:             abl,
+	}
+	db.Model(&RecordTimeOUT{}).Create(&recordtimeout_2)
 }
