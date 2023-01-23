@@ -53,8 +53,8 @@ function RecordTimeOutHistory() {
       headerAlign: "center",
     },
     {
-      field: "Case.ID",
-      headerName: "CaseID",
+      field: "Case.Emergency",
+      headerName: "Case",
       width: 120,
       align: "center",
       headerAlign: "center",
@@ -63,7 +63,7 @@ function RecordTimeOutHistory() {
       },
     },
     {
-      field: "Ambulance.CarBrand",
+      field: "Ambulance.TypeAbl",
       headerName: "รถพยาบาล",
       width: 120,
       align: "center",
