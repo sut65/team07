@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Container, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react'
 import { Link as RouterLink } from "react-router-dom";
@@ -28,16 +28,19 @@ function Ambulance() {
 
 
     const columns: GridColDef[] = [
-        { field: "ID", headerName: "ไอดีรถ", width: 70 },
-        { field: "Clp", headerName: "เลขทะเบียนรถ", width: 120, },
-        { field: "CarBrand", headerName: "ยี่ห้อรถ", width: 90, },
-        { field: "TypeAbl", headerName: "ประเภทรถ", width: 250, valueFormatter: (params) => params.value.Name, },
-        { field: "Company", headerName: "ซื้อที่บริษัท", width: 150, valueFormatter: (params) => params.value.Name, },
-        { field: "Date", headerName: "วันที่ซื้อ", width: 260, },
+        { field: "ID", headerName: "ไอดีรถ", width: 100, headerAlign: "center", align:"center" },
+        { field: "Clp", headerName: "เลขทะเบียนรถ", width: 160, headerAlign: "center", align:"center" },
+        { field: "CarBrand", headerName: "ยี่ห้อรถ", width: 120, headerAlign: "center", align:"center" },
+        { field: "TypeAbl", headerName: "ประเภทรถ", width: 270, headerAlign: "center", align:"center", valueFormatter: (params) => params.value.Name, },
+        { field: "Company", headerName: "ซื้อที่บริษัท", width: 150, headerAlign: "center", align:"center", valueFormatter: (params) => params.value.Name, },
+        { field: "Date", headerName: "วันที่ซื้อ", width: 240, headerAlign: "center", align:"center" },
         {
             field: " ",
-            headerName: "แก้ไข ",
+            headerName: " ",
             sortable: true,
+            width: 100,
+            align:"center",
+            headerAlign: "center",
             renderCell: ({ row }: Partial<GridRowParams>) =>
                 <Button component={RouterLink}
                     to="/Ambulance/AmbulanceUpdate"
@@ -47,7 +50,9 @@ function Ambulance() {
                     onClick={() => {
                         console.log("Employee", row.EmployeeID)
                         localStorage.setItem("aid", row.ID);
-                    }}>
+                    }}
+                    sx={{borderRadius: 2.5,'&:hover': {color: '#d32f2f', backgroundColor: '#fbbdbd'}}}
+                >
                     แก้ไข
                 </Button>,
         },
@@ -70,12 +75,15 @@ function Ambulance() {
                     mb: 2,
                     p: 2,
                     boxShadow: 3,
-                    bgcolor: '#E3E3E3'
-                }}>
+                    bgcolor: '#F1F6F5',
+                    borderRadius: 3
+                }}
+                disableGutters={true}
+            >
                 <Box
                     display="flex"
                     sx={{
-                        marginTop: 2,
+                        marginTop: 0.5,
                     }}
                 >
                     <Box flexGrow={1}>
@@ -95,22 +103,24 @@ function Ambulance() {
                             to="/Ambulance/AmbulanceCreate"
                             variant="contained"
                             color="primary"
+                            sx = {{borderRadius: 2,'&:hover': {color: '#42a5f5', backgroundColor: '#e3f2fd'}}}
                         >
-                            สร้างรายการจัดซื้อรถพยาบาล
+                            สร้างรายการ
                         </Button>
                     </Box>
                 </Box>
-                <div style={{ height: 400, marginTop: "20px", backgroundColor: "rgb(255, 255, 255)" }}>
+                <Box sx={{ borderRadius: 20 }}>
                     <DataGrid
                         rows={ambulanceByEmployee}
                         getRowId={(row) => row.ID}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
-                        disableSelectionOnClick
-                        sx={{ textAlign: "center" }}
+                        autoHeight={true}
+                        density={'comfortable'} 
+                        sx={{mt: 2, backgroundColor: '#fff'}}                                                   
                     />
-                </div>
+                </Box>
 
             </Container>
 
