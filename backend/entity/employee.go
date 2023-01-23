@@ -59,4 +59,5 @@ type Employee struct {
 	//For Link Foreign key
 	Ambulances    []Ambulance     `gorm:"foreignKey:EmployeeID"`
 	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:EmployeeID"`
+	RecordTimeIn  []RecordTimeIn  `gorm:"foreignKey:EmployeeID"`	
 }

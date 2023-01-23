@@ -89,12 +89,6 @@ function Navbar() {
     },
 
     {
-      name: "รายการใช้รถขาเข้าของพนักงานขับรถ",
-      icon: <ArrowForwardIcon />,
-      path: "/RecordTimeInHistory",
-    },
-
-    {
       name: "ข้อมูลพนักงาน",
       icon: <PeopleIcon/>,
       path: "/Employee"
