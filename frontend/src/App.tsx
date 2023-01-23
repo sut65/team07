@@ -7,6 +7,7 @@ import { PaletteOptions } from "@mui/material/styles/createPalette";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AmbulanceCreate from "./components/ambulance_system_components/AmbulanceCreate";
+import Signin from "./components/Signin";
 // import Signin from "./components/Signin/Signin";
 // import RecordTimeOutHistory from "./components/RecordTimeOutHistory";
 export default function App() {
