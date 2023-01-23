@@ -20,13 +20,22 @@ import { apiUrl, convertType } from "../../services/utility";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
 import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
-import {TypeAblsInterface} from "../../models/ambulance_system_models/typeAbl"
+import { TypeAblsInterface } from "../../models/ambulance_system_models/typeAbl";
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
   ref
 ) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+export interface CaseInterface {
+  ID: number;
+  Patient: string;
+  Location: string;
+  Age: number;
+  Status: string;
+  DateTime: Date;
+}
 
 function RecordTimeOutCreate() {
   const [recordtimeout, setRecordTimeOut] = useState<
@@ -37,11 +46,12 @@ function RecordTimeOutCreate() {
   const [error, setError] = useState(false);
 
   const [emp, setEmployee] = useState<EmployeeInterface[]>([]);
-  // const [case,setCase] = useState<CaseInterface[]>([]);
-  const [abl, setAmbulance] = useState<AmbulancesInterface[]>([]);
-  const [abl_id, setAmbulanceID] = useState<AmbulancesInterface>();
+  const [cases, setCases] = useState<CaseInterface[]>([]);
 
-  const [typeabl, setTypeAbl] = useState<TypeAblsInterface[]>([]);
+  const [abl, setAmbulance] = useState<AmbulancesInterface[]>([]);
+  const [typeAbls, setTypeAbl] = useState<TypeAblsInterface[]>([]);
+  const [a, setA] = useState<string>("");
+  const [detailCase, setDetailCase] = useState<string>("รายละเอียด");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -58,30 +68,49 @@ function RecordTimeOutCreate() {
   const handleChange = (event: SelectChangeEvent) => {
     const name = event.target.name as keyof typeof recordtimeout;
     setRecordTimeOut({ ...recordtimeout, [name]: event.target.value });
-    console.log(name);
 
-    // if (name === "PatientID") {
-    //   localStorage.setItem("PID", event.target.value);
-    //   get_Patient();
-    // }
-    // if (name === "MedicineID") {
-    //   localStorage.setItem("MID", event.target.value);
-    //   get_Medicine();
-    // }
+    if (event.target.name === "CaseID") {
+      cases.forEach((val: any) => {
+        if (val.ID === Number(event.target.value)) {
+          setDetailCase(`ไอดีเคส: ${val.ID} สถานที่เกิดเหตุ: ${val.Location}`);
+        }
+      });
+      if (event.target.value === "") {
+        setDetailCase("รายละเอียด");
+      }
+    }
+
+    if (event.target.name === "TypeAblID") {
+      getAmbulance(event.target.value);
+      setA(event.target.value);
+      if (event.target.value === "") {
+        setAmbulance([]);
+      }
+    }
+    console.log(recordtimeout);
   };
 
-  //   const handleInputChange = (
-  //     event: React.ChangeEvent<{ id?: string; value: any }>
-  //   ) => {
-  //     const id = event.target.id as keyof typeof Prescriptions;
-  //     const { value } = event.target;
-  //     setPrescription({ ...prescription, [id]: value });
-  //   };
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.name as keyof typeof recordtimeout;
+    setRecordTimeOut({
+      ...recordtimeout,
+      [name]: event.target.value,
+    });
+  };
 
-  const getAmbulance = async () => {
+  const getAmbulance = async (id: string) => {
     try {
-      let res = await HttpClientServices.get("/ambulances");
+      let res = await HttpClientServices.get(`/abl/${id}`);
       setAmbulance(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getCases = async () => {
+    try {
+      let res = await HttpClientServices.get(`/cases`);
+      setCases(res.data);
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -107,25 +136,26 @@ function RecordTimeOutCreate() {
   };
 
   useEffect(() => {
-    getAmbulance();
+    // getAmbulance();
     getEmployee();
     getTypeAbl();
+    getCases();
   }, []);
 
   async function submit() {
     let data = {
-      ID: recordtimeout.ID ?? 0,
+      // ID: recordtimeout.ID ?? 0,
       OdoMeter: recordtimeout?.OdoMeter ?? 0,
       Annotation: recordtimeout?.Annotation ?? "",
       RecordTimeOutDatetime: recordtimeout?.RecordTimeOutDatetime ?? new Date(),
-      EmployeeID: convertType(recordtimeout?.EmployeeID) ?? 0,
+      EmployeeID: convertType(recordtimeout?.EmployeeID) ?? 1,
       CaseID: convertType(recordtimeout?.CaseID) ?? 0,
       AmbulanceID: convertType(recordtimeout?.AmbulanceID) ?? 0,
     };
     console.log(data);
 
     try {
-      let res = await HttpClientServices.post("/recordtimeouts", data);
+      let res = await HttpClientServices.post("/recordtimeout", data);
       setSuccess(true);
       console.log(res.data);
     } catch (err) {
@@ -164,18 +194,32 @@ function RecordTimeOutCreate() {
                 native
                 name="CaseID"
                 size="small"
-                value={String(recordtimeout?.CaseID)}
+                // value={String(recordtimeout?.CaseID)}
                 onChange={handleChange}
                 inputProps={{
                   name: "CaseID",
                 }}
               >
-                <option>กรุณาเลือกเคส</option>
+                <option aria-label="None" value="">
+                  กรุณาเลือกเคส
+                </option>
+                {cases.map((item: CaseInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.ID}
+                  </option>
+                ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <TextField label="detail" disabled fullWidth rows={2.5} multiline />
+            <TextField
+              label={detailCase}
+              disabled
+              fullWidth
+              rows={2.5}
+              multiline
+              // defaultValue={detailCase}
+            />
           </Grid>
 
           <Grid item xs={4}>
@@ -186,16 +230,15 @@ function RecordTimeOutCreate() {
                 native
                 name="TypeAblID"
                 size="small"
-                value={String(typeabl.)}
                 onChange={handleChange}
                 inputProps={{
                   name: "TypeAblID",
                 }}
               >
-                <option aria-label="None" value="กรุณาเลือกประเภทรถพยาบาล">
+                <option aria-label="None" value="">
                   กรุณาเลือกประเภทรถพยาบาล
                 </option>
-                {abl.map((item: AmbulancesInterface) => (
+                {typeAbls.map((item: TypeAblsInterface) => (
                   <option value={item.ID} key={item.ID}>
                     {item.Name}
                   </option>
@@ -212,17 +255,24 @@ function RecordTimeOutCreate() {
                 native
                 name="AmbulanceID"
                 size="small"
-                // value={String(abl?.)}
-                value={"TOYOTA"}
                 onChange={handleChange}
                 inputProps={{
                   name: "AmbulanceID",
                 }}
+                disabled={a != "" ? false : true}
               >
-                <option>กรุณาเลือกรถพยาบาล</option>
+                <option aria-label="None" value="">
+                  กรุณาเลือกรถพยาบาล
+                </option>
+                {abl.map((item: AmbulancesInterface) => (
+                  <option value={Number(item.ID)} key={item.ID}>
+                    {item.CarBrand}
+                  </option>
+                ))}
               </Select>
             </FormControl>
           </Grid>
+
           <Grid item xs={12}>
             <TextField
               label="detail"
@@ -230,7 +280,7 @@ function RecordTimeOutCreate() {
               fullWidth
               rows={2.5}
               multiline
-              value={abl_id?.Clp}
+              // value={abl?.Clp}
             />
           </Grid>
 
@@ -239,9 +289,14 @@ function RecordTimeOutCreate() {
             <FormControl fullWidth variant="outlined">
               <TextField
                 id="OdoMeter"
+                name="OdoMeter"
                 type="number"
                 size="small"
-                value={recordtimeout?.OdoMeter}
+                InputProps={{
+                  inputProps: { min: 1, max: 99999 },
+                  name: "OdoMeter",
+                }}
+                onChange={handleInputChange}
               />
             </FormControl>
           </Grid>
@@ -251,14 +306,19 @@ function RecordTimeOutCreate() {
             <FormControl fullWidth variant="outlined">
               <TextField
                 id="Annotation"
+                name="Annotation"
                 type="string"
                 size="small"
-                value={recordtimeout?.Annotation}
+                color="primary"
+                inputProps={{
+                  name: "Annotation",
+                }}
+                onChange={handleInputChange}
               />
             </FormControl>
           </Grid>
           <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined" size="small">
+            <FormControl fullWidth variant="outlined">
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
@@ -266,7 +326,9 @@ function RecordTimeOutCreate() {
                   onChange={(newValue) => {
                     newValue = 1;
                   }}
-                  renderInput={(params) => <TextField {...params} />}
+                  renderInput={(params) => (
+                    <TextField {...params} size="small" />
+                  )}
                 />
               </LocalizationProvider>
             </FormControl>

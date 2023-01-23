@@ -129,3 +129,24 @@ func UpdateRecordTimeOut(c *gin.Context) {
 		"data":   UpdatingRecordTimeOut,
 	})
 }
+
+// GET /ambulance/:id
+func GetAmbulanceByTypeAblID(c *gin.Context) {
+	var ambulance []entity.Ambulance
+	id := c.Param("type_id")
+	if err := entity.DB().Raw("SELECT * FROM ambulances WHERE type_abl_id = ?", id).Find(&ambulance).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ambulance})
+}
+
+// GET /GetCase
+func GetCase(c *gin.Context) {
+	var cases []entity.Case
+	if err := entity.DB().Raw("SELECT * FROM cases ORDER BY id DESC").Find(&cases).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": cases})
+}
