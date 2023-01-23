@@ -1,4 +1,3 @@
-
 import { Link as RouterLink } from "react-router-dom";
 import * as React from "react";
 import Button from "@mui/material/Button";
@@ -92,10 +91,17 @@ export default function RecordTimeOutUpdate(props: any) {
         <DialogContent dividers sx={{ width: "550px", height: "350px" }}>
           <Typography gutterBottom>
             วันที่ :{" "}
-            {moment(params.record_time_out_datetime).format("DD/MM/YYYY")}
+            {moment(params.RecordTimeOutDatetime).format("DD/MM/YYYY")}
             &nbsp; เวลา :
-            {moment(params.record_time_out_datetime).format("HH:mm")} น.
+            {moment(params.RecordTimeOutDatetime).format("HH:mm")} น.
           </Typography>
+          <Typography gutterBottom>เคสที่ได้รับแจ้ง : {params.Case.Emergency}   
+          ผู้ป่วย : {params.Case.Patient}
+          สถานที่เกิดเหตุ: {params.Case.Location}
+
+          </Typography>
+          <Typography gutterBottom>รถพยาบาล : {params.Ambulance.CarBrand}  ประเภทรถ: เลขทะเบียนรถ:{params.Ambulance.TypeAbl.Name} </Typography>
+          <Typography gutterBottom>พนักงานขับรถ : {params.Employee.Name}</Typography>
           <Typography gutterBottom>หมายเหตุ : {params.annotation}</Typography>
         </DialogContent>
 
