@@ -21,4 +21,6 @@ type RecordTimeOUT struct {
 
 	CaseID *uint
 	Case   Case
+
+	RecordTimeIn []RecordTimeIn `gorm:"foreignKey:RecordTimeOUTID"`
 }

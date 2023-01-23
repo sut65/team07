@@ -2,6 +2,8 @@ package entity
 
 import (
 	"golang.org/x/crypto/bcrypt"
+	"time"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -44,6 +46,8 @@ func SetupDatabase() {
 
 		//ระบบบันทึกเวลาใช้รถขาออกของพนักงานขับรถ
 		&RecordTimeOUT{},
+		//ระบบบันทึกการใช้รถขาเข้าของพนักงานขับรถ
+		&RecordTimeIn{},
 	)
 
 	db = database
@@ -135,4 +139,40 @@ func SetupDatabase() {
 	}
 	db.CreateInBatches(gender, 2)
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
+
+	// //ระบบบันทึกการใช้รถขาเข้าของพนักงานขับรถ ----------------------------------------------------
+	emp1 := Employee{
+		Name: "BB",
+	}
+	db.Model(&Employee{}).Create(&emp1)
+
+	case1 := Case{
+		Location: "ปค4",
+	}
+	db.Model(&Case{}).Create(&case1)
+
+	ambulance1 := Ambulance{
+		CarBrand: "BB",
+	}
+	db.Model(&Ambulance{}).Create(&ambulance1)
+
+	recordtimeout_1 := RecordTimeOUT{
+		Annotation: "ฝนตกหนัก",
+		OdoMeter: 2000,
+		Employee: emp1,
+		Case: case1,
+		Ambulance: ambulance1,
+	}
+	db.Model(&RecordTimeOUT{}).Create(&recordtimeout_1)
+
+	recordtimeIN_1 := RecordTimeIn{
+		TimeIn: time.Now(),
+		Odo: 123,
+		Note: "-",
+		Employee: emp1,
+		RecordTimeOUT: recordtimeout_1,
+		Ambulance: ambulance1,
+	}
+	db.Model(&RecordTimeIn{}).Create(&recordtimeIN_1)
+	// //ระบบบันทึกการใช้รถขาเข้าของพนักงานขับรถ ----------------------------------------------------
 }

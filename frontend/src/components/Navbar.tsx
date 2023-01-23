@@ -26,6 +26,7 @@ import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import PeopleIcon from '@mui/icons-material/People';
 
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -79,6 +80,12 @@ function Navbar() {
       name: "รายการตรวจเช็คสภาพรถ",
       icon: <LibraryBooksIcon />,
       path: "/VehicleInspectionHistory",
+    },
+
+    {
+      name: "รายการใช้รถขาเข้าของพนักงานขับรถ",
+      icon: <ArrowForwardIcon />,
+      path: "/RecordTimeInHistory",
     },
 
     {

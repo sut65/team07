@@ -7,19 +7,8 @@ import { PaletteOptions } from "@mui/material/styles/createPalette";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AmbulanceCreate from "./components/ambulance_system_components/AmbulanceCreate";
-import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
-import Ambulance from "./components/ambulance_system_components/Ambulance";
-// import RecordTimeOutCreate from "./components/recordtimeout_system_components/RecordTimeOutCreate";
-// import RecordTimeOutHistory from "./components/recordtimeout_system_components/RecordTimeOutHistory";
-// import RecordTimeOutUpdate from "./components/recordtimeout_system_components/RecordTimeOutUpdate";
-import Signin from "./components/Signin";
-import EmployeeList from "./components/employeeSystemComponents/EmployeeList";
-
-//import css
-import "./App.css";
-import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
-import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
-
+// import Signin from "./components/Signin/Signin";
+// import RecordTimeOutHistory from "./components/RecordTimeOutHistory";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -66,38 +55,16 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <div>
           <Navbar />
-          <div className="container-router">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route
-                path="/Ambulance/AmbulanceCreate"
-                element={<AmbulanceCreate />}
-              />
-              <Route
-                path="/Ambulance/AmbulanceUpdate"
-                element={<AmbulanceUpdate />}
-              />
-              <Route path="/Ambulance" element={<Ambulance />} />
-              
-              <Route path="/employee" element={<EmployeeList />} />
-              <Route path="/employee/create" element={<EmployeeCreate />} />
-              <Route path="/employee/update/:id" element={<EmployeeUpdate />}/>
-              {/* <Route
-              path="/RecordTimeOutHistory"
-              element={<RecordTimeOutHistory />}
-            />
-            <Route
-              path="/RecordTimeOutCreate"
-              element={<RecordTimeOutCreate />}
-            />
-            <Route
-              path="/RecordTimeOutUpdate"
-              element={<RecordTimeOutUpdate />}
-            /> */}
-            </Routes>
-          </div>
+   
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
+            {/* <Route path="/" element={<Signin />} />
+            <Route path="/recordTimeOutHistory" element={<RecordTimeOutHistory />} /> */}
+          </Routes>
         </div>
-      </ThemeProvider>
+      
+    </ThemeProvider>
     </Router>
   );
 }
