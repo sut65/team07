@@ -8,10 +8,17 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AmbulanceCreate from "./components/ambulance_system_components/AmbulanceCreate";
 import Signin from "./components/Signin";
-import RecordTimeInCreate from "./components/recordtimein_system_components/RecordTimeInCreate";
-import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
-import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
-import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
+import EmployeeList from "./components/employeeSystemComponents/EmployeeList";
+// import RecordTimeInCreate from "./components/recordtimein_system_components/RecordTimeInCreate";
+// import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
+// import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
+// import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
+
+import "./App.css"
+import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
+import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
+import Ambulance from "./components/ambulance_system_components/Ambulance";
+import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 
 
 // import Signin from "./components/Signin/Signin";
@@ -34,7 +41,7 @@ export default function App() {
     error: {
       main: "#F65A5A",
     },
-    text:{
+    text: {
       primary: "#233333"
     }
   };
@@ -60,22 +67,35 @@ export default function App() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <div>
-          <Navbar />
-   
-          <Routes>
+
+        <Navbar />
+        <div className="container-router">
+          <Routes >
             <Route path="/" element={<Home />} />
             <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
-            {/* <Route path="/" element={<Signin />} />
-            <Route path="/recordTimeOutHistory" element={<RecordTimeOutHistory />} /> */}
-            <Route path="/RecordTimeInCreate" element={<RecordTimeInCreate />} />
+            <Route path="/" element={<Signin />} />
+
+            {/* //Employee */}
+            <Route path="/Employee" element={<EmployeeList />} />
+            <Route path="/employee/create" element={<EmployeeCreate/>}/>
+            <Route path="/employee/update/:id" element={<EmployeeUpdate/>}/>
+
+            <Route path="/Ambulance" element={<Ambulance />} />
+            <Route path="/Ambulance/AmbulanceCreate" element={<AmbulanceCreate/>}/>
+            <Route path="/Ambulance/AmbulanceUpdate" element={<AmbulanceUpdate/>}/>
+
+            
+            {/* <Route path="/recordTimeOutHistory" element={<RecordTimeOutHistory />} /> */}
+            {/* <Route path="/RecordTimeInCreate" element={<RecordTimeInCreate />} />
             <Route path="/RecordTimeInHistory" element={<RecordTimeInHistory />} />
             <Route path="/RecordTimeInEdit" element={<RecordTimeInEdit />} />
-            <Route path="/RecordTimeInUpdate" element={<RecordTimeInUpdate />} />
+            <Route path="/RecordTimeInUpdate" element={<RecordTimeInUpdate />} /> */}
+
           </Routes>
+
         </div>
-      
-    </ThemeProvider>
+
+      </ThemeProvider>
     </Router>
   );
 }

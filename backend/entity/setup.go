@@ -1,10 +1,9 @@
 package entity
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"time"
 
-	"time"
+	"golang.org/x/crypto/bcrypt"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -155,20 +154,20 @@ func SetupDatabase() {
 
 	recordtimeout_1 := RecordTimeOUT{
 		Annotation: "ฝนตกหนัก",
-		OdoMeter: 2000,
-		Employee: emp1,
-		Case: case1,
-		Ambulance: ambulance1,
+		OdoMeter:   2000,
+		Employee:   emp1,
+		Case:       case1,
+		Ambulance:  ambulance1,
 	}
 	db.Model(&RecordTimeOUT{}).Create(&recordtimeout_1)
 
 	recordtimeIN_1 := RecordTimeIn{
-		TimeIn: time.Now(),
-		Odo: 123,
-		Note: "-",
-		Employee: emp1,
+		TimeIn:        time.Now(),
+		Odo:           123,
+		Note:          "-",
+		Employee:      emp1,
 		RecordTimeOUT: recordtimeout_1,
-		Ambulance: ambulance1,
+		Ambulance:     ambulance1,
 	}
 	db.Model(&RecordTimeIn{}).Create(&recordtimeIN_1)
 	// //ระบบบันทึกการใช้รถขาเข้าของพนักงานขับรถ ----------------------------------------------------
