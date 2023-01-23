@@ -44,4 +44,5 @@ type Ambulance struct {
 	Employee Employee
 
 	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:AmbulanceID"`
+	RecordTimeIn []RecordTimeIn `gorm:"foreignKey:AmbulanceID"`
 }
