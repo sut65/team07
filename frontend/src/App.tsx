@@ -13,10 +13,10 @@ import RecordTimeOutCreate from "./components/recordtimeout_system_components/Re
 import RecordTimeOutHistory from "./components/recordtimeout_system_components/RecordTimeOutHistory";
 import Signin from "./components/Signin";
 import EmployeeList from "./components/employeeSystemComponents/EmployeeList";
-// import RecordTimeInCreate from "./components/recordtimein_system_components/RecordTimeInCreate";
-// import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
-// import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
-// import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
+import RecordTimeInCreate from "./components/recordtimein_system_components/RecordTimeInCreate";
+import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
+import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
+import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
 
 import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
@@ -81,27 +81,16 @@ export default function App() {
             <Route path="/employee/update/:id" element={<EmployeeUpdate />} />
 
             <Route path="/Ambulance" element={<Ambulance />} />
-            <Route
-              path="/Ambulance/AmbulanceCreate"
-              element={<AmbulanceCreate />}
-            />
-            <Route
-              path="/Ambulance/AmbulanceUpdate"
-              element={<AmbulanceUpdate />}
-            />
+            <Route path="/Ambulance/AmbulanceCreate" element={<AmbulanceCreate/>}/>
+            <Route path="/Ambulance/AmbulanceUpdate" element={<AmbulanceUpdate/>}/>
 
-            <Route
-              path="/RecordTimeOutHistory"
-              element={<RecordTimeOutHistory />}
-            />
-            <Route
-              path="/RecordTimeOutCreate"
-              element={<RecordTimeOutCreate />}
-            />
+            
+            {/* <Route path="/recordTimeOutHistory" element={<RecordTimeOutHistory />} /> */}
             {/* <Route path="/RecordTimeInCreate" element={<RecordTimeInCreate />} />
             <Route path="/RecordTimeInHistory" element={<RecordTimeInHistory />} />
             <Route path="/RecordTimeInEdit" element={<RecordTimeInEdit />} />
             <Route path="/RecordTimeInUpdate" element={<RecordTimeInUpdate />} /> */}
+
           </Routes>
         </div>
       </ThemeProvider>
