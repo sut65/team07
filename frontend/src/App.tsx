@@ -86,10 +86,10 @@ export default function App() {
 
             
             {/* <Route path="/recordTimeOutHistory" element={<RecordTimeOutHistory />} /> */}
-            {/* <Route path="/RecordTimeInCreate" element={<RecordTimeInCreate />} />
+            <Route path="/RecordTimeInCreate" element={<RecordTimeInCreate />} />
             <Route path="/RecordTimeInHistory" element={<RecordTimeInHistory />} />
             <Route path="/RecordTimeInEdit" element={<RecordTimeInEdit />} />
-            <Route path="/RecordTimeInUpdate" element={<RecordTimeInUpdate />} /> */}
+            <Route path="/RecordTimeInUpdate" element={<RecordTimeInUpdate />} />
 
           </Routes>
         </div>
