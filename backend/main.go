@@ -137,6 +137,11 @@ func main() {
 	// // UPDATE
 	// r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+	r.GET("/vehicleinspections", controller.ListVehicleInspections)
+	r.GET("/vehicleinspection/:id", controller.GetVehicleInspection)
+	r.POST("/vehicleinspection", controller.CreateVehicleInspection)
+	r.DELETE("/vehicleinspection/:id", controller.DeleteVehicleInspection)
+	r.PATCH("/vehicleinspection", controller.UpdateVehicleInspection)
 
 	r.POST("/signin", controller.Signin)
 
