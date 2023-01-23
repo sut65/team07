@@ -95,11 +95,11 @@ function RecordTimeInHistory() {
                       <TableRow key={recordtimeins.ID}>
                         <TableCell align="center">{recordtimeins.ID}</TableCell>
                         <TableCell align="center">{recordtimeins.ID}</TableCell>
-                        <TableCell align="center">{recordtimeins.Ambulance.CarBrand}</TableCell>
-                        <TableCell align="center">{recordtimeins.Ambulance.CarBrand}</TableCell>
+                        <TableCell align="center">{recordtimeins.Ambulance?.CarBrand}</TableCell>
+                        <TableCell align="center">{recordtimeins.Ambulance?.CarBrand}</TableCell>
                         <TableCell align="center">{recordtimeins.Odo}</TableCell>
                         <TableCell align="center">{recordtimeins.Odo}</TableCell>
-                        <TableCell align="center">{recordtimeins.Ambulance.CarBrand}</TableCell>
+                        <TableCell align="center">{recordtimeins.Ambulance?.CarBrand}</TableCell>
                         <TableCell align="center"> 
                           <Box display="inline-flex">
                             <Box>
