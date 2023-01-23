@@ -1,21 +1,21 @@
-import { Box, FormControl, Grid, Select, TextField, Typography } from '@mui/material'
-import Alert from '@mui/material/Alert'
-import Button from '@mui/material/Button'
+import { Alert, Box, Button, DialogTitle, FormControl, Paper, Select, Snackbar, TextField, Typography } from '@mui/material'
 import Container from '@mui/material/Container'
-import Paper from '@mui/material/Paper'
-import Snackbar from '@mui/material/Snackbar'
+import Dialog from '@mui/material/Dialog'
+import Grid from '@mui/material/Grid'
 import React from 'react'
+import { useNavigate, useParams, Link as RouterLink } from 'react-router-dom'
 import { EducationInterface } from '../../models/employeeSystemModel/IEducation'
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee'
 import { EmpStatusInterface } from '../../models/employeeSystemModel/IStatus'
 import { WorkingAreaInterface } from '../../models/employeeSystemModel/IWorkingArea'
 import { User } from '../../models/user'
-import { ListEducation, ListStatus, ListUser, ListWorkingArea, PostEmployee } from '../../services/employeeSystemServices/EmployeeHttpClient'
+import { GetEmployee, ListEducation, ListStatus, ListWorkingArea, UpdateEmployee } from '../../services/employeeSystemServices/EmployeeHttpClient'
 import { convertType } from '../../services/utility'
-import { Link as RouterLink, useNavigate } from "react-router-dom";
 
+export default function EmployeeUpdate() {
 
-export default function EmployeeCreate() {
+    let {id} = useParams();
+    const navigator = useNavigate()
 
     const [snackBar, setSnackBar] = React.useState({
         open: false,
@@ -23,107 +23,57 @@ export default function EmployeeCreate() {
         errorMsg: ""
     })
 
-    // State for get data to display
-    // main
+
+    // List all Database
+    // Get employee by id
     const [employee, setEmployee] = React.useState<Partial<EmployeeInterface>>({})
-    // relation
-    const [status, setStatus] = React.useState<EmpStatusInterface[]>([]);
-    const [user, setUser] = React.useState<User[]>([]);
-    const [workingArea, setWorkingArea] = React.useState<WorkingAreaInterface[]>([]);
-    const [education, setEducation] = React.useState<EducationInterface[]>([]);
-
-    // for show data
-    const [selectUser, setSelectUser] = React.useState<User>();
-    // const [selectUser, setSelectUser] = React.useState<User>();
-
-    const [error, setError] = React.useState({
-        status: "",
-        user: "",
-        workingArea: "",
-        education: ""
-    })
-    // get status
-    const getStatus = async () => {
-        let res = await ListStatus();
-        if (res) {
-            setStatus(res);
-        } else {
-            setError({
-                ...error,
-                status: "cannot load status from this api"
-            })
+    const getEmployeeByID = async (id:string | undefined) => {
+        let res = await GetEmployee(id)
+        if(res){
+            setEmployee(res)
         }
     }
 
-    // get user
-    const getUser = async () => {
-        let res = await ListUser();
-        if (res) {
-            setUser(res);
-        } else {
-            setError({
-                ...error,
-                user: "cannot load user from this api"
-            })
-        }
-    }
-
-    // get working area
+    // List Working 
+    const [working, setWorking] = React.useState<WorkingAreaInterface[]>([])
     const getWorkingArea = async () => {
-        let res = await ListWorkingArea();
-        if (res) {
-            setWorkingArea(res)
-        } else {
-            setError({
-                ...error,
-                workingArea: "cannot load working area from this api"
-            })
+        let res = await ListWorkingArea()
+        if(res){
+            setWorking(res)
         }
     }
 
-    // get Education
+    // List Status
+    const [status, setStatus] = React.useState<EmpStatusInterface[]>([])
+    const getStatus = async () => {
+        let res = await ListStatus()
+        if(res){
+            setStatus(res)
+        }
+    }
+
+    // List education
+    const [education, setEducation] = React.useState<EducationInterface[]>([])
     const getEducation = async () => {
-        let res = await ListEducation();
-        if (res) {
+        let res = await ListEducation()
+        if(res){
             setEducation(res)
-        } else {
-            setError({
-                ...error,
-                education: "cannot load education from this api"
-            })
         }
     }
 
+    React.useEffect(()=>{
+        getEmployeeByID(id);
+        getWorkingArea();
+        getStatus();
+        getEducation();
+    },[])
 
-    // Function snackbar
-    const handleSnackBarOpen = () => {
-        setSnackBar({
-            ...snackBar,
-            open: true
-        })
-    }
-    const handleSnackBarError = (res : any) => {
-        setSnackBar({
-            ...snackBar,
-            error: true,
-            errorMsg: res
-        })
-    }
-    const handleSnackBarClose = () => {
-        setSnackBar({
-            ...snackBar,
-            open: false,
-            error: false,
-        })
-    }
-    
-    const navigator = useNavigate();
-    // Submit Function
+    // submit
     const submit = async () => {
-        // console.log(employee)
+        console.log(employee)
 
-        let res = await PostEmployee(employee)
-        // console.log(res)
+        let res = await UpdateEmployee(employee)
+        
         if(res.data){
             handleSnackBarOpen()
             setTimeout(() => {
@@ -132,45 +82,43 @@ export default function EmployeeCreate() {
         }else{
             handleSnackBarError(res.error)
         }
+
     }
 
-    React.useEffect(() => {
-        getStatus();
-        getUser();
-        getEducation();
-        getWorkingArea();
-    }, [])
+        // Function snackbar
+        const handleSnackBarOpen = () => {
+            setSnackBar({
+                ...snackBar,
+                open: true
+            })
+        }
+        const handleSnackBarError = (res : any) => {
+            setSnackBar({
+                ...snackBar,
+                error: true,
+                errorMsg: res
+            })
+        }
+        const handleSnackBarClose = () => {
+            setSnackBar({
+                ...snackBar,
+                open: false,
+                error: false,
+            })
+        }
 
-
+    // Change Value in Box
     const handleChange: any = (event: React.ChangeEvent<{ name: string; value: any }>) => {
         const name = event.target.name as keyof typeof employee;
-        if (name === "UserID") {
-            console.log()
-            if (event.target.value !== "") {
-                setSelectUser(user.filter((userfind) => userfind.ID === convertType(event.target.value)).at(0))
-            }
-            else {
-                setSelectUser({
-                    ID: 0,
-                    Name: "",
-                    Password: "",
-                    Role: {
-                        ID: 0,
-                        Name: ""
-                    },
-                    RoleID: 0
-                })
-            }
-        }
 
         setEmployee({
             ...employee,
             [name]: event.target.value
         })
     }
-
     return (
         <Container maxWidth="lg">
+
             {/* Snackbar success Part */}
             <Snackbar open={snackBar.open} autoHideDuration={3000} onClose={handleSnackBarClose}>
                 <Alert onClose={handleSnackBarClose} severity="success">
@@ -185,7 +133,7 @@ export default function EmployeeCreate() {
                 </Alert>
             </Snackbar>
 
-            <Paper sx={{ p: 4, pb: 10 }}>
+             <Paper sx={{ p: 4, pb: 10 }}>
                 <Box display="flex">
                     <Box flexGrow={1}>
                         <Typography
@@ -203,7 +151,7 @@ export default function EmployeeCreate() {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <FormControl fullWidth variant='outlined'>
-                            <p>เลือก User</p>
+                            <p>User</p>
                             <Select
                                 native
                                 value={employee.UserID}
@@ -211,24 +159,14 @@ export default function EmployeeCreate() {
                                 inputProps={{
                                     name: "UserID"
                                 }}
+                                disabled
                             >
                                 <option aria-label="None" value="">
-                                    กรุณาเลือก ชื่อผู้ใช้
+                                    {employee.User?.Name}
                                 </option>
-                                {
-                                    user.map((item: User) =>
-                                    (<option value={item.ID} key={item.ID}>
-                                        {item.Name}
-                                    </option>)
-
-                                    )
-                                }
+                                
                             </Select>
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <p>ตำแหน่ง</p>
-                        <TextField label={selectUser?.Role.Name} disabled />
                     </Grid>
                 </Grid>
 
@@ -336,7 +274,7 @@ export default function EmployeeCreate() {
                                 พื้นที่ทำการ
                                 </option>
                                 {
-                                    workingArea.map((item: WorkingAreaInterface) =>
+                                    working.map((item: WorkingAreaInterface) =>
                                     (<option value={item.ID} key={item.ID}>
                                         {item.WorkingArea}
                                     </option>)
@@ -362,17 +300,6 @@ export default function EmployeeCreate() {
 
 
             </Paper>
-
-            {/* 
-        // Button Debuger
-        <Button onClick={handleSnackBarOpen}>
-            TestOpen
-        </Button>
-        <Button onClick={handleSnackBarError}>
-            TestError
-        </Button> 
-        
-        */}
         </Container>
     )
 }
