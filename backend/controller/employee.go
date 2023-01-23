@@ -223,6 +223,7 @@ func CreateEmployee(c *gin.Context) {
 		Education:   education,
 	}
 
+	// fmt.Println(emp)
 	if err := entity.DB().Create(&emp).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),

@@ -18,6 +18,7 @@ import EmployeeList from "./components/employeeSystemComponents/EmployeeList";
 //import css
 import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
+import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
 
 export default function App() {
   const [token, setToken] = React.useState<string>("");
@@ -77,9 +78,10 @@ export default function App() {
                 element={<AmbulanceUpdate />}
               />
               <Route path="/Ambulance" element={<Ambulance />} />
+              
               <Route path="/employee" element={<EmployeeList />} />
               <Route path="/employee/create" element={<EmployeeCreate />} />
-
+              <Route path="/employee/update/:id" element={<EmployeeUpdate />}/>
               {/* <Route
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}

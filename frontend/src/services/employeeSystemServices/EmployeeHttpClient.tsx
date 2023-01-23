@@ -26,7 +26,7 @@ async function ListEmployees() {
 }
 
 // GET By ID Employee
-async function GetEmployee(ID: number) {
+async function GetEmployee(ID: string | undefined) {
     const reqOpt = {
         method: "GET",
         headers: {
@@ -55,13 +55,14 @@ async function PostEmployee(emp:Partial<EmployeeInterface>) {
         Name: emp.Name,
         Surname: emp.Surname,
         Age: convertType(emp.Age),
-        Date: new Date(),
+        Date: new Date().toJSON().split("Z").at(0)+"+07:00",
         UserID:convertType(emp.UserID),
         WorkingAreaID: convertType(emp.WorkingAreaID),
         StatusID: convertType(emp.StatusID),
         EducationID : convertType(emp.EducationID)
     }
     
+    // return JSON.stringify(data)
 
     const reqOpt = {
         method: "POST",
@@ -85,12 +86,13 @@ async function PostEmployee(emp:Partial<EmployeeInterface>) {
 
 
 // Update Employee
-async function UpdateEmployee(emp : EmployeeInterface){
+async function UpdateEmployee(emp : Partial<EmployeeInterface>){
     let data = {
-        Name: convertType(emp.Name),
-        Surname: convertType(emp.Surname),
+        ID:convertType(emp.ID),
+        Name: emp.Name,
+        Surname: emp.Surname,
         Age: convertType(emp.Age),
-        Date: new Date(),
+        Date: emp.Date,
         UserID:convertType(emp.UserID),
         WorkingAreaID: convertType(emp.WorkingAreaID),
         StatusID: convertType(emp.StatusID),
@@ -109,10 +111,8 @@ async function UpdateEmployee(emp : EmployeeInterface){
     let res = await fetch(`${apiUrl}/employee`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
-        if(res.data){
-            return res.data
-        }else{
-            return false
+        if(res){
+            return res
         }
     })
     return res
