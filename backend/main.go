@@ -115,30 +115,28 @@ func main() {
 	r.POST("/recordtimeout", controller.CreateRecordTimeOut)
 	r.DELETE("/recordtimeout/:id", controller.DeleteRecordTimeOut)
 	r.PATCH("/recordtimeout", controller.UpdateRecordTimeOut)
-	// ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-	r.GET("/recordtimeins", controller.ListRecordTimeIns)
-	// Get by eid
-	r.GET("/recordtimein/:employee_id", controller.GetRecordTimeInByEmployee)
-	// Create
-	r.POST("/recordtimein", controller.CreateRecordTimeIn)
-	// DELETE
-	r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
-	// UPDATE
-	r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
-	// ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-	// ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-	r.GET("/recordtimeins", controller.ListRecordTimeIns)
-	// Get by eid
-	r.GET("/recordtimein/:employee_id", controller.GetRecordTimeInByEmployee)
-	// Create
-	r.POST("/recordtimein", controller.CreateRecordTimeIn)
-	// DELETE
-	r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
-	// UPDATE
-	r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
-	// ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-
-
+	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+	// r.GET("/recordtimeins", controller.ListRecordTimeIns)
+	// // Get by eid
+	// r.GET("/recordtimein/:employee_id", controller.GetRecordTimeInByEmployee)
+	// // Create
+	// r.POST("/recordtimein", controller.CreateRecordTimeIn)
+	// // DELETE
+	// r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
+	// // UPDATE
+	// r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
+	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+	// r.GET("/recordtimeins", controller.ListRecordTimeIns)
+	// // Get by eid
+	// r.GET("/recordtimein/:employee_id", controller.GetRecordTimeInByEmployee)
+	// // Create
+	// r.POST("/recordtimein", controller.CreateRecordTimeIn)
+	// // DELETE
+	// r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
+	// // UPDATE
+	// r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
+	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
 
 	r.POST("/signin", controller.Signin)
 

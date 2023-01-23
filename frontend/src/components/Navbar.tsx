@@ -27,7 +27,6 @@ import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import PeopleIcon from '@mui/icons-material/People';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from "react-router-dom";
 
 function Navbar() {
