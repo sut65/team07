@@ -7,6 +7,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 
 import "./EmployeeList.css"
+import EmployeeUpdate from './EmployeeUpdate'
 
 export default function EmployeeList() {
 
@@ -17,7 +18,7 @@ export default function EmployeeList() {
         if (res) {
             setEmployee(res)
             //debug
-            console.log(res)
+            // console.log(res)
         }
     }
 
@@ -39,6 +40,9 @@ export default function EmployeeList() {
     // For Set dialog open
     const [openDelete, setOpenDelete] = React.useState(false);
 
+    const [openUpdate, setOpenUpdate] = React.useState(false);
+    const [editID, setEditID] = React.useState(0);
+
 
 
     React.useEffect(() => {
@@ -50,8 +54,7 @@ export default function EmployeeList() {
 
     const convertDateFormat = (date: Date) => {
         const newDate = new Date(date)
-
-        return `${newDate.getDate()} / ${newDate.getMonth()} / ${newDate.getFullYear()} | ${newDate.getHours()} : ${newDate.getMinutes()}`
+        return `${newDate.getDate()} / ${newDate.getMonth() + 1} / ${newDate.getFullYear()} | ${newDate.getHours()} : ${newDate.getMinutes()}`
     }
 
 
@@ -79,6 +82,18 @@ export default function EmployeeList() {
         getEmployee();
         setOpenDelete(false)
 
+    }
+
+    const handleDialogUpdateclose = async () => {
+        setOpenUpdate(false)
+        setTimeout(() => {
+            setEditID(0)
+        }, 500)
+    }
+
+    const handleDialogUpdateOpen = async (ID: number) => {
+        setEditID(ID)
+        setOpenUpdate(true)
     }
 
     // const debughandle = () => {
@@ -133,8 +148,7 @@ export default function EmployeeList() {
                                         <TableRow
                                             key={item.ID}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell>{item.Name}</TableCell>
+                                        ><TableCell>{item.Name}</TableCell>
                                             <TableCell>{item.Surname}</TableCell>
                                             <TableCell>
                                                 {
@@ -162,14 +176,24 @@ export default function EmployeeList() {
                                                 }
                                             </TableCell>
 
-                                            <TableCell></TableCell>
+                                            <TableCell>
+                                                {
+                                                    <Button
+                                                        variant='outlined'
+                                                        color='warning'
+                                                        component={RouterLink}
+                                                        to={"/employee/update/" + item.ID}
+                                                    >
+                                                        Update
+                                                    </Button>
+
+                                                }
+                                            </TableCell>
                                             <TableCell>
                                                 {
                                                     <Button variant='outlined' color='error' onClick={() => { handleDialogDeleteOpen(item.ID) }}>Delete</Button>
                                                 }
                                             </TableCell>
-
-
                                         </TableRow>
                                     ))
                                 }
@@ -203,6 +227,8 @@ export default function EmployeeList() {
                 </DialogActions>
 
             </Dialog>
+
+            {/* <EmployeeUpdate openUpdate={openUpdate} handleDialogUpdateclose={handleDialogUpdateclose} id={editID}/> */}
 
             {/* <Button onClick={debughandle}>Test</Button> */}
         </Container>
