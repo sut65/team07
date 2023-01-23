@@ -9,9 +9,9 @@ import (
 type RecordTimeOUT struct {
 	gorm.Model
 
-	Annotation            string    `json:"annotation"`
-	OdoMeter              uint      `json:"odo_meter"`
-	RecordTimeOutDatetime time.Time `json:"record_time_out_datetime"`
+	Annotation            string
+	OdoMeter              uint
+	RecordTimeOutDatetime time.Time
 
 	EmployeeID *uint
 	Employee   Employee

@@ -6,15 +6,21 @@ import FormControl from "@mui/material/FormControl";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import {CssBaseline,Box} from "@mui/material";
+import { CssBaseline, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Snackbar from "@mui/material/Snackbar";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Link as RouterLink } from "react-router-dom";
+import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
+import { apiUrl, convertType } from "../../services/utility";
+import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
+import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
+import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
+import {TypeAblsInterface} from "../../models/ambulance_system_models/typeAbl"
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
   ref
@@ -23,14 +29,19 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function RecordTimeOutCreate() {
-  //   const [RecordTimeOut, setRecordTimeOut] = useState<
-  //   Partial<RecordTimeOutInterface>
-  //  >({ Record_Time_Out_Datetime: new Date() });
+  const [recordtimeout, setRecordTimeOut] = useState<
+    Partial<RecordTimeOutInterface>
+  >({ RecordTimeOutDatetime: new Date() });
 
-  
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  // const [rec, setRecordTimeOutID] = useState("");
+
+  const [emp, setEmployee] = useState<EmployeeInterface[]>([]);
+  // const [case,setCase] = useState<CaseInterface[]>([]);
+  const [abl, setAmbulance] = useState<AmbulancesInterface[]>([]);
+  const [abl_id, setAmbulanceID] = useState<AmbulancesInterface>();
+
+  const [typeabl, setTypeAbl] = useState<TypeAblsInterface[]>([]);
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -44,20 +55,20 @@ function RecordTimeOutCreate() {
   };
 
   //select
-  //   const handleChange = (event: SelectChangeEvent) => {
-  //     const name = event.target.name as keyof typeof prescription;
-  //     setPrescription({ ...prescription, [name]: event.target.value });
-  //     console.log(name);
+  const handleChange = (event: SelectChangeEvent) => {
+    const name = event.target.name as keyof typeof recordtimeout;
+    setRecordTimeOut({ ...recordtimeout, [name]: event.target.value });
+    console.log(name);
 
-  //     if (name === "PatientID") {
-  //       localStorage.setItem("PID", event.target.value);
-  //       get_Patient();
-  //     }
-  //     if (name === "MedicineID") {
-  //       localStorage.setItem("MID", event.target.value);
-  //       get_Medicine();
-  //     }
-  //   };
+    // if (name === "PatientID") {
+    //   localStorage.setItem("PID", event.target.value);
+    //   get_Patient();
+    // }
+    // if (name === "MedicineID") {
+    //   localStorage.setItem("MID", event.target.value);
+    //   get_Medicine();
+    // }
+  };
 
   //   const handleInputChange = (
   //     event: React.ChangeEvent<{ id?: string; value: any }>
@@ -67,50 +78,73 @@ function RecordTimeOutCreate() {
   //     setPrescription({ ...prescription, [id]: value });
   //   };
 
-  useEffect(() => {}, []);
+  const getAmbulance = async () => {
+    try {
+      let res = await HttpClientServices.get("/ambulances");
+      setAmbulance(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getTypeAbl = async () => {
+    try {
+      let res = await HttpClientServices.get("/type_abls");
+      setTypeAbl(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getEmployee = async () => {
+    try {
+      let res = await HttpClientServices.get("/employees");
+      setEmployee(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  //   function submit() {
-  //     let data = {
-  //       PrescriptionID: prescriptionID,
-  //       EmployeeID: convertType(employee?.ID) ?? "",
-  //       MedicineID: convertType(prescription?.MedicineID) ?? "",
-  //       PatientID: convertType(prescription?.PatientID) ?? "",
-  //       Symptom: prescription?.Symptom ?? "",
-  //       Case_Time: prescription?.Case_Time ?? "",
-  //     };
-  //     console.log(data);
+  useEffect(() => {
+    getAmbulance();
+    getEmployee();
+    getTypeAbl();
+  }, []);
 
-  //     const apiUrl = "http://localhost:8080/pharmacist/prescription";
-  //     const requestOptions = {
-  //       method: "POST",
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(data),
-  //     };
+  async function submit() {
+    let data = {
+      ID: recordtimeout.ID ?? 0,
+      OdoMeter: recordtimeout?.OdoMeter ?? 0,
+      Annotation: recordtimeout?.Annotation ?? "",
+      RecordTimeOutDatetime: recordtimeout?.RecordTimeOutDatetime ?? new Date(),
+      EmployeeID: convertType(recordtimeout?.EmployeeID) ?? 0,
+      CaseID: convertType(recordtimeout?.CaseID) ?? 0,
+      AmbulanceID: convertType(recordtimeout?.AmbulanceID) ?? 0,
+    };
+    console.log(data);
 
-  //     fetch(apiUrl, requestOptions)
-  //       .then((response) => response.json())
-  //       .then((res) => {
-  //         if (res.data) {
-  //           setSuccess(true);
-  //         } else {
-  //           setError(true);
-  //         }
-  //       });
-  //   }
+    try {
+      let res = await HttpClientServices.post("/recordtimeouts", data);
+      setSuccess(true);
+      console.log(res.data);
+    } catch (err) {
+      setError(false);
+      console.log(err);
+    }
+  }
 
   return (
     <Container
       className="container"
       maxWidth="md"
-      
       sx={{
-        marginTop: 2
+        marginTop: 2,
       }}
-    >  <CssBaseline />
-      <Paper className="paper"  elevation={3}>
+    >
+      {" "}
+      <CssBaseline />
+      <Paper className="paper" elevation={3}>
         <Box>
           <Typography
             variant="h5"
@@ -125,7 +159,17 @@ function RecordTimeOutCreate() {
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography>เคสที่ได้รับแจ้ง</Typography>
-              <Select>
+              <Select
+                id="ID"
+                native
+                name="CaseID"
+                size="small"
+                value={String(recordtimeout?.CaseID)}
+                onChange={handleChange}
+                inputProps={{
+                  name: "CaseID",
+                }}
+              >
                 <option>กรุณาเลือกเคส</option>
               </Select>
             </FormControl>
@@ -137,36 +181,84 @@ function RecordTimeOutCreate() {
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography>ประเภทรถพยาบาล</Typography>
-              <Select>
-                <option>กรุณาเลือกประเภทรถพยาบาล</option>
+              <Select
+                id="ID"
+                native
+                name="TypeAblID"
+                size="small"
+                value={String(typeabl.)}
+                onChange={handleChange}
+                inputProps={{
+                  name: "TypeAblID",
+                }}
+              >
+                <option aria-label="None" value="กรุณาเลือกประเภทรถพยาบาล">
+                  กรุณาเลือกประเภทรถพยาบาล
+                </option>
+                {abl.map((item: AmbulancesInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.Name}
+                  </option>
+                ))}
               </Select>
             </FormControl>
           </Grid>
+
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography>รถพยาบาล</Typography>
-              <Select>
+              <Select
+                id="ID"
+                native
+                name="AmbulanceID"
+                size="small"
+                // value={String(abl?.)}
+                value={"TOYOTA"}
+                onChange={handleChange}
+                inputProps={{
+                  name: "AmbulanceID",
+                }}
+              >
                 <option>กรุณาเลือกรถพยาบาล</option>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <TextField label="detail" disabled fullWidth rows={2.5} multiline />
+            <TextField
+              label="detail"
+              disabled
+              fullWidth
+              rows={2.5}
+              multiline
+              value={abl_id?.Clp}
+            />
           </Grid>
+
           <Grid item xs={4}>
-            <Typography >เลขไมล์ (ODO Meter)</Typography>
+            <Typography>เลขไมล์ (ODO Meter)</Typography>
             <FormControl fullWidth variant="outlined">
-              <TextField   id="Name" type="number" variant="outlined" />
+              <TextField
+                id="OdoMeter"
+                type="number"
+                size="small"
+                value={recordtimeout?.OdoMeter}
+              />
             </FormControl>
           </Grid>
+
           <Grid item xs={4}>
             <Typography>หมายเหตุ</Typography>
             <FormControl fullWidth variant="outlined">
-              <TextField id="Name" type="string" variant="outlined" />
+              <TextField
+                id="Annotation"
+                type="string"
+                size="small"
+                value={recordtimeout?.Annotation}
+              />
             </FormControl>
           </Grid>
           <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
+            <FormControl fullWidth variant="outlined" size="small">
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
@@ -182,7 +274,7 @@ function RecordTimeOutCreate() {
           <Grid item xs={6}>
             <Button
               style={{ float: "left" }}
-              //   onClick={}
+              onClick={submit}
               variant="contained"
               color="primary"
             >
@@ -213,7 +305,6 @@ function RecordTimeOutCreate() {
           บันทึกข้อมูลสำเร็จ
         </Alert>
       </Snackbar>
-
       <Snackbar open={error} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
           บันทึกข้อมูลไม่สำเร็จ
