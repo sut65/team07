@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// add Entity
 type RecordTimeIn struct {
 	gorm.Model
 
