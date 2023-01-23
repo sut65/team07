@@ -45,7 +45,13 @@ func SetupDatabase() {
 		&Gender{},
 		&Case{},
 
+		//บันทึกเวลาใช้รถขาออกของ พนง ขับรถ
 		&RecordTimeOUT{},
+
+		//ตรวจเช็คสภาพรถ
+		&AmbulancePart{},
+		&StatusCheck{},
+		&VehicleInspection{},
 	)
 
 	db = database
@@ -144,22 +150,65 @@ func SetupDatabase() {
 	}
 	db.Model(&Employee{}).Create((&emp))
 
-	abl := Ambulance{
-		TypeAbl: typeAbl[2],
-		Clp:     "BB3677",
-	}
-	db.Model(&Ambulance{}).Create((&abl))
-
 	case1 := Case{
 		Emergency: emergency[2],
 	}
+	case2 := Case{
+		Location: "ปต2",
+	}
+	db.Model(&Case{}).Create((&case2))
+
+	case3 := Case{
+		Location: "ปต3",
+	}
+	db.Model(&Case{}).Create((&case3))
+
+	case4 := Case{
+		Location: "ปต4",
+	}
+	db.Model(&Case{}).Create((&case4))
+	ambulance1 := Ambulance{
+		Clp:      "บบ 36771",
+		CarBrand: "TOYOTA 1",
+		TypeAbl:  typeAbl[0],
+	}
+	db.Model(&Ambulance{}).Create(&ambulance1)
+
+	ambulance2 := Ambulance{
+		Clp:      "บบ 36772",
+		CarBrand: "TOYOTA 2",
+		TypeAbl:  typeAbl[1],
+	}
+	db.Model(&Ambulance{}).Create(&ambulance2)
+
+	ambulance3 := Ambulance{
+		Clp:      "บบ 36773",
+		CarBrand: "TOYOTA 3",
+		TypeAbl:  typeAbl[2],
+	}
+	db.Model(&Ambulance{}).Create(&ambulance3)
+
+	ambulance4 := Ambulance{
+		Clp:      "บบ 36774",
+		CarBrand: "TOYOTA 4",
+		TypeAbl:  typeAbl[3],
+	}
+	db.Model(&Ambulance{}).Create(&ambulance4)
+
+	ambulance5 := Ambulance{
+		Clp:      "บบ 36775",
+		CarBrand: "TOYOTA 5",
+		TypeAbl:  typeAbl[4],
+	}
+	db.Model(&Ambulance{}).Create(&ambulance5)
+
 	recordtimeout_1 := RecordTimeOUT{
 		Annotation:            "ฝนตกหนัก ถนนลื่น",
 		OdoMeter:              2000,
 		RecordTimeOutDatetime: time.Now(),
 		Employee:              emp,
 		Case:                  case1,
-		Ambulance:             abl,
+		Ambulance:             ambulance1,
 	}
 	db.Model(&RecordTimeOUT{}).Create(&recordtimeout_1)
 
@@ -169,7 +218,49 @@ func SetupDatabase() {
 		RecordTimeOutDatetime: time.Now(),
 		Employee:              emp,
 		Case:                  case1,
-		Ambulance:             abl,
+		Ambulance:             ambulance4,
 	}
 	db.Model(&RecordTimeOUT{}).Create(&recordtimeout_2)
+
+	//ตรวจเช็คสภาพรถ
+	statuscheck := []StatusCheck{
+		{StatusName: "ผ่าน"},
+		{StatusName: "ไม่ผ่าน"},
+	}
+	db.Model(&StatusCheck{}).Create(&statuscheck)
+
+	ambulancepart := []AmbulancePart{
+		{PartName: "เช็คแบตเตอรี่"},
+		{PartName: "เช็คน้ำมันเครื่อง"},
+		{PartName: "เช็คยางรถยนต์"},
+		{PartName: "เช็คระบบหล่อเย็น"},
+		{PartName: "เช็คน้ำมันเบรกและระบบเบรก"},
+		{PartName: "เช็คไฟหน้ารถ"},
+		{PartName: "เช็คที่ปัดน้ำฝน"},
+		{PartName: "เช็คช่วงล่างและระบบกันสะเทือน"},
+		{PartName: "อื่น ๆ"},
+	}
+	db.Model(&AmbulancePart{}).Create(&ambulancepart)
+
+	vehicleinspection_1 := VehicleInspection{
+		Fail:                      "เบรกแตก",
+		OdoMeter:                  2000,
+		VehicleInspectionDatetime: time.Now(),
+		Employee:                  emp,
+		AmbulancePart:             ambulancepart[4],
+		Ambulance:                 ambulance1,
+		StatusCheck:               statuscheck[1],
+	}
+	db.Model(&VehicleInspection{}).Create(&vehicleinspection_1)
+
+	vehicleinspection_2 := VehicleInspection{
+		Fail:                      "ที่ปัดน้ำฝนพัง",
+		OdoMeter:                  5640,
+		VehicleInspectionDatetime: time.Now(),
+		Employee:                  emp,
+		AmbulancePart:             ambulancepart[6],
+		Ambulance:                 ambulance1,
+		StatusCheck:               statuscheck[1],
+	}
+	db.Model(&VehicleInspection{}).Create(&vehicleinspection_2)
 }

@@ -115,6 +115,8 @@ func main() {
 	r.POST("/recordtimeout", controller.CreateRecordTimeOut)
 	r.DELETE("/recordtimeout/:id", controller.DeleteRecordTimeOut)
 	r.PATCH("/recordtimeout", controller.UpdateRecordTimeOut)
+	r.GET("/abl/:type_id", controller.GetAmbulanceByTypeAblID)
+	r.GET("/cases", controller.GetCase)
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
 	// r.GET("/recordtimeins", controller.ListRecordTimeIns)
 	// // Get by eid
