@@ -7,16 +7,6 @@ import { AmbulancesInterface } from '../../models/ambulance_system_models/ambula
 
 function Ambulance() {
 
-
-    const [ambulances, setAmbulances] = useState<AmbulancesInterface[]>([]);
-    const getAmbulanceData = async () => {
-        let res = await ListAmbulances();
-        if (res) {
-            setAmbulances(res);
-            console.log(res);
-        }
-    };
-
     const [ambulanceByEmployee, setAmbulanceByEmployee] = useState<AmbulancesInterface[]>([]);
     const getAmbulanceDataByEmployee = async () => {
         let res = await GetAmbulanceByEmployee();
@@ -48,10 +38,10 @@ function Ambulance() {
                     variant="contained"
                     color="error"
                     onClick={() => {
-                        console.log("Employee", row.EmployeeID)
+                        console.log("ID", row.ID)
                         localStorage.setItem("aid", row.ID);
                     }}
-                    sx={{borderRadius: 2.5,'&:hover': {color: '#d32f2f', backgroundColor: '#fbbdbd'}}}
+                    sx={{borderRadius: 2.5,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
                 >
                     แก้ไข
                 </Button>,
@@ -61,7 +51,6 @@ function Ambulance() {
 
     useEffect(() => {
 
-        getAmbulanceData();
         getAmbulanceDataByEmployee();
 
     }, []);
@@ -103,7 +92,7 @@ function Ambulance() {
                             to="/Ambulance/AmbulanceCreate"
                             variant="contained"
                             color="primary"
-                            sx = {{borderRadius: 2,'&:hover': {color: '#42a5f5', backgroundColor: '#e3f2fd'}}}
+                            sx = {{borderRadius: 2,'&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
                         >
                             สร้างรายการ
                         </Button>

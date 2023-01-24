@@ -1,10 +1,11 @@
-import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Link as RouterLink } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import './AmbulanceCreate.css';
 
@@ -13,11 +14,24 @@ import { TypeAblsInterface } from '../../models/ambulance_system_models/typeAbl'
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
 import { ListCompanies, ListTypeAbls, GetAmbulanceByID, UpdateAmbulance } from '../../services/ambulance_system_services/HttpClientService';
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function AmbulanceUpdate() {
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setSuccess(false);
+        setError(false);
+    };
 
     const [companies, setCompanies] = useState<CompaniesInterface[]>([]);
     const getCompanies = async () => {
@@ -45,8 +59,6 @@ function AmbulanceUpdate() {
         let res = await GetAmbulanceByID();
         if (res) {
             setAmbulance(res);
-            console.log(res)
-
         }
     };
 
@@ -103,6 +115,37 @@ function AmbulanceUpdate() {
 
     return (
         <div>
+            <Snackbar
+                open={success}
+                autoHideDuration={2000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                sx={{ mt: 10 }}
+            >
+                <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: '100%', borderRadius: 3 }}
+                >
+                    อัพเดตข้อมูลสำเร็จ
+                </Alert>
+            </Snackbar>
+
+            <Snackbar
+                open={error}
+                autoHideDuration={2000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                sx={{ mt: 10 }}
+            >
+                <Alert
+                    onClose={handleClose}
+                    severity="error"
+                    sx={{ width: '100%', borderRadius: 3 }}
+                >
+                    อัพเดตข้อมูลไม่สำเร็จ
+                </Alert>
+            </Snackbar>
             <Container
                 component="main"
                 maxWidth="md"
@@ -237,6 +280,7 @@ function AmbulanceUpdate() {
                         color="error"
                         component={RouterLink}
                         to="/Ambulance"
+                        sx={{ '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
                     >
                         ยกเลิก
                     </Button>
@@ -244,6 +288,7 @@ function AmbulanceUpdate() {
                         variant="contained"
                         color="primary"
                         onClick={submit}
+                        sx={{ '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
                     >
                         อัพเดตข้อมูล
                     </Button>
