@@ -143,3 +143,47 @@ func UpdateVehicleInspection(c *gin.Context) {
 		"data":   UpdatingVehicleInspection,
 	})
 }
+
+// GET /user/:id
+func GetStatusCheck(c *gin.Context) {
+	var statuscheck entity.StatusCheck
+	id := c.Param("id")
+	if err := entity.DB().Raw("SELECT * FROM status_checks WHERE id = ?", id).Find(&statuscheck).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": statuscheck})
+
+}
+
+// GET /users
+func ListStatusChecks(c *gin.Context) {
+	var statuschecks []entity.StatusCheck
+
+	if err := entity.DB().Raw("SELECT * FROM status_checks").Find(&statuschecks).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": statuschecks})
+}
+
+func GetAmbulancePart(c *gin.Context) {
+	var ambulancepart entity.AmbulancePart
+	id := c.Param("id")
+	if err := entity.DB().Raw("SELECT * FROM ambulance_parts WHERE id = ?", id).Find(&ambulancepart).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ambulancepart})
+
+}
+
+func ListAmbulanceParts(c *gin.Context) {
+	var ambulanceparts []entity.AmbulancePart
+
+	if err := entity.DB().Raw("SELECT * FROM ambulance_parts").Find(&ambulanceparts).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ambulanceparts})
+}

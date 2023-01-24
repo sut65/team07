@@ -135,6 +135,11 @@ func main() {
 	r.DELETE("/vehicleinspection/:id", controller.DeleteVehicleInspection)
 	r.PATCH("/vehicleinspection", controller.UpdateVehicleInspection)
 
+	r.GET("/statuschecks", controller.ListStatusChecks)
+	r.GET("/statuscheck/:id", controller.GetStatusCheck)
+	r.GET("/ambulanceparts", controller.ListAmbulanceParts)
+	r.GET("/ambulancepart/:id", controller.GetAmbulancePart)
+
 	r.GET("/disinfections", controller.ListDisinfactions)
 	r.GET("/disinfection/:id", controller.GetDisinfection)
 	r.POST("/disinfection", controller.CreateDisinfection)
