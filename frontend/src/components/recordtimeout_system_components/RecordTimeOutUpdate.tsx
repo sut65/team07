@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 import * as React from "react";
-import Button from "@mui/material/Button";
+import { Button, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -67,6 +67,7 @@ export default function RecordTimeOutUpdate(props: any) {
   const handleClose = () => {
     setOpen(false);
   };
+  console.log(params.Ambulance.TypeAbl);
 
   return (
     <div>
@@ -87,22 +88,67 @@ export default function RecordTimeOutUpdate(props: any) {
         <DialogTitleProps id="customized-dialog-title" onClose={handleClose}>
           ข้อมูลการใช้รถพยาบาล
         </DialogTitleProps>
-        
-        <DialogContent dividers sx={{ width: "550px", height: "350px" }}>
-          <Typography gutterBottom>
-            วันที่ :{" "}
-            {moment(params.RecordTimeOutDatetime).format("DD/MM/YYYY")}
-            &nbsp; เวลา :
-            {moment(params.RecordTimeOutDatetime).format("HH:mm")} น.
-          </Typography>
-          {/* <Typography gutterBottom>เคสที่ได้รับแจ้ง : {params.Case.Emergency}   
-          ผู้ป่วย : {params.Case.Patient}
-          สถานที่เกิดเหตุ: {params.Case.Location}
 
-          </Typography>
-          <Typography gutterBottom>รถพยาบาล : {params.Ambulance.CarBrand}  ประเภทรถ: เลขทะเบียนรถ:{params.Ambulance.TypeAbl.Name} </Typography>
-          <Typography gutterBottom>พนักงานขับรถ : {params.Employee.Name}</Typography>
-          <Typography gutterBottom>หมายเหตุ : {params.annotation}</Typography> */}
+        <DialogContent dividers sx={{ width: "550px", height: "320px" }}>
+          <Grid container justifyContent="flex-end" item xs={12}>
+            <Grid item xs={10} container justifyContent="flex-end">
+              วันที่ :{" "}
+            </Grid>
+            <Grid item xs={2} container justifyContent="flex-end">
+              {moment(params.RecordTimeOutDatetime).format("DD/MM/YYYY")}
+            </Grid>
+            <Grid item xs={10} container justifyContent="flex-end">
+              {" "}
+              เวลา :
+            </Grid>
+            <Grid item xs={2} container justifyContent="center">
+              {moment(params.RecordTimeOutDatetime).format("HH:mm")} น.
+            </Grid>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography gutterBottom>เคสที่ได้รับแจ้ง :</Typography>
+          </Grid>
+          <Grid item xs={12} container>
+            <Grid item xs={5}>
+              ประเภทรถ:
+            </Grid>
+            <Grid item xs={7}>
+              {params.Ambulance.TypeAbl.Name}
+            </Grid>
+            <Grid item xs={5}>
+              ยี่ห้อรถ :
+            </Grid>
+            <Grid item xs={7}>
+              {params.Ambulance.CarBrand}
+            </Grid>
+            <Grid item xs={5}>
+              เลขทะเบียนรถ:
+            </Grid>
+            <Grid item xs={7}>
+              {params.Ambulance.Clp}
+            </Grid>
+            <Grid item xs={5}>
+              เลขไมล์ (ODO Meter) :
+            </Grid>
+            <Grid item xs={7}>
+              {params.OdoMeter}
+            </Grid>
+            <Grid item xs={5}>
+              หมายเหตุ :
+            </Grid>
+            <Grid item xs={7}>
+              {params.annotation}
+            </Grid>
+          </Grid>
+          <br /> <br />
+          <Grid item xs={12} container>
+            <Grid item xs={4}>
+              พนักงานขับรถ :
+            </Grid>
+            <Grid item xs={4}>
+              {params.Employee.Name}
+            </Grid>
+          </Grid>
         </DialogContent>
 
         <DialogActions>
