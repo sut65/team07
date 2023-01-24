@@ -1,10 +1,11 @@
-import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Link as RouterLink } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import './AmbulanceCreate.css';
 
@@ -15,17 +16,32 @@ import { AmbulancesInterface } from '../../models/ambulance_system_models/ambula
 import { ListCompanies, ListTypeAbls, CreatAmbulances } from '../../services/ambulance_system_services/HttpClientService';
 
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
+
 function AmbulanceCreate() {
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setSuccess(false);
+        setError(false);
+    };
 
     const [companies, setCompanies] = useState<CompaniesInterface[]>([]);
     const getCompanies = async () => {
         let res = await ListCompanies();
         if (res) {
             setCompanies(res);
-            console.log(res)
         }
     };
 
@@ -34,7 +50,6 @@ function AmbulanceCreate() {
         let res = await ListTypeAbls();
         if (res) {
             setTypeAbls(res);
-            console.log(res)
         }
     };
 
@@ -95,6 +110,38 @@ function AmbulanceCreate() {
 
     return (
         <div>
+            <Snackbar 
+                open={success} 
+                autoHideDuration={2000} 
+                onClose={handleClose} 
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                sx={{mt:10}}
+            >
+                <Alert 
+                    onClose={handleClose} 
+                    severity="success" 
+                    sx={{ width: '100%', borderRadius: 3 }}
+                >
+                    บันทึกข้อมูลสำเร็จ
+                </Alert>
+            </Snackbar>
+
+            <Snackbar 
+                open={error} 
+                autoHideDuration={2000} 
+                onClose={handleClose} 
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                sx={{mt:10}}
+            >
+                <Alert 
+                    onClose={handleClose} 
+                    severity="error"
+                    sx={{ width: '100%', borderRadius: 3}}
+                >
+                    บันทึกข้อมูลไม่สำเร็จ
+                </Alert>
+            </Snackbar>
+
             <Container
                 component="main"
                 maxWidth="md"
@@ -229,6 +276,7 @@ function AmbulanceCreate() {
                         color="error"
                         component={RouterLink}
                         to="/Ambulance"
+                        sx={{'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
                     >
                         ถอยกลับ
                     </Button>
@@ -236,6 +284,7 @@ function AmbulanceCreate() {
                         variant="contained"
                         color="primary"
                         onClick={submit}
+                        sx={{'&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
                     >
                         บันทึกข้อมูล
                     </Button>
