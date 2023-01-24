@@ -96,8 +96,7 @@ async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
     return res
 }
 
-export {
-    
+export {  
     CreatAmbulanceUse,
     GetAmbulanceUseByEmployee,
     ListMedicines,
