@@ -67,7 +67,7 @@ export default function RecordTimeOutUpdate(props: any) {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(params.Ambulance.TypeAbl);
+  // console.log(params.Ambulance.TypeAbl);
 
   return (
     <div>
