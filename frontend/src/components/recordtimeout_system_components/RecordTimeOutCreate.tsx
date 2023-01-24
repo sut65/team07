@@ -145,7 +145,7 @@ function RecordTimeOutCreate() {
   async function submit() {
     let data = {
       // ID: recordtimeout.ID ?? 0,
-      OdoMeter: recordtimeout?.OdoMeter ?? 0,
+      OdoMeter: convertType(recordtimeout?.OdoMeter) ?? 0,
       Annotation: recordtimeout?.Annotation ?? "",
       RecordTimeOutDatetime: recordtimeout?.RecordTimeOutDatetime ?? new Date(),
       EmployeeID: convertType(recordtimeout?.EmployeeID) ?? 1,

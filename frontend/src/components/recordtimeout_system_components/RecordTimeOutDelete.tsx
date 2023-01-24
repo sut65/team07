@@ -8,8 +8,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 //icon
+import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -23,20 +23,30 @@ export default function RecordTimeOutDelete(props: any) {
 
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
-
+  const [emp, setEmployee] = React.useState<EmployeeInterface>();
   const handleClickOpen = () => {
     setOpen(true);
   };
- 
 
   const handleClose = () => {
     setOpen(false);
     setSuccess(false);
-    setError(false)
+    setError(false);
   };
+
+  const getEmployee = async () => {
+    try {
+      let res = await HttpClientServices.get(`/employee/${localStorage.getItem("id")}`);
+      setEmployee(res.data);
+      // console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   async function submit() {
     try {
-      let res = await HttpClientServices.delete(`/recordtimeout/${params}`);
+      let res = await HttpClientServices.delete(`/recordtimeout/${params.ID}`);
       console.log(res.data);
       setSuccess(true);
     } catch (err) {
@@ -44,6 +54,11 @@ export default function RecordTimeOutDelete(props: any) {
       console.log(err);
     }
   }
+  React.useEffect(() => {
+    getEmployee();
+  }, []);
+
+ 
 
   return (
     <div>
@@ -61,12 +76,10 @@ export default function RecordTimeOutDelete(props: any) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          คุณต้องการลบรายการบันทึกเวลาใช้รถใช่ไหม ?
-        </DialogTitle>
+       
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            คุณต้องการลบรายการบันทึกเวลาใช้รถใช่ไหม ?
+          คุณ {emp?.Name} ต้องการลบรายการบันทึกเวลาใช้รถไอดีที่ {params.ID} ใช่ไหม ??
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -76,27 +89,26 @@ export default function RecordTimeOutDelete(props: any) {
           </Button>
         </DialogActions>
         <Snackbar
-        open={success}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={handleClose} severity="success">
-          ลบข้อมูลสำเร็จ
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={error}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={handleClose} severity="error">
-          ลบข้อมูลไม่สำเร็จ
-        </Alert>
-      </Snackbar>
+          open={success}
+          autoHideDuration={2000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="success">
+            ลบข้อมูลสำเร็จ
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={error}
+          autoHideDuration={2000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="error">
+            ลบข้อมูลไม่สำเร็จ
+          </Alert>
+        </Snackbar>
       </Dialog>
-      
     </div>
   );
 }
