@@ -92,7 +92,13 @@ function Navbar() {
       name: "ข้อมูลพนักงาน",
       icon: <PeopleIcon/>,
       path: "/Employee"
-    }
+    },
+
+    {
+      name: "รายการฆ่าเชื้อรถพยาบาล",
+      icon: <ArrowForwardIcon />,
+      path: "/DisinfectionHistory",
+    },
   ];
 
   const list = [

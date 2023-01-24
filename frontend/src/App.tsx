@@ -17,14 +17,15 @@ import RecordTimeInCreate from "./components/recordtimein_system_components/Reco
 import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
 import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
 import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
+import DisinfectionCreate from "./components/disinfection_system_component/DisinfectionCreate";
+import DisinfectionHistory from "./components/disinfection_system_component/DisinfectionHistory";
 
 import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
 import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
-import VehicleInspectionHistory from "./components/vehicleinspection_system_components/VehicleInspectionHistory";
-import VehicleInspectionCreate from "./components/vehicleinspection_system_components/VehicleInspectionCreate"
+
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -113,17 +114,8 @@ export default function App() {
               path="/RecordTimeInUpdate"
               element={<RecordTimeInUpdate />}
             />
-
-            <Route
-              path="/VehicleInspectionHistory"
-              element={<VehicleInspectionHistory />}
-            />
-           < Route
-              path="/VehicleInspectionCreate"
-              element={<VehicleInspectionCreate />}
-            />
-
           </Routes>
+          
         </div>
       </ThemeProvider>
     </Router>
