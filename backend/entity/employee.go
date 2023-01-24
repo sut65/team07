@@ -57,8 +57,9 @@ type Employee struct {
 	Education Education
 
 	//For Link Foreign key
-	Ambulances    []Ambulance     `gorm:"foreignKey:EmployeeID"`
-	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:EmployeeID"`
-	RecordTimeIn  []RecordTimeIn  `gorm:"foreignKey:EmployeeID"`	
-	Disinfection  []Disinfection  `gorm:"foreignKey:EmployeeID"`
+	Ambulances      []Ambulance      `gorm:"foreignKey:EmployeeID"`
+	RecordTimeOUT   []RecordTimeOUT  `gorm:"foreignKey:EmployeeID"`
+	RecordTimeIn    []RecordTimeIn   `gorm:"foreignKey:EmployeeID"`
+	Disinfection    []Disinfection   `gorm:"foreignKey:EmployeeID"`
+	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:EmployeeID"`
 }
