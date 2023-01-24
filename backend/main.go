@@ -141,7 +141,15 @@ func main() {
 	r.DELETE("/disinfection/:id", controller.DeleteDisinfection)
 	r.PATCH("/disinfection", controller.UpdateDisinfection)
 
-	r.POST("/signin", controller.Signin)
+	 // ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
+	r.GET("/Emercases", controller.CreateEmercase)
+	r.GET("/Emercase/:id", controller.GetEmercase)
+	r.POST("/Emercase", controller.CreateEmercase)
+	r.DELETE("/Emercase/:id", controller.DeleteEmercase)
+	r.PATCH("/Emercase", controller.UpdateEmercase)
+	 // ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
+	
+	 r.POST("/signin", controller.Signin)
 
 	//Run server using gin gonic
 	r.Run()
