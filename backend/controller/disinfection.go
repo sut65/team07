@@ -116,7 +116,7 @@ func UpdateDisinfection(c *gin.Context) {
 		WorkTime: 				disinfection.WorkTime,
 		AmountDisinfectant:		disinfection.AmountDisinfectant,	
 		Note: 					disinfection.Note,	
-		Disinfactant: 			disinfectant,			//โยง คสพ Entity Case
+		Disinfactant: 			disinfectant,			//โยง คสพ Entity Disinfectant
 		Ambulance:                 ambulance,                                   //โยง คสพ Entity Car
 		Employee:                  employee,                                    //โยง คสพ Entity Employee	
 	}
