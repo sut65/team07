@@ -52,6 +52,10 @@ func SetupDatabase() {
 		&AmbulancePart{},
 		&StatusCheck{},
 		&VehicleInspection{},
+
+		//ฆ่าเชื้อรถพยาบาล
+		&Disinfactant{},
+		&Disinfection{},
 	)
 
 	db = database
@@ -263,4 +267,22 @@ func SetupDatabase() {
 		StatusCheck:               statuscheck[1],
 	}
 	db.Model(&VehicleInspection{}).Create(&vehicleinspection_2)
+
+	//ฆ่าเชื้อรถพยาบาล
+	disinfectant := []Disinfactant{
+		{Type: "Ethyl alcohol 70%"},
+		{Type: "Sodium hypochlorite"},
+		{Type: "Dettol Antiseptic Disinfectant"},
+	}
+	db.Model(&Disinfactant{}).Create(&disinfectant)
+
+	disinfection_1 := Disinfection{
+		WorkTime: time.Now(),
+		AmountDisinfectant: 500,
+		Note: "-",
+		Employee: emp,
+		Ambulance: ambulance1,
+		Disinfactant: disinfectant[1],
+	}
+	db.Model(&Disinfection{}).Create(&disinfection_1)
 }

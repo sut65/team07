@@ -128,22 +128,18 @@ func main() {
 	// // UPDATE
 	// r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-	// r.GET("/recordtimeins", controller.ListRecordTimeIns)
-	// // Get by eid
-	// r.GET("/recordtimein/:employee_id", controller.GetRecordTimeInByEmployee)
-	// // Create
-	// r.POST("/recordtimein", controller.CreateRecordTimeIn)
-	// // DELETE
-	// r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
-	// // UPDATE
-	// r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
-	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+
 	r.GET("/vehicleinspections", controller.ListVehicleInspections)
 	r.GET("/vehicleinspection/:id", controller.GetVehicleInspection)
 	r.POST("/vehicleinspection", controller.CreateVehicleInspection)
 	r.DELETE("/vehicleinspection/:id", controller.DeleteVehicleInspection)
 	r.PATCH("/vehicleinspection", controller.UpdateVehicleInspection)
+
+	r.GET("/disinfections", controller.ListDisinfactions)
+	r.GET("/disinfection/:id", controller.GetDisinfection)
+	r.POST("/disinfection", controller.CreateDisinfection)
+	r.DELETE("/disinfection/:id", controller.DeleteDisinfection)
+	r.PATCH("/disinfection", controller.UpdateDisinfection)
 
 	r.POST("/signin", controller.Signin)
 
