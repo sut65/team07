@@ -45,4 +45,5 @@ type Ambulance struct {
 
 	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:AmbulanceID"`
 	RecordTimeIn []RecordTimeIn `gorm:"foreignKey:AmbulanceID"`
+	Disinfection []Disinfection `gorm:"foreignKey:AmbulanceID"`
 }
