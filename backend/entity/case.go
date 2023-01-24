@@ -40,5 +40,10 @@ type Case struct {
 	// to eaiser for add FK
 	Gender Gender
 
+	// Save Employee ID in FK
+	EmployeeID *uint
+	// to eaiser for add FK
+	Employee Employee
+
 	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:CaseID"`
 }
