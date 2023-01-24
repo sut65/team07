@@ -140,6 +140,7 @@ func main() {
 	r.POST("/disinfection", controller.CreateDisinfection)
 	r.DELETE("/disinfection/:id", controller.DeleteDisinfection)
 	r.PATCH("/disinfection", controller.UpdateDisinfection)
+	r.GET("/disinfactants", controller.ListDisinfectants)
 
 	 // ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 	r.GET("/Emercases", controller.CreateEmercase)

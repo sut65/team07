@@ -64,7 +64,7 @@ func GetDisinfection(c *gin.Context) {
 func ListDisinfactions(c *gin.Context) {
 	var disinfection []entity.Disinfection
 
-	if err := entity.DB().Preload("Ambulance").Preload("Disinfectant").Preload("Employee").Raw("SELECT * FROM disinfections").Find(&disinfection).Error; err != nil {
+	if err := entity.DB().Preload("Ambulance").Preload("Disinfactant").Preload("Employee").Raw("SELECT * FROM disinfections").Find(&disinfection).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -129,4 +129,18 @@ func UpdateDisinfection(c *gin.Context) {
 		"status": "Updating success!!",
 		"data":   UpdateDisinfection,
 	})
+}
+
+// GET /companies
+func ListDisinfectants(c *gin.Context) {
+
+	var disinfectants []entity.Disinfactant
+
+	if err := entity.DB().Raw("SELECT * FROM disinfactants").Scan(&disinfectants).Error; err != nil {
+
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": disinfectants})
 }
