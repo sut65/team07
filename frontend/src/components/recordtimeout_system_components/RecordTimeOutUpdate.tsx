@@ -95,14 +95,14 @@ export default function RecordTimeOutUpdate(props: any) {
             &nbsp; เวลา :
             {moment(params.RecordTimeOutDatetime).format("HH:mm")} น.
           </Typography>
-          <Typography gutterBottom>เคสที่ได้รับแจ้ง : {params.Case.Emergency}   
+          {/* <Typography gutterBottom>เคสที่ได้รับแจ้ง : {params.Case.Emergency}   
           ผู้ป่วย : {params.Case.Patient}
           สถานที่เกิดเหตุ: {params.Case.Location}
 
           </Typography>
           <Typography gutterBottom>รถพยาบาล : {params.Ambulance.CarBrand}  ประเภทรถ: เลขทะเบียนรถ:{params.Ambulance.TypeAbl.Name} </Typography>
           <Typography gutterBottom>พนักงานขับรถ : {params.Employee.Name}</Typography>
-          <Typography gutterBottom>หมายเหตุ : {params.annotation}</Typography>
+          <Typography gutterBottom>หมายเหตุ : {params.annotation}</Typography> */}
         </DialogContent>
 
         <DialogActions>
