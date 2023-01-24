@@ -19,6 +19,8 @@ import RecordTimeInEdit from "./components/recordtimein_system_components/Record
 import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
 import DisinfectionCreate from "./components/disinfection_system_component/DisinfectionCreate";
 import DisinfectionHistory from "./components/disinfection_system_component/DisinfectionHistory";
+import DisinfectionDelete from "./components/disinfection_system_component/DisinfectionDelete";
+// import DisinfectionUpdate from "./components/disinfection_system_component/DisinfecttionUpdate";
 
 import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
@@ -114,6 +116,12 @@ export default function App() {
               path="/RecordTimeInUpdate"
               element={<RecordTimeInUpdate />}
             />
+
+            <Route path="/DisinfectionCreate" element={<DisinfectionCreate />} />
+            <Route path="/DisinfectionHistory" element={<DisinfectionHistory />} />
+            <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
+            {/* <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} /> */}
+
           </Routes>
           
         </div>

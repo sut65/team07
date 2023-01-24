@@ -9,6 +9,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 //icon
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 
@@ -35,6 +36,7 @@ export default function DisinfectionDelete(props: any) {
     setSuccess(false);
     setError(false)
   };
+  
   async function submit() {
     try {
       let res = await HttpClientServices.delete(`/disinfection/${params}`);
@@ -54,7 +56,7 @@ export default function DisinfectionDelete(props: any) {
         aria-label="delete"
         onClick={handleClickOpen}
       >
-        <DeleteTwoToneIcon />
+        <DeleteOutlineIcon />
       </IconButton>
       <Dialog
         open={open}
