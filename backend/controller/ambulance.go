@@ -42,7 +42,7 @@ func CreateAmbulance(c *gin.Context) {
 	}
 
 	// 11: สร้าง ambulance
-	st := entity.Ambulance{
+	am := entity.Ambulance{
 		Company:  company,            // โยงความสัมพันธ์กับ Entity Company
 		TypeAbl:  typeAbl,            // โยงความสัมพันธ์กับ Entity TypeAbl
 		Employee: employee,           // โยงความสัมพันธ์กับ Entity Employee
@@ -52,13 +52,13 @@ func CreateAmbulance(c *gin.Context) {
 	}
 
 	// 12: บันทึก
-	if err := entity.DB().Create(&st).Error; err != nil {
+	if err := entity.DB().Create(&am).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": st})
+	c.JSON(http.StatusOK, gin.H{"data": am})
 }
 
 // GET /ambulance/:id
@@ -82,13 +82,13 @@ func GetAmbulanceByEmployee(c *gin.Context) {
 	var ambulance []entity.Ambulance
 	employee_id := c.Param("eid")
 
-	if err := entity.DB().Preload("Company").Preload("TypeAbl").Raw("SELECT * FROM ambulances WHERE employee_id = ?", employee_id).Find(&ambulance).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Company").Preload("TypeAbl").Raw("SELECT * FROM ambulances WHERE employee_id = ?", employee_id).Find(&ambulance).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": ambulance, "status": "getambulancebyemployee success "})
+	c.JSON(http.StatusOK, gin.H{"data": ambulance, "status": "getAmbulanceByEmployee success "})
 }
 
 // GET /ambulances
@@ -96,7 +96,7 @@ func ListAmbulances(c *gin.Context) {
 
 	var ambulances []entity.Ambulance
 
-	if err := entity.DB().Preload("Company").Preload("TypeAbl").Raw("SELECT * FROM ambulances").Find(&ambulances).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Company").Preload("TypeAbl").Raw("SELECT * FROM ambulances").Find(&ambulances).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -119,7 +119,7 @@ func DeleteAmbulance(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// Update Employee
+// Update Ambulance
 func UpdateAmbulance(c *gin.Context) {
 
 	//main
@@ -162,14 +162,14 @@ func UpdateAmbulance(c *gin.Context) {
 	// if new have company_id
 	if ambulance.CompanyID != nil {
 		if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found user"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
 			return
 		}
 		fmt.Print("NOT NULL")
 		ambulance.Company = company
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found user"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
 			return
 		}
 		fmt.Print("NULL")
@@ -179,13 +179,13 @@ func UpdateAmbulance(c *gin.Context) {
 	// if new have typeAbl_id
 	if ambulance.TypeAblID != nil {
 		if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found typeAbl"})
 			return
 		}
 		ambulance.TypeAbl = typeAbl
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found typeAbl"})
 			return
 		}
 		ambulance.TypeAbl = typeAbl
@@ -194,13 +194,13 @@ func UpdateAmbulance(c *gin.Context) {
 	// if new have employee_id
 	if ambulance.EmployeeID != nil {
 		if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
 			return
 		}
 		ambulance.Employee = employee
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
 			return
 		}
 		ambulance.Employee = employee
@@ -219,8 +219,6 @@ func UpdateAmbulance(c *gin.Context) {
 
 }
 
-
-
 // GET /companies
 func ListCompanies(c *gin.Context) {
 
@@ -234,7 +232,6 @@ func ListCompanies(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": companies})
 }
-
 
 // GET /typeAbls
 func ListTypeAbls(c *gin.Context) {
