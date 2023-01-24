@@ -147,15 +147,35 @@ func main() {
 	r.PATCH("/disinfection", controller.UpdateDisinfection)
 	r.GET("/disinfactants", controller.ListDisinfectants)
 
-	 // ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
+	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 	r.GET("/Emercases", controller.CreateEmercase)
 	r.GET("/Emercase/:id", controller.GetEmercase)
 	r.POST("/Emercase", controller.CreateEmercase)
 	r.DELETE("/Emercase/:id", controller.DeleteEmercase)
 	r.PATCH("/Emercase", controller.UpdateEmercase)
-	 // ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
-	
-	 r.POST("/signin", controller.Signin)
+	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
+
+	r.POST("/signin", controller.Signin)
+
+	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
+
+	// List ambulanceUses
+	r.GET("/ambulanceUses", controller.ListAmbulanceUse)
+	// Get by id
+	r.GET("/ambulanceUse/:id", controller.GetAmbulanceUse)
+	// Get by eid
+	r.GET("/ambulanceUses/:eid", controller.GetAmbulanceUseByEmployee)
+	// Create
+	r.POST("/ambulanceUse", controller.CreateAmbulanceUse)
+	// DELETE
+	r.DELETE("/ambulanceUse/:id", controller.DeleteAmbulanceUse)
+	// UPDATE
+	r.PATCH("/ambulanceUse", controller.UpdateAmbulanceUse)
+
+	// List companies
+	r.GET("/medidines", controller.ListMedicines)
+
+	// ---------------------------------- ระบบใชยาบนรถพยาบาล -------------------------------
 
 	//Run server using gin gonic
 	r.Run()
