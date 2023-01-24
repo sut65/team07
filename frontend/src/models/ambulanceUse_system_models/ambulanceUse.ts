@@ -2,7 +2,7 @@ import { EmployeeInterface } from "../employeeSystemModel/IEmployee";
 import { MedicineInterface } from "./medicine";
 import { AmbulancesInterface } from "../ambulance_system_models/ambulance";
 
-export interface AmbylanceUseInterface {
+export interface AmbulanceUseInterface {
 
     ID?: number | null,
     Amount: number | null,

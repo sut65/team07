@@ -1,4 +1,4 @@
-import { SelectChangeEvent, Container, Box, Typography, Button, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { SelectChangeEvent, Container, Box, Typography, Button, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
 import { TypeAblsInterface } from '../../models/ambulance_system_models/typeAbl';
@@ -9,10 +9,12 @@ import { Role } from '../../models/role';
 import { ListEmployees, ListRoles, DeleteEmployee } from '../../services/employeeSystemServices/EmployeeHttpClient';
 import { HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
 import { format } from 'date-fns';
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid';
 import moment from 'moment';
+import EditIcon from '@mui/icons-material/Edit';
 import RecordTimeOutDelete from '../recordtimeout_system_components/RecordTimeOutDelete';
 import RecordTimeOutUpdate from '../recordtimeout_system_components/RecordTimeOutUpdate';
+// import DisinfectionUpdate from './DisinfecttionUpdate';
 import DisinfectionDelete from './DisinfectionDelete';
 
 function DisinfectionHistory() {
@@ -119,11 +121,18 @@ function DisinfectionHistory() {
           align: "center",
           headerAlign: "center",
           width: 85,
-          renderCell: (params: GridRenderCellParams<any>) => {
-            return <RecordTimeOutUpdate params={params.row} />;
-          },
-          sortable: false,
-          description: "ดูเพิ่มเติม",
+          renderCell: ({ row }: Partial<GridRowParams>) =>
+                <IconButton  component={RouterLink}
+                    to="/"
+                    size="small"
+                    color="primary"
+                    onClick={() => {
+                        console.log("ID", row.ID)
+                        localStorage.setItem("aid", row.ID);
+                    }}
+                >
+                  <EditIcon />
+                </IconButton >,
         },
         {
           field: "ลบ",
