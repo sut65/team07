@@ -47,4 +47,5 @@ type Ambulance struct {
 	RecordTimeIn    []RecordTimeIn   `gorm:"foreignKey:AmbulanceID"`
 	Disinfection    []Disinfection   `gorm:"foreignKey:AmbulanceID"`
 	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:AmbulanceID"`
+	AmbulanceUses   []AmbulanceUse   `gorm:"foreignKey:AmbulanceID"`
 }

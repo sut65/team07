@@ -15,6 +15,7 @@ type Medicine struct {
 
 	// Link a relation
 	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:MedicineID"`
+	AmbulanceUses   []AmbulanceUse   `gorm:"foreignKey:MedicineID"`
 }
 
 type AmbulanceStore struct {

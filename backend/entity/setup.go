@@ -35,7 +35,7 @@ func SetupDatabase() {
 		&WorkingArea{},
 		&Status{},
 
-		// ระบบจัดซื้อรถพยาบาล
+		//ระบบจัดซื้อรถพยาบาล
 		&Company{},
 		&TypeAbl{},
 		&Ambulance{},
@@ -45,21 +45,24 @@ func SetupDatabase() {
 		&Gender{},
 		&Case{},
 
-		//บันทึกเวลาใช้รถขาออกของ พนง ขับรถ
+		//ระบบบันทึกเวลาใช้รถขาออกของ พนง ขับรถ
 		&RecordTimeOUT{},
 
-		//ตรวจเช็คสภาพรถ
+		//ระบบตรวจเช็คสภาพรถ
 		&AmbulancePart{},
 		&StatusCheck{},
 		&VehicleInspection{},
 
-		//ฆ่าเชื้อรถพยาบาล
+		//ระบบฆ่าเชื้อรถพยาบาล
 		&Disinfactant{},
 		&Disinfection{},
 
-		//เบิกยาเข้าสู่รถพยาบาล
+		//ระบบเบิกยาเข้าสู่รถพยาบาล
 		&AmbulanceStore{},
 		&Medicine{},
+
+		//ระบบใช้ยาบนรถพยาบาล
+		&AmbulanceUse{},
 	)
 
 	db = database
@@ -289,4 +292,12 @@ func SetupDatabase() {
 		Disinfactant:       disinfectant[1],
 	}
 	db.Model(&Disinfection{}).Create(&disinfection_1)
+
+	var medicine = []Medicine{
+		{MedicineName: "Paracetamol", MedicineWarning: "ไม่ควรเกิน 500-1000 มก.", MedicineType: "ยาแก้ปวด", MeasureUnit: "เม็ด"},
+		{MedicineName: "Alcohol", MedicineWarning: "ห้ามนําเข้าปาก - ตา, ห้ามล้างแผลโดยตรง", MedicineType: "น้ํายาล้างแผล", MeasureUnit: "มล."},
+		{MedicineName: "Povidone-iodine (Betadine)", MedicineWarning: "ห้ามนําเข้าปาก", MedicineType: "น้ํายาล้างแผล", MeasureUnit: "มล."},
+		{MedicineName: "Mepivacaine", MedicineWarning: "ต้องใช้ยาตามขนาด 5 มก. / กก.", MedicineType: "ยาชา", MeasureUnit: "มก."},
+	}
+	db.CreateInBatches(medicine, 4)
 }

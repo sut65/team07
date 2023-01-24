@@ -62,4 +62,5 @@ type Employee struct {
 	RecordTimeIn    []RecordTimeIn   `gorm:"foreignKey:EmployeeID"`
 	Disinfection    []Disinfection   `gorm:"foreignKey:EmployeeID"`
 	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:EmployeeID"`
+	AmbulanceUses   []AmbulanceUse   `gorm:"foreignKey:EmployeeID"`
 }
