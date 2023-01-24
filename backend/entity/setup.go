@@ -56,6 +56,10 @@ func SetupDatabase() {
 		//ฆ่าเชื้อรถพยาบาล
 		&Disinfactant{},
 		&Disinfection{},
+
+		//เบิกยาเข้าสู่รถพยาบาล
+		&AmbulanceStore{},
+		&Medicine{},
 	)
 
 	db = database
@@ -277,12 +281,12 @@ func SetupDatabase() {
 	db.Model(&Disinfactant{}).Create(&disinfectant)
 
 	disinfection_1 := Disinfection{
-		WorkTime: time.Now(),
+		WorkTime:           time.Now(),
 		AmountDisinfectant: 500,
-		Note: "-",
-		Employee: emp,
-		Ambulance: ambulance1,
-		Disinfactant: disinfectant[1],
+		Note:               "-",
+		Employee:           emp,
+		Ambulance:          ambulance1,
+		Disinfactant:       disinfectant[1],
 	}
 	db.Model(&Disinfection{}).Create(&disinfection_1)
 }

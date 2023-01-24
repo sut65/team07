@@ -43,7 +43,8 @@ type Ambulance struct {
 	// to eaiser for add FK
 	Employee Employee
 
-	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:AmbulanceID"`
-	RecordTimeIn []RecordTimeIn `gorm:"foreignKey:AmbulanceID"`
-	Disinfection []Disinfection `gorm:"foreignKey:AmbulanceID"`
+	RecordTimeOUT   []RecordTimeOUT  `gorm:"foreignKey:AmbulanceID"`
+	RecordTimeIn    []RecordTimeIn   `gorm:"foreignKey:AmbulanceID"`
+	Disinfection    []Disinfection   `gorm:"foreignKey:AmbulanceID"`
+	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:AmbulanceID"`
 }
