@@ -1,7 +1,6 @@
 import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
-import { convertType } from "../utility"
+import { apiUrl } from "../utility";
 
-const apiUrl = "http://localhost:8080";
 
 async function CreatAmbulances(data: AmbulancesInterface) {
     const requestOptions = {
@@ -54,7 +53,7 @@ async function GetAmbulanceByID() {
 }
 
 async function GetAmbulanceByEmployee() {
-    let id = localStorage.getItem("id");
+    let eid = localStorage.getItem("id");
     const requestOptions = {
         method: "GET",
         headers: {
@@ -64,7 +63,7 @@ async function GetAmbulanceByEmployee() {
     };
 
     let res = await fetch(
-        `${apiUrl}/ambulance/${id}`,
+        `${apiUrl}/ambulance/${eid}`,
         requestOptions
     )
         .then((response) => response.json())
@@ -169,6 +168,7 @@ async function UpdateAmbulance(data: AmbulancesInterface) {
 }
 
 export {
+    
     CreatAmbulances,
     GetAmbulanceByID,
     GetAmbulanceByEmployee,
