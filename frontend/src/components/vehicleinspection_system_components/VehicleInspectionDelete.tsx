@@ -44,9 +44,10 @@ export default function RecordTimeOutDelete(props: any) {
     }
   };
 
+
   async function submit() {
     try {
-      let res = await HttpClientServices.delete(`/recordtimeout/${params.ID}`);
+      let res = await HttpClientServices.delete(`/vehicleinspection/${params}`);
       console.log(res.data);
       setSuccess(true);
     } catch (err) {
@@ -57,8 +58,6 @@ export default function RecordTimeOutDelete(props: any) {
   React.useEffect(() => {
     getEmployee();
   }, []);
-
- 
 
   return (
     <div>
@@ -76,10 +75,9 @@ export default function RecordTimeOutDelete(props: any) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-       
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          คุณ {emp?.Name} ต้องการลบรายการบันทึกเวลาใช้รถไอดีที่ {params.ID} ใช่ไหม ??
+            คุณ {emp?.Name} ต้องการลบใบตรวจเช็คสภาพหมายเลขที่ {params.ID} ใช่ไหม
           </DialogContentText>
         </DialogContent>
         <DialogActions>

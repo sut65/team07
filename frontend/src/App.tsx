@@ -17,6 +17,8 @@ import RecordTimeInCreate from "./components/recordtimein_system_components/Reco
 import RecordTimeInHistory from "./components/recordtimein_system_components/RecordTimeInHistory";
 import RecordTimeInEdit from "./components/recordtimein_system_components/RecordTimeInEdit";
 import RecordTimeInUpdate from "./components/recordtimein_system_components/RecordTimeInUpdate";
+import DisinfectionCreate from "./components/disinfection_system_component/DisinfectionCreate";
+import DisinfectionHistory from "./components/disinfection_system_component/DisinfectionHistory";
 
 import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
@@ -113,6 +115,7 @@ export default function App() {
               element={<RecordTimeInUpdate />}
             />
           </Routes>
+          
         </div>
       </ThemeProvider>
     </Router>

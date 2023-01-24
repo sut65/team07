@@ -1,21 +1,18 @@
 import React, { useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import {
-  Container,
-  Box,
-  Button,
-} from "@mui/material";
+import { Container, Box, Button } from "@mui/material";
 import moment from "moment";
-import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
-import RecordTimeOutUpdate from "./RecordTimeOutUpdate";
-import RecordTimeOutDelete from "./RecordTimeOutDelete";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { VehicleInspectionInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
+import VehicleInspectionUpdate from "./VehicleInspectionUpdate";
+import VehicleInspectionDelete from "./VehicleInspectionDelete";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 
-function RecordTimeOutHistory() {
-  const [recordtimeout, setRecordtimeout] = React.useState<
-    RecordTimeOutInterface[]
+function VehicleInspectionHistory() {
+  const [vehicleinspection, setVehicleInspection] = React.useState<
+    VehicleInspectionInterface[]
   >([]);
 
   const [open, setOpen] = React.useState(false);
@@ -27,10 +24,10 @@ function RecordTimeOutHistory() {
     setOpen(false);
   };
 
-  const getRecordTimeOut = async () => {
+  const getVehicleInspection = async () => {
     try {
-      let res = await HttpClientServices.get("/recordtimeouts");
-      setRecordtimeout(res.data);
+      let res = await HttpClientServices.get("/vehicleinspections");
+      setVehicleInspection(res.data);
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -45,23 +42,13 @@ function RecordTimeOutHistory() {
       headerAlign: "center",
     },
     {
-      field: "Case.Emergency",
-      headerName: "Case",
-      width: 120,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params: GridRenderCellParams<any>) => {
-        return <>{params.row.Case.ID}</>;
-      },
-    },
-    {
-      field: "Ambulance.CarBrand",
+      field: "Ambulance.ID",
       headerName: "รถพยาบาล",
       width: 120,
       align: "center",
       headerAlign: "center",
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <>{params.row.Ambulance.CarBrand}</>;
+        return <>{params.row.Ambulance.ID}</>;
       },
     },
     {
@@ -75,7 +62,39 @@ function RecordTimeOutHistory() {
       },
     },
     {
-      field: "RecordTimeOutDatetime",
+      field: "Fail",
+      headerName: "ปัญหา",
+      width: 120,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <>{params.row.Fail}</>;
+      },
+    },
+
+    {
+      field: "AmbulancePart.PartName",
+      headerName: "ชิ้นส่วนรถที่มีปัญหา",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <>{params.row.AmbulancePart.PartName}</>;
+      },
+    },
+    {
+      field: "StatusCheck.StatusName",
+      headerName: "สถานะ",
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <>{params.row.StatusCheck.StatusName}</>;
+      },
+    },
+
+    {
+      field: "VehicleInspectionDatetime",
       headerName: "วัน/เวลา",
       width: 220,
       align: "center",
@@ -83,9 +102,9 @@ function RecordTimeOutHistory() {
       renderCell: (params: GridRenderCellParams<any>) => {
         return (
           <>
-            {`วันที่: ${moment(params.row.RecordTimeOutDatetime).format(
+            {`วันที่: ${moment(params.row.VehicleInspectionDatetime).format(
               "DD/MM/YYYY"
-            )} เวลา: ${moment(params.row.RecordTimeOutDatetime).format(
+            )} เวลา: ${moment(params.row.VehicleInspectionDatetime).format(
               "HH:mm"
             )} น.`}
           </>
@@ -98,7 +117,7 @@ function RecordTimeOutHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <RecordTimeOutUpdate params={params.row} />;
+        return <VehicleInspectionUpdate params={params.row} />;
       },
       sortable: false,
       description: "ดูเพิ่มเติม",
@@ -109,7 +128,7 @@ function RecordTimeOutHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <RecordTimeOutDelete params={params.row} />;
+        return <VehicleInspectionDelete params={params.row} />;
       },
       sortable: false,
       description: "ลบ",
@@ -117,12 +136,12 @@ function RecordTimeOutHistory() {
   ];
 
   useEffect(() => {
-    getRecordTimeOut();
+    getVehicleInspection();
   }, []);
 
   return (
     <div>
-      <Container maxWidth="md" sx={{ marginTop: 2 }}>
+      <Container maxWidth="lg" sx={{ marginTop: 2 }}>
         <Box display="flex">
           <Box flexGrow={1}>
             <Typography
@@ -130,25 +149,25 @@ function RecordTimeOutHistory() {
               variant="h5"
               color="primary"
             >
-              ประวัติการใช้รถพยาบาล
+              ประวัติการตรวจเช็คสภาพรถ
             </Typography>
           </Box>
 
           <Box>
             <Button
               component={RouterLink}
-              to="/RecordTimeOutCreate"
+              to="/VehicleInspectionCreate"
               variant="contained"
               color="primary"
             >
-              บันทึกเวลาใช้รถ
+              บันทึกใบตรวจเช็คสภาพรถ
             </Button>
           </Box>
         </Box>
 
         <div style={{ height: 400, maxWidth: "100%", marginTop: "20px" }}>
           <DataGrid
-            rows={recordtimeout}
+            rows={vehicleinspection}
             getRowId={(row) => row.ID}
             columns={columns}
             pageSize={5}
@@ -172,4 +191,4 @@ function RecordTimeOutHistory() {
   );
 }
 
-export default RecordTimeOutHistory;
+export default VehicleInspectionHistory;

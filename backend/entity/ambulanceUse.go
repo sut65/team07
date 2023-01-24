@@ -6,11 +6,10 @@ import (
 	"gorm.io/gorm"
 )
 
-
 type AmbulanceUse struct {
 	gorm.Model
-	Amount string
-	Date time.Time
+	Amount int
+	Date   time.Time
 
 	// Save Company area ID in FK
 	EmployeeID *uint
@@ -26,5 +25,4 @@ type AmbulanceUse struct {
 	AmbulanceID *uint
 	// to eaiser for add FK
 	Ambulance Ambulance
-
 }

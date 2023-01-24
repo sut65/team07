@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -15,12 +15,14 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Link as RouterLink } from "react-router-dom";
-import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
-import { apiUrl, convertType } from "../../services/utility";
-import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
-import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
+import { VehicleInspectionInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
 import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
+import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 import { TypeAblsInterface } from "../../models/ambulance_system_models/typeAbl";
+import { StatusCheckInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
+import { AmbulancePartInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
+import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
+import { apiUrl, convertType } from "../../services/utility";
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
   ref
@@ -28,31 +30,23 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export interface CaseInterface {
-  ID: number;
-  Patient: string;
-  Location: string;
-  Age: number;
-  Status: string;
-  DateTime: Date;
-}
-
-function RecordTimeOutCreate() {
-  const [recordtimeout, setRecordTimeOut] = useState<
-    Partial<RecordTimeOutInterface>
-  >({ RecordTimeOutDatetime: new Date() });
-
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-
-  const [emp, setEmployee] = useState<EmployeeInterface[]>([]);
-  const [cases, setCases] = useState<CaseInterface[]>([]);
-
-  const [abl, setAmbulance] = useState<AmbulancesInterface[]>([]);
-  const [typeAbls, setTypeAbl] = useState<TypeAblsInterface[]>([]);
-  const [a, setA] = useState<string>("");
-  const [detailCase, setDetailCase] = useState<string>("รายละเอียด");
-
+export default function VehicleInspectionCreate() {
+  const [vehicleinspection, setVehicleInspection] = React.useState<
+    Partial<VehicleInspectionInterface>
+  >({ VehicleInnspectionDatetime: new Date() });
+  const [success, setSuccess] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [abl, setAmbulance] = React.useState<AmbulancesInterface[]>([]);
+  const [typeAbls, setTypeAbl] = React.useState<TypeAblsInterface[]>([]);
+  const [a, setA] = React.useState<string>("");
+  const [statuscheck, setStatuscheck] = React.useState<StatusCheckInterface[]>(
+    []
+  );
+  const [ablpart, setAmbulancePart] = React.useState<AmbulancePartInterface[]>(
+    []
+  );
+  const [emp, setEmployee] = React.useState<EmployeeInterface[]>([]);
+  const [detailABL, setDatail] = React.useState<string>("รายละเอียด");
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -63,22 +57,21 @@ function RecordTimeOutCreate() {
     setSuccess(false);
     setError(false);
   };
-
   //select
   const handleChange = (event: SelectChangeEvent) => {
-    const name = event.target.name as keyof typeof recordtimeout;
-    setRecordTimeOut({ ...recordtimeout, [name]: event.target.value });
-
-    if (event.target.name === "CaseID") {
-      cases.forEach((val: any) => {
-        if (val.ID === Number(event.target.value)) {
-          setDetailCase(`ไอดีเคส: ${val.ID} สถานที่เกิดเหตุ: ${val.Location}`);
-        }
-      });
-      if (event.target.value === "") {
-        setDetailCase("รายละเอียด");
-      }
-    }
+    const name = event.target.name as keyof typeof vehicleinspection;
+    setVehicleInspection({ ...vehicleinspection, [name]: event.target.value });
+   
+    // if (event.target.name === "AmbulanceID") {
+    //   abl.forEach((val: any) => {
+    //     if (val.CarBrand === Number(event.target.value)) {
+    //       setDatail(`ไอดีรถ: ${val.ID} ยี่ห้อรถ: ${val.CarBrand} เลขทะเบียนรถ: ${val.Clp}`);
+    //     }
+    //   });
+    //   if (event.target.value === "") {
+    //     setDatail("รายละเอียด");
+    //   }
+    // }
 
     if (event.target.name === "TypeAblID") {
       getAmbulance(event.target.value);
@@ -87,13 +80,22 @@ function RecordTimeOutCreate() {
         setAmbulance([]);
       }
     }
-    console.log(recordtimeout);
+    if (event.target.name === "AmbulanceID") {
+      abl.forEach((val: any) => {
+        if (val.CarBrand === Number(event.target.value)) {
+          setDatail(`ไอดีรถ: ${val.ID} ยี่ห้อรถ: ${val.CarBrand} เลขทะเบียนรถ: ${val.Clp}`);
+        }
+      });
+      if (event.target.value === "") {
+        setDatail("รายละเอียด");
+      }
+    }
+    console.log(vehicleinspection);
   };
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.name as keyof typeof recordtimeout;
-    setRecordTimeOut({
-      ...recordtimeout,
+    const name = event.target.name as keyof typeof vehicleinspection;
+    setVehicleInspection({
+      ...vehicleinspection,
       [name]: event.target.value,
     });
   };
@@ -102,15 +104,6 @@ function RecordTimeOutCreate() {
     try {
       let res = await HttpClientServices.get(`/abl/${id}`);
       setAmbulance(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const getCases = async () => {
-    try {
-      let res = await HttpClientServices.get(`/cases`);
-      setCases(res.data);
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -125,37 +118,47 @@ function RecordTimeOutCreate() {
       console.log(err);
     }
   };
-  const getEmployee = async () => {
+  const getStatusCheck = async () => {
     try {
-      let res = await HttpClientServices.get("/employees");
-      setEmployee(res.data);
+      let res = await HttpClientServices.get("/statuschecks");
+      setStatuscheck(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getAmbulancePart = async () => {
+    try {
+      let res = await HttpClientServices.get("/ambulanceparts");
+      setAmbulancePart(res.data);
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     // getAmbulance();
-    getEmployee();
     getTypeAbl();
-    getCases();
+    getStatusCheck();
+    getAmbulancePart();
   }, []);
 
   async function submit() {
     let data = {
-      // ID: recordtimeout.ID ?? 0,
-      OdoMeter: convertType(recordtimeout?.OdoMeter) ?? 0,
-      Annotation: recordtimeout?.Annotation ?? "",
-      RecordTimeOutDatetime: recordtimeout?.RecordTimeOutDatetime ?? new Date(),
-      EmployeeID: convertType(recordtimeout?.EmployeeID) ?? 1,
-      CaseID: convertType(recordtimeout?.CaseID) ?? 0,
-      AmbulanceID: convertType(recordtimeout?.AmbulanceID) ?? 0,
+      OdoMeter: convertType(vehicleinspection?.OdoMeter) ?? 0,
+      Fail: vehicleinspection?.Fail ?? "",
+      VehicleInnspectionDatetime:
+        vehicleinspection?.VehicleInnspectionDatetime ?? new Date(),
+      EmployeeID: convertType(vehicleinspection?.EmployeeID) ?? 1,
+      AmbulancePartID: convertType(vehicleinspection?.AmbulancePartID) ?? 0,
+      AmbulanceID: convertType(vehicleinspection?.AmbulanceID) ?? 0,
+      StatusCheckID: convertType(vehicleinspection.StatusCheckID) ?? 0,
     };
     console.log(data);
 
     try {
-      let res = await HttpClientServices.post("/recordtimeout", data);
+      let res = await HttpClientServices.post("/vehicleinspection", data);
       setSuccess(true);
       console.log(res.data);
     } catch (err) {
@@ -178,50 +181,16 @@ function RecordTimeOutCreate() {
         <Box>
           <Typography
             variant="h5"
-            color="primary"
+            color="secondary"
             sx={{ padding: 2, fontWeight: "bold" }}
           >
-            บันทึกเวลาใช้รถขาออกของพนักงานขับรถ
+            ใบตรวจเช็คสภาพรถ
           </Typography>
         </Box>
-        <Divider />
-        <Grid container spacing={2} sx={{ padding: 1 }}>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <Typography>เคสที่ได้รับแจ้ง</Typography>
-              <Select
-                id="ID"
-                native
-                name="CaseID"
-                size="small"
-                // value={String(recordtimeout?.CaseID)}
-                onChange={handleChange}
-                inputProps={{
-                  name: "CaseID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกเคส
-                </option>
-                {cases.map((item: CaseInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.ID}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label={detailCase}
-              disabled
-              fullWidth
-              rows={2.5}
-              multiline
-              // defaultValue={detailCase}
-            />
-          </Grid>
 
+        <Divider />
+
+        <Grid container spacing={2} sx={{ padding: 1 }}>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography>ประเภทรถพยาบาล</Typography>
@@ -274,14 +243,7 @@ function RecordTimeOutCreate() {
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
-              label="detail"
-              disabled
-              fullWidth
-              rows={2.5}
-              multiline
-              // value={abl?.Clp}
-            />
+            <TextField label="detail" disabled fullWidth rows={2} multiline />
           </Grid>
 
           <Grid item xs={4}>
@@ -302,21 +264,74 @@ function RecordTimeOutCreate() {
           </Grid>
 
           <Grid item xs={4}>
-            <Typography>หมายเหตุ</Typography>
+            <Typography>ปัญหา (Fail)</Typography>
             <FormControl fullWidth variant="outlined">
               <TextField
-                id="Annotation"
-                name="Annotation"
+                id="Fail"
+                name="Fail"
                 type="string"
                 size="small"
                 color="primary"
                 inputProps={{
-                  name: "Annotation",
+                  name: "Fail",
                 }}
                 onChange={handleInputChange}
               />
             </FormControl>
           </Grid>
+
+          <Grid item xs={4}>
+            <FormControl fullWidth variant="outlined">
+              <Typography>ชิ้นส่วนรถ</Typography>
+              <Select
+                id="ID"
+                native
+                name="AmbulancePartID"
+                size="small"
+                onChange={handleChange}
+                inputProps={{
+                  name: "AmbulancePartID",
+                }}
+                // disabled={a != "" ? false : true}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกสถานะรถ
+                </option>
+                {ablpart.map((item: AmbulancePartInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.PartName}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={4}>
+            <FormControl fullWidth variant="outlined">
+              <Typography>สถานะรถ</Typography>
+              <Select
+                id="ID"
+                native
+                name="StatusCheckID"
+                size="small"
+                onChange={handleChange}
+                inputProps={{
+                  name: "StatusCheckID",
+                }}
+                // disabled={a != "" ? false : true}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกสถานะรถ
+                </option>
+                {statuscheck.map((item: StatusCheckInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.StatusName}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography> วัน/เวลา </Typography>
@@ -333,27 +348,29 @@ function RecordTimeOutCreate() {
               </LocalizationProvider>
             </FormControl>
           </Grid>
-          <Grid item xs={6}>
-            <Button
-              style={{ float: "left" }}
-              onClick={submit}
-              variant="contained"
-              color="primary"
-            >
-              บันทึกข้อมูล
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              style={{ float: "right" }}
-              //   onClick={}
-              component={RouterLink}
-              to="/RecordTimeOutHistory"
-              variant="contained"
-              color="secondary"
-            >
-              ย้อนกลับ
-            </Button>
+          <Grid item xs={12}>
+            <Grid item xs={6}>
+              <Button
+                style={{ float: "left" }}
+                //   onClick={}
+                component={RouterLink}
+                to="/VehicleInspectionHistory"
+                variant="contained"
+                color="secondary"
+              >
+                ย้อนกลับ
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                style={{ float: "right" }}
+                onClick={submit}
+                variant="contained"
+                color="primary"
+              >
+                บันทึกข้อมูล
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </Paper>
@@ -375,5 +392,3 @@ function RecordTimeOutCreate() {
     </Container>
   );
 }
-
-export default RecordTimeOutCreate;
