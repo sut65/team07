@@ -177,6 +177,25 @@ func main() {
 
 	// ---------------------------------- ระบบใชยาบนรถพยาบาล -------------------------------
 
+	// --------------------------------- ระบบที่จอดรถพยาบาล -----------------------------
+	// List carDepots
+	r.GET("/carDepots", controller.ListCarDepots)
+	// Get by id
+	r.GET("/carDepots/:id", controller.GetCarDepot)
+	// Get by empid
+	r.GET("/carDepot/:empid", controller.GetCarDepotByEmployee)
+	// Create
+	r.POST("/carDepot", controller.CreateCarDepot)
+	// DELETE
+	r.DELETE("/carDepot/:id", controller.DeleteCarDepot)
+	// UPDATE
+	r.PATCH("/carDepot", controller.UpdateCardepot)
+
+	// List park
+	r.GET("/parks", controller.ListParks)
+
+	// --------------------------------- ระบบที่จอดรถพยาบาล -----------------------------
+
 	//Run server using gin gonic
 	r.Run()
 }

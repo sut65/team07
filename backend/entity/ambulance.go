@@ -48,4 +48,5 @@ type Ambulance struct {
 	Disinfection    []Disinfection   `gorm:"foreignKey:AmbulanceID"`
 	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:AmbulanceID"`
 	AmbulanceUses   []AmbulanceUse   `gorm:"foreignKey:AmbulanceID"`
+	CarDepot        []CarDepot       `gorm:"foreignKey:AmbulanceID"`
 }
