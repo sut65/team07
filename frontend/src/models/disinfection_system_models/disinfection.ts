@@ -1,5 +1,6 @@
 import { AmbulancesInterface } from "../ambulance_system_models/ambulance";
 import { EmployeeInterface } from "../employeeSystemModel/IEmployee";
+import { DisintantInterface } from "./disinfectant";
 
 export interface DisinfectionInterface {
 
@@ -8,8 +9,8 @@ export interface DisinfectionInterface {
     WorkTime: Date | null,
     AmountDisinfectant: number | null,
 
-    AmbulanceID?: number;
-    Ambulance?: AmbulancesInterface;
+    AmbulanceID?: number | null,
+    Ambulance?: AmbulancesInterface,
 
     DisinfactantID?: number | null,
     Disinfactant?: DisintantInterface,
@@ -17,8 +18,3 @@ export interface DisinfectionInterface {
     EmployeeID?: number | null,
     EmployeeInterface?: EmployeeInterface,
 }
-
-export interface DisintantInterface {
-    ID: number,
-    Type: string,
-} 

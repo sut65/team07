@@ -6,7 +6,6 @@ import { AmbulancesInterface } from '../../models/ambulance_system_models/ambula
 import { TypeAblsInterface } from '../../models/ambulance_system_models/typeAbl';
 import { ListTypeAbls, CreatAmbulances, ListCompanies } from '../../services/ambulance_system_services/HttpClientService';
 import { DisinfectionInterface } from '../../models/disinfection_system_models/disinfection';
-import { DisintantInterface } from '../../models/disinfection_system_models/disinfection';
 import { Link as RouterLink } from "react-router-dom";
 import { HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
 
@@ -14,6 +13,7 @@ import { setDate } from 'date-fns';
 import { CompaniesInterface } from '../../models/ambulance_system_models/company';
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee';
 import MuiAlert from "@mui/material/Alert";
+import { DisintantInterface } from '../../models/disinfection_system_models/disinfectant';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -88,6 +88,7 @@ function DisinfectionCreate() {
 
     const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof disinfection;
+        console.log(name)
         setDisinfection({
             ...disinfection,
             [name]: event.target.value,
@@ -104,11 +105,12 @@ function DisinfectionCreate() {
         let data = {
             WorkTime: disinfection?.WorkTime ?? new Date(),
             Note: disinfection?.Note ?? "",
-            AmountDisinfectant: disinfection?.AmountDisinfectant ?? 0,
+            AmountDisinfectant: convertType(disinfection?.AmountDisinfectant) ?? 0,
             EmployeeID: convertType(disinfection?.EmployeeID) ?? 1,
             AmbulanceID: convertType(disinfection?.AmbulanceID) ?? 0,
-            DisinfectantID: convertType(disinfection?.DisinfactantID) ?? 0,
+            DisinfactantID: convertType(disinfection?.DisinfactantID) ?? 0,
         };
+        console.log(data)
 
         try {
             let res = await HttpClientServices.post("/disinfection", data);
@@ -116,7 +118,7 @@ function DisinfectionCreate() {
             console.log(res.data);
         } catch (err) {
             setError(false);
-            console.log(err);
+            console.log(JSON.stringify(err));
         }
     }
 
@@ -185,12 +187,12 @@ function DisinfectionCreate() {
                                 native
                                 name="DisinfectantID"
                                 size="medium"
-                                value={disinfection.DisinfactantID + ""}
+                                value={disinfection.DisinfactantID+""}
                                 onChange={handleChange}
                                 inputProps={{
-                                name: "DisinfectantID",
+                                name: "DisinfactantID",
                                 }}
-                            ><option>กรุณาเลือกชนิดน้ำยาฆ่าเชื้อ</option>
+                            ><option aria-label="None" value="">กรุณาเลือกชนิดน้ำยาฆ่าเชื้อ</option>
                                 {disinfectant.map((item: DisintantInterface) => (
                                 <option value={item.ID!} key={item.ID}>
                                     {item.Type}
@@ -252,14 +254,16 @@ function DisinfectionCreate() {
                         <Typography> วัน/เวลา ทำการฆ่าเชื้อ </Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
-                                value={Number(disinfection.WorkTime)}
+                                value={disinfection.WorkTime}
                                 onChange={(newValue) => {
-                                    newValue = 1;
+                                    setDisinfection({
+                                        ...disinfection,
+                                        WorkTime: newValue,
+                                    });
                                 }}
-                                renderInput={(params) => (
-                                    <TextField {...params} size="small" />
-                                )}
-                                />
+                                renderInput={(params) => <TextField {...params} size="small" />
+                                }
+                            />
                         </LocalizationProvider>
                         </FormControl>
                     </Grid>
