@@ -151,11 +151,11 @@ func UpdateCardepot(c *gin.Context) {
 	}
 
 	if carDepot.PNum == 0 {
-		carDepot.PNum = carDepot.PNum
+		carDepot.PNum = carDepotold.PNum
 	}
 
 	if carDepot.Date.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		carDepot.Date = carDepot.Date
+		carDepot.Date = carDepotold.Date
 	}
 
 	// if have new employee_id

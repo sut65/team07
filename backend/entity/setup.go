@@ -106,34 +106,40 @@ func SetupDatabase() {
 	}
 	db.Model(&User{}).Create(&userAdmin)
 
-	db.Model(&User{}).Create(&User{
+	userManager := User{
 		Name:     "Manager",
 		Password: string(pw),
 		Role:     carManager,
-	})
+	}
+	db.Model(&User{}).Create(&userManager)
 
-	db.Model(&User{}).Create(&User{
+	userNerse := User{
 		Name:     "Nurse",
 		Password: string(pw),
 		Role:     nurse,
-	})
-	db.Model(&User{}).Create(&User{
+	}
+	db.Model(&User{}).Create(&userNerse)
+
+	userDriver := User{
 		Name:     "Driver",
 		Password: string(pw),
 		Role:     driver,
-	})
+	}
+	db.Model(&User{}).Create(&userDriver)
 
-	db.Model(&User{}).Create(&User{
+	userDis := User{
 		Name:     "Disinfection Staff",
 		Password: string(pw),
 		Role:     disinfection,
-	})
+	}
+	db.Model(&User{}).Create(&userDis)
 
-	db.Model(&User{}).Create(&User{
+	userOther := User{
 		Name:     "OtherStaff",
 		Password: string(pw),
 		Role:     notificationStaff,
-	})
+	}
+	db.Model(&User{}).Create(&userOther)
 
 	voc := Education{
 		Path:  "สายอาชีพ",
@@ -204,18 +210,22 @@ func SetupDatabase() {
 	db.CreateInBatches(gender, 2)
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
 
-	//Dummy
-	emp := Employee{
-		Name: "BB",
-	}
-	db.Model(&Employee{}).Create((&emp))
-
 	case2 := Case{
 		Location:  "ปต2",
 		Gender:    gender[1],
 		Emergency: emergency[1],
 	}
 	db.Model(&Case{}).Create((&case2))
+
+	emp := Employee{
+		Name:      "Amb",
+		Surname:   "Dis",
+		Age:       20,
+		User:      userDis,
+		Status:    working,
+		Education: bacDeg,
+	}
+	db.Model(&Employee{}).Create(&emp)
 
 	ambulance1 := Ambulance{
 		Clp:      "บบ 36771",

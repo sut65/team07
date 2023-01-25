@@ -172,8 +172,8 @@ func main() {
 	// UPDATE
 	r.PATCH("/ambulanceUse", controller.UpdateAmbulanceUse)
 
-	// List companies
-	r.GET("/medidines", controller.ListMedicines)
+	// List medicine
+	r.GET("/medicines", controller.ListMedicines)
 
 	// ---------------------------------- ระบบใชยาบนรถพยาบาล -------------------------------
 
@@ -196,6 +196,30 @@ func main() {
 
 	// --------------------------------- ระบบที่จอดรถพยาบาล -----------------------------
 
+	// --------------------------------- ระบบเบิกยาเข้าสู่รถพยาบาล -----------------------------
+	// --------------------------------- Medicine Controller ------------------------------
+	// List Medicine in line 176
+
+	// Get Medicine by id
+	r.GET("/medicine/:id", controller.GetMedicine)
+	// Create Medicine
+	r.POST("/medicine", controller.CreateMedicine)
+	// Update Medicine
+	r.PATCH("/medicine", controller.UpdateMedicine)
+	// Delete Medicine
+	r.DELETE("/medicine/:id", controller.DeleteMedicine)
+
+	// --------------------------------- Ambulance Store Controller ------------------------------
+	// List ambulance Store
+	r.GET("/ambulanceStores", controller.ListAmbulanceStore)
+	// Get Ambulance Store
+	r.GET("/ambulanceStore/:id", controller.GetAmbulanceStore)
+	// Create Ambulance Store
+	r.POST("/ambulanceStore", controller.CreateAmbulanceStore)
+	// Update Ambulance Store
+	r.PATCH("/ambulanceStore", controller.UpdateAmbulanceStore)
+
+	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 	//Run server using gin gonic
 	r.Run()
 }
