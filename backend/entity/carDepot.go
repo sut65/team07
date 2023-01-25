@@ -12,7 +12,7 @@ type Park struct {
 	Surname string
 
 	//For Link Foreign key
-	CarDepots []CarDepot `gorm:"foreignKey:CompanyID"`
+	CarDepots []CarDepot `gorm:"foreignKey:ParkID"`
 }
 
 type CarDepot struct {
