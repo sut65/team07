@@ -21,12 +21,18 @@ type CarDepot struct {
 	PNum    int    //เลขช่องรถ
 	Date    time.Time
 
-	//For Link Foreign key
-	Ambulances []Ambulance `gorm:"foreignKey:CarDepotID"`
-	Employees  []Employee  `gorm:"foreignKey:CarDepotID"`
-
 	// Save Park ID in FK..
 	ParkID *uint
 	// to eaiser for add FK
 	Park Park
+
+	// Save Ambulance ID in FK..
+	AmbulanceID *uint
+	// to eaiser for add FK
+	Ambulance Ambulance
+
+	// Save Employee ID in FK
+	EmployeeID *uint
+	// to eaiser for add FK
+	Employee Employee
 }
