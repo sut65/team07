@@ -69,7 +69,6 @@ function AmbulanceUpdate() {
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name as keyof typeof ambulance;
-        console.log(name)
         setAmbulance({
             ...ambulance,
             [name]: event.target.value,
@@ -96,7 +95,6 @@ function AmbulanceUpdate() {
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
         };
-        console.log(data)
         let res = await UpdateAmbulance(data);
         if (res) {
             setSuccess(true);
@@ -222,6 +220,7 @@ function AmbulanceUpdate() {
                     <Grid item={true} xs={6}>
                         <Typography className='StyledTypography'> เลขทะเบียนรถ </Typography>
                         <TextField className='StyledTextField'
+                            autoComplete="off"
                             id="Name"
                             variant="outlined"
                             size="small"
@@ -237,6 +236,7 @@ function AmbulanceUpdate() {
                     <Grid item={true} xs={6}>
                         <Typography className='StyledTypography'> ยี่ห้อรถ </Typography>
                         <TextField className='StyledTextField'
+                            autoComplete="off"
                             id="Name"
                             variant="outlined"
                             size="small"
@@ -280,7 +280,7 @@ function AmbulanceUpdate() {
                         color="error"
                         component={RouterLink}
                         to="/Ambulance"
-                        sx={{ '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
+                        sx={{ borderRadius: 10, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
                     >
                         ยกเลิก
                     </Button>
@@ -288,7 +288,7 @@ function AmbulanceUpdate() {
                         variant="contained"
                         color="primary"
                         onClick={submit}
-                        sx={{ '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
+                        sx={{ borderRadius: 10, '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
                     >
                         อัพเดตข้อมูล
                     </Button>
