@@ -20,7 +20,7 @@ import RecordTimeInUpdate from "./components/recordtimein_system_components/Reco
 import DisinfectionCreate from "./components/disinfection_system_component/DisinfectionCreate";
 import DisinfectionHistory from "./components/disinfection_system_component/DisinfectionHistory";
 import DisinfectionDelete from "./components/disinfection_system_component/DisinfectionDelete";
-// import DisinfectionUpdate from "./components/disinfection_system_component/DisinfecttionUpdate";
+import DisinfectionUpdate from "./components/disinfection_system_component/DisinfecttionUpdate";
 
 import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
@@ -29,6 +29,7 @@ import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
+// import RecordTimeInDelete from "./components/recordtimein_system_components/RecordTimeInDelete";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -121,7 +122,9 @@ export default function App() {
             <Route path="/DisinfectionCreate" element={<DisinfectionCreate />} />
             <Route path="/DisinfectionHistory" element={<DisinfectionHistory />} />
             <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
-            {/* <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} /> */}
+            <Route path="/DisinfectionUpdate" element={<DisinfectionUpdate />} />
+            {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
+
 
             <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />}/>
 
