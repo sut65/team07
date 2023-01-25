@@ -28,6 +28,7 @@ import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 
+import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -121,6 +122,8 @@ export default function App() {
             <Route path="/DisinfectionHistory" element={<DisinfectionHistory />} />
             <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
             {/* <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} /> */}
+
+            <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />}/>
 
           </Routes>
           

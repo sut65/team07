@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -16,7 +17,6 @@ type JwtWrapper struct {
 
 type JwtClaims struct {
 	Authorized bool
-	ExpiresAt  uint
 	Role_name  string
 	User_id    uint
 	jwt.StandardClaims
@@ -64,9 +64,9 @@ func (j *JwtWrapper) ValidateToken(signedToken string) (data *JwtClaims, err err
 		newClaims, err := Pretty(claims)
 		//change json to struct for use
 		data = ClaimsData(newClaims)
-
+		fmt.Println(data.ExpiresAt)
 		//check token has exp ?
-		if data.ExpiresAt < uint(time.Now().Local().Unix()) {
+		if uint(data.StandardClaims.ExpiresAt) < uint(time.Now().Local().Unix()) {
 			err = errors.New("JWT IS EXPIRED")
 			return nil, err
 		}

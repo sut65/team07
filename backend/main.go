@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/controller"
 	"github.com/sut65/team07/entity"
+	"github.com/sut65/team07/middlewares"
 )
 
 func CORSMiddleware() gin.HandlerFunc {
@@ -38,53 +39,68 @@ func main() {
 
 	//Controller
 
+	// --------------------------- Auth System --------------------------
 	r.POST("/role", controller.CreateRole)
 	r.GET("/roles", controller.ListRole)
 	r.POST("/signup", controller.Signup)
 	r.GET("/users", controller.ListUser)
 
+	r.POST("/signin", controller.Signin)
+
+	r.GET("/valid", controller.Validation)
+	// -------------------------- Auth System ----------------------------
+
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 
-	// ----------------- Working Area ----------------------------
-	// List
-	r.GET("/workingareas", controller.ListWorkingArea)
-	// Get by id
-	r.GET("/workingarea/:id", controller.GetWorkingArea)
-	// Create
-	r.POST("/workingarea", controller.CreateWorkingArea)
-	// UPDATE
-	r.PATCH("/workingarea", controller.UpdateWorkingArea)
-	// Delete
-	r.DELETE("/workingarea/:id", controller.DeleteWorkingArea)
-	// ----------------- Working Area ----------------------------
+	adminApi := r.Group("/admin")
+	{
+		protected := adminApi.Use(middlewares.Authorizes())
 
-	// ----------------- Education ------------------------
-	// List
-	r.GET("/educations", controller.ListEducation)
-	// Get by id
-	r.GET("/education/:id", controller.GetEducation)
-	// ----------------- Education ------------------------
+		// Admin Checking
+		protected.Use(middlewares.CheckAdmin())
+		{
+			// ----------------- Working Area ----------------------------
+			// List
+			protected.GET("/workingareas", controller.ListWorkingArea)
+			// Get by id
+			protected.GET("/workingarea/:id", controller.GetWorkingArea)
+			// Create
+			protected.POST("/workingarea", controller.CreateWorkingArea)
+			// UPDATE
+			protected.PATCH("/workingarea", controller.UpdateWorkingArea)
+			// Delete
+			protected.DELETE("/workingarea/:id", controller.DeleteWorkingArea)
+			// ----------------- Working Area ----------------------------
 
-	// ------------------- Status -------------------------
-	// List Status
-	r.GET("/statuses", controller.ListStatus)
-	// Get by id
-	r.GET("/status/:id", controller.GetStatus)
+			// ----------------- Education ------------------------
+			// List
+			r.GET("/educations", controller.ListEducation)
+			// Get by id
+			r.GET("/education/:id", controller.GetEducation)
+			// ----------------- Education ------------------------
 
-	// ------------------- Status -------------------------
+			// ------------------- Status -------------------------
+			// List Status
+			r.GET("/statuses", controller.ListStatus)
+			// Get by id
+			r.GET("/status/:id", controller.GetStatus)
 
-	// ----------------- Employee ----------------------------
-	// List
-	r.GET("/employees", controller.ListEmployee)
-	// Get by id
-	r.GET("/employee/:id", controller.GetEmployee)
-	// Create
-	r.POST("/employee", controller.CreateEmployee)
-	// UPDATE
-	r.PATCH("/employee", controller.UpdateEmployee)
-	// DELETE
-	r.DELETE("/employee/:id", controller.DeleteEmployee)
-	// ----------------- Employee ----------------------------
+			// ------------------- Status -------------------------
+
+			// ----------------- Employee ----------------------------
+			// List
+			r.GET("/employees", controller.ListEmployee)
+			// Get by id
+			r.GET("/employee/:id", controller.GetEmployee)
+			// Create
+			r.POST("/employee", controller.CreateEmployee)
+			// UPDATE
+			r.PATCH("/employee", controller.UpdateEmployee)
+			// DELETE
+			r.DELETE("/employee/:id", controller.DeleteEmployee)
+			// ----------------- Employee ----------------------------
+		}
+	}
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 
@@ -154,8 +170,6 @@ func main() {
 	r.DELETE("/Emercase/:id", controller.DeleteEmercase)
 	r.PATCH("/Emercase", controller.UpdateEmercase)
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
-
-	r.POST("/signin", controller.Signin)
 
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
 

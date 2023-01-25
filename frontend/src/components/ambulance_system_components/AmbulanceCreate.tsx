@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react'
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import './AmbulanceCreate.css';
-
 import { CompaniesInterface } from '../../models/ambulance_system_models/company';
 import { TypeAblsInterface } from '../../models/ambulance_system_models/typeAbl';
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
@@ -90,7 +89,6 @@ function AmbulanceCreate() {
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
         };
-        console.log(data)
         let res = await CreatAmbulances(data);
         if (res) {
             setSuccess(true);
@@ -144,7 +142,7 @@ function AmbulanceCreate() {
 
             <Container
                 component="main"
-                maxWidth="md"
+                maxWidth="sm"
                 sx={{
                     mt: 5,
                     mb: 2,
@@ -220,6 +218,7 @@ function AmbulanceCreate() {
                     <Grid item={true} xs={12}>
                         <Typography className='StyledTypography'> เลขทะเบียนรถ </Typography>
                         <TextField className='StyledTextField'
+                            autoComplete='off'
                             id="Name"
                             variant="outlined"
                             size="small"
@@ -234,6 +233,7 @@ function AmbulanceCreate() {
                     <Grid item={true} xs={12}>
                         <Typography className='StyledTypography'> ยี่ห้อรถ </Typography>
                         <TextField className='StyledTextField'
+                            autoComplete='off'
                             id="Name"
                             variant="outlined"
                             size="small"
@@ -276,7 +276,7 @@ function AmbulanceCreate() {
                         color="error"
                         component={RouterLink}
                         to="/Ambulance"
-                        sx={{'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+                        sx={{ borderRadius: 10, '&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
                     >
                         ถอยกลับ
                     </Button>
@@ -284,7 +284,7 @@ function AmbulanceCreate() {
                         variant="contained"
                         color="primary"
                         onClick={submit}
-                        sx={{'&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
+                        sx={{ borderRadius: 10, '&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
                     >
                         บันทึกข้อมูล
                     </Button>

@@ -2,7 +2,7 @@ import { Autocomplete, Box, Button, Container, Typography } from '@mui/material'
 import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react'
 import { Link as RouterLink } from "react-router-dom";
-import { ListAmbulances, GetAmbulanceByEmployee } from '../../services/ambulance_system_services/HttpClientService'
+import { GetAmbulanceByEmployee } from '../../services/ambulance_system_services/HttpClientService'
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
 
 function Ambulance() {
@@ -12,7 +12,6 @@ function Ambulance() {
         let res = await GetAmbulanceByEmployee();
         if (res) {
             setAmbulanceByEmployee(res);
-            console.log(res)
         }
     };
 
@@ -38,10 +37,9 @@ function Ambulance() {
                     variant="contained"
                     color="error"
                     onClick={() => {
-                        console.log("ID", row.ID)
                         localStorage.setItem("aid", row.ID);
                     }}
-                    sx={{borderRadius: 2.5,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+                    sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
                 >
                     แก้ไข
                 </Button>,
@@ -92,7 +90,7 @@ function Ambulance() {
                             to="/Ambulance/AmbulanceCreate"
                             variant="contained"
                             color="primary"
-                            sx = {{borderRadius: 2,'&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
+                            sx = {{borderRadius: 20,'&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
                         >
                             สร้างรายการ
                         </Button>
