@@ -25,6 +25,7 @@ import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
 import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import PeopleIcon from '@mui/icons-material/People';
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from "react-router-dom";
@@ -98,6 +99,12 @@ function Navbar() {
       name: "รายการฆ่าเชื้อรถพยาบาล",
       icon: <ArrowForwardIcon />,
       path: "/DisinfectionHistory",
+    },
+
+    {
+      name: "รายการยา",
+      icon: <MedicalServicesIcon />,
+      path: "/AmbulanceUse/AmbulanceUseCreate",
     },
   ];
 
