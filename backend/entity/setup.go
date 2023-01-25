@@ -67,12 +67,32 @@ func SetupDatabase() {
 
 	db = database
 
-	// ทำการเพิ่ม Dummy Role ผู้ดูแลระบบ
+	// ทำการเพิ่ม Dummy Role
 	admin := Role{
 		Name: "admin",
 	}
+	carManager := Role{
+		Name: "Car Manager",
+	}
+	nurse := Role{
+		Name: "Nurse",
+	}
+	driver := Role{
+		Name: "Diver",
+	}
+	disinfection := Role{
+		Name: "Disinfection Staff",
+	}
+	notificationStaff := Role{
+		Name: "Notification Staff",
+	}
 
 	db.Model(&Role{}).Create(&admin)
+	db.Model(&Role{}).Create(&carManager)
+	db.Model(&Role{}).Create(&nurse)
+	db.Model(&Role{}).Create(&driver)
+	db.Model(&Role{}).Create(&disinfection)
+	db.Model(&Role{}).Create(&notificationStaff)
 
 	// ทำการเพิ่ม Dummy user ผู้ดูแลระบบ
 	pw, err := bcrypt.GenerateFromPassword([]byte("123456"), bcrypt.DefaultCost)
@@ -85,6 +105,35 @@ func SetupDatabase() {
 		Role:     admin,
 	}
 	db.Model(&User{}).Create(&userAdmin)
+
+	db.Model(&User{}).Create(&User{
+		Name:     "Manager",
+		Password: string(pw),
+		Role:     carManager,
+	})
+
+	db.Model(&User{}).Create(&User{
+		Name:     "Nurse",
+		Password: string(pw),
+		Role:     nurse,
+	})
+	db.Model(&User{}).Create(&User{
+		Name:     "Driver",
+		Password: string(pw),
+		Role:     driver,
+	})
+
+	db.Model(&User{}).Create(&User{
+		Name:     "Disinfection Staff",
+		Password: string(pw),
+		Role:     disinfection,
+	})
+
+	db.Model(&User{}).Create(&User{
+		Name:     "OtherStaff",
+		Password: string(pw),
+		Role:     notificationStaff,
+	})
 
 	voc := Education{
 		Path:  "สายอาชีพ",
