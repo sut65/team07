@@ -59,7 +59,7 @@ func Signin(c *gin.Context) {
 	}
 
 	jwtWrapper := services.JwtWrapper{
-		SecretKey:      "Secret",
+		SecretKey:      "SvNQpBN8y3qlVrsGAYYWoJJk56LtzFHx",
 		Issuer:         "AuthService",
 		ExpirationHour: 24,
 	}
@@ -100,7 +100,7 @@ func Validation(c *gin.Context) {
 	}
 
 	jwtWrapper := services.JwtWrapper{
-		SecretKey: "Secret",
+		SecretKey: "SvNQpBN8y3qlVrsGAYYWoJJk56LtzFHx",
 		Issuer:    "AuthService",
 	}
 

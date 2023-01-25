@@ -45,3 +45,18 @@ func Authorizes() gin.HandlerFunc {
 	}
 
 }
+
+func CheckAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		role := c.GetString("role_name")
+
+		if role != "admin" {
+			c.JSON(http.StatusBadGateway, gin.H{
+				"error": "you is not admin",
+			})
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}
