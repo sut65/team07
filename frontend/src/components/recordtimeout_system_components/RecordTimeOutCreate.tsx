@@ -21,6 +21,7 @@ import { HttpClientServices } from "../../services/recordtimeout_system_services
 import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
 import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
 import { TypeAblsInterface } from "../../models/ambulance_system_models/typeAbl";
+import { useParams } from "react-router-dom";
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
   ref
@@ -38,19 +39,21 @@ export interface CaseInterface {
 }
 
 function RecordTimeOutCreate() {
+  const params = useParams();
   const [recordtimeout, setRecordTimeOut] = useState<
     Partial<RecordTimeOutInterface>
   >({ RecordTimeOutDatetime: new Date() });
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const [emp, setEmployee] = useState<EmployeeInterface[]>([]);
+  const [employee, setEmployee] = useState<EmployeeInterface>();
   const [cases, setCases] = useState<CaseInterface[]>([]);
 
   const [abl, setAmbulance] = useState<AmbulancesInterface[]>([]);
-  const [typeAbls, setTypeAbl] = useState<TypeAblsInterface[]>([]);
-  const [a, setA] = useState<string>("");
+  const [typeAbls, setTypeAbls] = useState<TypeAblsInterface[]>([]);
+  const [typeAbl, setTypeAbl] = useState<string>("");
   const [detailCase, setDetailCase] = useState<string>("รายละเอียด");
 
   const handleClose = (
@@ -82,12 +85,12 @@ function RecordTimeOutCreate() {
 
     if (event.target.name === "TypeAblID") {
       getAmbulance(event.target.value);
-      setA(event.target.value);
+      setTypeAbl(event.target.value);
       if (event.target.value === "") {
         setAmbulance([]);
       }
     }
-    console.log(recordtimeout);
+    // console.log(recordtimeout);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,45 +101,80 @@ function RecordTimeOutCreate() {
     });
   };
 
+  //get Ambulance
   const getAmbulance = async (id: string) => {
-    try {
-      let res = await HttpClientServices.get(`/abl/${id}`);
-      setAmbulance(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get(`/abl/${id}`);
+    if (!res.error) {
+      setAmbulance(res.results);
+      // console.log(res);
+    } else {
+      console.log(res.error);
     }
   };
+  //get Case
   const getCases = async () => {
-    try {
-      let res = await HttpClientServices.get(`/cases`);
-      setCases(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get(`/cases`);
+    if (!res.error) {
+      setCases(res.results);
+      // console.log(res);
+    } else {
+      console.log(res.error);
     }
   };
+  //get Type Ambulance
   const getTypeAbl = async () => {
-    try {
-      let res = await HttpClientServices.get("/type_abls");
-      setTypeAbl(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get("/type_abls");
+    if (!res.error) {
+      setTypeAbls(res.results);
+      // console.log(res);
+    } else {
+      console.log(res.error);
     }
   };
+  //get Employee /:id
   const getEmployee = async () => {
-    try {
-      let res = await HttpClientServices.get("/employees");
-      setEmployee(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get(
+      `/employee/${localStorage.getItem("id")}`
+    );
+    if (!res.error) {
+      setEmployee(res.results);
+    } else {
+      console.log(res.error);
+    }
+  };
+  // get RecordTimeOut Update /:id
+  const getRecordTimeOut = async (id: string) => {
+    let res = await HttpClientServices.get(`/recordtimeout/${id}`);
+    if (!res.error) {
+      setRecordTimeOut({
+        AmbulanceID: res.results.AmbulanceID,
+        Annotation: res.results.Annotation,
+        CaseID: res.results.CaseID,
+        EmployeeID: res.results.EmployeeID,
+        OdoMeter: res.results.OdoMeter,
+        RecordTimeOutDatetime: res.results.RecordTimeOutDatetime,
+      });
+      // console.log(res?.Ambulance?.TypeAblID);
+      setTypeAbl(res.results.Ambulance?.TypeAblID);
+      getAmbulance(res.results?.Ambulance?.TypeAblID);
+      setDetailCase(
+        `ไอดีเคส: ${res.results.CaseID} สถานที่เกิดเหตุ: ${res.results.Case.Location}`
+      );
+      // console.log(res);
+    } else {
+      console.log(res.error);
     }
   };
 
   useEffect(() => {
-    // getAmbulance();
+    // param recordtimeout /:id
+    // get recordtimeout
+    const param = params ? params : null;
+    if (param?.id) {
+      getRecordTimeOut(param?.id);
+    }
+
+    //get
     getEmployee();
     getTypeAbl();
     getCases();
@@ -144,23 +182,47 @@ function RecordTimeOutCreate() {
 
   async function submit() {
     let data = {
-      // ID: recordtimeout.ID ?? 0,
-      OdoMeter: convertType(recordtimeout?.OdoMeter) ?? 0,
-      Annotation: recordtimeout?.Annotation ?? "",
-      RecordTimeOutDatetime: recordtimeout?.RecordTimeOutDatetime ?? new Date(),
-      EmployeeID: convertType(recordtimeout?.EmployeeID) ?? 1,
-      CaseID: convertType(recordtimeout?.CaseID) ?? 0,
-      AmbulanceID: convertType(recordtimeout?.AmbulanceID) ?? 0,
+      OdoMeter: convertType(recordtimeout?.OdoMeter),
+      Annotation: recordtimeout?.Annotation,
+      RecordTimeOutDatetime: recordtimeout?.RecordTimeOutDatetime,
+      EmployeeID: convertType(employee?.ID),
+      CaseID: convertType(recordtimeout?.CaseID),
+      AmbulanceID: convertType(recordtimeout?.AmbulanceID),
     };
     console.log(data);
 
-    try {
+    //บันทึก || อัพเดท
+    const param = params ? params : null;
+    if (param?.id) {
+      //update
+      let res = await HttpClientServices.patch(`/recordtimeout`, data);
+      if (!res.error) {
+        setSuccess(true);
+        console.log(res);
+        setMessage("อัพเดทข้อมูลสำเร็จ");
+        setTimeout(() => {
+          window.location.href = "/RecordTimeOutHistory";
+        }, 800);
+      } else {
+        setError(true);
+        setMessage("อัพเดทข้อมูลไม่สำเร็จ " + res.message);
+        // console.log(res.message);
+      }
+    } else {
+      //create
       let res = await HttpClientServices.post("/recordtimeout", data);
-      setSuccess(true);
-      console.log(res.data);
-    } catch (err) {
-      setError(false);
-      console.log(err);
+      if (!res.error) {
+        setSuccess(true);
+        console.log(res);
+        setMessage("บันทึกข้อมูลสำเร็จ");
+        setTimeout(() => {
+          window.location.href = "/RecordTimeOutHistory";
+        }, 800);
+      } else {
+        setError(true);
+        setMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
+        // console.log(res.message);
+      }
     }
   }
 
@@ -194,7 +256,8 @@ function RecordTimeOutCreate() {
                 native
                 name="CaseID"
                 size="small"
-                // value={String(recordtimeout?.CaseID)}
+                type="number"
+                value={String(recordtimeout?.CaseID)}
                 onChange={handleChange}
                 inputProps={{
                   name: "CaseID",
@@ -213,11 +276,13 @@ function RecordTimeOutCreate() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label={detailCase}
+              // label={detailCase}
               disabled
               fullWidth
-              rows={2.5}
+              rows={2}
               multiline
+              type="string"
+              value={detailCase}
               // defaultValue={detailCase}
             />
           </Grid>
@@ -234,6 +299,7 @@ function RecordTimeOutCreate() {
                 inputProps={{
                   name: "TypeAblID",
                 }}
+                value={String(typeAbl)}
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกประเภทรถพยาบาล
@@ -259,7 +325,8 @@ function RecordTimeOutCreate() {
                 inputProps={{
                   name: "AmbulanceID",
                 }}
-                disabled={a != "" ? false : true}
+                disabled={typeAbl != "" ? false : true}
+                value={String(recordtimeout?.AmbulanceID)}
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกรถพยาบาล
@@ -297,6 +364,7 @@ function RecordTimeOutCreate() {
                   name: "OdoMeter",
                 }}
                 onChange={handleInputChange}
+                value={String(recordtimeout?.OdoMeter)}
               />
             </FormControl>
           </Grid>
@@ -314,6 +382,7 @@ function RecordTimeOutCreate() {
                   name: "Annotation",
                 }}
                 onChange={handleInputChange}
+                value={String(recordtimeout?.Annotation ?? "")}
               />
             </FormControl>
           </Grid>
@@ -322,10 +391,14 @@ function RecordTimeOutCreate() {
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  value={0}
+                  openTo={"year"}
+                  value={recordtimeout?.RecordTimeOutDatetime}
                   onChange={(newValue) => {
-                    newValue = 1;
+                    const id = "RecordTimeOutDatetime" as keyof typeof recordtimeout;
+                    // console.log(newValue);
+                    setRecordTimeOut({ ...recordtimeout, [id]: newValue });
                   }}
+                  inputFormat="dd/MM/yyyy"
                   renderInput={(params) => (
                     <TextField {...params} size="small" />
                   )}
@@ -364,12 +437,17 @@ function RecordTimeOutCreate() {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+          {message}
         </Alert>
       </Snackbar>
-      <Snackbar open={error} autoHideDuration={3000} onClose={handleClose}>
+      <Snackbar
+        open={error}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+          {message}
         </Alert>
       </Snackbar>
     </Container>

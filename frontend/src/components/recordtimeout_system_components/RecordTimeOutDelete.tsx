@@ -10,6 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 //icon
 import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -35,30 +36,31 @@ export default function RecordTimeOutDelete(props: any) {
   };
 
   const getEmployee = async () => {
-    try {
-      let res = await HttpClientServices.get(`/employee/${localStorage.getItem("id")}`);
-      setEmployee(res.data);
-      // console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get(`/employee/${localStorage.getItem("id")}`);
+    if (!res.error) {
+      setEmployee(res.results);
+    } else {
+      console.log(res.error);
     }
   };
 
   async function submit() {
-    try {
-      let res = await HttpClientServices.delete(`/recordtimeout/${params.ID}`);
-      console.log(res.data);
+    let res = await HttpClientServices.delete(`/recordtimeout/${params}`);
+    if(!res.error){
+      console.log(res.results);
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
       setSuccess(true);
-    } catch (err) {
+    }else{
       setError(true);
-      console.log(err);
+      console.log(res.error);
     }
   }
+  
   React.useEffect(() => {
     getEmployee();
   }, []);
-
- 
 
   return (
     <div>
@@ -76,10 +78,10 @@ export default function RecordTimeOutDelete(props: any) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-       
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          คุณ {emp?.Name} ต้องการลบรายการบันทึกเวลาใช้รถไอดีที่ {params.ID} ใช่ไหม ??
+            คุณ {emp?.Name} ต้องการลบรายการบันทึกเวลาใช้รถไอดีที่ {params}{" "}
+            ใช่ไหม ??
           </DialogContentText>
         </DialogContent>
         <DialogActions>
