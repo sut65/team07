@@ -9,9 +9,9 @@ import (
 type VehicleInspection struct {
 	gorm.Model
 
-	Fail                      string
-	OdoMeter                  uint
-	VehicleInspectionDatetime time.Time
+	Fail                      string    `valid:"required~Fail cannot be blank"`
+	OdoMeter                  uint      `valid:"required~OdoMeter: non zero value required, range(1|99999)~OdoMeter: non zero value required"`
+	VehicleInspectionDatetime time.Time `valid:"NotPast~Day must be in the not past"`
 
 	EmployeeID *uint
 	Employee   Employee
