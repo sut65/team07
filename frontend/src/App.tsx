@@ -100,10 +100,10 @@ export default function App() {
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}
             />
-            <Route
-              path="/RecordTimeOutCreate"
-              element={<RecordTimeOutCreate />}
-            />
+             <Route
+                path="/RecordTimeOutCreate/:id?"
+                element={<RecordTimeOutCreate />}
+              />
 
             <Route
               path="/RecordTimeInCreate"
