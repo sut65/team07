@@ -30,6 +30,9 @@ import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceU
 
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
 // import RecordTimeInDelete from "./components/recordtimein_system_components/RecordTimeInDelete";
+
+import VehicleInspectionCreate from "./components/vehicleinspection_system_components/VehicleInspectionCreate";
+import VehicleInspectionHistory from "./components/vehicleinspection_system_components/VehicleInspectionHistory";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -128,6 +131,9 @@ export default function App() {
 
             <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />}/>
 
+<Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate/>}/>
+
+<Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory/>}/>
           </Routes>
           
         </div>

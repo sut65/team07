@@ -25,12 +25,12 @@ function VehicleInspectionHistory() {
   };
 
   const getVehicleInspection = async () => {
-    try {
-      let res = await HttpClientServices.get("/vehicleinspections");
-      setVehicleInspection(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get("/vehicleinspections");
+    if (!res.error) {
+      setVehicleInspection(res.results);
+      // console.log(res.results);
+    } else {
+      console.log(res.error);
     }
   };
   const columns: GridColDef[] = [
