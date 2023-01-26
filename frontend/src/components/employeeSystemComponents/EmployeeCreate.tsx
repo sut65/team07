@@ -128,7 +128,7 @@ export default function EmployeeCreate() {
             handleSnackBarOpen()
             setTimeout(() => {
                 navigator("/employee")
-            }, 3000)
+            }, 1000)
         }else{
             handleSnackBarError(res.error)
         }

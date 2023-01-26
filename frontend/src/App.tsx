@@ -29,6 +29,8 @@ import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
+import AmbulanceStoreHome from "./components/ambulanceStoreSystemComponent/AmbulanceStoreHome";
+import AmbulanceStoreManage from "./components/ambulanceStoreSystemComponent/AmbulanceStoreManage";
 // import RecordTimeInDelete from "./components/recordtimein_system_components/RecordTimeInDelete";
 
 import VehicleInspectionCreate from "./components/vehicleinspection_system_components/VehicleInspectionCreate";
@@ -61,6 +63,7 @@ export default function App() {
       fontFamily: "Kanit",
       fontSize: 14,
     },
+
   });
 
   React.useEffect(() => {
@@ -75,69 +78,76 @@ export default function App() {
   }
 
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        <Navbar />
-        <div className="container-router">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
-            <Route path="/" element={<Signin />} />
+    <div>
+      <Router>
+        <ThemeProvider theme={theme}>
+          <Navbar />
+          <div className="container-router">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
+              <Route path="/" element={<Signin />} />
 
-            {/* //Employee */}
-            <Route path="/Employee" element={<EmployeeList />} />
-            <Route path="/employee/create" element={<EmployeeCreate />} />
-            <Route path="/employee/update/:id" element={<EmployeeUpdate />} />
+              {/* //Employee */}
+              <Route path="/Employee" element={<EmployeeList />} />
+              <Route path="/employee/create" element={<EmployeeCreate />} />
+              <Route path="/employee/update/:id" element={<EmployeeUpdate />} />
 
-            <Route path="/Ambulance" element={<Ambulance />} />
-            <Route
-              path="/Ambulance/AmbulanceCreate"
-              element={<AmbulanceCreate />}
-            />
-            <Route
-              path="/Ambulance/AmbulanceUpdate"
-              element={<AmbulanceUpdate />}
-            />
-
-            <Route
-              path="/RecordTimeOutHistory"
-              element={<RecordTimeOutHistory />}
-            />
-             <Route
-                path="/RecordTimeOutCreate/:id?"
-                element={<RecordTimeOutCreate />}
+              <Route path="/Ambulance" element={<Ambulance />} />
+              <Route
+                path="/Ambulance/AmbulanceCreate"
+                element={<AmbulanceCreate />}
+              />
+              <Route
+                path="/Ambulance/AmbulanceUpdate"
+                element={<AmbulanceUpdate />}
               />
 
-            <Route
-              path="/RecordTimeInCreate"
-              element={<RecordTimeInCreate />}
-            />
-            <Route
-              path="/RecordTimeInHistory"
-              element={<RecordTimeInHistory />}
-            />
-            <Route path="/RecordTimeInEdit" element={<RecordTimeInEdit />} />
-            <Route
-              path="/RecordTimeInUpdate"
-              element={<RecordTimeInUpdate />}
-            />
+              <Route
+                path="/RecordTimeOutHistory"
+                element={<RecordTimeOutHistory />}
+              />
+               <Route
+                  path="/RecordTimeOutCreate/:id?"
+                  element={<RecordTimeOutCreate />}
+                />
 
-            <Route path="/DisinfectionCreate" element={<DisinfectionCreate />} />
-            <Route path="/DisinfectionHistory" element={<DisinfectionHistory />} />
-            <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
-            <Route path="/DisinfectionUpdate" element={<DisinfectionUpdate />} />
+              <Route
+                path="/RecordTimeInCreate"
+                element={<RecordTimeInCreate />}
+              />
+              <Route
+                path="/RecordTimeInHistory"
+                element={<RecordTimeInHistory />}
+              />
+              <Route path="/RecordTimeInEdit" element={<RecordTimeInEdit />} />
+              <Route
+                path="/RecordTimeInUpdate"
+                element={<RecordTimeInUpdate />}
+              />
+
+              <Route path="/DisinfectionCreate" element={<DisinfectionCreate />} />
+              <Route path="/DisinfectionHistory" element={<DisinfectionHistory />} />
+              <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
+              <Route path="/DisinfectionUpdate" element={<DisinfectionUpdate />} />
             {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
 
 
-            <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />}/>
+              <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />} />
 
-<Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate/>}/>
+
+
+              <Route path="/ambulance-store" element={<AmbulanceStoreHome />} />
+              <Route path="/ambulance-store/:id" element={<AmbulanceStoreManage />} />
+
+  <Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate/>}/>
 
 <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory/>}/>
           </Routes>
-          
-        </div>
-      </ThemeProvider>
-    </Router>
+
+          </div>
+        </ThemeProvider>
+      </Router>
+    </div>
   );
 }

@@ -59,7 +59,7 @@ async function ListMedicines() {
         },
     };
 
-    let res = await fetch(`${apiUrl}/medidines`, requestOptions)
+    let res = await fetch(`${apiUrl}/medicines`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {

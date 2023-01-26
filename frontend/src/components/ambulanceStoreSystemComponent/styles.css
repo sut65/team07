@@ -1,0 +1,12 @@
+.container-background{
+    min-height: 100%;
+}
+
+.submit-button{
+    display:block !important;
+    border-radius: 25px !important;
+}
+
+.clp-color{
+    color: #46CDCF;
+}
