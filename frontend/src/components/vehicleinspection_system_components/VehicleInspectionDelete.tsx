@@ -1,113 +1,114 @@
-
-import { Link as RouterLink } from "react-router-dom";
 import * as React from "react";
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
-import moment from "moment";
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
-
-export interface DialogTitleProps {
-  id: string;
-  children?: React.ReactNode;
-  onClose: () => void;
-}
-
-function DialogTitleProps(props: DialogTitleProps) {
-  const { children, onClose, ...other } = props;
-
-  return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-}
-
-// RecordTimeOutUpdate.propTypes = {
-//   student: PropTypes.any,
-//   teacher: PropTypes.any,
-//   c: PropTypes.string.isRequired,
-//   r: PropTypes.string.isRequired,
-// };
-
-export default function VehicleInspectionUpdate(props: any) {
+import { Snackbar, Button } from "@mui/material";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+export default function VehiclecinspectionDelete(props: any) {
   const { params } = props;
   const [open, setOpen] = React.useState(false);
 
+  const [success, setSuccess] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [emp, setEmployee] = React.useState<EmployeeInterface>();
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
+    setSuccess(false);
+    setError(false);
   };
+
+  const getEmployee = async () => {
+    let res = await HttpClientServices.get(`/employee/${localStorage.getItem("id")}`);
+    if (!res.error) {
+      setEmployee(res.results);
+    } else {
+      console.log(res.error);
+    }
+  };
+
+  async function submit() {
+    let res = await HttpClientServices.delete(`/vehicleinspection/${params}`);
+    if(!res.error){
+      console.log(res.results);
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+      setSuccess(true);
+    }else{
+      setError(true);
+      console.log(res.error);
+    }
+  }
+  
+  React.useEffect(() => {
+    getEmployee();
+  }, []);
 
   return (
     <div>
-      <Button
-        variant="contained"
-        color="secondary"
+      <IconButton
+        color="error"
         size="small"
+        aria-label="delete"
         onClick={handleClickOpen}
       >
-        detail
-      </Button>
-
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
+        <DeleteTwoToneIcon />
+      </IconButton>
+      <Dialog
         open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        <DialogTitleProps id="customized-dialog-title" onClose={handleClose}>
-          ข้อมูลการใช้รถพยาบาล
-        </DialogTitleProps>
-        
-        <DialogContent dividers sx={{ width: "550px", height: "350px" }}>
-          <Typography gutterBottom>
-            วันที่ :{" "}
-            {moment(params.record_time_out_datetime).format("DD/MM/YYYY")}
-            &nbsp; เวลา :
-            {moment(params.record_time_out_datetime).format("HH:mm")} น.
-          </Typography>
-          <Typography gutterBottom>หมายเหตุ : {params.annotation}</Typography>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            คุณ {emp?.Name} ต้องการลบรายการบันทึกเวลาใช้รถไอดีที่ {params}{" "}
+            ใช่ไหม ??
+          </DialogContentText>
         </DialogContent>
-
         <DialogActions>
-          <Button onClick={handleClose} color="error">
-            Close
-          </Button>
-          <Button component={RouterLink} to="/RecordTimeOutCreate">
-            Edit
+          <Button onClick={handleClose}>ยกเลิก</Button>
+          <Button onClick={submit} autoFocus>
+            ยืนยัน
           </Button>
         </DialogActions>
-      </BootstrapDialog>
+        <Snackbar
+          open={success}
+          autoHideDuration={2000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="success">
+            ลบข้อมูลสำเร็จ
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={error}
+          autoHideDuration={2000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="error">
+            ลบข้อมูลไม่สำเร็จ
+          </Alert>
+        </Snackbar>
+      </Dialog>
     </div>
   );
 }
