@@ -28,7 +28,6 @@ function VehicleInspectionHistory() {
     let res = await HttpClientServices.get("/vehicleinspections");
     if (!res.error) {
       setVehicleInspection(res.results);
-      // console.log(res.results);
     } else {
       console.log(res.error);
     }
@@ -128,7 +127,7 @@ function VehicleInspectionHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <VehicleInspectionDelete params={params.row} />;
+        return <VehicleInspectionDelete params={params.row.ID} />;
       },
       sortable: false,
       description: "ลบ",
