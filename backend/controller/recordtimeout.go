@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -26,6 +27,7 @@ func CreateRecordTimeOut(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "case not found"})
 		return
 	}
+
 	if tx := entity.DB().Where("id = ?", recordtimeout.EmployeeID).First(&employees); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
 		return
@@ -40,7 +42,9 @@ func CreateRecordTimeOut(c *gin.Context) {
 		Employee:              employees,                           //โยง คสพ Entity Employee
 		RecordTimeOutDatetime: recordtimeout.RecordTimeOutDatetime, // field DateTime
 	}
-
+	if _, err := govalidator.ValidateStruct(rec); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
+	}
 	//บันทึก
 	if err := entity.DB().Create(&rec).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

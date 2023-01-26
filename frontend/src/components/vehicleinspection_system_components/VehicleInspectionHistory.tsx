@@ -25,12 +25,11 @@ function VehicleInspectionHistory() {
   };
 
   const getVehicleInspection = async () => {
-    try {
-      let res = await HttpClientServices.get("/vehicleinspections");
-      setVehicleInspection(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get("/vehicleinspections");
+    if (!res.error) {
+      setVehicleInspection(res.results);
+    } else {
+      console.log(res.error);
     }
   };
   const columns: GridColDef[] = [
@@ -128,7 +127,7 @@ function VehicleInspectionHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <VehicleInspectionDelete params={params.row} />;
+        return <VehicleInspectionDelete params={params.row.ID} />;
       },
       sortable: false,
       description: "ลบ",

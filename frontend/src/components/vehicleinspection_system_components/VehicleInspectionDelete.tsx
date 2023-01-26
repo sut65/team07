@@ -7,7 +7,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-//icon
 import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
@@ -17,7 +16,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 ) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-export default function RecordTimeOutDelete(props: any) {
+export default function VehiclecinspectionDelete(props: any) {
   const { params } = props;
   const [open, setOpen] = React.useState(false);
 
@@ -35,26 +34,28 @@ export default function RecordTimeOutDelete(props: any) {
   };
 
   const getEmployee = async () => {
-    try {
-      let res = await HttpClientServices.get(`/employee/${localStorage.getItem("id")}`);
-      setEmployee(res.data);
-      // console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get(`/employee/${localStorage.getItem("id")}`);
+    if (!res.error) {
+      setEmployee(res.results);
+    } else {
+      console.log(res.error);
     }
   };
 
-
   async function submit() {
-    try {
-      let res = await HttpClientServices.delete(`/vehicleinspection/${params}`);
-      console.log(res.data);
+    let res = await HttpClientServices.delete(`/vehicleinspection/${params}`);
+    if(!res.error){
+      console.log(res.results);
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
       setSuccess(true);
-    } catch (err) {
+    }else{
       setError(true);
-      console.log(err);
+      console.log(res.error);
     }
   }
+  
   React.useEffect(() => {
     getEmployee();
   }, []);
@@ -77,7 +78,8 @@ export default function RecordTimeOutDelete(props: any) {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            คุณ {emp?.Name} ต้องการลบใบตรวจเช็คสภาพหมายเลขที่ {params.ID} ใช่ไหม
+            คุณ {emp?.Name} ต้องการลบรายการบันทึกเวลาใช้รถไอดีที่ {params}{" "}
+            ใช่ไหม ??
           </DialogContentText>
         </DialogContent>
         <DialogActions>

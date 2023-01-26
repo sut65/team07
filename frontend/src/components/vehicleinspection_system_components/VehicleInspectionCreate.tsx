@@ -33,7 +33,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export default function VehicleInspectionCreate() {
   const [vehicleinspection, setVehicleInspection] = React.useState<
     Partial<VehicleInspectionInterface>
-  >({ VehicleInnspectionDatetime: new Date() });
+  >({ VehicleInspectionDatetime: new Date() });
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [abl, setAmbulance] = React.useState<AmbulancesInterface[]>([]);
@@ -45,7 +45,7 @@ export default function VehicleInspectionCreate() {
   const [ablpart, setAmbulancePart] = React.useState<AmbulancePartInterface[]>(
     []
   );
-  const [emp, setEmployee] = React.useState<EmployeeInterface[]>([]);
+  const [employee, setEmployee] = React.useState<EmployeeInterface>();
   const [detailABL, setDatail] = React.useState<string>("รายละเอียด");
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -61,17 +61,6 @@ export default function VehicleInspectionCreate() {
   const handleChange = (event: SelectChangeEvent) => {
     const name = event.target.name as keyof typeof vehicleinspection;
     setVehicleInspection({ ...vehicleinspection, [name]: event.target.value });
-   
-    // if (event.target.name === "AmbulanceID") {
-    //   abl.forEach((val: any) => {
-    //     if (val.CarBrand === Number(event.target.value)) {
-    //       setDatail(`ไอดีรถ: ${val.ID} ยี่ห้อรถ: ${val.CarBrand} เลขทะเบียนรถ: ${val.Clp}`);
-    //     }
-    //   });
-    //   if (event.target.value === "") {
-    //     setDatail("รายละเอียด");
-    //   }
-    // }
 
     if (event.target.name === "TypeAblID") {
       getAmbulance(event.target.value);
@@ -83,7 +72,9 @@ export default function VehicleInspectionCreate() {
     if (event.target.name === "AmbulanceID") {
       abl.forEach((val: any) => {
         if (val.CarBrand === Number(event.target.value)) {
-          setDatail(`ไอดีรถ: ${val.ID} ยี่ห้อรถ: ${val.CarBrand} เลขทะเบียนรถ: ${val.Clp}`);
+          setDatail(
+            `ไอดีรถ: ${val.ID} ยี่ห้อรถ: ${val.CarBrand} เลขทะเบียนรถ: ${val.Clp}`
+          );
         }
       });
       if (event.target.value === "") {
@@ -99,41 +90,55 @@ export default function VehicleInspectionCreate() {
       [name]: event.target.value,
     });
   };
-
+  //get Employee /:id
+  const getEmployee = async () => {
+    let res = await HttpClientServices.get(
+      `/employee/${localStorage.getItem("id")}`
+    );
+    if (!res.error) {
+      setEmployee(res.results);
+    } else {
+      console.log(res.error);
+    }
+  };
+  //get Ambulance
   const getAmbulance = async (id: string) => {
-    try {
-      let res = await HttpClientServices.get(`/abl/${id}`);
-      setAmbulance(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get(`/abl/${id}`);
+    if (!res.error) {
+      setAmbulance(res.results);
+      // console.log(res.results);
+    } else {
+      console.log(res.error);
     }
   };
+  //get Type Ambulance
   const getTypeAbl = async () => {
-    try {
-      let res = await HttpClientServices.get("/type_abls");
-      setTypeAbl(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get("/type_abls");
+    if (!res.error) {
+      setTypeAbl(res.results);
+      // console.log(res.results);
+    } else {
+      console.log(res.error);
     }
   };
+  //get StatusCheck
   const getStatusCheck = async () => {
-    try {
-      let res = await HttpClientServices.get("/statuschecks");
-      setStatuscheck(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get("/statuschecks");
+    if (!res.error) {
+      setStatuscheck(res.results);
+      console.log(res.results);
+    } else {
+      console.log(res.error);
     }
   };
+  //get Ambulance Part
   const getAmbulancePart = async () => {
-    try {
-      let res = await HttpClientServices.get("/ambulanceparts");
-      setAmbulancePart(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get("/ambulanceparts");
+    if (!res.error) {
+      setAmbulancePart(res.results);
+      console.log(res.results);
+    } else {
+      console.log(res.error);
     }
   };
 
@@ -142,28 +147,28 @@ export default function VehicleInspectionCreate() {
     getTypeAbl();
     getStatusCheck();
     getAmbulancePart();
+    getEmployee();
   }, []);
 
   async function submit() {
     let data = {
-      OdoMeter: convertType(vehicleinspection?.OdoMeter) ?? 0,
-      Fail: vehicleinspection?.Fail ?? "",
-      VehicleInnspectionDatetime:
-        vehicleinspection?.VehicleInnspectionDatetime ?? new Date(),
-      EmployeeID: convertType(vehicleinspection?.EmployeeID) ?? 1,
-      AmbulancePartID: convertType(vehicleinspection?.AmbulancePartID) ?? 0,
-      AmbulanceID: convertType(vehicleinspection?.AmbulanceID) ?? 0,
-      StatusCheckID: convertType(vehicleinspection.StatusCheckID) ?? 0,
+      OdoMeter: convertType(vehicleinspection?.OdoMeter),
+      Fail: vehicleinspection?.Fail,
+      VehicleInspectionDatetime: vehicleinspection?.VehicleInspectionDatetime,
+      EmployeeID: convertType(employee?.ID),
+      AmbulancePartID: convertType(vehicleinspection?.AmbulancePartID),
+      AmbulanceID: convertType(vehicleinspection?.AmbulanceID),
+      StatusCheckID: convertType(vehicleinspection.StatusCheckID),
     };
     console.log(data);
 
-    try {
-      let res = await HttpClientServices.post("/vehicleinspection", data);
+    let res = await HttpClientServices.post("/vehicleinspection", data);
+    if (!res.error) {
       setSuccess(true);
-      console.log(res.data);
-    } catch (err) {
-      setError(false);
-      console.log(err);
+      console.log(res.results);
+    } else {
+      setError(true);
+      console.log(res.error, res.message);
     }
   }
 
@@ -337,10 +342,17 @@ export default function VehicleInspectionCreate() {
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  value={0}
+                  openTo={"year"}
+                  value={vehicleinspection?.VehicleInspectionDatetime}
                   onChange={(newValue) => {
-                    newValue = 1;
+                    const id =
+                      "VehicleInspectionDatetime" as keyof typeof vehicleinspection;
+                    setVehicleInspection({
+                      ...vehicleinspection,
+                      [id]: newValue,
+                    });
                   }}
+                  inputFormat="dd/MM/yyyy"
                   renderInput={(params) => (
                     <TextField {...params} size="small" />
                   )}
@@ -349,6 +361,16 @@ export default function VehicleInspectionCreate() {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
+            <Grid item xs={12}>
+              <Button
+                style={{ float: "right" }}
+                onClick={submit}
+                variant="contained"
+                color="primary"
+              >
+                บันทึกข้อมูล
+              </Button>
+            </Grid>
             <Grid item xs={6}>
               <Button
                 style={{ float: "left" }}
@@ -359,16 +381,6 @@ export default function VehicleInspectionCreate() {
                 color="secondary"
               >
                 ย้อนกลับ
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                style={{ float: "right" }}
-                onClick={submit}
-                variant="contained"
-                color="primary"
-              >
-                บันทึกข้อมูล
               </Button>
             </Grid>
           </Grid>
@@ -384,7 +396,12 @@ export default function VehicleInspectionCreate() {
           บันทึกข้อมูลสำเร็จ
         </Alert>
       </Snackbar>
-      <Snackbar open={error} autoHideDuration={3000} onClose={handleClose}>
+      <Snackbar
+        open={error}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
         <Alert onClose={handleClose} severity="error">
           บันทึกข้อมูลไม่สำเร็จ
         </Alert>

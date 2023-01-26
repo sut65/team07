@@ -52,6 +52,34 @@ func main() {
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 
+	// ----------------- Working Area ----------------------------
+	// List
+	r.GET("/workingareas", controller.ListWorkingArea)
+	// Get by id
+	r.GET("/workingarea/:id", controller.GetWorkingArea)
+	// Create
+	r.POST("/workingarea", controller.CreateWorkingArea)
+	// UPDATE
+	r.PATCH("/workingarea", controller.UpdateWorkingArea)
+	// Delete
+	r.DELETE("/workingarea/:id", controller.DeleteWorkingArea)
+	// ----------------- Working Area ----------------------------
+
+	// ----------------- Education ------------------------
+	// List
+	r.GET("/educations", controller.ListEducation)
+	// Get by id
+	r.GET("/education/:id", controller.GetEducation)
+	// ----------------- Education ------------------------
+
+	// ------------------- Status -------------------------
+	// List Status
+	r.GET("/statuses", controller.ListStatus)
+	// Get by id
+	r.GET("/status/:id", controller.GetStatus)
+
+	// ------------------- Status -------------------------
+
 	adminApi := r.Group("/admin")
 	{
 		protected := adminApi.Use(middlewares.Authorizes())
@@ -59,45 +87,18 @@ func main() {
 		// Admin Checking
 		protected.Use(middlewares.CheckAdmin())
 		{
-			// ----------------- Working Area ----------------------------
-			// List
-			protected.GET("/workingareas", controller.ListWorkingArea)
-			// Get by id
-			protected.GET("/workingarea/:id", controller.GetWorkingArea)
-			// Create
-			protected.POST("/workingarea", controller.CreateWorkingArea)
-			// UPDATE
-			protected.PATCH("/workingarea", controller.UpdateWorkingArea)
-			// Delete
-			protected.DELETE("/workingarea/:id", controller.DeleteWorkingArea)
-			// ----------------- Working Area ----------------------------
-
-			// ----------------- Education ------------------------
-			// List
-			r.GET("/educations", controller.ListEducation)
-			// Get by id
-			r.GET("/education/:id", controller.GetEducation)
-			// ----------------- Education ------------------------
-
-			// ------------------- Status -------------------------
-			// List Status
-			r.GET("/statuses", controller.ListStatus)
-			// Get by id
-			r.GET("/status/:id", controller.GetStatus)
-
-			// ------------------- Status -------------------------
 
 			// ----------------- Employee ----------------------------
 			// List
-			r.GET("/employees", controller.ListEmployee)
+			protected.GET("/employees", controller.ListEmployee)
 			// Get by id
-			r.GET("/employee/:id", controller.GetEmployee)
+			protected.GET("/employee/:id", controller.GetEmployee)
 			// Create
-			r.POST("/employee", controller.CreateEmployee)
+			protected.POST("/employee", controller.CreateEmployee)
 			// UPDATE
-			r.PATCH("/employee", controller.UpdateEmployee)
+			protected.PATCH("/employee", controller.UpdateEmployee)
 			// DELETE
-			r.DELETE("/employee/:id", controller.DeleteEmployee)
+			protected.DELETE("/employee/:id", controller.DeleteEmployee)
 			// ----------------- Employee ----------------------------
 		}
 	}

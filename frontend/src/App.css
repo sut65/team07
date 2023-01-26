@@ -39,5 +39,7 @@
 
 
 .container-router{
-  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  background-color: rgba(35, 51, 51, 0.1);
+  min-height: calc(100vh - 48px - 1.25rem);
 }

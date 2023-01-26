@@ -1,4 +1,5 @@
 import axios from "axios";
+import { DisinfectionInterface } from "../../models/disinfection_system_models/disinfection";
 import { apiUrl, convertType } from "../utility";
 const requestOptions = axios.create({
   baseURL: apiUrl,
@@ -34,7 +35,7 @@ export class HttpClientServices {
         result = response.data;
       })
       .catch((err) => {
-        throw new Error(err.response.data);
+        throw new Error(err.response.error);
       });
 
     return result;
@@ -84,5 +85,180 @@ export class HttpClientServices {
 
     return result;
   }
+}
+
+async function CreatDisinfection(data: DisinfectionInterface) {
+  const requestOptions = {
+      method: "POST",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+  };
+
+  let res = await fetch(`${apiUrl}/disinfection`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
+
+async function GetDisinfectionByID() {
+  let did = localStorage.getItem("did");
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(
+      `${apiUrl}/disinfection/${did}`,
+      requestOptions
+  )
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+
+}
+
+async function GetDisinfectionByEmployee() {
+  let eid = localStorage.getItem("id");
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(
+      `${apiUrl}/disinfection/${eid}`,
+      requestOptions
+  )
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
+
+async function ListDisinfectants() {
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(`${apiUrl}/disinfactants`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
+
+async function ListDisinfactions() {
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(`${apiUrl}/disinfections`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
+
+async function UpdateDisinfection(data: DisinfectionInterface) {
+  
+  const requestOptions = {
+      method: "PATCH",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+  }
+
+  let res = await fetch(`${apiUrl}/disinfection`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data
+          } else {
+              return false
+          }
+      })
+  return res
+}
+
+async function ListAmbulances() {
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(`${apiUrl}/ambulances`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
+
+export {
+  CreatDisinfection,
+  GetDisinfectionByID,
+  GetDisinfectionByEmployee,
+  ListDisinfectants,
+  ListDisinfactions,
+  UpdateDisinfection,
+  ListAmbulances
 }
 

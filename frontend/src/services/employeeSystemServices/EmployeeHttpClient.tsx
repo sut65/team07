@@ -13,7 +13,7 @@ async function ListEmployees() {
         }
     };
 
-    let res = await fetch(`${apiUrl}/employees`, reqOpt)
+    let res = await fetch(`${apiUrl}/admin/employees`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res.data){
@@ -35,7 +35,7 @@ async function GetEmployee(ID: string | undefined) {
         }
     }
 
-    let res = await fetch(`${apiUrl}/employee/${ID}`, reqOpt)
+    let res = await fetch(`${apiUrl}/admin/employee/${ID}`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res.data){
@@ -74,7 +74,7 @@ async function PostEmployee(emp:Partial<EmployeeInterface>) {
     }
     
 
-    let res = await fetch(`${apiUrl}/employee`, reqOpt)
+    let res = await fetch(`${apiUrl}/admin/employee`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         return res
@@ -108,7 +108,7 @@ async function UpdateEmployee(emp : Partial<EmployeeInterface>){
         body: JSON.stringify(data)
     }
 
-    let res = await fetch(`${apiUrl}/employee`, reqOpt)
+    let res = await fetch(`${apiUrl}/admin/employee`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res){
@@ -129,7 +129,7 @@ async function DeleteEmployee(ID:number) {
         }
     };
     
-    let res = await fetch(`${apiUrl}/employee/${ID}`, reqOpt)
+    let res = await fetch(`${apiUrl}/admin/employee/${ID}`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res.data){

@@ -177,6 +177,12 @@ func SetupDatabase() {
 	db.Model(&Status{}).Create(&rest)
 	db.Model(&Status{}).Create(&offline)
 
+	sut := WorkingArea{
+		WorkingArea: "SUT",
+	}
+
+	db.Model(&WorkingArea{}).Create(&sut)
+
 	// ระบบจัดซื้อรถพยาบาล ---------------------------------------------
 	var company = []Company{
 		{Name: "A_Company"},
@@ -218,12 +224,13 @@ func SetupDatabase() {
 	db.Model(&Case{}).Create((&case2))
 
 	emp := Employee{
-		Name:      "Amb",
-		Surname:   "Dis",
-		Age:       20,
-		User:      userDis,
-		Status:    working,
-		Education: bacDeg,
+		Name:        "Amb",
+		Surname:     "Dis",
+		Age:         20,
+		User:        userDis,
+		Status:      working,
+		Education:   bacDeg,
+		WorkingArea: sut,
 	}
 	db.Model(&Employee{}).Create(&emp)
 
