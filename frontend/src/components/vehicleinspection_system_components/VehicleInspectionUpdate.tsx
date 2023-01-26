@@ -1,7 +1,7 @@
 
 import { Link as RouterLink } from "react-router-dom";
 import * as React from "react";
-import { Button, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -68,7 +68,7 @@ export default function VehicleInspectionUpdate(props: any) {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(params.Ambulance.TypeAbl);
+
   return (
     <div>
       <Button
@@ -89,77 +89,16 @@ export default function VehicleInspectionUpdate(props: any) {
           ข้อมูลการใช้รถพยาบาล
         </DialogTitleProps>
         
-        <DialogContent dividers sx={{ width: "550px", height: "320px" }}>
-          <Grid container justifyContent="flex-end" item xs={12}>
-            <Grid item xs={10} container justifyContent="flex-end">
-              วันที่ :{" "}
-            </Grid>
-            <Grid item xs={2} container justifyContent="flex-end">
-              {moment(params.RecordTimeOutDatetime).format("DD/MM/YYYY")}
-            </Grid>
-            <Grid item xs={10} container justifyContent="flex-end">
-              {" "}
-              เวลา :
-            </Grid>
-            <Grid item xs={2} container justifyContent="center">
-              {moment(params.RecordTimeOutDatetime).format("HH:mm")} น.
-            </Grid>
-          </Grid>
-         
-          <Grid item xs={12} container>
-            <Grid item xs={5}>
-              ประเภทรถ:
-            </Grid>
-            <Grid item xs={7}>
-              {params.Ambulance.TypeAbl.Name}
-            </Grid>
-            <Grid item xs={5}>
-              ยี่ห้อรถ :
-            </Grid>
-            <Grid item xs={7}>
-              {params.Ambulance.CarBrand}
-            </Grid>
-            <Grid item xs={5}>
-              เลขทะเบียนรถ:
-            </Grid>
-            <Grid item xs={7}>
-              {params.Ambulance.Clp}
-            </Grid>
-            <Grid item xs={5}>
-              เลขไมล์ (ODO Meter) :
-            </Grid>
-            <Grid item xs={7}>
-              {params.OdoMeter}
-            </Grid>
-            <Grid item xs={5}>
-             ชิ้นส่วนที่เป็นปัญหา :
-            </Grid>
-            <Grid item xs={7}>
-              {params.AmbulancePart.PartName}
-            </Grid>
-            <Grid item xs={5}>
-             ปัญหา (Fail):
-            </Grid>
-            <Grid item xs={7}>
-              {params.Fail}
-            </Grid>
-            <Grid item xs={5}>
-             สถานะรถ :
-            </Grid>
-            <Grid item xs={7}>
-              {params.StatusCheck.StatusName}
-            </Grid>
-          </Grid>
-          <br /> <br />
-          <Grid item xs={12} container>
-            <Grid item xs={4}>
-              พนักงานขับรถ :
-            </Grid>
-            <Grid item xs={4}>
-              {params.Employee.Name}
-            </Grid>
-          </Grid>
+        <DialogContent dividers sx={{ width: "550px", height: "350px" }}>
+          <Typography gutterBottom>
+            วันที่ :{" "}
+            {moment(params.record_time_out_datetime).format("DD/MM/YYYY")}
+            &nbsp; เวลา :
+            {moment(params.record_time_out_datetime).format("HH:mm")} น.
+          </Typography>
+          <Typography gutterBottom>หมายเหตุ : {params.annotation}</Typography>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleClose} color="error">
             Close
