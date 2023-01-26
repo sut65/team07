@@ -4,7 +4,7 @@ export interface VehicleInspectionInterface {
   ID?: number;
   Fail?: string;
   OdoMeter?: number;
-  VehicleInnspectionDatetime?: Date;
+  VehicleInspectionDatetime?: Date;
 
   AmbulanceID?: number;
   Ambulance?: AmbulancesInterface;

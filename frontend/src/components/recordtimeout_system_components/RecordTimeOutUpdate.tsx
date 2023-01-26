@@ -85,7 +85,7 @@ export default function RecordTimeOutUpdate(props: any) {
         open={open}
       >
         <DialogTitleProps id="customized-dialog-title" onClose={handleClose}>
-          ข้อมูลการใช้รถพยาบาล
+          ข้อมูลการใช้รถพยาบาล ไอดีที่ {params.ID}
         </DialogTitleProps>
 
         <DialogContent dividers sx={{ width: "550px", height: "320px" }}>
