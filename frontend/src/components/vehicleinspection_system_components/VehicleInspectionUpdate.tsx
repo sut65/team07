@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 import * as React from "react";
-import {Button,Grid} from "@mui/material";
+import { Button, Grid, Divider } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -87,25 +87,22 @@ export default function VehicleInspectionUpdate(props: any) {
         <DialogTitleProps id="customized-dialog-title" onClose={handleClose}>
           ข้อมูลใบตรวจเช็คสภาพรถ ไอดีที่ {params.ID}
         </DialogTitleProps>
-        
+
         <DialogContent dividers sx={{ width: "550px", height: "320px" }}>
-          <Grid container justifyContent="flex-end" item xs={12}>
-            <Grid item xs={10} container justifyContent="flex-end">
+          <Grid item xs={12} container>
+            <Grid item xs={5}>
               วันที่ :{" "}
             </Grid>
-            <Grid item xs={2} container justifyContent="flex-end">
+            <Grid item xs={7}>
               {moment(params.VehicleInspectionDatetime).format("DD/MM/YYYY")}
             </Grid>
-            <Grid item xs={10} container justifyContent="flex-end">
+            <Grid item xs={5}>
               {" "}
               เวลา :
             </Grid>
-            <Grid item xs={2} container justifyContent="center">
+            <Grid item xs={7}>
               {moment(params.VehicleInspectionDatetime).format("HH:mm")} น.
             </Grid>
-          </Grid>
-          
-          <Grid item xs={12} container>
             <Grid item xs={5}>
               ประเภทรถ:
             </Grid>
@@ -148,24 +145,24 @@ export default function VehicleInspectionUpdate(props: any) {
             <Grid item xs={7}>
               {params.StatusCheck.StatusName}
             </Grid>
+            <br /> <br />
           </Grid>
-          <br /> <br />
+          <Divider />
           <Grid item xs={12} container>
-            <Grid item xs={4}>
-              พนักงานขับรถ :
+            <Grid item xs={5}>
+              เจ้าหน้าที่ดูแลรถ :
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={7}>
               {params.Employee.Name}
             </Grid>
           </Grid>
         </DialogContent>
 
-
         <DialogActions>
           <Button onClick={handleClose} color="error">
             Close
           </Button>
-          <Button component={RouterLink} to="/RecordTimeOutCreate">
+          <Button component={RouterLink} to="/VehicleInspectionCreate">
             Edit
           </Button>
         </DialogActions>

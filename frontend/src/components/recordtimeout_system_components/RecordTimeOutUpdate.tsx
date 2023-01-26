@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 import * as React from "react";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Divider } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -66,7 +66,6 @@ export default function RecordTimeOutUpdate(props: any) {
   const handleClose = () => {
     setOpen(false);
   };
-  // console.log(params.Ambulance.TypeAbl);
 
   return (
     <div>
@@ -89,25 +88,44 @@ export default function RecordTimeOutUpdate(props: any) {
         </DialogTitleProps>
 
         <DialogContent dividers sx={{ width: "550px", height: "320px" }}>
-          <Grid container justifyContent="flex-end" item xs={12}>
-            <Grid item xs={10} container justifyContent="flex-end">
+          <Grid item xs={12} container>
+            <Grid item xs={5}>
               วันที่ :{" "}
             </Grid>
-            <Grid item xs={2} container justifyContent="flex-end">
-              {moment(params.RecordTimeOutDatetime).format("DD/MM/YYYY")}
+            <Grid item xs={7}>
+              {moment(params.VehicleInspectionDatetime).format("DD/MM/YYYY")}
             </Grid>
-            <Grid item xs={10} container justifyContent="flex-end">
+            <Grid item xs={5}>
               {" "}
               เวลา :
             </Grid>
-            <Grid item xs={2} container justifyContent="center">
-              {moment(params.RecordTimeOutDatetime).format("HH:mm")} น.
+            <Grid item xs={7}>
+              {moment(params.VehicleInspectionDatetime).format("HH:mm")} น.
             </Grid>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography gutterBottom>เคสที่ได้รับแจ้ง :</Typography>
-          </Grid>
-          <Grid item xs={12} container>
+            <Grid item xs={5}>
+              ประเภทเคสที่ได้รับ:
+            </Grid>
+            <Grid item xs={7}>
+              {params.Case.ID}
+            </Grid>
+            <Grid item xs={5}>
+              เคสที่ได้รับแจ้ง (Case):
+            </Grid>
+            <Grid item xs={7}>
+              {params.Case.ID} {`(${params.Case.ID})`}
+            </Grid>
+            <Grid item xs={5}>
+              สถานที่เกิดเหตุ:
+            </Grid>
+            <Grid item xs={7}>
+              {params.Case.ID}
+            </Grid>
+            <Grid item xs={5}>
+              รายละเอียดผู้ป่วย:
+            </Grid>
+            <Grid item xs={7}>
+              {params.Case.ID} อายุ {params.Case.ID}
+            </Grid>
             <Grid item xs={5}>
               ประเภทรถ:
             </Grid>
@@ -133,18 +151,20 @@ export default function RecordTimeOutUpdate(props: any) {
               {params.OdoMeter}
             </Grid>
             <Grid item xs={5}>
-              หมายเหตุ :
+              หมายเหตุ (Annotation) :
             </Grid>
             <Grid item xs={7}>
-              {params.annotation}
+              {params.Annotation}
             </Grid>
-          </Grid>
-          <br /> <br />
+           
+          </Grid> <br/>
+          <Divider />
+         
           <Grid item xs={12} container>
-            <Grid item xs={4}>
-              พนักงานขับรถ :
+            <Grid item xs={5}>
+              {params.Employee.User.Role.Name} :
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={7}>
               {params.Employee.Name}
             </Grid>
           </Grid>
@@ -154,7 +174,10 @@ export default function RecordTimeOutUpdate(props: any) {
           <Button onClick={handleClose} color="error">
             Close
           </Button>
-          <Button component={RouterLink} to={`/RecordTimeOutCreate/${params.ID}`}>
+          <Button
+            component={RouterLink}
+            to={`/RecordTimeOutCreate/${params.ID}`}
+          >
             Edit
           </Button>
         </DialogActions>
