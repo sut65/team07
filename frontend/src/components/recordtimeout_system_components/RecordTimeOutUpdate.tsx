@@ -10,7 +10,6 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -155,7 +154,7 @@ export default function RecordTimeOutUpdate(props: any) {
           <Button onClick={handleClose} color="error">
             Close
           </Button>
-          <Button component={RouterLink} to="/RecordTimeOutCreate">
+          <Button component={RouterLink} to={`/RecordTimeOutCreate/${params.ID}`}>
             Edit
           </Button>
         </DialogActions>

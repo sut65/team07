@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import {
-  Container,
-  Box,
-  Button,
-} from "@mui/material";
+import { Container, Box, Button } from "@mui/material";
 import moment from "moment";
 import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
 import RecordTimeOutUpdate from "./RecordTimeOutUpdate";
@@ -28,12 +24,12 @@ function RecordTimeOutHistory() {
   };
 
   const getRecordTimeOut = async () => {
-    try {
-      let res = await HttpClientServices.get("/recordtimeouts");
-      setRecordtimeout(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
+    let res = await HttpClientServices.get("/recordtimeouts");
+    if (!res.error) {
+      setRecordtimeout(res.results);
+      // console.log(res);
+    } else {
+      console.log(res.error);
     }
   };
   const columns: GridColDef[] = [
@@ -109,7 +105,7 @@ function RecordTimeOutHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <RecordTimeOutDelete params={params.row} />;
+        return <RecordTimeOutDelete params={params.row.ID} />;
       },
       sortable: false,
       description: "ลบ",
