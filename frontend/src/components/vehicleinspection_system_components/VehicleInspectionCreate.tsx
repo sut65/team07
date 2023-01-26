@@ -45,7 +45,7 @@ export default function VehicleInspectionCreate() {
   const [ablpart, setAmbulancePart] = React.useState<AmbulancePartInterface[]>(
     []
   );
-  const [emp, setEmployee] = React.useState<EmployeeInterface[]>([]);
+  const [employee, setEmployee] = React.useState<EmployeeInterface>();
   const [detailABL, setDatail] = React.useState<string>("รายละเอียด");
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -101,6 +101,17 @@ export default function VehicleInspectionCreate() {
       [name]: event.target.value,
     });
   };
+    //get Employee /:id
+    const getEmployee = async () => {
+      let res = await HttpClientServices.get(
+        `/employee/${localStorage.getItem("id")}`
+      );
+      if (!res.error) {
+        setEmployee(res.results);
+      } else {
+        console.log(res.error);
+      }
+    };
   //get Ambulance
   const getAmbulance = async (id: string) => {
     let res = await HttpClientServices.get(`/abl/${id}`);
@@ -147,6 +158,7 @@ export default function VehicleInspectionCreate() {
     getTypeAbl();
     getStatusCheck();
     getAmbulancePart();
+    getEmployee();
   }, []);
 
   async function submit() {
@@ -154,7 +166,7 @@ export default function VehicleInspectionCreate() {
       OdoMeter: convertType(vehicleinspection?.OdoMeter),
       Fail: vehicleinspection?.Fail,
       VehicleInnspectionDatetime: vehicleinspection?.VehicleInnspectionDatetime,
-      EmployeeID: convertType(vehicleinspection?.EmployeeID),
+      EmployeeID: convertType(employee?.ID),
       AmbulancePartID: convertType(vehicleinspection?.AmbulancePartID),
       AmbulanceID: convertType(vehicleinspection?.AmbulanceID),
       StatusCheckID: convertType(vehicleinspection.StatusCheckID),
