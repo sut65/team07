@@ -33,7 +33,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export default function VehicleInspectionCreate() {
   const [vehicleinspection, setVehicleInspection] = React.useState<
     Partial<VehicleInspectionInterface>
-  >({ VehicleInnspectionDatetime: new Date() });
+  >({ VehicleInspectionDatetime: new Date() });
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [abl, setAmbulance] = React.useState<AmbulancesInterface[]>([]);
@@ -61,17 +61,6 @@ export default function VehicleInspectionCreate() {
   const handleChange = (event: SelectChangeEvent) => {
     const name = event.target.name as keyof typeof vehicleinspection;
     setVehicleInspection({ ...vehicleinspection, [name]: event.target.value });
-
-    // if (event.target.name === "AmbulanceID") {
-    //   abl.forEach((val: any) => {
-    //     if (val.CarBrand === Number(event.target.value)) {
-    //       setDatail(`ไอดีรถ: ${val.ID} ยี่ห้อรถ: ${val.CarBrand} เลขทะเบียนรถ: ${val.Clp}`);
-    //     }
-    //   });
-    //   if (event.target.value === "") {
-    //     setDatail("รายละเอียด");
-    //   }
-    // }
 
     if (event.target.name === "TypeAblID") {
       getAmbulance(event.target.value);
@@ -101,17 +90,17 @@ export default function VehicleInspectionCreate() {
       [name]: event.target.value,
     });
   };
-    //get Employee /:id
-    const getEmployee = async () => {
-      let res = await HttpClientServices.get(
-        `/employee/${localStorage.getItem("id")}`
-      );
-      if (!res.error) {
-        setEmployee(res.results);
-      } else {
-        console.log(res.error);
-      }
-    };
+  //get Employee /:id
+  const getEmployee = async () => {
+    let res = await HttpClientServices.get(
+      `/employee/${localStorage.getItem("id")}`
+    );
+    if (!res.error) {
+      setEmployee(res.results);
+    } else {
+      console.log(res.error);
+    }
+  };
   //get Ambulance
   const getAmbulance = async (id: string) => {
     let res = await HttpClientServices.get(`/abl/${id}`);
@@ -165,7 +154,7 @@ export default function VehicleInspectionCreate() {
     let data = {
       OdoMeter: convertType(vehicleinspection?.OdoMeter),
       Fail: vehicleinspection?.Fail,
-      VehicleInnspectionDatetime: vehicleinspection?.VehicleInnspectionDatetime,
+      VehicleInspectionDatetime: vehicleinspection?.VehicleInspectionDatetime,
       EmployeeID: convertType(employee?.ID),
       AmbulancePartID: convertType(vehicleinspection?.AmbulancePartID),
       AmbulanceID: convertType(vehicleinspection?.AmbulanceID),
@@ -353,10 +342,17 @@ export default function VehicleInspectionCreate() {
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  value={0}
+                  openTo={"year"}
+                  value={vehicleinspection?.VehicleInspectionDatetime}
                   onChange={(newValue) => {
-                    newValue = 1;
+                    const id =
+                      "VehicleInspectionDatetime" as keyof typeof vehicleinspection;
+                    setVehicleInspection({
+                      ...vehicleinspection,
+                      [id]: newValue,
+                    });
                   }}
+                  inputFormat="dd/MM/yyyy"
                   renderInput={(params) => (
                     <TextField {...params} size="small" />
                   )}
@@ -365,6 +361,16 @@ export default function VehicleInspectionCreate() {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
+            <Grid item xs={12}>
+              <Button
+                style={{ float: "right" }}
+                onClick={submit}
+                variant="contained"
+                color="primary"
+              >
+                บันทึกข้อมูล
+              </Button>
+            </Grid>
             <Grid item xs={6}>
               <Button
                 style={{ float: "left" }}
@@ -375,16 +381,6 @@ export default function VehicleInspectionCreate() {
                 color="secondary"
               >
                 ย้อนกลับ
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                style={{ float: "right" }}
-                onClick={submit}
-                variant="contained"
-                color="primary"
-              >
-                บันทึกข้อมูล
               </Button>
             </Grid>
           </Grid>
