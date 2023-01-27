@@ -6,26 +6,26 @@ import (
 	"gorm.io/gorm"
 )
 
-type CarStatus struct {
+type Carstat struct {
 	gorm.Model
 	Name string
 
 	//For Link Foreign key
-	Oder []Oder `gorm:"foreignKey:CarStatusID"`
+	Carcare []Carcare `gorm:"foreignKey:CarStatID"`
 }
 
-type Oder struct {
+type Carcare struct {
 	gorm.Model
 	SendDate  time.Time
-	ResiveDte time.Time
+	ResiveDate time.Time
 	Bill      int
 	Note      string
 	SaveDate  time.Time
 
-	// Save CarStatus area ID in FK
-	CarStatusID *uint
+	// Save CarStat area ID in FK
+	CarStatID *uint
 	// to eaiser for add FK
-	CarStatus CarStatus
+	CarStat Carstat
 
 	// Save Employee ID in FK
 	EmployeeID *uint
@@ -36,6 +36,4 @@ type Oder struct {
 	VehicleInspectionID *uint
 	// to eaiser for add FK
 	VehicleInspection VehicleInspection
-
-	RecordTimeOUT []RecordTimeOUT `gorm:"foreignKey:CaseID"`
 }

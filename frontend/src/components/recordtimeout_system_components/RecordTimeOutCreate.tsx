@@ -158,7 +158,7 @@ function RecordTimeOutCreate() {
   //get Employee /:id
   const getEmployee = async () => {
     let res = await HttpClientServices.get(
-      `/admin/employee/${localStorage.getItem("id")}`
+      `/employee/${localStorage.getItem("id")}`
     );
     if (!res.error) {
       setEmployee(res.results);
