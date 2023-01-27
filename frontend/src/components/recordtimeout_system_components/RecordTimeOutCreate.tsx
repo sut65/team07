@@ -55,7 +55,7 @@ function RecordTimeOutCreate() {
   const [typeAbls, setTypeAbls] = useState<TypeAblsInterface[]>([]);
   const [typeAbl, setTypeAbl] = useState<string>("");
   const [detailCase, setDetailCase] = useState<string>("รายละเอียด");
-
+  const [detailABL, setDetailAbl] = useState<string>("รายละเอียด");
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -72,6 +72,7 @@ function RecordTimeOutCreate() {
     const name = event.target.name as keyof typeof recordtimeout;
     setRecordTimeOut({ ...recordtimeout, [name]: event.target.value });
 
+
     if (event.target.name === "CaseID") {
       cases.forEach((val: any) => {
         if (val.ID === Number(event.target.value)) {
@@ -84,15 +85,38 @@ function RecordTimeOutCreate() {
     }
 
     if (event.target.name === "TypeAblID") {
+
       getAmbulance(event.target.value);
       setTypeAbl(event.target.value);
+      setDetailAbl("รายละเอียด");
+
+      
       if (event.target.value === "") {
         setAmbulance([]);
+      }
+    }
+    if (event.target.name === "AmbulanceID") {
+      
+      abl.forEach((val: any) => {
+        if (val.CarBrand === Number(event.target.value)) {
+          setAmbulance([]);
+        }
+      });
+
+      if (event.target.value !== "") {
+        setDetailAbl(
+          `ไอดีรถ: ${event.target.value} ยี่ห้อรถ: ${event.target.value} เลขทะเบียนรถ: ${event.target.value}`
+        );
+      } else {
+        setDetailAbl("รายละเอียด");
       }
     }
     // console.log(recordtimeout);
   };
 
+  const submitTest = () => {
+    console.log(abl)
+  }
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name as keyof typeof recordtimeout;
     setRecordTimeOut({
@@ -134,7 +158,7 @@ function RecordTimeOutCreate() {
   //get Employee /:id
   const getEmployee = async () => {
     let res = await HttpClientServices.get(
-      `/employee/${localStorage.getItem("id")}`
+      `/admin/employee/${localStorage.getItem("id")}`
     );
     if (!res.error) {
       setEmployee(res.results);
@@ -276,14 +300,12 @@ function RecordTimeOutCreate() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              // label={detailCase}
               disabled
               fullWidth
               rows={2}
               multiline
               type="string"
               value={detailCase}
-              // defaultValue={detailCase}
             />
           </Grid>
 
@@ -326,7 +348,6 @@ function RecordTimeOutCreate() {
                   name: "AmbulanceID",
                 }}
                 disabled={typeAbl != "" ? false : true}
-                value={String(recordtimeout?.AmbulanceID)}
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกรถพยาบาล
@@ -342,12 +363,11 @@ function RecordTimeOutCreate() {
 
           <Grid item xs={12}>
             <TextField
-              label="detail"
               disabled
               fullWidth
-              rows={2.5}
+              rows={2}
               multiline
-              // value={abl?.Clp}
+              value={detailABL}
             />
           </Grid>
 
@@ -394,7 +414,8 @@ function RecordTimeOutCreate() {
                   openTo={"year"}
                   value={recordtimeout?.RecordTimeOutDatetime}
                   onChange={(newValue) => {
-                    const id = "RecordTimeOutDatetime" as keyof typeof recordtimeout;
+                    const id =
+                      "RecordTimeOutDatetime" as keyof typeof recordtimeout;
                     // console.log(newValue);
                     setRecordTimeOut({ ...recordtimeout, [id]: newValue });
                   }}
@@ -406,19 +427,10 @@ function RecordTimeOutCreate() {
               </LocalizationProvider>
             </FormControl>
           </Grid>
+
           <Grid item xs={6}>
             <Button
               style={{ float: "left" }}
-              onClick={submit}
-              variant="contained"
-              color="primary"
-            >
-              บันทึกข้อมูล
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              style={{ float: "right" }}
               //   onClick={}
               component={RouterLink}
               to="/RecordTimeOutHistory"
@@ -426,6 +438,16 @@ function RecordTimeOutCreate() {
               color="secondary"
             >
               ย้อนกลับ
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              style={{ float: "right" }}
+              onClick={submit}
+              variant="contained"
+              color="primary"
+            >
+              บันทึกข้อมูล
             </Button>
           </Grid>
         </Grid>
@@ -450,6 +472,10 @@ function RecordTimeOutCreate() {
           {message}
         </Alert>
       </Snackbar>
+
+      {/* <Button onClick={submitTest}>
+        Test
+      </Button> */}
     </Container>
   );
 }
