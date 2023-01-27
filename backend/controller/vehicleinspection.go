@@ -60,7 +60,7 @@ func CreateVehicleInspection(c *gin.Context) {
 func GetVehicleInspection(c *gin.Context) {
 	var vehicleinspection entity.VehicleInspection
 	id := c.Param("id")
-	if err := entity.DB().Preload("Ambulance").Preload("StatusCheck").Preload("Employee").Preload("AmbulancePart").Preload("Ambulance.TypeAbl").Raw("SELECT * FROM vehicle_inspections WHERE id = ?", id).Find(&vehicleinspection).Error; err != nil {
+	if err := entity.DB().Preload("Ambulance").Preload("StatusCheck").Preload("Employee").Preload("Employee.User.Role").Preload("Employee.User").Preload("AmbulancePart").Preload("Ambulance.TypeAbl").Raw("SELECT * FROM vehicle_inspections WHERE id = ?", id).Find(&vehicleinspection).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -72,7 +72,7 @@ func GetVehicleInspection(c *gin.Context) {
 func ListVehicleInspections(c *gin.Context) {
 	var vehicleinspection []entity.VehicleInspection
 
-	if err := entity.DB().Preload("Ambulance").Preload("StatusCheck").Preload("Employee").Preload("AmbulancePart").Preload("Ambulance.TypeAbl").Raw("SELECT * FROM vehicle_inspections").Find(&vehicleinspection).Error; err != nil {
+	if err := entity.DB().Preload("Ambulance").Preload("StatusCheck").Preload("Employee").Preload("Employee.User.Role").Preload("Employee.User").Preload("AmbulancePart").Preload("Ambulance.TypeAbl").Raw("SELECT * FROM vehicle_inspections").Find(&vehicleinspection).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
