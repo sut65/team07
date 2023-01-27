@@ -78,7 +78,7 @@ export default function VehiclecinspectionDelete(props: any) {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            คุณ {emp?.User.Name} ต้องการลบรายการบันทึกเวลาใช้รถไอดีที่ {params}{" "}
+            คุณ {emp?.Name} ต้องการลบรายการบันทึกเวลาใช้รถไอดีที่ {params}{" "}
             ใช่ไหม ??
           </DialogContentText>
         </DialogContent>

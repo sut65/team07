@@ -105,7 +105,7 @@ function RecordTimeOutHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <RecordTimeOutDelete params={params.row} />;
+        return <RecordTimeOutDelete params={params.row.ID} />;
       },
       sortable: false,
       description: "ลบ",
