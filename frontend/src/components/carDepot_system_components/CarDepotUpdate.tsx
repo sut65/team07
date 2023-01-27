@@ -156,7 +156,7 @@ function CarDepotUpdate() {
                         color="primary"
                         sx={{ fontWeight: 'bold' }}
                     >
-                        แก้ไขข้อมูล  คลังจอดรถ  ID {carDepot?.ID}
+                        แก้ไขข้อมูล  คลังจอดรถ {carDepot?.ID}
                     </Typography>
                 </Stack>
                 <Grid container spacing={2} >
