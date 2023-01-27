@@ -127,7 +127,7 @@ function VehicleInspectionHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <VehicleInspectionDelete params={params.row.ID} />;
+        return <VehicleInspectionDelete params={params.row} />;
       },
       sortable: false,
       description: "ลบ",

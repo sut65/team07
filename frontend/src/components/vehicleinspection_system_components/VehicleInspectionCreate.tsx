@@ -37,8 +37,8 @@ export default function VehicleInspectionCreate() {
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [abl, setAmbulance] = React.useState<AmbulancesInterface[]>([]);
-  const [typeAbls, setTypeAbl] = React.useState<TypeAblsInterface[]>([]);
-  const [a, setA] = React.useState<string>("");
+  const [typeAbls, setTypeAbls] = React.useState<TypeAblsInterface[]>([]);
+  const [typeAbl, setTypeAbl] = React.useState<string>("");
   const [statuscheck, setStatuscheck] = React.useState<StatusCheckInterface[]>(
     []
   );
@@ -46,7 +46,7 @@ export default function VehicleInspectionCreate() {
     []
   );
   const [employee, setEmployee] = React.useState<EmployeeInterface>();
-  const [detailABL, setDatail] = React.useState<string>("รายละเอียด");
+  const [detailABL, setDatailAbl] = React.useState<string>("รายละเอียด");
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -64,7 +64,8 @@ export default function VehicleInspectionCreate() {
 
     if (event.target.name === "TypeAblID") {
       getAmbulance(event.target.value);
-      setA(event.target.value);
+      setTypeAbl(event.target.value);
+      setDatailAbl("รายละเอียด");
       if (event.target.value === "") {
         setAmbulance([]);
       }
@@ -72,16 +73,19 @@ export default function VehicleInspectionCreate() {
     if (event.target.name === "AmbulanceID") {
       abl.forEach((val: any) => {
         if (val.CarBrand === Number(event.target.value)) {
-          setDatail(
-            `ไอดีรถ: ${val.ID} ยี่ห้อรถ: ${val.CarBrand} เลขทะเบียนรถ: ${val.Clp}`
-          );
+          setAmbulance([]);
         }
       });
-      if (event.target.value === "") {
-        setDatail("รายละเอียด");
+
+      if (event.target.value !== "") {
+        setDatailAbl(
+          `ไอดีรถ: ${event.target.value} ยี่ห้อรถ: ${event.target.value} เลขทะเบียนรถ: ${event.target.value}`
+        );
+      } else {
+        setDatailAbl("รายละเอียด");
       }
     }
-    console.log(vehicleinspection);
+    //console.log(vehicleinspection);
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name as keyof typeof vehicleinspection;
@@ -93,7 +97,7 @@ export default function VehicleInspectionCreate() {
   //get Employee /:id
   const getEmployee = async () => {
     let res = await HttpClientServices.get(
-      `/employee/${localStorage.getItem("id")}`
+      `/admin/employee/${localStorage.getItem("id")}`
     );
     if (!res.error) {
       setEmployee(res.results);
@@ -115,7 +119,7 @@ export default function VehicleInspectionCreate() {
   const getTypeAbl = async () => {
     let res = await HttpClientServices.get("/type_abls");
     if (!res.error) {
-      setTypeAbl(res.results);
+      setTypeAbls(res.results);
       // console.log(res.results);
     } else {
       console.log(res.error);
@@ -233,7 +237,7 @@ export default function VehicleInspectionCreate() {
                 inputProps={{
                   name: "AmbulanceID",
                 }}
-                disabled={a != "" ? false : true}
+                disabled={typeAbl != "" ? false : true}
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกรถพยาบาล
@@ -248,7 +252,13 @@ export default function VehicleInspectionCreate() {
           </Grid>
 
           <Grid item xs={12}>
-            <TextField label="detail" disabled fullWidth rows={2} multiline />
+            <TextField
+              disabled
+              fullWidth
+              rows={2}
+              multiline
+              value={detailABL}
+            />
           </Grid>
 
           <Grid item xs={4}>
