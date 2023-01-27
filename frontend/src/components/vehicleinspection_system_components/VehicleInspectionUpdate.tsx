@@ -150,7 +150,7 @@ export default function VehicleInspectionUpdate(props: any) {
           <Divider />
           <Grid item xs={12} container>
             <Grid item xs={5}>
-              เจ้าหน้าที่ดูแลรถ :
+            {params.Employee.User.Role.Name}  :
             </Grid>
             <Grid item xs={7}>
               {params.Employee.Name}

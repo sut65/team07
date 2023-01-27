@@ -167,6 +167,12 @@ func main() {
 	r.POST("/Emercase", controller.CreateEmercase)
 	r.DELETE("/Emercase/:id", controller.DeleteEmercase)
 	r.PATCH("/Emercase", controller.UpdateEmercase)
+
+	r.GET("/emergencys", controller.GetEmergency)
+
+	r.GET("/genders", controller.GetGender)
+
+
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
