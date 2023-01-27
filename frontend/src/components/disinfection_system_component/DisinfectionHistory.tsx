@@ -12,8 +12,6 @@ import { format } from 'date-fns';
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid';
 import moment from 'moment';
 import EditIcon from '@mui/icons-material/Edit';
-import RecordTimeOutDelete from '../recordtimeout_system_components/RecordTimeOutDelete';
-import RecordTimeOutUpdate from '../recordtimeout_system_components/RecordTimeOutUpdate';
 // import DisinfectionUpdate from './DisinfecttionUpdate';
 import DisinfectionDelete from './DisinfectionDelete';
 import DisinfectionUpdate from './DisinfecttionUpdate';
