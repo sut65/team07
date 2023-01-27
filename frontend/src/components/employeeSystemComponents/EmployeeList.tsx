@@ -149,7 +149,8 @@ export default function EmployeeList() {
                                         <TableRow
                                             key={item.ID}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        ><TableCell>{item.Name}</TableCell>
+                                        >
+                                            <TableCell>{item.Name}</TableCell>
                                             <TableCell>{item.Surname}</TableCell>
                                             <TableCell>
                                                 {

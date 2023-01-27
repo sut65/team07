@@ -190,6 +190,19 @@ func SetupDatabase() {
 
 	db.Model(&WorkingArea{}).Create(&sut)
 
+	adminEmp := Employee{
+		Name:        "Admin",
+		Surname:     "Owner",
+		Age:         50,
+		User:        userAdmin,
+		WorkingArea: sut,
+		Status:      ready,
+		Education:   bacDeg,
+		Date:        time.Now(),
+	}
+
+	db.Model(&Employee{}).Create(&adminEmp)
+
 	// ระบบจัดซื้อรถพยาบาล ---------------------------------------------
 	var company = []Company{
 		{Name: "A_Company"},

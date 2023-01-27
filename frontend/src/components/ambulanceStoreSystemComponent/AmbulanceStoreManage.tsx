@@ -87,11 +87,13 @@ export default function AmbulanceStoreManage() {
                         <TableContainer>
                             <Table>
                                 <TableHead>
-                                    <TableCell>ชื่อยา</TableCell>
-                                    <TableCell>จำนวนที่เหลือ</TableCell>
-                                    <TableCell>ผู้เพิ่มข้อมูล</TableCell>
-                                    <TableCell>วันเพิ่มข้อมูล</TableCell>
-                                    <TableCell>แก้ไขข้อมูล</TableCell>
+                                    <TableRow>
+                                        <TableCell>ชื่อยา</TableCell>
+                                        <TableCell>จำนวนที่เหลือ</TableCell>
+                                        <TableCell>ผู้เพิ่มข้อมูล</TableCell>
+                                        <TableCell>วันเพิ่มข้อมูล</TableCell>
+                                        <TableCell>แก้ไขข้อมูล</TableCell>
+                                    </TableRow>
                                 </TableHead>
 
                                 {/* Body */}
@@ -131,6 +133,9 @@ export default function AmbulanceStoreManage() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <hr />
                     </Grid>
                     <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
                         <Button
