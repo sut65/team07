@@ -79,7 +79,11 @@ func main() {
 	r.GET("/status/:id", controller.GetStatus)
 
 	// ------------------- Status -------------------------
-
+	// ----------------- Employee ----------------------------
+	// List
+	r.GET("/employees", controller.ListEmployee)
+	// Get by id
+	r.GET("/employee/:id", controller.GetEmployee)
 	adminApi := r.Group("/admin")
 	{
 		protected := adminApi.Use(middlewares.Authorizes())
@@ -88,11 +92,6 @@ func main() {
 		protected.Use(middlewares.CheckAdmin())
 		{
 
-			// ----------------- Employee ----------------------------
-			// List
-			protected.GET("/employees", controller.ListEmployee)
-			// Get by id
-			protected.GET("/employee/:id", controller.GetEmployee)
 			// Create
 			protected.POST("/employee", controller.CreateEmployee)
 			// UPDATE

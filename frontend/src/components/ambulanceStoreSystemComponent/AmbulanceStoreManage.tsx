@@ -11,7 +11,8 @@ import { useParams } from 'react-router-dom'
 import { AmbulanceStoreInterface } from '../../models/ambulanceStoreModels/IAmbulanceStore'
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance'
 import { GetAmbulanceWithID, ListAmbulanceStores } from '../../services/ambulanceStoreSystemServices/AmbulanceStoreHttpClientServices'
-import { GetAmbulanceByID } from '../../services/ambulance_system_services/HttpClientService'
+import { Link as RouterLink } from "react-router-dom";
+
 
 // added styles
 import "./styles.css"
@@ -115,6 +116,14 @@ export default function AmbulanceStoreManage() {
                                                 </TableCell>
                                                 <TableCell>
                                                     {/* ไว้ใส่ปุ่มแก้ไขข้อมูล */}
+                                                    <Button
+                                                        variant='outlined'
+                                                        color="primary"
+                                                        component={RouterLink}
+                                                        to={"/ambulance-store/update/" + item.ID}
+                                                    >
+                                                        แก้ไขข้อมูล
+                                                    </Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))
@@ -123,8 +132,13 @@ export default function AmbulanceStoreManage() {
                             </Table>
                         </TableContainer>
                     </Grid>
-                    <Grid item xs={12} sx={{ display: "flex" , justifyContent:"center"}}>
-                        <Button onClick={submit}>
+                    <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            component={RouterLink}
+                            to={"/ambulance-store/create/" + id}
+                        >
                             เบิกยาเข้าสู่รถพยาบาล
                         </Button>
                     </Grid>
