@@ -63,6 +63,9 @@ func SetupDatabase() {
 
 		//ระบบใช้ยาบนรถพยาบาล
 		&AmbulanceUse{},
+
+		//ระบบบันทึกเวลาใช้รถขาเข้าของ พนง ขับรถ
+		&RecordTimeIn{},
 	)
 
 	db = database

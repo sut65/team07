@@ -135,15 +135,12 @@ func main() {
 	r.GET("/abl/:type_id", controller.GetAmbulanceByTypeAblID)
 	r.GET("/cases", controller.GetCase)
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-	// r.GET("/recordtimeins", controller.ListRecordTimeIns)
-	// // Get by eid
-	// r.GET("/recordtimein/:employee_id", controller.GetRecordTimeInByEmployee)
-	// // Create
-	// r.POST("/recordtimein", controller.CreateRecordTimeIn)
-	// // DELETE
-	// r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
-	// // UPDATE
-	// r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
+	r.GET("/recordtimeins", controller.ListRecordTimeIns)
+	r.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
+	r.GET("/recordtimeins/:id", controller.GetRecordTimeIn)
+	r.POST("/recordtimein", controller.CreateRecordTimeIn)
+	r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
+	r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
 
 	r.GET("/vehicleinspections", controller.ListVehicleInspections)
