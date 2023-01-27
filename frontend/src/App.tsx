@@ -7,6 +7,7 @@ import { PaletteOptions } from "@mui/material/styles/createPalette";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AmbulanceCreate from "./components/ambulance_system_components/AmbulanceCreate";
+import CarDepotCreate from "./components/carDepot_system_components/CarDepotCreate";
 // import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 // import Ambulance from "./components/ambulance_system_components/Ambulance";
 import RecordTimeOutCreate from "./components/recordtimeout_system_components/RecordTimeOutCreate";
@@ -26,15 +27,23 @@ import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate
 import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
+<<<<<<< HEAD
 //import CaseCreate from "./components/emergency_system_components/emergency";
+=======
+>>>>>>> 5fd8027a (ui and debug - close #24)
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
 import AmbulanceStoreHome from "./components/ambulanceStoreSystemComponent/AmbulanceStoreHome";
 import AmbulanceStoreManage from "./components/ambulanceStoreSystemComponent/AmbulanceStoreManage";
 // import RecordTimeInDelete from "./components/recordtimein_system_components/RecordTimeInDelete";
+<<<<<<< HEAD
 
 import VehicleInspectionCreate from "./components/vehicleinspection_system_components/VehicleInspectionCreate";
 import VehicleInspectionHistory from "./components/vehicleinspection_system_components/VehicleInspectionHistory";
 import AmbulanceStoreCreate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreCreate";
+=======
+import CarDepot from "./components/carDepot_system_components/CarDepot";
+import CarDepotUpdate from "./components/carDepot_system_components/CarDepotUpdate";
+>>>>>>> 5fd8027a (ui and debug - close #24)
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -78,6 +87,7 @@ export default function App() {
   }
 
   return (
+<<<<<<< HEAD
     <div>
       <Router>
         <ThemeProvider theme={theme}>
@@ -87,12 +97,24 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
               <Route path="/" element={<Signin />} />
+=======
+    <Router>
+      <ThemeProvider theme={theme}>
+        <Navbar />
+        <div className="container-router">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
+            <Route path="/CarDepotCreate" element={<CarDepotCreate />} />
+            <Route path="/" element={<Signin />} />
+>>>>>>> 5fd8027a (ui and debug - close #24)
 
               {/* //Employee */}
               <Route path="/Employee" element={<EmployeeList />} />
               <Route path="/employee/create" element={<EmployeeCreate />} />
               <Route path="/employee/update/:id" element={<EmployeeUpdate />} />
 
+<<<<<<< HEAD
               <Route path="/Ambulance" element={<Ambulance />} />
               <Route
                 path="/Ambulance/AmbulanceCreate"
@@ -111,6 +133,36 @@ export default function App() {
                 path="/RecordTimeOutCreate/:id?"
                 element={<RecordTimeOutCreate />}
               />
+=======
+            <Route path="/Ambulance" element={<Ambulance />} />
+            <Route path="/CarDepot" element={<CarDepot />} />
+            <Route
+              path="/Ambulance/AmbulanceCreate"
+              element={<AmbulanceCreate />}
+            />
+            <Route
+              path="/Ambulance/AmbulanceUpdate"
+              element={<AmbulanceUpdate />}
+            />
+
+            <Route
+              path="/CarDepot/CarDepotCreate"
+              element={<CarDepotCreate />}
+            />
+            <Route
+              path="/CarDepot/CarDepotUpdate"
+              element={<CarDepotUpdate />}
+            />
+
+            <Route
+              path="/RecordTimeOutHistory"
+              element={<RecordTimeOutHistory />}
+            />
+            <Route
+              path="/RecordTimeOutCreate"
+              element={<RecordTimeOutCreate />}
+            />
+>>>>>>> 5fd8027a (ui and debug - close #24)
 
               <Route
                 path="/RecordTimeInCreate"

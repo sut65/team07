@@ -26,10 +26,14 @@ import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import PeopleIcon from '@mui/icons-material/People';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
+<<<<<<< HEAD
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import HealingIcon from '@mui/icons-material/Healing';
 import SanitizerIcon from '@mui/icons-material/Sanitizer';
 
+=======
+import LocalParkingIcon from '@mui/icons-material/LocalParking';
+>>>>>>> 5fd8027a (ui and debug - close #24)
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DirectionsCarTwoToneIcon from '@mui/icons-material/DirectionsCarTwoTone';
 import { Link } from "react-router-dom";
@@ -91,6 +95,12 @@ function Navbar() {
       name: "รายการใช้รถขาเข้าของพนักงานขับรถ",
       icon: <DirectionsCarTwoToneIcon />,
       path: "/RecordTimeInHistory",
+    },
+
+    {
+      name: "ที่จอดรถพยาบาล",
+      icon: <LocalParkingIcon />,
+      path: "/carDepot",
     },
 
     {
