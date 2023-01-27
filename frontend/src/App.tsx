@@ -103,10 +103,10 @@ export default function App() {
               path="/RecordTimeOutHistory"
               element={<RecordTimeOutHistory />}
             />
-            <Route
-              path="/RecordTimeOutCreate/:id?"
-              element={<RecordTimeOutCreate />}
-            />
+             <Route
+                path="/RecordTimeOutCreate/:id?"
+                element={<RecordTimeOutCreate />}
+              />
 
             <Route
               path="/RecordTimeInCreate"
@@ -122,39 +122,20 @@ export default function App() {
               element={<RecordTimeInUpdate />}
             />
 
-            <Route
-              path="/DisinfectionCreate"
-              element={<DisinfectionCreate />}
-            />
-            <Route
-              path="/DisinfectionHistory"
-              element={<DisinfectionHistory />}
-            />
-            <Route
-              path="/DisinfectionDelete"
-              element={<DisinfectionDelete />}
-            />
-            <Route
-              path="/DisinfectionUpdate"
-              element={<DisinfectionUpdate />}
-            />
+            <Route path="/DisinfectionCreate" element={<DisinfectionCreate />} />
+            <Route path="/DisinfectionHistory" element={<DisinfectionHistory />} />
+            <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
+            <Route path="/DisinfectionUpdate" element={<DisinfectionUpdate />} />
             {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
 
-            <Route
-              path="/AmbulanceUse/AmbulanceUseCreate"
-              element={<AmblanceUseCreate />}
-            />
 
-            <Route
-              path="/VehicleInspectionCreate"
-              element={<VehicleInspectionCreate />}
-            />
+            <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />}/>
 
-            <Route
-              path="/VehicleInspectionHistory"
-              element={<VehicleInspectionHistory />}
-            />
+<Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate/>}/>
+
+<Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory/>}/>
           </Routes>
+          
         </div>
       </ThemeProvider>
     </Router>
