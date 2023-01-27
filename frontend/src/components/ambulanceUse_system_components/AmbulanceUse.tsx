@@ -2,44 +2,50 @@ import { Box, Button, Container, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react'
 import { Link as RouterLink } from "react-router-dom";
-import { GetAmbulanceByEmployee } from '../../services/ambulance_system_services/HttpClientService'
-import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
+import { GetAmbulanceUseByEmployee } from '../../services/ambulanceUse_system_services/HttpClientService';
+import { AmbulanceUseInterface } from '../../models/ambulanceUse_system_models/ambulanceUse';
 
-function Ambulance() {
+function AmbulanceUse() {
 
-    const [ambulanceByEmployee, setAmbulanceByEmployee] = useState<AmbulancesInterface[]>([]);
-    const getAmbulanceDataByEmployee = async () => {
-        let res = await GetAmbulanceByEmployee();
+    const [ambulanceUseByEmployee, setAmbulanceUseByEmployee] = useState<AmbulanceUseInterface[]>([]);
+    const getAmbulanceUseByEmployee = async () => {
+        let res = await GetAmbulanceUseByEmployee();
         if (res) {
-            setAmbulanceByEmployee(res);
+            console.log(res)
+            setAmbulanceUseByEmployee(res);
         }
     };
 
+    useEffect(() => {
+
+        getAmbulanceUseByEmployee();
+
+    }, []);
 
     const columns: GridColDef[] = [
-        { field: "ID", headerName: "ไอดีรถ", width: 100, headerAlign: "center", align:"center" },
-        { field: "Clp", headerName: "เลขทะเบียนรถ", width: 160, headerAlign: "center", align:"center" },
-        { field: "CarBrand", headerName: "ยี่ห้อรถ", width: 120, headerAlign: "center", align:"center" },
-        { field: "TypeAbl", headerName: "ประเภทรถ", width: 270, headerAlign: "center", align:"center", valueFormatter: (params) => params.value.Name, },
-        { field: "Company", headerName: "ซื้อที่บริษัท", width: 150, headerAlign: "center", align:"center", valueFormatter: (params) => params.value.Name, },
-        { field: "Date", headerName: "วันที่ซื้อ", width: 240, headerAlign: "center", align:"center" },
+        { field: "ID", headerName: "ไอดียา", width: 150, headerAlign: "center", align: "center" },
+        { field: "Medicine", headerName: "ยาที่ใช้", width: 170, headerAlign: "center", align: "center", valueFormatter: (params) => params.value.MedicineName },
+        { field: "Amount", headerName: "จำนวน", width: 120, headerAlign: "center", align: "center" },
+        { field: "Ambulance", headerName: "เลขทะเบียนรถ", width: 240, headerAlign: "center", align: "center", valueFormatter: (params) => params.value.Clp },
+        { field: "Date", headerName: "วันที่ใช้ยา", width: 240, headerAlign: "center", align: "center" },
         {
             field: " ",
             headerName: " ",
             sortable: true,
-            width: 100,
-            align:"center",
+            width: 240,
+            align: "center",
             headerAlign: "center",
             renderCell: ({ row }: Partial<GridRowParams>) =>
-                <Button component={RouterLink}
-                    to="/Ambulance/AmbulanceUpdate"
+                <Button
+                    // component={RouterLink}
+                    // to="/AmbulanceUse/AmbulanceUseUpdate"
                     size="small"
                     variant="contained"
                     color="error"
                     onClick={() => {
                         localStorage.setItem("aid", row.ID);
                     }}
-                    sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+                    sx={{ borderRadius: 20, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
                 >
                     แก้ไข
                 </Button>,
@@ -47,15 +53,8 @@ function Ambulance() {
 
     ];
 
-    useEffect(() => {
-
-        getAmbulanceDataByEmployee();
-
-    }, []);
-
     return (
         <div>
-
             <Container maxWidth="lg"
                 sx={{
                     mt: 5,
@@ -81,16 +80,16 @@ function Ambulance() {
                             sx={{ fontWeight: 'bold' }}
                             gutterBottom
                         >
-                            ข้อมูลรถพยาบาล
+                            ข้อมูลรายการใช้ยาบนรถพยาบาล
                         </Typography>
                     </Box>
                     <Box>
                         <Button
                             component={RouterLink}
-                            to="/Ambulance/AmbulanceCreate"
+                            to="/AmbulanceUSe/AmbulanceUseCreate"
                             variant="contained"
                             color="primary"
-                            sx = {{borderRadius: 20,'&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
+                            sx={{ borderRadius: 20, '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
                         >
                             สร้างรายการ
                         </Button>
@@ -98,23 +97,20 @@ function Ambulance() {
                 </Box>
                 <Box sx={{ borderRadius: 20 }}>
                     <DataGrid
-                        rows={ambulanceByEmployee}
+                        rows={ambulanceUseByEmployee}
                         getRowId={(row) => row.ID}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                         autoHeight={true}
-                        density={'comfortable'} 
-                        sx={{mt: 2, backgroundColor: '#fff'}}                                                   
+                        density={'comfortable'}
+                        sx={{ mt: 2, backgroundColor: '#fff' }}
                     />
                 </Box>
 
             </Container>
-
-
         </div>
     )
 }
 
-export default Ambulance
-
+export default AmbulanceUse
