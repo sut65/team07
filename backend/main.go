@@ -206,7 +206,7 @@ func main() {
 	// DELETE
 	r.DELETE("/carDepot/:id", controller.DeleteCarDepot)
 	// UPDATE
-	r.PATCH("/carDepot", controller.UpdateCardepot)
+	r.PATCH("/carDepot", controller.UpdateCarDepot)
 
 	// List park
 	r.GET("/parks", controller.ListParks)

@@ -8,23 +8,24 @@ import (
 	"github.com/sut65/team07/entity"
 )
 
-// POST /ambulance
+// POST /carDepot
 func CreateCarDepot(c *gin.Context) {
 
 	var ambulance entity.Ambulance
 	var park entity.Park
 	var employee entity.Employee
 	var carDepot entity.CarDepot
-	// 3: ค้นหา employee ด้วย id
-	if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "employees not found"})
-		return
-	}
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 7 จะถูก bind เข้าตัวแปร carDepot
 	if err := c.ShouldBindJSON(&carDepot); err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 3: ค้นหา employee ด้วย id
+	if tx := entity.DB().Where("id = ?", carDepot.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "employees not found"})
 		return
 	}
 
@@ -66,7 +67,7 @@ func GetCarDepot(c *gin.Context) {
 	var carDepot entity.CarDepot
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM carDepots WHERE id = ?", id).Scan(&carDepot).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM car_depots WHERE id = ?", id).Scan(&carDepot).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -81,7 +82,7 @@ func GetCarDepotByEmployee(c *gin.Context) {
 	var carDepot []entity.CarDepot
 	employee_id := c.Param("empid")
 
-	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("Park").Raw("SELECT * FROM carDepot WHERE employee_id = ?", employee_id).Find(&carDepot).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("Park").Raw("SELECT * FROM car_depots WHERE employee_id = ?", employee_id).Find(&carDepot).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -95,7 +96,7 @@ func ListCarDepots(c *gin.Context) {
 
 	var carDepots []entity.CarDepot
 
-	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("Park").Raw("SELECT * FROM carDepots").Find(&carDepots).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("Park").Raw("SELECT * FROM car_depots").Find(&carDepots).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -109,7 +110,7 @@ func DeleteCarDepot(c *gin.Context) {
 
 	id := c.Param("id")
 
-	if tx := entity.DB().Exec("DELETE FROM carDepots WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM car_depots WHERE id = ?", id); tx.RowsAffected == 0 {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": "carDepot not found"})
 		return
@@ -119,7 +120,7 @@ func DeleteCarDepot(c *gin.Context) {
 }
 
 // Update CarDepot
-func UpdateCardepot(c *gin.Context) {
+func UpdateCarDepot(c *gin.Context) {
 
 	//main
 	var carDepot entity.CarDepot
@@ -159,14 +160,14 @@ func UpdateCardepot(c *gin.Context) {
 	}
 
 	// if have new employee_id
-	if ambulance.EmployeeID != nil {
-		if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+	if carDepot.EmployeeID != nil {
+		if tx := entity.DB().Where("id = ?", carDepot.EmployeeID).First(&employee); tx.RowsAffected == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
 			return
 		}
-		ambulance.Employee = employee
+		carDepot.Employee = employee
 	} else {
-		if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+		if tx := entity.DB().Where("id = ?", carDepot.EmployeeID).First(&employee); tx.RowsAffected == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
 			return
 		}
