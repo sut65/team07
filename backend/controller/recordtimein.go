@@ -9,7 +9,7 @@ import (
 )
 
 // POST /recordtimein
-func CreateRecordTimeIn(c *gin.Context) { 
+func CreateRecordTimeIn(c *gin.Context) {
 	var recordtimein entity.RecordTimeIn
 	var ambulance entity.Ambulance
 	var employee entity.Employee
@@ -39,15 +39,14 @@ func CreateRecordTimeIn(c *gin.Context) {
 		return
 	}
 
-
 	//11: สร้าง RecordTimeIn
 	recordTI := entity.RecordTimeIn{
-		Employee: employee,				// โยงความสัมพันธ์กับ Entity Employee
-		Ambulance: ambulance,			// โยงความสัมพันธ์กับ Entity Ambalance
-		RecordTimeOUT: recordtimeout,	// โยงความสัมพันธ์กับ Entity Recordtimeout
-		Odo: recordtimein.Odo,			// ตั้งค่าฟิลด์ odo meter
-		TimeIn: recordtimein.TimeIn,	// ตั้งค่าฟิลด์ Date
-		Note: recordtimein.Note,		// ตั้งค่าฟิลด์ note
+		Employee:      employee,            // โยงความสัมพันธ์กับ Entity Employee
+		Ambulance:     ambulance,           // โยงความสัมพันธ์กับ Entity Ambalance
+		RecordTimeOUT: recordtimeout,       // โยงความสัมพันธ์กับ Entity Recordtimeout
+		Odo:           recordtimein.Odo,    // ตั้งค่าฟิลด์ odo meter
+		TimeIn:        recordtimein.TimeIn, // ตั้งค่าฟิลด์ Date
+		Note:          recordtimein.Note,   // ตั้งค่าฟิลด์ note
 	}
 
 	// 12: บันทึก
@@ -66,8 +65,7 @@ func GetRecordTimeIn(c *gin.Context) {
 	var recordtimein entity.RecordTimeIn
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM record_time_ins WHERE id = ?", id).Scan(&recordtimein).Error; err != nil {
-
+	if err := entity.DB().Preload("Ambulance").Preload("RecordTimeOUT").Preload("Employee").Raw("SELECT * FROM record_time_ins WHERE id = ?", id).Find(&recordtimein).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -121,100 +119,99 @@ func DeleteRecordTimeIn(c *gin.Context) {
 // Update RecordTimeIn
 func UpdateRecordTimeIn(c *gin.Context) {
 
-	//main
-	var recordtimein entity.RecordTimeIn
-	var recordtimein_old entity.RecordTimeIn
+	var recordtimeIN entity.RecordTimeIn
+	var recordtimeIN_old entity.RecordTimeIn
 
-	//relation
+	var recordtimeout entity.RecordTimeOUT
 	var ambulance entity.Ambulance
 	var employee entity.Employee
-	var recordtimeOUT entity.RecordTimeOUT
 
 	// Bind Json to var emp
-	if err := c.ShouldBindJSON(&recordtimein); err != nil {
+	if err := c.ShouldBindJSON(&recordtimeIN); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		c.Abort()
 		return
 	}
+	fmt.Println(recordtimeIN.Odo)
 
-	// Check abl is haved ?
-	if tx := entity.DB().Where("id = ?", recordtimein.ID).First(&recordtimein_old); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("RecordTimeIn id = %d not found", recordtimein.ID)})
+	// Check recordtimein is haved ?
+	if tx := entity.DB().Where("id = ?", recordtimeIN.ID).First(&recordtimeIN_old); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("RecordtimeIN id = %d not found", recordtimeIN.ID)})
 		c.Abort()
 		return
 	}
 
-	if recordtimein.Odo == 0 {
-		recordtimein.Odo = recordtimein_old.Odo
+	if recordtimeIN.Note == "" {
+		recordtimeIN.Note = recordtimeIN_old.Note
 	}
 
-	if recordtimein.Note == "" {
-		recordtimein.Note = recordtimein_old.Note
+	if recordtimeIN.Odo == 0 {
+		recordtimeIN.Odo = recordtimeIN_old.Odo
 	}
 
-	if recordtimein.TimeIn.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		recordtimein.TimeIn = recordtimein_old.TimeIn
+	if recordtimeIN.TimeIn.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		recordtimeIN.TimeIn = recordtimeIN_old.TimeIn
 	}
 
-	// if new have ambulance_id
-	if recordtimein.AmbulanceID != nil {
-		if tx := entity.DB().Where("id = ?", recordtimein.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found user"})
+	// if new have company_id
+	if recordtimeIN.AmbulanceID != nil {
+		if tx := entity.DB().Where("id = ?", recordtimeIN.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
 			return
 		}
 		fmt.Print("NOT NULL")
-		recordtimein.Ambulance = ambulance
+		recordtimeIN.Ambulance = ambulance
 	} else {
-		if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&ambulance); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found user"})
+		if tx := entity.DB().Where("id = ?", recordtimeIN.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
 			return
 		}
 		fmt.Print("NULL")
-		recordtimein.Ambulance = ambulance
+		recordtimeIN.Ambulance = ambulance
 	}
 
-	// if new have recordtimeoutl_id
-	if recordtimein.RecordTimeOUTID != nil {
-		if tx := entity.DB().Where("id = ?", recordtimein.RecordTimeOUTID).First(&recordtimeOUT); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+	// if new have disinfectant
+	if recordtimeIN.RecordTimeOUTID != nil {
+		if tx := entity.DB().Where("id = ?", recordtimeIN.RecordTimeOUTID).First(&recordtimeout); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
 			return
 		}
-		recordtimein.RecordTimeOUT = recordtimeOUT
+		fmt.Print("NOT NULL")
+		recordtimeIN.RecordTimeOUT = recordtimeout
 	} else {
-		if tx := entity.DB().Where("id = ?", recordtimein.RecordTimeOUTID).First(&recordtimeOUT); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+		if tx := entity.DB().Where("id = ?", recordtimeIN.RecordTimeOUTID).First(&recordtimeout); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
 			return
 		}
-		recordtimein.RecordTimeOUT = recordtimeOUT
+		fmt.Print("NULL")
+		recordtimeIN.RecordTimeOUT = recordtimeout
 	}
 
 	// if new have employee_id
-	if recordtimein.EmployeeID != nil {
-		if tx := entity.DB().Where("id = ?", recordtimein.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+	if recordtimeIN.EmployeeID != nil {
+		if tx := entity.DB().Where("id = ?", ambulance.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
 			return
 		}
-		recordtimein.Employee = employee
+		recordtimeIN.Employee = employee
 	} else {
-		if tx := entity.DB().Where("id = ?", recordtimein.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found status"})
+		if tx := entity.DB().Where("id = ?", recordtimeIN.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
 			return
 		}
-		recordtimein.Employee = employee
+		recordtimeIN.Employee = employee
 	}
 
-	// Update record in database
-	if err := entity.DB().Save(&recordtimein).Error; err != nil {
+	// Update abl in database
+	if err := entity.DB().Save(&recordtimeIN).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		c.Abort()
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status": "Update Success",
-		"data":   recordtimein,
+		"data":   recordtimeIN,
 	})
-
 }
-
