@@ -57,7 +57,7 @@ function DialogTitleProps(props: DialogTitleProps) {
 //   r: PropTypes.string.isRequired,
 // };
 
-export default function VehicleInspectionUpdate(props: any) {
+export default function VehicleInspection(props: any) {
   const { params } = props;
   const [open, setOpen] = React.useState(false);
 

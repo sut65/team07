@@ -56,7 +56,7 @@ function DialogTitleProps(props: DialogTitleProps) {
 //   r: PropTypes.string.isRequired,
 // };
 
-export default function RecordTimeOutUpdate(props: any) {
+export default function RecordTimeOut(props: any) {
   const { params } = props;
   const [open, setOpen] = React.useState(false);
 

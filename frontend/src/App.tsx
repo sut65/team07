@@ -21,16 +21,12 @@ import DisinfectionCreate from "./components/disinfection_system_component/Disin
 import DisinfectionHistory from "./components/disinfection_system_component/DisinfectionHistory";
 import DisinfectionDelete from "./components/disinfection_system_component/DisinfectionDelete";
 import DisinfectionUpdate from "./components/disinfection_system_component/DisinfecttionUpdate";
-import RecordTimeOutUpdate from "./components/recordtimeout_system_components/RecordTimeOutUpdate";
-
 import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
 import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 //import CaseCreate from "./components/emergency_system_components/emergency";
-
-
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
 import AmbulanceStoreHome from "./components/ambulanceStoreSystemComponent/AmbulanceStoreHome";
 import AmbulanceStoreManage from "./components/ambulanceStoreSystemComponent/AmbulanceStoreManage";
@@ -38,11 +34,12 @@ import AmbulanceStoreManage from "./components/ambulanceStoreSystemComponent/Amb
 
 import VehicleInspectionCreate from "./components/vehicleinspection_system_components/VehicleInspectionCreate";
 import VehicleInspectionHistory from "./components/vehicleinspection_system_components/VehicleInspectionHistory";
+import AmbulanceStoreCreate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreCreate";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
     primary: {
-      main: "#3F70EB",
+      main: "#3D84A7",
     },
     secondary: {
       main: "#2AA6F6",
@@ -131,7 +128,7 @@ export default function App() {
               <Route path="/DisinfectionHistory" element={<DisinfectionHistory />} />
               <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
               <Route path="/DisinfectionUpdate" element={<DisinfectionUpdate />} />
-              {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
+                  {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
 
 
               <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />} />
@@ -140,13 +137,14 @@ export default function App() {
 
               <Route path="/ambulance-store" element={<AmbulanceStoreHome />} />
               <Route path="/ambulance-store/:id" element={<AmbulanceStoreManage />} />
+              <Route path="/ambulance-store/create/:id" element={<AmbulanceStoreCreate />} />
 
-              <Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate />} />
-
-              <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory />} />
+                                      <Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate   />} />
+              <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory />}   />
               {/* <Route path="/CaseCreate" element={<CaseCreate />} /> */}
 
-            </Routes>
+                            <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory  />}  />
+              </Routes>
 
           </div>
         </ThemeProvider>

@@ -5,7 +5,7 @@ import { Container, Box, Button } from "@mui/material";
 import moment from "moment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { VehicleInspectionInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
-import VehicleInspectionUpdate from "./VehicleInspectionUpdate";
+import VehicleInspection from "./VehicleInspection";
 import VehicleInspectionDelete from "./VehicleInspectionDelete";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
@@ -116,7 +116,7 @@ function VehicleInspectionHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <VehicleInspectionUpdate params={params.row} />;
+        return <VehicleInspection params={params.row} />;
       },
       sortable: false,
       description: "ดูเพิ่มเติม",

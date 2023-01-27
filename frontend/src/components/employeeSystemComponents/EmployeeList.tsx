@@ -119,6 +119,7 @@ export default function EmployeeList() {
                         color='primary'
                         component={RouterLink}
                         to="/employee/create"
+                        className='submit-button'
                     >
                         เพิ่มข้อมูลพนักงาน
                     </Button>

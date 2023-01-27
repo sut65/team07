@@ -40,7 +40,7 @@ export default function DisinfectionDelete(props: any) {
   async function submit() {
     try {
       let res = await HttpClientServices.delete(`/disinfection/${params}`);
-      console.log(res.data);
+      // console.log(res.data);
       setSuccess(true);
     } catch (err) {
       setError(true);

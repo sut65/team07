@@ -3,10 +3,15 @@
 }
 
 .submit-button{
-    display:block !important;
+    /* display:block !important; */
     border-radius: 25px !important;
 }
 
 .clp-color{
     color: #46CDCF;
+}
+.set-text-in-form{
+    display: inline-block;
+    margin-top: 1.125rem;
+    margin-left: 0.5rem;
 }
