@@ -34,7 +34,7 @@ export default function VehiclecinspectionDelete(props: any) {
   };
 
   const getEmployee = async () => {
-    let res = await HttpClientServices.get(`/admin/employee/${localStorage.getItem("id")}`);
+    let res = await HttpClientServices.get(`/employee/${localStorage.getItem("id")}`);
     if (!res.error) {
       setEmployee(res.results);
     } else {
