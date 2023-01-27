@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Container, Box, Button } from "@mui/material";
 import moment from "moment";
 import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
-import RecordTimeOutUpdate from "./RecordTimeOutUpdate";
+import RecordTimeOut from "./RecordTimeOut";
 import RecordTimeOutDelete from "./RecordTimeOutDelete";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
@@ -94,7 +94,7 @@ function RecordTimeOutHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <RecordTimeOutUpdate params={params.row} />;
+        return <RecordTimeOut params={params.row} />;
       },
       sortable: false,
       description: "ดูเพิ่มเติม",

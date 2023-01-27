@@ -55,10 +55,20 @@ function RecordTimeInHistory() {
   const columns: GridColDef[] = [
     {
       field: "ID",
-      headerName: "#",
+      headerName: "ลำดับ",
       width: 80,
       align: "center",
       headerAlign: "center",
+    },
+    {
+      field: "RecordTimeOut.CaseID",
+      headerName: "เคส",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <>{params.row.RecordTimeOUT.ID}</>;
+      },
     },
     {
       field: "Ambulance.Clp",
@@ -70,8 +80,17 @@ function RecordTimeInHistory() {
         return <>{params.row.Ambulance.Clp}</>;
       },
     },
-    
     {
+      field: "Odo",
+      headerName: "Odo Meter",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <>{params.row.Odo}</>;
+      },
+    },
+        {
       field: "TimeIn",
       headerName: "วัน เวลา ที่ทำ",
       width: 220,
@@ -104,14 +123,15 @@ function RecordTimeInHistory() {
       align: "center",
       headerAlign: "center",
       width: 85,
+
       renderCell: ({ row }: Partial<GridRowParams>) =>
         <IconButton  component={RouterLink}
-        to="/DisinfectionUpdate"
+        to="/RecordTimeInUpdate"
             size="small"
             color="secondary"
             onClick={() => {
                 console.log("ID", row.ID)
-                localStorage.setItem("did", row.ID);
+                localStorage.setItem("rid", row.ID);
             }}
         >
           <EditIcon />
@@ -123,7 +143,7 @@ function RecordTimeInHistory() {
       headerAlign: "center",
       width: 85,
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <DisinfectionDelete params={params.row.ID} />;
+        return <RecordTimeInDelete params={params.row.ID} />;
       },
       sortable: false,
       description: "ลบ",
@@ -142,7 +162,7 @@ function RecordTimeInHistory() {
           <Box flexGrow={1}>
             <br></br>
             <Typography component="h1" variant="h5" color="primary" gutterBottom>
-              ประวัติการบันทึกการฆ่าเชื้อรถพยาบาล
+              ประวัติการบันทึกการใช้รถ ขา เข้าของพนักงาน
             </Typography>
           </Box>
           <Box><br></br>

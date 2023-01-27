@@ -150,3 +150,26 @@ func UpdateEmercase(c *gin.Context) {
 	})
 }
 
+
+// GET /emergencys
+func GetEmergency(c *gin.Context) {
+	var emergencys []entity.Emergency
+	if err := entity.DB().Raw("SELECT * FROM emergencys").Scan(&emergencys).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": emergencys})
+}
+
+// GET /genders
+func GetGender(c *gin.Context) {
+	var genders []entity.Gender
+	if err := entity.DB().Raw("SELECT * FROM genders").Scan(&genders).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": genders})
+}
+

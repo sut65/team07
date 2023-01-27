@@ -1,100 +1,156 @@
-import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, FormControl, Grid, IconButton, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-
-import './RecordTimeInCreate.css';
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
+import { DisinfectionInterface } from '../../models/disinfection_system_models/disinfection';
+//import { HttpClientServices } from '../../services/recordtimeout_system_services/HttpClientServices';
+import { GetDisinfectionByID, ListAmbulances, ListDisinfectants, UpdateDisinfection } from '../../services/disinfection_system_services/HttpClientServices';
+import { DisintantInterface } from '../../models/disinfection_system_models/disinfectant';
+import { any } from 'prop-types';
+//import { HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
+import { GetRecordTimeInByEmployee, GetRecordTimeInByID, HttpClientServices, ListRecordtimeouts, UpdateRecordTimeIn } from '../../services/recordtimein_system_services/HttpClientServices';
 import { RecordTimeInInterface } from '../../models/recordtimein_system_models/recordtimein';
+import { RecordTimeOutInterface } from '../../models/recordtimeout_system_models/recordtimeout';
+import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee';
 
-import { ListCompanies, ListTypeAbls, CreatAmbulances } from '../../services/ambulance_system_services/HttpClientService';
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
-function RecordTimeInCreate() {
+function RecordTimeInUpdate() {
+  const params = useParams();
 
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
-    const [date, setDate] = React.useState<Date | null>(null);
+  const [recordtimein, setRecordtimein] = useState<Partial<RecordTimeInInterface>>({
+    Note: "",
+    TimeIn: new Date(),
+    Odo: 0,
+  });
+
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSuccess(false);
+    setError(false);
+  };
+
+  const [recordtimeout, setRecordTimeOut] = useState<RecordTimeOutInterface[]>([]);
+  const getRecordTimeOut = async () => {
+    let res = await ListRecordtimeouts();
+    if (res) {
+        setRecordTimeOut(res);
+    }
+  };
 
 
-    // const getCompanies = async () => {
-    //     let res = await ListCompanies();
-    //     if (res) {
-    //         setCompanies(res);
-    //         console.log(res)
-    //     }
-    // };
+  const [abl, setAmbulance] = useState<AmbulancesInterface[]>([]);
+  const getAmbulance = async () => {
+    let res = await ListAmbulances();
+    if (res) {
+      setAmbulance(res);
+    }
+  };
 
-    // const [typeAbls, setTypeAbls] = useState<TypeAblsInterface[]>([]);
-    // const getTypeAbls = async () => {
-    //     let res = await ListTypeAbls();
-    //     if (res) {
-    //         setTypeAbls(res);
-    //         console.log(res)
-    //     }
-    // };
+  const getRecordTimeinByID = async () => {
+    let res = await GetRecordTimeInByID();
+    if (res) {
+        setRecordtimein(res);
+    }
+  };
 
-    const [ambulance, setAmbulance] = useState<AmbulancesInterface>({
-        Clp: "",
-        Date: new Date(),
-        CarBrand: "",
+  const convertType = (data: string | number | undefined | null) => {
+    let val = typeof data === "string" ? parseInt(data) : data;
+    return val;
+  };
+
+  const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.name as keyof typeof recordtimein;
+    console.log(name)
+    setRecordtimein({
+      ...recordtimein,
+      [name]: event.target.value,
     });
 
-    const convertType = (data: string | number | undefined) => {
-        let val = typeof data === "string" ? parseInt(data) : data;
-        return val;
+  };
+
+  const handleChange = (event: SelectChangeEvent) => {
+    const name = event.target.name as keyof typeof recordtimein;
+    setRecordtimein({
+      ...recordtimein,
+      [name]: event.target.value,
+    });
+  };
+
+  async function submit() {
+
+    let data = {
+      ID: convertType(recordtimein.ID),
+      TimeIn: recordtimein.TimeIn,
+      Note: recordtimein.Note,
+      Odo: convertType(recordtimein.Odo),
+      EmployeeID: convertType(localStorage.getItem("id")),
+      AmbulanceID: convertType(recordtimein.AmbulanceID),
+      RecordTimeOUTID: convertType(recordtimein.RecordTimeOUTID),
     };
+    // console.log(data)
+    // let res = await UpdateRecordTimeIn(data);
+    // if (res) {
+    //     setSuccess(true);
+    // } else {
+    //     setError(true);
+    // }
 
-    const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const name = event.target.name as keyof typeof ambulance;
-        setAmbulance({
-            ...ambulance,
-            [name]: event.target.value,
-        });
-
-    };
-
-    const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name as keyof typeof ambulance;
-        setAmbulance({
-            ...ambulance,
-            [name]: event.target.value,
-        });
-    };
-
-    async function submit() {
-        let data = {
-            // CompanyID: convertType(ambulance.CompanyID),
-            // TypeAblID: convertType(ambulance.TypeAblID),
-            EmployeeID: 1, //test
-            Clp: ambulance.Clp,
-            Date: ambulance.Date,
-            CarBrand: ambulance.CarBrand,
-        };
-        console.log(data)
-        let res = await CreatAmbulances(data);
-        if (res) {
-            setSuccess(true);
-        } else {
-            setError(true);
-        }
+    try {
+      let res = await HttpClientServices.patch("/recordtimein", data);
+      setSuccess(true);
+      console.log(res);
+    } catch (err) {
+      setError(false);
+      console.log(err)
     }
-
-
+  }
 
     useEffect(() => {
-
-        // getCompanies();
-        // getTypeAbls();
-
+        getRecordTimeOut();
+        getAmbulance();
+        getRecordTimeinByID();
     }, []);
 
+  return (
+    <div>
+       <Snackbar
+                open={success}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert onClose={handleClose} severity="success">
+                บันทึกสำเร็จ
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={error}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert onClose={handleClose} severity="error">
+                บันทึกข้อมูลไม่สำเร็จ
+                </Alert>
+            </Snackbar>
+        
 
-    return (
-        <div>
             <Container
                 component="main"
                 maxWidth="md"
@@ -115,173 +171,147 @@ function RecordTimeInCreate() {
                         color="secondary"
                         sx={{ fontWeight: 'bold' }}
                     >
-                        บันทึกข้อมูลการใช้รถขาเข้าของพนักงานขับรถ
+                        บันทึกข้อมูลการใช้รถขาเข้าของพนักงานขับรถ ลำดับที่ {recordtimein.ID}
                     </Typography>
                     
                 </Stack>
                 
                 <Grid container spacing={2}>
 
-                <Grid item xs={12}>
-                    
-                    <Typography className='StyledTypography'> กรณีใช้รถ : </Typography>
-                    <FormControl fullWidth variant="outlined">
-                        <TextField
-                            className='StyledTextField'
-                            disabled
-                            id="Name"
-                            type="string"
-                            size="medium"
-                            // variant="filled"
-                            // value={ p?.Surname}
-                        />
-                     </FormControl>
-                </Grid>
-
-         
+                <Grid item xs={6}>
+                        <FormControl fullWidth variant="outlined">
+                            <Typography className='StyledTypography'> ข้อมูลจากขาออก : </Typography>
+                            <Select
+                                className='StyledTextField'
+                                id="ID"
+                                native
+                                name="RecordTimeOUTID"
+                                size="medium"
+                                value={recordtimein.RecordTimeOUTID + ""}
+                                onChange={handleChange}
+                                inputProps={{
+                                name: "RecordTimeOUTID",
+                                }}
+                            ><option>กรุณาเลือกเคส</option>
+                                {recordtimeout.map((item: RecordTimeOutInterface) => (
+                                <option value={item.ID!} key={item.ID}>
+                                    {item.CaseID}
+                                </option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
                 <Grid item xs={6}>
-                    <FormControl fullWidth variant="outlined">
-                        <Typography className='StyledTypography'> รถคันที่ใช้ : </Typography>
-                        <Select
-                            className='StyledTextField'
-                            id="ID"
-                            native
-                            name="PatientID"
-                            size="medium"
-                            // value={String(prescription?.PatientID)}
-                            // onChange={handleChange}
-                            inputProps={{
-                            name: "PatientID",
-                            }}
-                        ><option></option>
-                            {/* {patient.map((item: PatientInterface) => (
-                            <option value={item.ID} key={item.ID}>
-                                {item.PID}
-                            </option>
-                            ))} */}
-                        </Select>
-                    </FormControl>
-                </Grid>
+                        <FormControl fullWidth variant="outlined">
+                            <Typography className='StyledTypography'> รถคันที่ใช้ : </Typography>
+                            <Select
+                                className='StyledTextField'
+                                id="ID"
+                                native
+                                name="AmbulanceID"
+                                size="medium"
+                                value={recordtimein.AmbulanceID + ""}
+                                onChange={handleChange}
+                                inputProps={{
+                                name: "AmbulanceID",
+                                }}
+                            ><option>กรุณาเลือกรถพยาบาล</option>
+                                {abl.map((item: AmbulancesInterface) => (
+                                <option value={item.ID!} key={item.ID}>
+                                    {item.Clp}
+                                </option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
                 <Grid item xs={6}>
-                    <Typography className='StyledTypography'> ทะเบียนรถ : </Typography>
-                    <FormControl fullWidth variant="outlined">
-                        <TextField
-                            className='StyledTextField'
-                            disabled
-                            id="Name"
-                            type="string"
-                            size="medium"
-                            // variant="filled"
-                            // value={ p?.Surname}
-                        />
-                    </FormControl>
+                <FormControl fullWidth variant="outlined">
+                    <Typography className='StyledTypography'> ODO Meter : </Typography>
+                    <TextField
+                        id="Odo"
+                        name="Odo"
+                        type="number"
+                        size="small"
+                        InputProps={{
+                        inputProps: { min: 1, max: 99999 },
+                        name: "Odo",
+                        }}
+                        onChange={handleChangeTextField}
+                        value={String(recordtimein?.Odo)}
+                    />
+                </FormControl>
                 </Grid>
 
-                <Grid item xs={6}>
-                    <FormControl fullWidth variant="outlined">
-                        
-                        <Typography className='StyledTypography'> ODO Meter : </Typography>
-                            <TextField
-                            className='StyledTextField'
-                            id="Age"
-                            variant="outlined"
-                            type="number"
-                            size="medium"
-                            InputProps={{ inputProps: { min: 1 } }}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            //    value={user.Age || ""}
-                            //    onChange={handleInputChange}
-                            />
-                    </FormControl>
-                </Grid>
-
-                <Grid item xs={6}>
-                    <FormControl fullWidth variant="outlined">
-                        
-                        <Typography className='StyledTypography'> เวลาขาเข้า : </Typography>
-                        <LocalizationProvider dateAdapter={AdapterDateFns} >
-                        <DatePicker
-                            className='StyledTextField'
-                            value={date}
-                             onChange={(newValue) => {
-                               setDate(newValue);
-                             }}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                        </LocalizationProvider>
-                    </FormControl>
-                </Grid>
-
-          <Grid item xs={6}>
-              <FormControl fullWidth variant="outlined">
-                
-                <Typography className='StyledTypography'> ผู้บันทึก : </Typography>
-                <Select
-                    className='StyledTextField'
-                  native
-                  // value={medicine.EmployeeID + ""}
-                  // onChange={handleChange}
-                  disabled
-                  inputProps={{
-                    name: "EmployeeID",
-                  }}
-                >
-                  <option aria-label="None" value="">
-                    กรุณาเลือกผู้บันทึก
-                  </option>
-                  {/* <option value={employee?.ID} key={employee?.ID}>
-                    {employee?.Name}
-                  </option> */}
-                  
-                </Select>
-              </FormControl>
-            </Grid>
+            <Grid item xs={12}>
+            <FormControl fullWidth variant="outlined">
+              <Typography> วัน/เวลา ทำการฆ่าเชื้อ </Typography>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                className='StyledTextField'
+                value={recordtimein.TimeIn}
+                onChange={(newValue) => {
+                    setRecordtimein({
+                        ...recordtimein,
+                        TimeIn: newValue,
+                    });
+                }}
+                renderInput={(params) => <TextField {...params} size="small" />
+                }
+              />
+              </LocalizationProvider>
+            </FormControl>
+          </Grid>
 
             <Grid item xs={6}>
            
-           <Typography className='StyledTypography'> หมายเหตุ : </Typography>
-           <FormControl fullWidth variant="outlined">
-              <TextField
-              className='StyledTextField'
-                id="Name"
-                type="string"
-                size="medium"
-                
-                // value={ p?.Surname}
-              />
-            </FormControl>
-         </Grid>
-          
-          </Grid>
+                <Typography className='StyledTypography'> หมายเหตุ : </Typography>
+                <FormControl fullWidth variant="outlined">
+                    <TextField
+                        className='StyledTextField'
+                        id="Note"
+                        name="Note"
+                        type="string"
+                        size="small"
+                        color="primary"
+                        inputProps={{
+                        name: "Note",
+                        }}
+                        onChange={handleChangeTextField}
+                        value={String(recordtimein?.Note ?? "")}
+                    />
+                </FormControl>
+            </Grid>
+        </Grid>
+        <Stack
+          spacing={2}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          sx={{ mt: 3 }}
+        >
+          <Button
+            variant="contained"
+            color="error"
+            component={RouterLink}
+            to="/RecordTimeInHistory"
+            sx={{ '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
+          >
+            ยกเลิก
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={submit}
+            sx={{ '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
+          >
+            อัพเดตข้อมูล
+          </Button>
+        </Stack>
+      </Container>
+    </div>
+  )
 
-                <Stack
-                    spacing={2}
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="flex-start"
-                    sx={{ mt: 3 }}
-                >
-
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        component={RouterLink}
-                        to="/RecordTimeInHistory"
-                    >
-                        ถอยกลับ
-                    </Button>
-
-                    <Button variant="contained" color="secondary" onClick={submit}> บันทึกข้อมูล </Button>
-
-                </Stack>
-
-            </Container>
-        </div>
-    )
 }
-
-export default RecordTimeInCreate
+export default RecordTimeInUpdate

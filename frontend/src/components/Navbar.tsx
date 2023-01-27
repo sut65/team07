@@ -27,8 +27,12 @@ import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import PeopleIcon from '@mui/icons-material/People';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import HealingIcon from '@mui/icons-material/Healing';
+import SanitizerIcon from '@mui/icons-material/Sanitizer';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import DirectionsCarTwoToneIcon from '@mui/icons-material/DirectionsCarTwoTone';
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -86,7 +90,7 @@ function Navbar() {
 
     {
       name: "รายการใช้รถขาเข้าของพนักงานขับรถ",
-      icon: <ArrowForwardIcon />,
+      icon: <DirectionsCarTwoToneIcon />,
       path: "/RecordTimeInHistory",
     },
 
@@ -98,7 +102,7 @@ function Navbar() {
 
     {
       name: "รายการฆ่าเชื้อรถพยาบาล",
-      icon: <ArrowForwardIcon />,
+      icon: <SanitizerIcon />,
       path: "/DisinfectionHistory",
     },
 
@@ -106,6 +110,17 @@ function Navbar() {
       name: "รายการยา",
       icon: <MedicalServicesIcon />,
       path: "/AmbulanceUse/AmbulanceUseCreate",
+    },
+    {
+      name: "เบิกยาเข้ารถพยาบาล",
+      icon: <LocalHospitalIcon/>,
+      path: "/ambulance-store"
+    }
+    ,
+    {
+      name: "รายกาเหตุฉุกเฉิน",
+      icon: <HealingIcon />,
+      path: "/CaseCreate",
     },
     {
       name: "เบิกยาเข้ารถพยาบาล",

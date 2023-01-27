@@ -56,7 +56,7 @@ function DialogTitleProps(props: DialogTitleProps) {
 //   r: PropTypes.string.isRequired,
 // };
 
-export default function RecordTimeOutUpdate(props: any) {
+export default function RecordTimeOut(props: any) {
   const { params } = props;
   const [open, setOpen] = React.useState(false);
 
@@ -93,14 +93,14 @@ export default function RecordTimeOutUpdate(props: any) {
               วันที่ :{" "}
             </Grid>
             <Grid item xs={7}>
-              {moment(params.VehicleInspectionDatetime).format("DD/MM/YYYY")}
+              {moment(params.RecordTimeOutDatetime).format("DD/MM/YYYY")}
             </Grid>
             <Grid item xs={5}>
               {" "}
               เวลา :
             </Grid>
             <Grid item xs={7}>
-              {moment(params.VehicleInspectionDatetime).format("HH:mm")} น.
+              {moment(params.RecordTimeOutDatetime).format("HH:mm")} น.
             </Grid>
             <Grid item xs={5}>
               ประเภทเคสที่ได้รับ:

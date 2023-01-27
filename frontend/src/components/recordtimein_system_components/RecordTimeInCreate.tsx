@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import './RecordTimeInCreate.css';
-import { CreatRecordTimeIn,  ListEmployee, ListRecordtimeouts } from '../../services/recordtimein_system_services/HttpClientServices';
+import { CreatRecordTimeIn,  GetRecordTimeInByEmployee,  GetRecordTimeInByID,  ListEmployee, ListRecordtimeouts } from '../../services/recordtimein_system_services/HttpClientServices';
 
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
 import { RecordTimeInInterface } from '../../models/recordtimein_system_models/recordtimein';
@@ -49,22 +49,22 @@ function RecordTimeInCreate() {
     };
 
     const [employee, setEmployee] = useState<EmployeeInterface[]>([]);
-    // const getEmplyee = async () => {
-    //     let res = await ListEmployees();
-    //     if (res) {
-    //         setEmployee(res);
-    //     }
-    // };
     const getEmployee = async () => {
-        let res = await HttpClientServices.get(
-          `/employee/${localStorage.getItem("id")}`
-        );
-        if (!res.error) {
-          setEmployee(res.results);
-        } else {
-          console.log(res.error);
+        let res = await GetRecordTimeInByEmployee();
+        if (res) {
+            setEmployee(res);
         }
-      };
+    };
+    // const getEmployee = async () => {
+    //     let res = await HttpClientServices.get(
+    //       `/employee/${localStorage.getItem("id")}`
+    //     );
+    //     if (!res.error) {
+    //       setEmployee(res.results);
+    //     } else {
+    //       console.log(res.error);
+    //     }
+    //   };
 
     const [ambulance, setAmbulance] = useState<AmbulancesInterface[]>([]);
     const getAmbulance = async () => {

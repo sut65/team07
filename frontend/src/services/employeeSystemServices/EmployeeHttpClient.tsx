@@ -13,7 +13,7 @@ async function ListEmployees() {
         }
     };
 
-    let res = await fetch(`${apiUrl}/admin/employees`, reqOpt)
+    let res = await fetch(`${apiUrl}/employees`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res.data){
@@ -26,7 +26,7 @@ async function ListEmployees() {
 }
 
 // GET By ID Employee
-async function GetEmployee(ID: string | undefined) {
+async function GetEmployee(ID: string | undefined | null) {
     const reqOpt = {
         method: "GET",
         headers: {
@@ -35,7 +35,7 @@ async function GetEmployee(ID: string | undefined) {
         }
     }
 
-    let res = await fetch(`${apiUrl}/admin/employee/${ID}`, reqOpt)
+    let res = await fetch(`${apiUrl}/employee/${ID}`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res.data){

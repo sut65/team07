@@ -37,7 +37,7 @@ async function GetRecordTimeInByID() {
   };
 
   let res = await fetch(
-      `${apiUrl}/recordtimein/${rid}`,
+      `${apiUrl}/recordtimeins/${rid}`,
       requestOptions
   )
       .then((response) => response.json())
@@ -167,7 +167,7 @@ async function ListEmployee() {
   return res;
 }
 
-async function UpdateRecordTimeIn(data: AmbulancesInterface) {
+async function UpdateRecordTimeIn(data: RecordTimeInInterface) {
   
   const requestOptions = {
       method: "PATCH",
