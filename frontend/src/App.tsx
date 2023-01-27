@@ -41,6 +41,7 @@ import AmbulanceStoreCreate from "./components/ambulanceStoreSystemComponent/Amb
 import CarDepot from "./components/carDepot_system_components/CarDepot";
 import CarDepotUpdate from "./components/carDepot_system_components/CarDepotUpdate";
 import CarDepotCreate from "./components/carDepot_system_components/CarDepotCreate";
+import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreUpdate";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -173,6 +174,7 @@ export default function App() {
               <Route path="/ambulance-store" element={<AmbulanceStoreHome />} />
               <Route path="/ambulance-store/:id" element={<AmbulanceStoreManage />} />
               <Route path="/ambulance-store/create/:id" element={<AmbulanceStoreCreate />} />
+              <Route path="/ambulance-store/update/:id" element={<AmbulanceStoreUpdate />} />
 
               <Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate />} />
               <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory />} />

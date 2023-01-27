@@ -128,11 +128,6 @@ function Navbar() {
       icon: <HealingIcon />,
       path: "/CaseCreate",
     },
-    {
-      name: "เบิกยาเข้ารถพยาบาล",
-      icon: <LocalHospitalIcon/>,
-      path: "/ambulance-store"
-    }
   ];
 
   const list = [

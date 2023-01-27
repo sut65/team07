@@ -73,6 +73,9 @@ async function ListMedicines() {
 }
 
 
+
+
+
 async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
     
     const requestOptions = {
@@ -95,6 +98,9 @@ async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
         })
     return res
 }
+
+
+
 
 export {  
     CreatAmbulanceUse,

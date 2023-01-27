@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, Paper, Select, TextField, Typography } from '@mui/material'
+import { Alert, Button, FormControl, Grid, Paper, Select, Snackbar, TextField, Typography } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -30,6 +30,8 @@ export default function AmbulanceStoreCreate() {
   // Set a one because Employee will Login only one don't set a Other Employee
   const [employee, setEmployee] = React.useState<EmployeeInterface>()
 
+  let { id } = useParams()
+
   // To get A medicine to Desplay in comboBox
   const getMedicine = async () => {
     let res = await ListMedicines()
@@ -38,7 +40,7 @@ export default function AmbulanceStoreCreate() {
     }
   }
 
-  let { id } = useParams()
+  
   // To get A ambulance to display in comboBox
   const getAmbulance = async () => {
     let res = await GetAmbulanceWithID(id)
@@ -82,11 +84,12 @@ export default function AmbulanceStoreCreate() {
     })
 
     if (res.data) {
+      handleSnackbarSuccess()
       setTimeout(() => {
         navigator("/ambulance-store/" + id)
       }, 1000)
     } else {
-      console.log(res.error)
+      handleSnackbarFailed(res.error)
     }
 
 
@@ -117,8 +120,45 @@ export default function AmbulanceStoreCreate() {
     })
   }
 
+  const [open, setOpen] = React.useState(false)
+  const [error, setError] = React.useState(false)
+
+  const handleSnackeBarClose = () => {
+    setOpen(false)
+    setError(false)
+  }
+
+  const handleSnackbarSuccess = () => {
+    setSnackBar({
+      ...snackBar,
+      open:true
+    })
+  }
+
+  const handleSnackbarFailed = (errorCode : any) => {
+    setSnackBar({
+      ...snackBar,
+      error:true,
+      errorMsg:errorCode
+    })
+  }
   return (
     <Container maxWidth="lg">
+      {/* Snackbar success Part */}
+      <Snackbar open={snackBar.open} autoHideDuration={3000} onClose={handleSnackeBarClose}>
+        <Alert onClose={handleSnackeBarClose} severity="success" >
+          บันทึกการเบิกยาเรียบร้อย
+        </Alert>
+      </Snackbar>
+
+      {/* Snackbar Failed Part */}
+      <Snackbar open={snackBar.error} autoHideDuration={3000} onClose={handleSnackeBarClose}>
+        <Alert onClose={handleSnackeBarClose} severity="error" >
+          บันทึกไม่สำเร็จ กรุณาลองใหม่
+        </Alert>
+      </Snackbar>
+
+
       <Paper sx={{ p: 4, pb: 10 }}>
         <Box display="flex">
           <Box flexGrow={1}>
