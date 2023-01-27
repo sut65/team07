@@ -38,7 +38,7 @@ export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
     primary: {
-      main: "#3F70EB",
+      main: "#3D84A7",
     },
     secondary: {
       main: "#2AA6F6",
@@ -127,7 +127,7 @@ export default function App() {
               <Route path="/DisinfectionHistory" element={<DisinfectionHistory />} />
               <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
               <Route path="/DisinfectionUpdate" element={<DisinfectionUpdate />} />
-              {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
+                {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
 
 
               <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />} />
@@ -137,10 +137,11 @@ export default function App() {
               <Route path="/ambulance-store" element={<AmbulanceStoreHome />} />
               <Route path="/ambulance-store/:id" element={<AmbulanceStoreManage />} />
 
-              <Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate />} />
-              <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory />} />
+                          <Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate  />} />
+              <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory />}  />
               {/* <Route path="/CaseCreate" element={<CaseCreate />} /> */}
 
+              <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory />} />
             </Routes>
 
           </div>

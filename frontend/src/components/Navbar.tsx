@@ -28,6 +28,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import HealingIcon from '@mui/icons-material/Healing';
 import SanitizerIcon from '@mui/icons-material/Sanitizer';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DirectionsCarTwoToneIcon from '@mui/icons-material/DirectionsCarTwoTone';
 import { Link } from "react-router-dom";
@@ -114,6 +116,11 @@ function Navbar() {
       icon: <HealingIcon />,
       path: "/CaseCreate",
     },
+    {
+      name: "เบิกยาเข้ารถพยาบาล",
+      icon: <LocalHospitalIcon/>,
+      path: "/ambulance-store"
+    }
   ];
 
   const list = [
