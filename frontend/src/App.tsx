@@ -21,16 +21,12 @@ import DisinfectionCreate from "./components/disinfection_system_component/Disin
 import DisinfectionHistory from "./components/disinfection_system_component/DisinfectionHistory";
 import DisinfectionDelete from "./components/disinfection_system_component/DisinfectionDelete";
 import DisinfectionUpdate from "./components/disinfection_system_component/DisinfecttionUpdate";
-import RecordTimeOutUpdate from "./components/recordtimeout_system_components/RecordTimeOutUpdate";
-
 import "./App.css";
 import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate";
 import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 //import CaseCreate from "./components/emergency_system_components/emergency";
-
-
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
 import AmbulanceStoreHome from "./components/ambulanceStoreSystemComponent/AmbulanceStoreHome";
 import AmbulanceStoreManage from "./components/ambulanceStoreSystemComponent/AmbulanceStoreManage";
@@ -142,7 +138,6 @@ export default function App() {
               <Route path="/ambulance-store/:id" element={<AmbulanceStoreManage />} />
 
               <Route path="/VehicleInspectionCreate" element={<VehicleInspectionCreate />} />
-
               <Route path="/VehicleInspectionHistory" element={<VehicleInspectionHistory />} />
               {/* <Route path="/CaseCreate" element={<CaseCreate />} /> */}
 
