@@ -26,6 +26,7 @@ import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import PeopleIcon from '@mui/icons-material/People';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
+import HealingIcon from '@mui/icons-material/Healing';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from "react-router-dom";
@@ -105,6 +106,12 @@ function Navbar() {
       name: "รายการยา",
       icon: <MedicalServicesIcon />,
       path: "/AmbulanceUse/AmbulanceUseCreate",
+    },
+    
+    {
+      name: "รายกาเหตุฉุกเฉิน",
+      icon: <HealingIcon />,
+      path: "/CaseCreate",
     },
   ];
 
