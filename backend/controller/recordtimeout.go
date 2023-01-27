@@ -57,7 +57,7 @@ func CreateRecordTimeOut(c *gin.Context) {
 func GetRecordTimeOut(c *gin.Context) {
 	var recordtimeout entity.RecordTimeOUT
 	id := c.Param("id")
-	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Employee").Preload("Ambulance.TypeAbl").Preload("Employee.User").Preload("Employee.User.Role").Raw("SELECT * FROM record_time_outs WHERE id = ?", id).Find(&recordtimeout).Error; err != nil {
+	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Employee").Preload("Ambulance.TypeAbl").Preload("Employee.User").Raw("SELECT * FROM record_time_outs WHERE id = ?", id).Find(&recordtimeout).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -68,7 +68,7 @@ func GetRecordTimeOut(c *gin.Context) {
 // GET /users
 func ListRecordTimeOuts(c *gin.Context) {
 	var recordtimeouts []entity.RecordTimeOUT
-	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Employee").Preload("Ambulance.TypeAbl").Preload("Employee.User").Preload("Employee.User.Role").Raw("SELECT * FROM record_time_outs").Find(&recordtimeouts).Error; err != nil {
+	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Employee").Preload("Ambulance.TypeAbl").Raw("SELECT * FROM record_time_outs").Find(&recordtimeouts).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
