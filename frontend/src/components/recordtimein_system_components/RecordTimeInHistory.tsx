@@ -7,260 +7,171 @@ import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 
 import './RecordTimeInCreate.css';
-
+import { HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
 import { RecordTimeInInterface } from '../../models/recordtimein_system_models/recordtimein';
 import RecordTimeInEdit from "./RecordTimeInEdit"
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import RecordTimeInUpdate from './RecordTimeInUpdate';
+import { DataGrid, GridColDef, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid';
+import moment from 'moment';
+import DisinfectionDelete from '../disinfection_system_component/DisinfectionDelete';
+import RecordTimeInDelete from './RecordTimeInDelete';
+import { GetRecordTimeInByEmployee, ListRecordTimeIN, ListRecordtimeouts } from '../../services/recordtimein_system_services/HttpClientServices';
 
 
 function RecordTimeInHistory() {
-    const [recordtimein, setRecordTimeIn] = React.useState<RecordTimeInInterface[]>(
-      []
-    );
-  
-    const getRecordTimeInHistory = async () => {
-      const apiUrl = "http://localhost:8080/recordtimeins";
-      const requestOptions = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      };
-  
-      fetch(apiUrl, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-          if (res.data) {
-            setRecordTimeIn(res.data);
-            console.log(res.data);
-          } else {
-            console.log("else");
-          }
-        });
-    };
-  
-    useEffect(() => {
-        getRecordTimeInHistory();
-    }, []);
-  
-    const convertType = (d: Date) => {
-      const date = new Date(d);
-      const d1 = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}น.`;
-      return d1;
-    };
-  
-    <h1>Patient</h1>;
-  
-    return (
-      <Container className="container" sx={{ minWidth: 1650}}>
+
+  const [recordtimein, setRecordtimein] = React.useState< RecordTimeInInterface[]>([])
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const getRecordTimeIns = async () => {
+    try {
+      let res = await HttpClientServices.get("/recordtimeins");
+      setRecordtimein(res.data);
+      // console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //For Delete state 
+  const [deleteID, setDeleteID] = React.useState<number>(0)
+
+  // For Set dialog open
+  const [openDelete, setOpenDelete] = React.useState(false);
+
+  const [openUpdate, setOpenUpdate] = React.useState(false);
+  const [editID, setEditID] = React.useState(0);
+
+  const columns: GridColDef[] = [
+    {
+      field: "ID",
+      headerName: "#",
+      width: 80,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "Ambulance.Clp",
+      headerName: "เลขทะเบียนรถ",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <>{params.row.Ambulance.Clp}</>;
+      },
+    },
+    
+    {
+      field: "TimeIn",
+      headerName: "วัน เวลา ที่ทำ",
+      width: 220,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return (
+          <>
+            {`${moment(params.row.TimeIn).format(
+              "DD/MM/YYYY"
+            )}    ${moment(params.row.TimeIn).format(
+              "HH:mm"
+            )} น.`}
+          </>
+        );
+      },
+    },
+    {
+      field: "Note",
+      headerName: "หมายเหตุ",
+      width: 130,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <>{params.row.Note}</>;
+      },
+    },
+    {
+      field: "แก้ไขข้อมูล",
+      align: "center",
+      headerAlign: "center",
+      width: 85,
+      renderCell: ({ row }: Partial<GridRowParams>) =>
+        <IconButton  component={RouterLink}
+        to="/DisinfectionUpdate"
+            size="small"
+            color="secondary"
+            onClick={() => {
+                console.log("ID", row.ID)
+                localStorage.setItem("did", row.ID);
+            }}
+        >
+          <EditIcon />
+        </IconButton >,
+    },
+    {
+      field: "ลบ",
+      align: "center",
+      headerAlign: "center",
+      width: 85,
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <DisinfectionDelete params={params.row.ID} />;
+      },
+      sortable: false,
+      description: "ลบ",
+    },
+  ];
+
+  React.useEffect(() => {
+    getRecordTimeIns();
+  }, [])
+
+  return (
+    <div>
+      <Container className="container" maxWidth="lg">
+
         <Box display="flex">
           <Box flexGrow={1}>
-              <br></br>
-              <Typography component="h1" variant="h5" color="primary" gutterBottom>
-                          ประวัติการบันทึกการใช้รถขาเข้าของพนักงานขับรถ
-              </Typography>
+            <br></br>
+            <Typography component="h1" variant="h5" color="primary" gutterBottom>
+              ประวัติการบันทึกการฆ่าเชื้อรถพยาบาล
+            </Typography>
           </Box>
           <Box><br></br>
-              <Button
+            <Button
               component={RouterLink}
               to="/RecordTimeInCreate"
               variant="contained"
               color="primary"
-              >
+            >
               เพิ่มการบันทึก
-              </Button>
+            </Button>
           </Box>
         </Box>
-                <br></br>
-                <TableContainer component={Paper}>
-                    <Table  size="small" aria-label="a dense table">
-                        <TableHead style={{  color: "#F4F6F6" }}>
-                            <TableRow>
-                                <TableCell align="center" width={'5%'}>ID</TableCell>
-                                <TableCell align="center" width={'30%'}>เหตุฉุกเฉิน</TableCell>
-                                <TableCell align="center" width={'10%'}>รถพยาบาล</TableCell>
-                                <TableCell align="center" width={'10%'}>เวลา</TableCell>
-                                <TableCell align="center" width={'10%'}>ODO Meter</TableCell>
-                                <TableCell align="center" width={'10%'}>พนักงานขับรถ</TableCell>
-                                <TableCell align="center" width={'15%'}>หมายเหตุ</TableCell>
-                                <TableCell align="center" width={'10%'}>จัดการข้อมูล</TableCell>
-                            </TableRow>
-                        </TableHead>
 
-                <TableBody>
-                  {recordtimein.map((recordtimeins: RecordTimeInInterface) => (
-                      <TableRow key={recordtimeins.ID}>
-                        <TableCell align="center">{recordtimeins.ID}</TableCell>
-                        <TableCell align="center">{recordtimeins.ID}</TableCell>
-                        <TableCell align="center">{recordtimeins.Ambulance?.CarBrand}</TableCell>
-                        <TableCell align="center">{recordtimeins.Ambulance?.CarBrand}</TableCell>
-                        <TableCell align="center">{recordtimeins.Odo}</TableCell>
-                        <TableCell align="center">{recordtimeins.Odo}</TableCell>
-                        <TableCell align="center">{recordtimeins.Ambulance?.CarBrand}</TableCell>
-                        <TableCell align="center"> 
-                          <Box display="inline-flex">
-                            <Box>
-                            <IconButton aria-label="edit" component={RouterLink}to="/RecordTimeInUpdate"><EditIcon /></IconButton>
-                            </Box>
-                            <Box>
-                            <IconButton aria-label="delete">
-                                <DeleteIcon />
-                            </IconButton> 
-                            </Box>
-                          </Box>  
-                        </TableCell>
-                      </TableRow>
-                    ))}
+        <div style={{ height: 400, maxWidth: "100%", marginTop: "20px" }}>
+          <DataGrid
+            rows={recordtimein}
+            getRowId={(row) => row.ID}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+          />
+        </div>
 
-                    {/* {recordtimein.map((recordtimeins: RecordTimeInInterface) => (
-                    <TableRow key={recordtimeins.ID}>
-                        <TableCell component="th" scope="row" align="center">
-                        {recordtimeins.ID}
-                        </TableCell>
-                        <TableCell align="center">
-                        {recordtimeins.Ambulance.CarBrand}
-                        </TableCell>
-                        <TableCell align="center">
-                        {recordtimeins.Ambulance.CarBrand}&nbsp;
-                        {recordtimeins.Ambulance.CarBrand}
-                        </TableCell>
 
-                        <TableCell align="center">{recordtimeins.Odo}</TableCell>
-
-                        <TableCell align="center">
-                        {recordtimeins.Employee?.Name}
-                        </TableCell>
-                        <TableCell align="center">
-                        {convertType(recordtimeins.TimeIn)}
-                        </TableCell>
-                    </TableRow>
-                    ))} */}
-                </TableBody>
-          </Table>
-        </TableContainer>
       </Container>
-    );
-  }
-  
-  export default RecordTimeInHistory;
-// export const RecordTimeInHistory = () => {
 
-//     count [recordtimein, setRecordTimeIn] = useState<RecordTimeInInterface[]>;
+    </div>
+  )
+}
 
-//     const apiUrl = "http://localhost:8080";
-//     const requestOptions = {
-//       method: "GET",
-//       headers: {
-//         Authorization: `Bearer ${localStorage.getItem("token")}`,
-//         "Content-Type": "application/json",
-//       },
-//     };
-  
-//     const getRecordTimeIn = async () => {
-//       fetch(`${apiUrl}/recordtimein`, requestOptions)
-//         .then((response) => response.json())
-//         .then((res) => {
-//           console.log(res.data);
-//           if (res.data) {
-//             setRecordTimeIn(res.data);
-//           } else {
-//             console.log("else");
-//           }
-//         });
-//     };
-  
-//     useEffect(() => {
-//         getRecordTimeIn();
-//     }, []);
-    
-    
-//     function convertType(Case_Time: any): React.ReactNode {
-//         throw new Error('Function not implemented.');
-//     }
-
-//     return (
-//         <div>
-//              <Container className="container" maxWidth="lg">
-
-//                 <Box display="flex">
-//                     <Box flexGrow={1}>
-//                         <br></br>
-//                         <Typography component="h1" variant="h5" color="primary" gutterBottom>
-//                                     ประวัติการบันทึกการใช้รถขาเข้าของพนักงานขับรถ
-//                         </Typography>
-//                     </Box>
-//                     <Box><br></br>
-//                         <Button
-//                         component={RouterLink}
-//                         to="/RecordTimeInCreate"
-//                         variant="contained"
-//                         color="primary"
-//                         >
-//                         เพิ่มการบันทึก
-//                         </Button>
-//                     </Box>
-//                     <Box><br></br>
-//                         <Button
-//                         component={RouterLink}
-//                         to="/RecordTimeInEdit"
-//                         variant="contained"
-//                         color="primary"
-//                         >
-//                         ข้อมูลเพิ่มเติม
-//                         </Button>
-//                     </Box>
-//                 </Box>
-//                 <br></br>
-//                 <TableContainer component={Paper}>
-//                     <Table sx={{ minWidth: 800}} size="small" aria-label="a dense table">
-//                         <TableHead style={{  color: "#F4F6F6" }}>
-//                             <TableRow>
-//                                 <TableCell align="center">ID</TableCell>
-//                                 <TableCell align="center">เหตุฉุกเฉิน</TableCell>
-//                                 <TableCell align="center">รถพยาบาล</TableCell>
-//                                 <TableCell align="center">เวลา</TableCell>
-//                                 <TableCell align="center">ODO Meter</TableCell>
-//                                 <TableCell align="center">พนักงานขับรถ</TableCell>
-//                                 <TableCell align="center">หมายเหตุ</TableCell>
-//                                 <TableCell align="center">จัดการข้อมูล</TableCell>
-//                             </TableRow>
-//                         </TableHead>
-
-//                     <TableBody>
-//                         {recordtimein.map((recordtimeins: RecordTimeInInterface) => (
-//                         <TableRow key={recordtimeins.ID}>
-//                             <TableCell component="th" scope="row" align="center">
-//                             {recordtimeins.ID}
-//                             </TableCell>
-//                             <TableCell align="center">
-//                             {recordtimeins.Ambulance.CarBrand}
-//                             </TableCell>
-//                             <TableCell align="center">
-//                             {recordtimeins.Ambulance.CarBrand}&nbsp;
-//                             {recordtimeins.Ambulance.CarBrand}
-//                             </TableCell>
-
-//                             <TableCell align="center">{recordtimeins.Odo}</TableCell>
-
-//                             <TableCell align="center">
-//                             {recordtimeins.Employee?.Name}
-//                             </TableCell>
-//                             <TableCell align="center">
-//                             {convertType(recordtimeins.Note)}
-//                             </TableCell>
-//                         </TableRow>
-//                         ))}
-//                     </TableBody>
-//                     </Table>
-//                 </TableContainer>
-
-//         </Container>
-
-//         </div>
-//     )
-// }
-
-// export default RecordTimeInHistory
+export default RecordTimeInHistory

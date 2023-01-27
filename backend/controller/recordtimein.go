@@ -93,9 +93,9 @@ func GetRecordTimeInByEmployee(c *gin.Context) {
 // GET /recordtimeins
 func ListRecordTimeIns(c *gin.Context) {
 
-	var recordtimein entity.RecordTimeIn
+	var recordtimein []entity.RecordTimeIn
 
-	if err := entity.DB().Raw("SELECT * FROM record_time_ins").Scan(&recordtimein).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("RecordTimeOUT").Raw("SELECT * FROM record_time_ins").Find(&recordtimein).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

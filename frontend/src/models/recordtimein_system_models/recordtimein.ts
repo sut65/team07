@@ -1,17 +1,37 @@
 import { AmbulancesInterface } from "../ambulance_system_models/ambulance";
+import { EmployeeInterface } from "../employeeSystemModel/IEmployee";
+import { RecordTimeOutInterface } from "../recordtimeout_system_models/recordtimeout";
 
 export interface RecordTimeInInterface {
-  ID?: number;
-  Note?: string;
-  Odo?: number;
-  TimeIn?: Date;
 
-  AmbulanceID?: number;
-  Ambulance?: AmbulancesInterface;
+  ID?: number | null,
+  Note?: string | null,
+  Odo?: number | null,
+  TimeIn?: Date | null,
 
-  CaseID?: number;
-  //   Case ?: CaseInterface;
+  AmbulanceID?: number | null,
+  Ambulance?: AmbulancesInterface,
 
-  EmployeeID?: number;
-  //   Employee ?: EmployeeInterface ;
+	RecordTimeOUTID?: number | null,
+	RecordTimeOUT?: RecordTimeOutInterface,
+
+  EmployeeID?: number| null,
+  Employee ?: EmployeeInterface ,
 }
+
+// export interface RecordTimeInInterface {
+
+//   ID?: number;
+//   Note?: string;
+//   Odo?: number;
+//   TimeIn?: Date;
+
+//   AmbulanceID?: number;
+//   Ambulance?: AmbulancesInterface,
+
+// 	RecordTimeOUTID?: number;
+// 	RecordTimeOUT?: RecordTimeOutInterface,
+
+//   EmployeeID?: number;
+//   Employee ?: EmployeeInterface ,
+// }
