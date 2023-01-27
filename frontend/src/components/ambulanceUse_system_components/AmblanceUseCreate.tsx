@@ -249,8 +249,8 @@ function AmblanceUseCreate() {
                     <Button
                         variant="contained"
                         color="error"
-                        // component={RouterLink}
-                        // to="/Ambulance"
+                        component={RouterLink}
+                        to="/AmbulanceUse"
                         sx={{ borderRadius: 10, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
                     >
                         ถอยกลับ

@@ -105,7 +105,7 @@ function Navbar() {
     {
       name: "รายการยา",
       icon: <MedicalServicesIcon />,
-      path: "/AmbulanceUse/AmbulanceUseCreate",
+      path: "/AmbulanceUse",
     },
     
     {

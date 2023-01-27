@@ -29,7 +29,7 @@ import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
 import CaseCreate from "./components/emergency_system_components/emergency";
 
-
+import AmbulanceUse from "./components/ambulanceUse_system_components/AmbulanceUse";
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
 import AmbulanceStoreHome from "./components/ambulanceStoreSystemComponent/AmbulanceStoreHome";
 import AmbulanceStoreManage from "./components/ambulanceStoreSystemComponent/AmbulanceStoreManage";
@@ -136,6 +136,7 @@ export default function App() {
 
 
               <Route path="/AmbulanceUse/AmbulanceUseCreate" element={<AmblanceUseCreate />} />
+              <Route path="/AmbulanceUse" element={<AmbulanceUse />} />
 
 
 
