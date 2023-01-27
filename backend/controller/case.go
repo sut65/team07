@@ -46,9 +46,9 @@ func CreateEmercase(c *gin.Context) {
 		Patient:   emercase.Patient,
 		Age:       emercase.Age,
 		Status:    emercase.Status,
-		Emergency: emergency, // โยงความสัมพันธ์กับ Entity Company
-		Gender:    gender,    // โยงความสัมพันธ์กับ Entity TypeAbl
-		Employee:  employee,  // โยงความสัมพันธ์กับ Entity Employee
+		Emergency: emergency, 
+		Gender:    gender,    
+		Employee:  employee,  
 		Datetime:  emercase.Datetime,
 	}
 
