@@ -29,7 +29,6 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import HealingIcon from '@mui/icons-material/Healing';
 import SanitizerIcon from '@mui/icons-material/Sanitizer';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DirectionsCarTwoToneIcon from '@mui/icons-material/DirectionsCarTwoTone';
