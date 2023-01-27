@@ -24,7 +24,7 @@ type TypeAbl struct {
 
 type Ambulance struct {
 	gorm.Model
-	Clp      string // Car License Plate
+	Clp      string `gorm:"uniqueIndex"` // Car License Plate
 	Date     time.Time
 	CarBrand string
 
