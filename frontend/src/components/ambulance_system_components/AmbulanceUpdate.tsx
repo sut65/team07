@@ -157,7 +157,8 @@ function AmbulanceUpdate() {
                     mb: 2,
                     p: 2,
                     boxShadow: 3,
-                    bgcolor: '#F1F6F5'
+                    bgcolor: '#F1F6F5',
+                    borderRadius: 3
                 }}>
                 <CssBaseline />
                 <Stack

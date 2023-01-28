@@ -113,7 +113,7 @@ function Navbar() {
     },
 
     {
-      name: "รายการยา",
+      name: "ข้อมูลการใช้ยา",
       icon: <MedicalServicesIcon />,
       path: "/AmbulanceUse",
     },

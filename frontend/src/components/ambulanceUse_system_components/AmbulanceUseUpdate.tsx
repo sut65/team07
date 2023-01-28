@@ -1,6 +1,6 @@
 import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Container } from '@mui/system'
@@ -111,7 +111,7 @@ function AmbulanceUseUpdate() {
                     MedicineType: "",
                     MeasureUnit: "",
                 })
-                
+
                 setDisTextField(true)
             }
         }
@@ -123,8 +123,8 @@ function AmbulanceUseUpdate() {
         // console.log(ambulanceUse)
     };
 
+    const navigator = useNavigate();
     async function submit() {
-
         let data = {
             ID: convertType(ambulanceUse.ID),
             EmployeeID: convertType(localStorage.getItem("id")),
@@ -138,6 +138,9 @@ function AmbulanceUseUpdate() {
         if (res.data) {
             // console.log(res.data)
             setSuccess(true);
+            setTimeout(() => {
+                navigator("/AmbulanceUse")
+            }, 1200)
         } else {
             // console.log(res.error)
             setError(true);
@@ -150,7 +153,7 @@ function AmbulanceUseUpdate() {
         getMedicines();
         getAmbulanceUseByID();
         getMedicineByID();
-        
+
 
     }, []);
 
@@ -190,13 +193,14 @@ function AmbulanceUseUpdate() {
             </Snackbar>
             <Container
                 component="main"
-                maxWidth="md"
+                maxWidth="sm"
                 sx={{
                     mt: 5,
                     mb: 2,
                     p: 2,
                     boxShadow: 3,
-                    bgcolor: '#F1F6F5'
+                    bgcolor: '#F1F6F5',
+                    borderRadius: 3
                 }}
             >
                 <CssBaseline />
@@ -321,7 +325,7 @@ function AmbulanceUseUpdate() {
                         variant="contained"
                         color="primary"
                         onClick={submit}
-                        sx={{ borderRadius: 10, '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
+                        sx={{ borderRadius: 10, '&:hover': { color: '#065D95', backgroundColor: '#e3f2fd' } }}
                     >
                         อัพเดตข้อมูล
                     </Button>
