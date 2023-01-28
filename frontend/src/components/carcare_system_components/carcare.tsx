@@ -36,7 +36,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function CaseCreate() {
+function CarCareCreate() {
 
     const [emergencys, setEmergencys] = useState<EmergencyInterface[]>([]);
     const [genders, setGenders] = useState<GenderInterface[]>([]);
@@ -304,6 +304,6 @@ function CaseCreate() {
     );
 }
 
-export default CaseCreate;
+export default CarCareCreate;
 
 

@@ -5,10 +5,10 @@ import { EmployeeInterface } from "../employeeSystemModel/IEmployee";
 export interface CaseInterface {
 
     ID?:                number | null,
-    Location:           string | null,
-    Patient:            string | null,
-    Age:                number | null,
-    Status:             string | null,
+    Location?:          string | null,
+    Patient?:           string | null,
+    Age?:               number | null,
+    Status?:            string | null,
     Date:               Date | null,
 
     GenderID?:          number | null,

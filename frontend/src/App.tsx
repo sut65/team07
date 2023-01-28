@@ -46,6 +46,7 @@ import CarWashUpdate from "./components/carWash_system_components/CarWashUpdate"
 import CarWashCreate from "./components/carWash_system_components/CarWashCreate";
 import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreUpdate";
 import AmbulanceUseUpdate from "./components/ambulanceUse_system_components/AmbulanceUseUpdate";
+import Case from "./components/emergency_system_components/emergencyhis";
 
 export default function App() {
   const [token, setToken] = React.useState<string>("");
@@ -239,8 +240,20 @@ export default function App() {
                   {/* <Route path="/CaseCreate" element={<CaseCreate />} /> */}
 
                   <Route
-                    path="/VehicleInspectionHistory"
-                    element={<VehicleInspectionHistory />}
+                    path="/Case"
+                    element={<Case />}
+                  />                  
+                  <Route
+                    path="/CaseCreate"
+                    element={<CaseCreate />}
+                  />
+                  <Route
+                    path="/CarWash/CarWashCreate"
+                    element={<CarWashCreate />}
+                  />
+                  <Route
+                    path="/CarWash/CarWashUpdate"
+                    element={<CarWashUpdate />}
                   />
                   <Route
                     path="/CarWash/CarWashCreate"
