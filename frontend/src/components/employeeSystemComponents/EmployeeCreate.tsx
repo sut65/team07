@@ -62,9 +62,9 @@ export default function EmployeeCreate() {
         const hashmaps = new Map()
         let res = await ListEmployees()
         for (var i = 0 ; i < res.length ; i++){
-            setMyMap(hashmaps.set(res.at(i).ID, i))
-
+            setMyMap(hashmaps.set(res.at(i).UserID, i))
         }
+        // console.log(hashmaps)
         return hashmaps
     }
 
@@ -232,6 +232,7 @@ export default function EmployeeCreate() {
                                 {
                                     user.filter((item) => {
                                         // console.log(mymap.has(item.ID))
+                                        // console.log(item.Role.Name)
                                         return ! mymap.has(item.ID)
                                     }).map((item: User) =>
                                     (<option value={item.ID} key={item.ID}>
