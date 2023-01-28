@@ -92,37 +92,48 @@ func DeleteRecordTimeOut(c *gin.Context) {
 func UpdateRecordTimeOut(c *gin.Context) {
 
 	var recordtimeout entity.RecordTimeOUT
+	var payload entity.RecordTimeOUT //รับค่าที่ส่งมาจาก client
 	var cases entity.Case
 	var ambulance entity.Ambulance
 	var employee entity.Employee
 
-	if err := c.ShouldBindJSON(&recordtimeout); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", recordtimeout.ID).First(&recordtimeout); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "recordtimeout not found"})
+
+	if tx := entity.DB().Where("id = ?", payload.ID).Find(&recordtimeout); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "recordtimeout_id  not found"})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", cases.ID).First(&cases); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "case not found"})
+
+	if tx := entity.DB().Where("id = ?", payload.CaseID).Find(&cases); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "cases_id  not found"})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", ambulance.ID).First(&ambulance); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
+
+	if tx := entity.DB().Where("id = ?", payload.AmbulanceID).Find(&ambulance); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance_id not found"})
 		return
 	}
-	if tx := entity.DB().Where("id = ?", employee.ID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
+
+	if tx := entity.DB().Where("id = ?", payload.EmployeeID).Find(&employee); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "employee_id not found"})
 		return
 	}
+
 	UpdatingRecordTimeOut := entity.RecordTimeOUT{
-		Annotation:            recordtimeout.Annotation,
-		OdoMeter:              recordtimeout.OdoMeter,
-		RecordTimeOutDatetime: recordtimeout.RecordTimeOutDatetime,
+		Annotation:            payload.Annotation,
+		OdoMeter:              payload.OdoMeter,
+		RecordTimeOutDatetime: payload.RecordTimeOutDatetime,
 		Case:                  cases,
 		Ambulance:             ambulance,
 		Employee:              employee,
+	}
+
+	if _, err := govalidator.ValidateStruct(UpdatingRecordTimeOut); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if err := entity.DB().Where("id = ?", recordtimeout.ID).Updates(&UpdatingRecordTimeOut).Error; err != nil {

@@ -1,16 +1,14 @@
 import { Link as RouterLink } from "react-router-dom";
 import * as React from "react";
-import { Button, Grid, Divider } from "@mui/material";
+import { Button, Grid, Divider, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
 import moment from "moment";
-
+import SearchIcon from "@mui/icons-material/Search";
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -70,14 +68,9 @@ export default function VehicleInspection(props: any) {
 
   return (
     <div>
-      <Button
-        variant="contained"
-        color="secondary"
-        size="small"
-        onClick={handleClickOpen}
-      >
-        detail
-      </Button>
+      <IconButton color="secondary" size="small" onClick={handleClickOpen}>
+        <SearchIcon />
+      </IconButton>
 
       <BootstrapDialog
         onClose={handleClose}
@@ -150,7 +143,7 @@ export default function VehicleInspection(props: any) {
           <Divider />
           <Grid item xs={12} container>
             <Grid item xs={5}>
-            {params.Employee.User.Role.Name}  :
+              {params.Employee.User.Role.Name} :
             </Grid>
             <Grid item xs={7}>
               {params.Employee.Name}
@@ -162,7 +155,10 @@ export default function VehicleInspection(props: any) {
           <Button onClick={handleClose} color="error">
             Close
           </Button>
-          <Button component={RouterLink} to="/VehicleInspectionCreate">
+          <Button
+            component={RouterLink}
+            to={`/VehicleInspectionCreate/${params.ID}`}
+          >
             Edit
           </Button>
         </DialogActions>

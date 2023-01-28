@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useParams } from "react-router-dom";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -22,7 +23,7 @@ import { TypeAblsInterface } from "../../models/ambulance_system_models/typeAbl"
 import { StatusCheckInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
 import { AmbulancePartInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
 import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
-import { apiUrl, convertType } from "../../services/utility";
+import { convertType } from "../../services/utility";
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
   ref
@@ -31,6 +32,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export default function VehicleInspectionCreate() {
+  const params = useParams();
   const [vehicleinspection, setVehicleInspection] = React.useState<
     Partial<VehicleInspectionInterface>
   >({ VehicleInspectionDatetime: new Date() });
@@ -42,11 +44,12 @@ export default function VehicleInspectionCreate() {
   const [statuscheck, setStatuscheck] = React.useState<StatusCheckInterface[]>(
     []
   );
+  const [message, setMessage] = React.useState("");
   const [ablpart, setAmbulancePart] = React.useState<AmbulancePartInterface[]>(
     []
   );
   const [employee, setEmployee] = React.useState<EmployeeInterface>();
-  const [detailABL, setDatailAbl] = React.useState<string>("รายละเอียด");
+  const [detailAbl, setDetailAbl] = React.useState<string>("รายละเอียด");
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -63,29 +66,26 @@ export default function VehicleInspectionCreate() {
     setVehicleInspection({ ...vehicleinspection, [name]: event.target.value });
 
     if (event.target.name === "TypeAblID") {
-      getAmbulance(event.target.value);
       setTypeAbl(event.target.value);
-      setDatailAbl("รายละเอียด");
+      setVehicleInspection({ ...vehicleinspection, AmbulanceID: 0 });
+      setDetailAbl("รายละเอียด");
       if (event.target.value === "") {
         setAmbulance([]);
+      } else {
+        getAmbulance(event.target.value);
       }
     }
-    if (event.target.name === "AmbulanceID") {
-      abl.forEach((val: any) => {
-        if (val.CarBrand === Number(event.target.value)) {
-          setAmbulance([]);
-        }
-      });
 
-      if (event.target.value !== "") {
-        setDatailAbl(
-          `ไอดีรถ: ${event.target.value} ยี่ห้อรถ: ${event.target.value} เลขทะเบียนรถ: ${event.target.value}`
+    if (event.target.name === "AmbulanceID") {
+      const a = abl.filter((v) => v.ID === Number(event.target.value))[0];
+      if (a) {
+        setDetailAbl(
+          `ไอดีรถ: ${a.ID} ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`
         );
       } else {
-        setDatailAbl("รายละเอียด");
+        setDetailAbl("รายละเอียด");
       }
     }
-    //console.log(vehicleinspection);
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name as keyof typeof vehicleinspection;
@@ -117,7 +117,7 @@ export default function VehicleInspectionCreate() {
   };
   //get Type Ambulance
   const getTypeAbl = async () => {
-    let res = await HttpClientServices.get("/type_abls");
+    let res = await HttpClientServices.get(`/type_abls`);
     if (!res.error) {
       setTypeAbls(res.results);
       // console.log(res.results);
@@ -127,27 +127,57 @@ export default function VehicleInspectionCreate() {
   };
   //get StatusCheck
   const getStatusCheck = async () => {
-    let res = await HttpClientServices.get("/statuschecks");
+    let res = await HttpClientServices.get(`/statuschecks`);
     if (!res.error) {
       setStatuscheck(res.results);
-      console.log(res.results);
+      //console.log(res.results);
     } else {
       console.log(res.error);
     }
   };
   //get Ambulance Part
   const getAmbulancePart = async () => {
-    let res = await HttpClientServices.get("/ambulanceparts");
+    let res = await HttpClientServices.get(`/ambulanceparts`);
     if (!res.error) {
       setAmbulancePart(res.results);
-      console.log(res.results);
+      //console.log(res.results);
     } else {
       console.log(res.error);
     }
   };
 
+  const getVehicleInspection = async (id: string) => {
+    let res = await HttpClientServices.get(`/vehicleinspection/${id}`);
+    if (!res.error) {
+      setVehicleInspection({
+        AmbulanceID: res.results.AmbulanceID,
+        EmployeeID: res.results.EmployeeID,
+        StatusCheckID: res.results.StatusCheckID,
+        AmbulancePartID: res.results.AmbulancePartID,
+        Fail: res.results.Fail,
+        OdoMeter: res.results.OdoMeter,
+        VehicleInspectionDatetime: new Date(),
+      });
+      setTypeAbl(res.results.Ambulance?.TypeAblID);
+      getAmbulance(res.results?.Ambulance?.TypeAblID);
+      setDetailAbl(
+        `ไอดีรถ: ${res.results.AmbulanceID} ยี่ห้อรถ: ${res.results.Ambulance.CarBrand} เลขทะเบียนรถ: ${res.results.Ambulance.Clp}`
+      );
+    } else {
+      console.log(res.error);
+      setError(true);
+      setMessage(res.message);
+      setTimeout(() => {
+        window.location.href = "/VehicleInspectionHistory";
+      }, 1500);
+    }
+  };
+
   React.useEffect(() => {
-    // getAmbulance();
+    const param = params ? params : null;
+    if (param?.id) {
+      getVehicleInspection(param?.id);
+    }
     getTypeAbl();
     getStatusCheck();
     getAmbulancePart();
@@ -166,14 +196,49 @@ export default function VehicleInspectionCreate() {
     };
     console.log(data);
 
-    let res = await HttpClientServices.post("/vehicleinspection", data);
-    if (!res.error) {
-      setSuccess(true);
-      console.log(res.results);
+    const param = params ? params : null;
+    if (param?.id) {
+      //update
+      const ID = { ID: Number(param?.id) };
+      data = { ...data, ...ID };
+      let res = await HttpClientServices.patch(`/vehicleinspection`, data);
+      if (!res.error) {
+        setSuccess(true);
+        console.log(res);
+        setMessage("อัพเดตข้อมูลสำเร็จ");
+        setTimeout(() => {
+          window.location.href = "/VehicleInspectionHistory";
+        }, 800);
+      } else {
+        setError(true);
+        setMessage("อัพเดตข้อมูลไม่สำเร็จ " + res.message);
+        // console.log(res.message);
+      }
     } else {
-      setError(true);
-      console.log(res.error, res.message);
+      //create
+      let res = await HttpClientServices.post("/vehicleinspection", data);
+      if (!res.error) {
+        setSuccess(true);
+        console.log(res);
+        setMessage("บันทึกข้อมูลสำเร็จ");
+        setTimeout(() => {
+          window.location.href = "/VehicleInspectionHistory";
+        }, 800);
+      } else {
+        setError(true);
+        setMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
+        // console.log(res.message);
+      }
     }
+
+    // let res = await HttpClientServices.post("/vehicleinspection", data);
+    // if (!res.error) {
+    //   setSuccess(true);
+    //   console.log(res.results);
+    // } else {
+    //   setError(true);
+    //   console.log(res.error, res.message);
+    // }
   }
 
   return (
@@ -186,7 +251,14 @@ export default function VehicleInspectionCreate() {
     >
       {" "}
       <CssBaseline />
-      <Paper className="paper" elevation={3}>
+      <Paper
+        className="paper"
+        elevation={6}
+        sx={{
+          padding: 2,
+          borderRadius: 3,
+        }}
+      >
         <Box>
           <Typography
             variant="h5"
@@ -212,6 +284,7 @@ export default function VehicleInspectionCreate() {
                 inputProps={{
                   name: "TypeAblID",
                 }}
+                value={String(typeAbl)}
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกประเภทรถพยาบาล
@@ -238,6 +311,7 @@ export default function VehicleInspectionCreate() {
                   name: "AmbulanceID",
                 }}
                 disabled={typeAbl != "" ? false : true}
+                value={String(vehicleinspection.AmbulanceID)}
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกรถพยาบาล
@@ -257,7 +331,7 @@ export default function VehicleInspectionCreate() {
               fullWidth
               rows={2}
               multiline
-              value={detailABL}
+              value={detailAbl}
             />
           </Grid>
 
@@ -273,6 +347,7 @@ export default function VehicleInspectionCreate() {
                   inputProps: { min: 1, max: 99999 },
                   name: "OdoMeter",
                 }}
+                value={vehicleinspection?.OdoMeter ?? ""}
                 onChange={handleInputChange}
               />
             </FormControl>
@@ -290,6 +365,7 @@ export default function VehicleInspectionCreate() {
                 inputProps={{
                   name: "Fail",
                 }}
+                value={vehicleinspection?.Fail ?? ""}
                 onChange={handleInputChange}
               />
             </FormControl>
@@ -307,6 +383,7 @@ export default function VehicleInspectionCreate() {
                 inputProps={{
                   name: "AmbulancePartID",
                 }}
+                value={String(vehicleinspection.AmbulancePartID)}
                 // disabled={a != "" ? false : true}
               >
                 <option aria-label="None" value="">
@@ -333,6 +410,7 @@ export default function VehicleInspectionCreate() {
                 inputProps={{
                   name: "StatusCheckID",
                 }}
+                value={String(vehicleinspection.StatusCheckID)}
                 // disabled={a != "" ? false : true}
               >
                 <option aria-label="None" value="">
@@ -403,7 +481,7 @@ export default function VehicleInspectionCreate() {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+          {message}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -413,7 +491,7 @@ export default function VehicleInspectionCreate() {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+          {message}
         </Alert>
       </Snackbar>
     </Container>

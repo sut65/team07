@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
+import SearchIcon from '@mui/icons-material/Search';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -69,14 +70,13 @@ export default function RecordTimeOut(props: any) {
 
   return (
     <div>
-      <Button
-        variant="contained"
+      <IconButton
         color="secondary"
         size="small"
         onClick={handleClickOpen}
       >
-        detail
-      </Button>
+        <SearchIcon/>
+      </IconButton>
 
       <BootstrapDialog
         onClose={handleClose}

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { Container, Box, Button } from "@mui/material";
+import { Container, Box, Button, Paper } from "@mui/material";
 import moment from "moment";
 import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
 import RecordTimeOut from "./RecordTimeOut";
@@ -36,14 +36,17 @@ function RecordTimeOutHistory() {
     {
       field: "ID",
       headerName: "#",
-      width: 80,
+      width: 65,
       align: "center",
       headerAlign: "center",
+      renderCell: (params: GridRenderCellParams<any>) => {
+        return <>{params.row.ID}</>;
+      },
     },
     {
       field: "Case.Emergency",
       headerName: "Case",
-      width: 120,
+      width: 115,
       align: "center",
       headerAlign: "center",
       renderCell: (params: GridRenderCellParams<any>) => {
@@ -103,7 +106,7 @@ function RecordTimeOutHistory() {
       field: "ลบ",
       align: "center",
       headerAlign: "center",
-      width: 85,
+      width: 65,
       renderCell: (params: GridRenderCellParams<any>) => {
         return <RecordTimeOutDelete params={params.row.ID} />;
       },
@@ -119,40 +122,48 @@ function RecordTimeOutHistory() {
   return (
     <div>
       <Container maxWidth="md" sx={{ marginTop: 2 }}>
-        <Box display="flex">
-          <Box flexGrow={1}>
-            <Typography
-              sx={{ fontWeight: "bold" }}
-              variant="h5"
-              color="primary"
-            >
-              ประวัติการใช้รถพยาบาล
-            </Typography>
+        <Paper
+          className="paper"
+          elevation={6}
+          sx={{
+            padding: 2.5,
+            borderRadius: 3,
+          }}
+        >
+          <Box display="flex">
+            <Box flexGrow={1}>
+              <Typography
+                sx={{ fontWeight: "bold" }}
+                variant="h5"
+                color="primary"
+              >
+                ประวัติการใช้รถพยาบาล
+              </Typography>
+            </Box>
+
+            <Box>
+              <Button
+                component={RouterLink}
+                to="/RecordTimeOutCreate"
+                variant="contained"
+                color="primary"
+              >
+                บันทึกเวลาใช้รถ
+              </Button>
+            </Box>
           </Box>
 
-          <Box>
-            <Button
-              component={RouterLink}
-              to="/RecordTimeOutCreate"
-              variant="contained"
-              color="primary"
-            >
-              บันทึกเวลาใช้รถ
-            </Button>
-          </Box>
-        </Box>
+          <div style={{ height: 400, maxWidth: "100%", marginTop: "20px" }}>
+            <DataGrid
+              rows={recordtimeout}
+              getRowId={(row) => row.ID}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+            />
+          </div>
 
-        <div style={{ height: 400, maxWidth: "100%", marginTop: "20px" }}>
-          <DataGrid
-            rows={recordtimeout}
-            getRowId={(row) => row.ID}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-          />
-        </div>
-
-        {/* <RecordTimeOutUpdate></RecordTimeOutUpdate>
+          {/* <RecordTimeOutUpdate></RecordTimeOutUpdate>
         <Button
           component={RouterLink}
           to="/RecordTimeOutDelete"
@@ -163,6 +174,7 @@ function RecordTimeOutHistory() {
         </Button>
 
         {moment(recordtimeout.Record_Time_Out_Datetime).format("DD/MM/YYYY")} */}
+        </Paper>
       </Container>
     </div>
   );

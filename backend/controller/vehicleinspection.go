@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -38,7 +39,6 @@ func CreateVehicleInspection(c *gin.Context) {
 	}
 
 	veh := entity.VehicleInspection{
-
 		OdoMeter:                  vehicleinspection.OdoMeter, //กรอกเลขไมล์
 		Fail:                      vehicleinspection.Fail,
 		StatusCheck:               statuscheck,
@@ -47,7 +47,9 @@ func CreateVehicleInspection(c *gin.Context) {
 		Employee:                  employee,                                    //โยง คสพ Entity Employee
 		VehicleInspectionDatetime: vehicleinspection.VehicleInspectionDatetime, // field DateTime
 	}
-
+	if _, err := govalidator.ValidateStruct(veh); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
+	}
 	//บันทึก
 	if err := entity.DB().Create(&veh).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -93,45 +95,54 @@ func DeleteVehicleInspection(c *gin.Context) {
 // PATCH /users
 
 func UpdateVehicleInspection(c *gin.Context) {
-
+	var payload entity.VehicleInspection //รับค่าที่ส่งมาจาก client
 	var vehicleinspection entity.VehicleInspection
 	var ambulance entity.Ambulance
 	var employee entity.Employee
 	var statuscheck entity.StatusCheck
 	var ambulancepart entity.AmbulancePart
 
-	if err := c.ShouldBindJSON(&vehicleinspection); err != nil {
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if tx := entity.DB().Where("id = ?", payload.ID).Find(&vehicleinspection); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "vehicleinspection_id  not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", payload.AmbulanceID).Find(&ambulance); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance_id  not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", payload.AmbulancePartID).Find(&ambulancepart); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulancepart_id not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", payload.EmployeeID).Find(&employee); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "employee_id not found"})
+		return
+	}
+	if tx := entity.DB().Where("id = ?", payload.StatusCheckID).Find(&statuscheck); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "statuscheck_id not found"})
+		return
+	}
+
+	UpdatingVehicleInspection := entity.VehicleInspection{
+		OdoMeter:                  payload.OdoMeter, //กรอกเลขไมล์
+		Fail:                      payload.Fail,
+		StatusCheck:               statuscheck,
+		AmbulancePart:             ambulancepart,                     //โยง คสพ Entity Case
+		Ambulance:                 ambulance,                         //โยง คสพ Entity Car
+		Employee:                  employee,                          //โยง คสพ Entity Employee
+		VehicleInspectionDatetime: payload.VehicleInspectionDatetime, // field DateTime
+	}
+
+	if _, err := govalidator.ValidateStruct(UpdatingVehicleInspection); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	}
-	if tx := entity.DB().Where("id = ?", vehicleinspection.ID).First(&vehicleinspection); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "vehicleinspection not found"})
-		return
-	}
-	if tx := entity.DB().Where("id = ?", statuscheck.ID).First(&statuscheck); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "statuscheck not found"})
-		return
-	}
-	if tx := entity.DB().Where("id = ?", ambulancepart.ID).First(&ambulancepart); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulancepart not found"})
-		return
-	}
-	if tx := entity.DB().Where("id = ?", ambulance.ID).First(&ambulance); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
-		return
-	}
-	if tx := entity.DB().Where("id = ?", employee.ID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
-		return
-	}
-	UpdatingVehicleInspection := entity.VehicleInspection{
-		OdoMeter:                  vehicleinspection.OdoMeter, //กรอกเลขไมล์
-		Fail:                      vehicleinspection.Fail,
-		StatusCheck:               statuscheck,
-		AmbulancePart:             ambulancepart,                               //โยง คสพ Entity Case
-		Ambulance:                 ambulance,                                   //โยง คสพ Entity Car
-		Employee:                  employee,                                    //โยง คสพ Entity Employee
-		VehicleInspectionDatetime: vehicleinspection.VehicleInspectionDatetime, // field DateTime
 	}
 
 	if err := entity.DB().Where("id = ?", vehicleinspection.ID).Updates(&UpdatingVehicleInspection).Error; err != nil {
