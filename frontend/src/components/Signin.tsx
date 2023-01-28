@@ -84,7 +84,7 @@ export default function Signin() {
         if (res.data) {
           let id = res.data.filter((item: EmployeeInterface) => (item.UserID === convertType(localStorage.getItem("uid") as string))).at(0).ID
           localStorage.setItem("id", id);
-          // console.log()
+          console.log(res)
 
           setTimeout(() => {
             window.location.reload();
