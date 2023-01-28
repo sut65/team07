@@ -16,7 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Link as RouterLink } from "react-router-dom";
 import { RecordTimeOutInterface } from "../../models/recordtimeout_system_models/recordtimeout";
-import { apiUrl, convertType } from "../../services/utility";
+import { convertType } from "../../services/utility";
 import { HttpClientServices } from "../../services/recordtimeout_system_services/HttpClientServices";
 import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
 import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
@@ -55,7 +55,8 @@ function RecordTimeOutCreate() {
   const [typeAbls, setTypeAbls] = useState<TypeAblsInterface[]>([]);
   const [typeAbl, setTypeAbl] = useState<string>("");
   const [detailCase, setDetailCase] = useState<string>("รายละเอียด");
-  const [detailABL, setDetailAbl] = useState<string>("รายละเอียด");
+  const [detailAbl, setDetailAbl] = useState<string>("รายละเอียด");
+
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -72,7 +73,7 @@ function RecordTimeOutCreate() {
     const name = event.target.name as keyof typeof recordtimeout;
     setRecordTimeOut({ ...recordtimeout, [name]: event.target.value });
 
-
+    //handleChange เคสที่ได้รับแจ้ง เพื่อ set details case
     if (event.target.name === "CaseID") {
       cases.forEach((val: any) => {
         if (val.ID === Number(event.target.value)) {
@@ -83,40 +84,30 @@ function RecordTimeOutCreate() {
         setDetailCase("รายละเอียด");
       }
     }
-
+    //handleChange ประเภทรถพยาบาล เพื่อให้สามารถเลือกรถพยาบาลของแต่ละประเภทได้
     if (event.target.name === "TypeAblID") {
-
-      getAmbulance(event.target.value);
       setTypeAbl(event.target.value);
       setDetailAbl("รายละเอียด");
-
-      
+      setRecordTimeOut({ ...recordtimeout, AmbulanceID: 0 });
       if (event.target.value === "") {
         setAmbulance([]);
+      } else {
+        getAmbulance(event.target.value);
       }
     }
-    if (event.target.name === "AmbulanceID") {
-      
-      abl.forEach((val: any) => {
-        if (val.CarBrand === Number(event.target.value)) {
-          setAmbulance([]);
-        }
-      });
 
-      if (event.target.value !== "") {
+    if (event.target.name === "AmbulanceID") {
+      const a = abl.filter((v) => v.ID === Number(event.target.value))[0];
+      if (a) {
         setDetailAbl(
-          `ไอดีรถ: ${event.target.value} ยี่ห้อรถ: ${event.target.value} เลขทะเบียนรถ: ${event.target.value}`
+          `ไอดีรถ: ${a.ID} ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`
         );
       } else {
         setDetailAbl("รายละเอียด");
       }
     }
-    // console.log(recordtimeout);
   };
 
-  const submitTest = () => {
-    console.log(abl)
-  }
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name as keyof typeof recordtimeout;
     setRecordTimeOut({
@@ -130,7 +121,7 @@ function RecordTimeOutCreate() {
     let res = await HttpClientServices.get(`/abl/${id}`);
     if (!res.error) {
       setAmbulance(res.results);
-      // console.log(res);
+      //console.log(res);
     } else {
       console.log(res.error);
     }
@@ -176,7 +167,7 @@ function RecordTimeOutCreate() {
         CaseID: res.results.CaseID,
         EmployeeID: res.results.EmployeeID,
         OdoMeter: res.results.OdoMeter,
-        RecordTimeOutDatetime: res.results.RecordTimeOutDatetime,
+        RecordTimeOutDatetime: new Date(),
       });
       // console.log(res?.Ambulance?.TypeAblID);
       setTypeAbl(res.results.Ambulance?.TypeAblID);
@@ -184,9 +175,17 @@ function RecordTimeOutCreate() {
       setDetailCase(
         `ไอดีเคส: ${res.results.CaseID} สถานที่เกิดเหตุ: ${res.results.Case.Location}`
       );
+      setDetailAbl(
+        `ไอดีรถ: ${res.results.AmbulanceID} ยี่ห้อรถ: ${res.results.Ambulance.CarBrand} เลขทะเบียนรถ: ${res.results.Ambulance.Clp}`
+      );
       // console.log(res);
     } else {
       console.log(res.error);
+      setError(true);
+      setMessage(res.message);
+      setTimeout(() => {
+        window.location.href = "/RecordTimeOutHistory";
+      }, 1500);
     }
   };
 
@@ -219,6 +218,8 @@ function RecordTimeOutCreate() {
     const param = params ? params : null;
     if (param?.id) {
       //update
+      const ID = { ID: Number(param?.id) };
+      data = { ...data, ...ID };
       let res = await HttpClientServices.patch(`/recordtimeout`, data);
       if (!res.error) {
         setSuccess(true);
@@ -260,7 +261,14 @@ function RecordTimeOutCreate() {
     >
       {" "}
       <CssBaseline />
-      <Paper className="paper" elevation={3}>
+      <Paper
+        className="paper"
+        elevation={6}
+        sx={{
+          padding: 2,
+          borderRadius: 3,
+        }}
+      >
         <Box>
           <Typography
             variant="h5"
@@ -286,6 +294,7 @@ function RecordTimeOutCreate() {
                 inputProps={{
                   name: "CaseID",
                 }}
+                autoFocus
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกเคส
@@ -348,6 +357,7 @@ function RecordTimeOutCreate() {
                   name: "AmbulanceID",
                 }}
                 disabled={typeAbl != "" ? false : true}
+                value={String(recordtimeout.AmbulanceID)}
               >
                 <option aria-label="None" value="">
                   กรุณาเลือกรถพยาบาล
@@ -363,11 +373,12 @@ function RecordTimeOutCreate() {
 
           <Grid item xs={12}>
             <TextField
+              // label="detail"
               disabled
               fullWidth
               rows={2}
               multiline
-              value={detailABL}
+              value={detailAbl}
             />
           </Grid>
 
@@ -384,7 +395,8 @@ function RecordTimeOutCreate() {
                   name: "OdoMeter",
                 }}
                 onChange={handleInputChange}
-                value={String(recordtimeout?.OdoMeter)}
+                value={recordtimeout?.OdoMeter ?? ""}
+                required
               />
             </FormControl>
           </Grid>
@@ -402,7 +414,8 @@ function RecordTimeOutCreate() {
                   name: "Annotation",
                 }}
                 onChange={handleInputChange}
-                value={String(recordtimeout?.Annotation ?? "")}
+                value={recordtimeout?.Annotation ?? ""}
+                required
               />
             </FormControl>
           </Grid>
@@ -472,7 +485,6 @@ function RecordTimeOutCreate() {
           {message}
         </Alert>
       </Snackbar>
-
       {/* <Button onClick={submitTest}>
         Test
       </Button> */}

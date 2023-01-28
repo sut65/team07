@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { Container, Box, Button } from "@mui/material";
+import { Container, Box, Button,Paper } from "@mui/material";
 import moment from "moment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { VehicleInspectionInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
@@ -43,23 +43,23 @@ function VehicleInspectionHistory() {
     {
       field: "Ambulance.ID",
       headerName: "รถพยาบาล",
-      width: 120,
+      width: 170,
       align: "center",
       headerAlign: "center",
       renderCell: (params: GridRenderCellParams<any>) => {
-        return <>{params.row.Ambulance.ID}</>;
+        return <>{params.row.Ambulance.CarBrand} {`(${params.row.Ambulance.Clp})`}</>;
       },
     },
-    {
-      field: "Ambulance.Clp",
-      headerName: "เลขทะเบียนรถ",
-      width: 130,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params: GridRenderCellParams<any>) => {
-        return <>{params.row.Ambulance.Clp}</>;
-      },
-    },
+    // {
+    //   field: "Ambulance.Clp",
+    //   headerName: "เลขทะเบียนรถ",
+    //   width: 130,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   renderCell: (params: GridRenderCellParams<any>) => {
+    //     return <>{params.row.Ambulance.Clp}</>;
+    //   },
+    // },
     {
       field: "Fail",
       headerName: "ปัญหา",
@@ -74,7 +74,7 @@ function VehicleInspectionHistory() {
     {
       field: "AmbulancePart.PartName",
       headerName: "ชิ้นส่วนรถที่มีปัญหา",
-      width: 200,
+      width: 220,
       align: "center",
       headerAlign: "center",
       renderCell: (params: GridRenderCellParams<any>) => {
@@ -114,7 +114,7 @@ function VehicleInspectionHistory() {
       field: "ดูเพิ่มเติม",
       align: "center",
       headerAlign: "center",
-      width: 85,
+      width: 100,
       renderCell: (params: GridRenderCellParams<any>) => {
         return <VehicleInspection params={params.row} />;
       },
@@ -125,7 +125,7 @@ function VehicleInspectionHistory() {
       field: "ลบ",
       align: "center",
       headerAlign: "center",
-      width: 85,
+      width: 100,
       renderCell: (params: GridRenderCellParams<any>) => {
         return <VehicleInspectionDelete params={params.row.ID} />;
       },
@@ -141,6 +141,14 @@ function VehicleInspectionHistory() {
   return (
     <div>
       <Container maxWidth="lg" sx={{ marginTop: 2 }}>
+      <Paper
+          className="paper"
+          elevation={6}
+          sx={{
+            padding: 2.5,
+            borderRadius: 3,
+          }}
+        >
         <Box display="flex">
           <Box flexGrow={1}>
             <Typography
@@ -185,6 +193,7 @@ function VehicleInspectionHistory() {
         </Button>
 
         {moment(recordtimeout.Record_Time_Out_Datetime).format("DD/MM/YYYY")} */}
+      </Paper>
       </Container>
     </div>
   );

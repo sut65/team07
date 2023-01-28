@@ -99,18 +99,14 @@ export default function App() {
               <div className="container-router">
                 <Routes>
                   <Route path="/" element={<Home />} />
-
-
                   <Route
                     path="/AmbulanceCreate"
                     element={<AmbulanceCreate />}
                   />
                   <Route path="/CarDepotCreate" element={<CarDepotCreate />} />
                   <Route path="/" element={<Signin />} />
-                  
                   <Route path="/CarWashCreate" element={<CarWashCreate />} />
                   <Route path="/" element={<Signin />} />
-
                   {/* //Employee */}
                   <Route path="/Employee" element={<EmployeeList />} />
                   <Route path="/employee/create" element={<EmployeeCreate />} />
@@ -118,7 +114,6 @@ export default function App() {
                     path="/employee/update/:id"
                     element={<EmployeeUpdate />}
                   />
-
                   <Route path="/Ambulance" element={<Ambulance />} />
                   <Route
                     path="/Ambulance/AmbulanceCreate"
@@ -128,7 +123,6 @@ export default function App() {
                     path="/Ambulance/AmbulanceUpdate"
                     element={<AmbulanceUpdate />}
                   />
-
                   <Route
                     path="/RecordTimeOutHistory"
                     element={<RecordTimeOutHistory />}
@@ -148,7 +142,6 @@ export default function App() {
                     path="/Ambulance/AmbulanceUpdate"
                     element={<AmbulanceUpdate />}
                   />
-
                   <Route
                     path="/CarDepot/CarDepotCreate"
                     element={<CarDepotCreate />}
@@ -157,16 +150,6 @@ export default function App() {
                     path="/CarDepot/CarDepotUpdate"
                     element={<CarDepotUpdate />}
                   />
-
-                  <Route
-                    path="/RecordTimeOutHistory"
-                    element={<RecordTimeOutHistory />}
-                  />
-                  <Route
-                    path="/RecordTimeOutCreate"
-                    element={<RecordTimeOutCreate />}
-                  />
-
                   <Route
                     path="/RecordTimeInCreate"
                     element={<RecordTimeInCreate />}
@@ -183,7 +166,6 @@ export default function App() {
                     path="/RecordTimeInUpdate"
                     element={<RecordTimeInUpdate />}
                   />
-
                   <Route
                     path="/RecordTimeInUpdate"
                     element={<RecordTimeInUpdate />}
@@ -205,13 +187,15 @@ export default function App() {
                     element={<DisinfectionUpdate />}
                   />
                   {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
-
                   <Route path="/AmbulanceUse" element={<AmbulanceUse />} />
-              <Route path="/AmbulanceUse/AmbulanceUseUpdate" element={<AmbulanceUseUpdate />} />                  <Route
+                  <Route
+                    path="/AmbulanceUse/AmbulanceUseUpdate"
+                    element={<AmbulanceUseUpdate />}
+                  />{" "}
+                  <Route
                     path="/AmbulanceUse/AmbulanceUseCreate"
                     element={<AmblanceUseCreate />}
                   />
-
                   <Route
                     path="/ambulance-store"
                     element={<AmbulanceStoreHome />}
@@ -228,9 +212,8 @@ export default function App() {
                     path="/ambulance-store/update/:id"
                     element={<AmbulanceStoreUpdate />}
                   />
-
                   <Route
-                    path="/VehicleInspectionCreate"
+                    path="/VehicleInspectionCreate/:id?"
                     element={<VehicleInspectionCreate />}
                   />
                   <Route
@@ -238,15 +221,8 @@ export default function App() {
                     element={<VehicleInspectionHistory />}
                   />
                   {/* <Route path="/CaseCreate" element={<CaseCreate />} /> */}
-
-                  <Route
-                    path="/Case"
-                    element={<Case />}
-                  />                  
-                  <Route
-                    path="/CaseCreate"
-                    element={<CaseCreate />}
-                  />
+                  <Route path="/Case" element={<Case />} />
+                  <Route path="/CaseCreate" element={<CaseCreate />} />
                   <Route
                     path="/CarWash/CarWashCreate"
                     element={<CarWashCreate />}
