@@ -12,7 +12,7 @@ export interface CarWashsInterface {
     Date: Date | any,
     
 
-    StatusAmID?: number | any,
+    StatusAmID?: number | null,
     StatusAm?: StatusAmsInterface,
 
     AmbulanceID?: number | any,
