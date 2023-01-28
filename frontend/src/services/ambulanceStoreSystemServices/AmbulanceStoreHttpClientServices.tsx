@@ -146,7 +146,31 @@ async function GetMedicineByID(ID : string | undefined) {
     return res;
 }
 
+
+async function DeleteAmbulanceByID(ID : any){
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/ambulanceStore/${ID}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 export {
+    DeleteAmbulanceByID,
     UpdateAmbulanceStore,
     GetMedicineByID,
     CreateAmbulanceStore,

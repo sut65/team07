@@ -48,6 +48,8 @@ func main() {
 	r.POST("/signin", controller.Signin)
 
 	r.GET("/valid", controller.Validation)
+
+	r.GET("/employeeId/:id", controller.GetEmployeeByUID)
 	// -------------------------- Auth System ----------------------------
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
@@ -253,6 +255,8 @@ func main() {
 	r.POST("/ambulanceStore", controller.CreateAmbulanceStore)
 	// Update Ambulance Store
 	r.PATCH("/ambulanceStore", controller.UpdateAmbulanceStore)
+	// Delete Ambulance Store
+	r.DELETE("/ambulanceStore/:id", controller.DeleteAmbulanceStore)
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 	//Run server using gin gonic

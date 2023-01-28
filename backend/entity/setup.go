@@ -234,11 +234,24 @@ func SetupDatabase() {
 	db.CreateInBatches(carStat, 3)
 	// ระบบเเจ้งซ่อม ----------------------------------------------------
 	// ระบบที่จอดรถพยาบาล ---------------------------------------------
-	var park = []Park{
-		{Name: "Srinakarin"},
-		{Name: "Suranaree"},
+	P1 := Park{
+		Name:     "Srinakarin",
+		Capacity: 100,
 	}
-	db.CreateInBatches(park, 2)
+
+	P2 := Park{
+		Name:     "Suranaree",
+		Capacity: 50,
+	}
+
+	P3 := Park{
+		Name:     "Sawaddee",
+		Capacity: 50,
+	}
+
+	db.Model(&Park{}).Create(&P1)
+	db.Model(&Park{}).Create(&P2)
+	db.Model(&Park{}).Create(&P3)
 
 	// ระบบที่จอดรถพยาบาล ---------------------------------------------
 	// ระบบล้างรถพยาบาล ---------------------------------------------

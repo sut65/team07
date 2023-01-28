@@ -314,4 +314,14 @@ func UpdateAmbulanceStore(c *gin.Context) {
 
 }
 
-// DELETE this system is not have delete
+// DELETE Ambulance System
+// DELETE /ambulanceStore/:id
+func DeleteAmbulanceStore(c *gin.Context) {
+	id := c.Param("id")
+
+	if tx := entity.DB().Exec("DELETE FROM ambulance_stores WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance stores is not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": id})
+}

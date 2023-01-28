@@ -7,10 +7,10 @@ import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
-import './CarDepotCreate.css';
-import { ParksInterface } from '../../models/carDepot_system_models/park';
-import { CarDepotsInterface } from '../../models/carDepot_system_models/carDepot';
-import { ListParks, CreatCarDepots } from '../../services/carDepot_system_services/HttpClientService';
+import './CarWashCreate.css';
+import { StatusAmsInterface } from '../../models/carWash_system_models/statusAm';
+import { CarWashsInterface } from '../../models/carWash_system_models/carWash';
+import { ListStatusAms, CreatCarWashs } from '../../services/carWash_system_services/HttpClientService';
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
 import { ListAmbulances } from '../../services/ambulance_system_services/HttpClientService';
 
@@ -24,7 +24,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 
 
-function CarDepotCreate() {
+function CarWashCreate() {
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -41,23 +41,27 @@ function CarDepotCreate() {
         let res = await ListAmbulances();
         if (res) {
             setAmbulances(res);
+            //console.log(res)
+        }
+    };
+
+    const [statusAms, setStatusAms] = useState<StatusAmsInterface[]>([]);
+    const getStatusAms = async () => {
+        let res = await ListStatusAms();
+        if (res) {
+            setStatusAms(res);
             console.log(res)
         }
     };
 
-    const [parks, setParks] = useState<ParksInterface[]>([]);
-    const getParks = async () => {
-        let res = await ListParks();
-        if (res) {
-            setParks(res);
-        }
-    };
 
-
-    const [carDepot, setCarDepot] = useState<CarDepotsInterface>({
-        EmpCode: "",
+    const [carWash, setCarWash] = useState<CarWashsInterface>({
+        ComName: "",
+        ComTel: "",
+        ReceiptNum: "",
+        SerFees: 0,
         Date: new Date(),
-        PNum: 0,
+     
     });
 
     const convertType = (data: string | number | undefined | null) => {
@@ -66,18 +70,18 @@ function CarDepotCreate() {
     };
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const name = event.target.name as keyof typeof carDepot;
-        setCarDepot({
-            ...carDepot,
+        const name = event.target.name as keyof typeof carWash;
+        setCarWash({
+            ...carWash,
             [name]: event.target.value,
         });
 
     };
 
     const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name as keyof typeof carDepot;
-        setCarDepot({
-            ...carDepot,
+        const name = event.target.name as keyof typeof carWash;
+        setCarWash({
+            ...carWash,
             [name]: event.target.value,
         });
     };
@@ -86,16 +90,18 @@ function CarDepotCreate() {
 
     async function submit() {
         let data = {
-            ParkID: convertType(carDepot.ParkID),
+            StatusAmID: convertType(carWash.StatusAmID),
             EmployeeID: convertType(localStorage.getItem("id")),
             AmbulanceID: convertType(localStorage.getItem("id")),
-            EmpCode: carDepot.EmpCode,
-            PNum: convertType(carDepot.PNum),
-            Date: carDepot.Date,
+            ComName: carWash.ComName,
+            ComTel: carWash.ComTel,
+            ReceiptNum: carWash.ReceiptNum,
+            SerFees: convertType(carWash.SerFees),
+            Date: carWash.Date,
 
         };
         console.log(data)
-        let res = await CreatCarDepots(data);
+        let res = await CreatCarWashs(data);
         if (res.data) {
             setSuccess(true);
         } else {
@@ -107,7 +113,7 @@ function CarDepotCreate() {
 
     useEffect(() => {
         getAmbulances();
-        getParks();
+        getStatusAms();
 
     }, []);
 
@@ -167,7 +173,7 @@ function CarDepotCreate() {
                         color="primary"
                         sx={{ fontWeight: 'bold' }}
                     >
-                        บันทึกสถานที่จอดรถ
+                        บันทึกข้อมูลการล้างรถ
                     </Typography>
                 </Stack>
                 <Grid container spacing={2} >
@@ -176,7 +182,7 @@ function CarDepotCreate() {
               <p>เลขทะเบียนรถพยาบาล</p>
               <Select
                 native
-                value={carDepot.AmbulanceID + ""}
+                value={carWash.AmbulanceID + ""}
                 onChange={handleChange}
                 inputProps={{
                   name: "AmbulanceID",
@@ -189,6 +195,7 @@ function CarDepotCreate() {
                   <option value={Number(item.ID)} key={item.ID}>
                     {item.Clp}
                   </option>
+                 
                 ))}
               </Select>
             </FormControl>
@@ -196,46 +203,31 @@ function CarDepotCreate() {
       
                     <Grid item={true} xs={12}>
                         <FormControl fullWidth variant="outlined">
-                            <Typography className='StyledTypography'> อาคารจอดรถ </Typography>
+                            <Typography className='StyledTypography'> สถานะ </Typography>
                             <Select
                                 className='StyledTextField'
                                 size="small"
                                 color="primary"
                                 native
-                                value={carDepot.ParkID + ""}
+                                value={carWash.StatusAmID + ""}
                                 onChange={handleChange}
                                 inputProps={{
-                                    name: "ParkID",
-                                }}>
+                                    name: "StatusAmID",
+                                }}
+                            >
                                 <option aria-label="None" value="">
-                                    กรุณาเลือกที่จอดรถ
+                                กรุณาเลือกสถานะ
                                 </option>
-                                {parks.map((item: ParksInterface) => (
+                                {statusAms.map((item: StatusAmsInterface) => (
                                     <option value={item.ID} key={item.ID}>
-                                        {item.Name}
+                                        {item.Status}
                                     </option>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
-                        <p>เลขช่องจอดรถ</p>
-                        <TextField
-                            name='PNum'
-                            type="number"
-                            value={carDepot.PNum || ""}
-                            InputProps={{
-                                inputProps: {
-                                    min: 1,
-                                    max: 100
-                                }
-                            }}
-                            sx={{ width: "100%" }}
-                            onChange={handleChangeTextField}
-                        />
-                    </Grid>
                     <Grid item={true} xs={12}>
-                        <Typography className='StyledTypography'> รหัสพนักงาน </Typography>
+                        <Typography className='StyledTypography'> ชื่อบริษัท </Typography>
                         <TextField className='StyledTextField'
                             autoComplete='off'
                             id="Name"
@@ -245,8 +237,48 @@ function CarDepotCreate() {
                             fullWidth
                             onChange={handleChangeTextField}
                             inputProps={{
-                                name: "EmpCode",
+                                name: "ComName",
                             }}
+                        />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                        <Typography className='StyledTypography'> เบอร์โทรบริษัท </Typography>
+                        <TextField className='StyledTextField'
+                            autoComplete='off'
+                            id="Name"
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                            fullWidth
+                            onChange={handleChangeTextField}
+                            inputProps={{
+                                name: "ComTel",
+                            }}
+                        />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                        <Typography className='StyledTypography'> เลขใบเสร็จ </Typography>
+                        <TextField className='StyledTextField'
+                            autoComplete='off'
+                            id="Name"
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                            fullWidth
+                            onChange={handleChangeTextField}
+                            inputProps={{
+                                name: "ReceiptNum",
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <p>ค่าบริการ</p>
+                        <TextField
+                            name='SerFees'
+                            type="number"
+                            value={carWash.SerFees || ""}
+                            sx={{ width: "100%" }}
+                            onChange={handleChangeTextField}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -255,10 +287,10 @@ function CarDepotCreate() {
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     className='StyledTextField'
-                                    value={carDepot.Date}
+                                    value={carWash.Date}
                                     onChange={(newValue) => {
-                                        setCarDepot({
-                                            ...carDepot,
+                                        setCarWash({
+                                            ...carWash,
                                             Date: newValue,
                                         });
                                     }}
@@ -279,7 +311,7 @@ function CarDepotCreate() {
                         variant="contained"
                         color="error"
                         component={RouterLink}
-                        to="/CarDepot"
+                        to="/CarWash"
                         sx={{ borderRadius: 10, '&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
                     >
                         ถอยกลับ
@@ -299,4 +331,4 @@ function CarDepotCreate() {
     )
 }
 
-export default CarDepotCreate
+export default CarWashCreate
