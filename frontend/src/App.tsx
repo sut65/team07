@@ -46,6 +46,7 @@ import CarWashUpdate from "./components/carWash_system_components/CarWashUpdate"
 import CarWashCreate from "./components/carWash_system_components/CarWashCreate";
 import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreUpdate";
 import AmbulanceUseUpdate from "./components/ambulanceUse_system_components/AmbulanceUseUpdate";
+import Case from "./components/emergency_system_components/emergencyhis";
 
 export default function App() {
   const [token, setToken] = React.useState<string>("");
