@@ -27,7 +27,9 @@ import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate
 import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
-//import CaseCreate from "./components/emergency_system_components/emergency";
+import CaseCreate from "./components/emergency_system_components/emergency";
+
+import AmbulanceUse from "./components/ambulanceUse_system_components/AmbulanceUse";
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
 import AmbulanceStoreHome from "./components/ambulanceStoreSystemComponent/AmbulanceStoreHome";
 import AmbulanceStoreManage from "./components/ambulanceStoreSystemComponent/AmbulanceStoreManage";
@@ -39,6 +41,7 @@ import AmbulanceStoreCreate from "./components/ambulanceStoreSystemComponent/Amb
 import CarDepot from "./components/carDepot_system_components/CarDepot";
 import CarDepotUpdate from "./components/carDepot_system_components/CarDepotUpdate";
 import CarDepotCreate from "./components/carDepot_system_components/CarDepotCreate";
+import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreUpdate";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -191,6 +194,7 @@ export default function App() {
                   />
                   {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
 
+                  <Route path="/AmbulanceUse" element={<AmbulanceUse />} />
                   <Route
                     path="/AmbulanceUse/AmbulanceUseCreate"
                     element={<AmblanceUseCreate />}
@@ -207,6 +211,10 @@ export default function App() {
                   <Route
                     path="/ambulance-store/create/:id"
                     element={<AmbulanceStoreCreate />}
+                  />
+                  <Route
+                    path="/ambulance-store/update/:id"
+                    element={<AmbulanceStoreUpdate />}
                   />
 
                   <Route
