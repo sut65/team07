@@ -239,8 +239,20 @@ export default function App() {
                   {/* <Route path="/CaseCreate" element={<CaseCreate />} /> */}
 
                   <Route
-                    path="/VehicleInspectionHistory"
-                    element={<VehicleInspectionHistory />}
+                    path="/Case"
+                    element={<Case />}
+                  />                  
+                  <Route
+                    path="/CaseCreate"
+                    element={<CaseCreate />}
+                  />
+                  <Route
+                    path="/CarWash/CarWashCreate"
+                    element={<CarWashCreate />}
+                  />
+                  <Route
+                    path="/CarWash/CarWashUpdate"
+                    element={<CarWashUpdate />}
                   />
                   <Route
                     path="/CarWash/CarWashCreate"
