@@ -1,6 +1,6 @@
 import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Container } from '@mui/system'
@@ -80,6 +80,7 @@ function AmbulanceCreate() {
         });
     };
 
+    const navigator = useNavigate();
     async function submit() {
         let data = {
             CompanyID: convertType(ambulance.CompanyID),
@@ -92,6 +93,9 @@ function AmbulanceCreate() {
         let res = await CreatAmbulances(data);
         if (res) {
             setSuccess(true);
+            setTimeout(() => {
+                navigator("/Ambulance")
+            }, 1200)
         } else {
             setError(true);
         }
@@ -284,7 +288,7 @@ function AmbulanceCreate() {
                         variant="contained"
                         color="primary"
                         onClick={submit}
-                        sx={{ borderRadius: 10, '&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
+                        sx={{ borderRadius: 10, '&:hover': { color: '#065D95', backgroundColor: '#e3f2fd' }}}
                     >
                         บันทึกข้อมูล
                     </Button>

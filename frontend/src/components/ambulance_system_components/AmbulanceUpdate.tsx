@@ -1,6 +1,6 @@
 import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Container } from '@mui/system'
@@ -84,21 +84,25 @@ function AmbulanceUpdate() {
         });
     };
 
+
+    const navigator = useNavigate();
     async function submit() {
 
         let data = {
             ID: convertType(ambulance.ID),
             CompanyID: convertType(ambulance.CompanyID),
             TypeAblID: convertType(ambulance.TypeAblID),
-            EmployeeID: convertType(localStorage.getItem("id")), //Math.floor(Math.random() * 10)+1,
+            EmployeeID: convertType(localStorage.getItem("id")),
             Clp: ambulance.Clp,
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
         };
-        console.log(typeof data.Date)
         let res = await UpdateAmbulance(data);
         if (res) {
             setSuccess(true);
+            setTimeout(() => {
+                navigator("/Ambulance")
+            }, 1200)
         } else {
             setError(true);
         }
@@ -289,7 +293,7 @@ function AmbulanceUpdate() {
                         variant="contained"
                         color="primary"
                         onClick={submit}
-                        sx={{ borderRadius: 10, '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
+                        sx={{ borderRadius: 10, '&:hover': { color: '#065D95', backgroundColor: '#e3f2fd' } }}
                     >
                         อัพเดตข้อมูล
                     </Button>
