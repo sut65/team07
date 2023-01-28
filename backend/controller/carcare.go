@@ -42,13 +42,13 @@ func CreateCarcare(c *gin.Context) {
 
 	// 11: สร้าง carcare
 	st := entity.Carcare{
+		VehicleInspection: vehicleinspection,
+		Employee:          employee,
 		SaveDate:          carcare.SaveDate,
 		ResiveDate:        carcare.ResiveDate,
 		Bill:              carcare.Bill,
 		Note:              carcare.Note,
 		CarStat:           carstat,
-		VehicleInspection: vehicleinspection,
-		Employee:          employee,
 	}
 
 	// บันทึก
@@ -129,6 +129,8 @@ func UpdateCarcare(c *gin.Context) {
 	}
 
 	UpdateCarcare := entity.Carcare{
+		VehicleInspection: vehicleinspection,
+		Employee:          employee,
 		CarStat: carstat,
 		SendDate: carcare.SendDate,
 		ResiveDate: carcare.ResiveDate,
@@ -148,7 +150,7 @@ func UpdateCarcare(c *gin.Context) {
 	})
 }
 
-// GET /emergencys
+// GET /carstats
 func Getcarstat(c *gin.Context) {
 	var emergencys []entity.Carstat
 	if err := entity.DB().Raw("SELECT * FROM emergencys").Scan(&emergencys).Error; err != nil {
