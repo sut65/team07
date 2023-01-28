@@ -45,10 +45,6 @@ func SetupDatabase() {
 		&Gender{},
 		&Case{},
 
-		// ระบบเเจ้งซ่อม
-		&Carstat{},
-		&Carcare{},
-
 		//ระบบบันทึกเวลาใช้รถขาออกของ พนง ขับรถ
 		&RecordTimeOUT{},
 
