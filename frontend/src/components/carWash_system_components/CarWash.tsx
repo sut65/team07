@@ -1,23 +1,23 @@
 import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
-import { CarDepotsInterface } from '../../models/carDepot_system_models/carDepot'
+import { CarWashsInterface } from '../../models/carWash_system_models/carWash'
 import { Role } from '../../models/role'
-import { DeleteCarDepot, ListCarDepots } from '../../services/carDepot_system_services/HttpClientService'
+import { DeleteCarWash, ListCarWashs } from '../../services/carWash_system_services/HttpClientService'
 import { Link as RouterLink } from "react-router-dom";
 
 
 
-import CarDepotUpdate from './CarDepotUpdate'
+import CarWashUpdate from './CarWashUpdate'
 import { GetAmbulanceByID } from '../../services/ambulance_system_services/HttpClientService'
 
-export default function CarDepotList() {
+export default function CarWashList() {
 
-    //CarDepot State
-    const [carDepot, setCarDepot] = React.useState<CarDepotsInterface[]>([])
-    const GetCarDepotByEmployee = async () => {
-        let res = await ListCarDepots();
+    //CarWash State
+    const [carWash, setCarWash] = React.useState<CarWashsInterface[]>([])
+    const GetCarWashByEmployee = async () => {
+        let res = await ListCarWashs();
         if (res) {
-            setCarDepot(res)
+            setCarWash(res)
             //debug
             console.log(res)
         }
@@ -37,7 +37,7 @@ export default function CarDepotList() {
 
 
     React.useEffect(() => {
-        GetCarDepotByEmployee();
+        GetCarWashByEmployee();
         GetAmbulanceByID();
 
     }, [])
@@ -65,13 +65,13 @@ export default function CarDepotList() {
 
 
     const handleDelete = async () => {
-        let res = await DeleteCarDepot(deleteID)
+        let res = await DeleteCarWash(deleteID)
         if (res) {
             console.log(res.data)
         } else {
             console.log(res.data)
         }
-        GetCarDepotByEmployee();
+        GetCarWashByEmployee();
         setOpenDelete(false)
 
     }
@@ -102,7 +102,7 @@ export default function CarDepotList() {
                         color="text"
                         gutterBottom
                     >
-                        ข้อมูลคลังจอดรถ
+                        ข้อมูลการล้างรถ
                     </Typography>
                 </Grid>
                 <Grid item xs={2} >
@@ -110,9 +110,9 @@ export default function CarDepotList() {
                         variant='contained'
                         color='primary'
                         component={RouterLink}
-                        to="/CarDepot/CarDepotCreate"
+                        to="/CarWash/CarWashCreate"
                     >
-                        เพิ่มสถานที่จอดรถ
+                        เพิ่มข้อมูลการล้างรถ
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
@@ -120,11 +120,13 @@ export default function CarDepotList() {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>อาคารจอดรถ</TableCell>
                                     <TableCell>เลขทะเบียนรถ</TableCell>
-                                    <TableCell>เลขช่องจอดรถ</TableCell> {/* Role Get From Searching*/}
-                                    <TableCell>รหัสพนักงาน</TableCell>
-                                    <TableCell>เวลาบันทึก</TableCell>
+                                    <TableCell>สถานะ</TableCell>
+                                    <TableCell>ชื่อบริษัท</TableCell> {/* Role Get From Searching*/}
+                                    <TableCell>เบอร์โทรบริษัท</TableCell>
+                                    <TableCell>เลขใบเสร็จ</TableCell>
+                                    <TableCell>ค่าบริการ</TableCell>
+                                    <TableCell>เวลา</TableCell>
                                     <TableCell>แก้ไข</TableCell>
                                     <TableCell>ลบ</TableCell>
                                 </TableRow>
@@ -133,14 +135,16 @@ export default function CarDepotList() {
                             {/* Body */}
                             <TableBody>
                                 {
-                                    carDepot.map((item) => (
+                                    carWash.map((item) => (
                                         <TableRow
                                             key={item.ID}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        ><TableCell>{item.Park?.Name}</TableCell>
-                                            <TableCell>{item.Ambulance?.Clp}</TableCell>
-                                            <TableCell>{item.PNum}</TableCell>
-                                            <TableCell>{item.EmpCode}</TableCell>
+                                        ><TableCell>{item.Ambulance?.Clp}</TableCell>
+                                            <TableCell>{item.StatusAm?.Status}</TableCell>
+                                            <TableCell>{item.ComName}</TableCell>
+                                            <TableCell>{item.ComTel}</TableCell>
+                                            <TableCell>{item.ReceiptNum}</TableCell>
+                                            <TableCell>{item.SerFees}</TableCell>
                                             <TableCell>{convertDateFormat(item.Date)}</TableCell>
                                             <TableCell>
                                                 {
@@ -148,7 +152,7 @@ export default function CarDepotList() {
                                                         variant='outlined'
                                                         color='warning'
                                                         component={RouterLink}
-                                                        to={"/CarDepot/CarDepotUpdate"}
+                                                        to={"/CarWash/CarWashUpdate"}
                                                         onClick={() => { handleDialogDeleteOpen(item.ID) }}
                                             
                                                     >
@@ -180,7 +184,7 @@ export default function CarDepotList() {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {`คุณต้องการลบข้อมูลของที่จอดรถ ${carDepot.filter((c) => (c.ID === deleteID)).at(0)?.Park?.Name} จริงหรือไม่`}
+                    {`คุณต้องการลบข้อมูลของที่จอดรถ ${carWash.filter((c) => (c.ID === deleteID)).at(0)?.StatusAm?.Status} จริงหรือไม่`}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -196,7 +200,7 @@ export default function CarDepotList() {
 
             </Dialog>
 
-            {/* <CarDepotUpdate openUpdate={openUpdate} handleDialogUpdateclose={handleDialogUpdateclose} id={editID}/> */}
+            {/* <CarWashUpdate openUpdate={openUpdate} handleDialogUpdateclose={handleDialogUpdateclose} id={editID}/> */}
 
             {/* <Button onClick={debughandle}>Test</Button> */}
         </Container>

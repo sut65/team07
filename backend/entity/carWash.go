@@ -11,7 +11,7 @@ type StatusAm struct {
 	Status string
 	//For Link Foreign key
 
-	CarWashs []CarWash `gorm:"foreignKey:CarWashID"`
+	CarWashs []CarWash `gorm:"foreignKey:StatusAmID"`
 }
 
 type CarWash struct {
