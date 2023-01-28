@@ -95,6 +95,7 @@ function AmbulanceUpdate() {
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
         };
+        console.log(typeof data.Date)
         let res = await UpdateAmbulance(data);
         if (res) {
             setSuccess(true);

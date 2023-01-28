@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Link as RouterLink } from "react-router-dom";
 import { GetAmbulanceByEmployee } from '../../services/ambulance_system_services/HttpClientService'
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
+import moment from 'moment';
 
 function Ambulance() {
 
@@ -22,7 +23,7 @@ function Ambulance() {
         { field: "CarBrand", headerName: "ยี่ห้อรถ", width: 120, headerAlign: "center", align:"center" },
         { field: "TypeAbl", headerName: "ประเภทรถ", width: 270, headerAlign: "center", align:"center", valueFormatter: (params) => params.value.Name, },
         { field: "Company", headerName: "ซื้อที่บริษัท", width: 150, headerAlign: "center", align:"center", valueFormatter: (params) => params.value.Name, },
-        { field: "Date", headerName: "วันที่ซื้อ", width: 240, headerAlign: "center", align:"center" },
+        { field: "Date", headerName: "วันที่ซื้อ", width: 240, headerAlign: "center", align:"center", valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A") },
         {
             field: " ",
             headerName: " ",

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Link as RouterLink } from "react-router-dom";
 import { GetAmbulanceUseByEmployee } from '../../services/ambulanceUse_system_services/HttpClientService';
 import { AmbulanceUseInterface } from '../../models/ambulanceUse_system_models/ambulanceUse';
+import moment from 'moment';
 
 function AmbulanceUse() {
 
@@ -27,7 +28,7 @@ function AmbulanceUse() {
         { field: "Medicine", headerName: "ยาที่ใช้", width: 170, headerAlign: "center", align: "center", valueFormatter: (params) => params.value.MedicineName },
         { field: "Amount", headerName: "จำนวน", width: 120, headerAlign: "center", align: "center" },
         { field: "Ambulance", headerName: "เลขทะเบียนรถ", width: 240, headerAlign: "center", align: "center", valueFormatter: (params) => params.value.Clp },
-        { field: "Date", headerName: "วันที่ใช้ยา", width: 240, headerAlign: "center", align: "center" },
+        { field: "Date", headerName: "วันที่ใช้ยา", width: 240, headerAlign: "center", align: "center",valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A") },
         {
             field: " ",
             headerName: " ",
@@ -37,13 +38,14 @@ function AmbulanceUse() {
             headerAlign: "center",
             renderCell: ({ row }: Partial<GridRowParams>) =>
                 <Button
-                    // component={RouterLink}
-                    // to="/AmbulanceUse/AmbulanceUseUpdate"
+                    component={RouterLink}
+                    to="/AmbulanceUse/AmbulanceUseUpdate"
                     size="small"
                     variant="contained"
                     color="error"
                     onClick={() => {
-                        localStorage.setItem("aid", row.ID);
+                        localStorage.setItem("au_id", row.ID);
+                        localStorage.setItem("mid", row.MedicineID);
                     }}
                     sx={{ borderRadius: 20, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
                 >

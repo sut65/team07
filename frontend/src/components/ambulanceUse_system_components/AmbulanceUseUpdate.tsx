@@ -1,4 +1,4 @@
-import { Box, Button, CssBaseline, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Link as RouterLink } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -7,12 +7,13 @@ import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
+import { AmbulanceUseInterface } from '../../models/ambulanceUse_system_models/ambulanceUse';
+import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
+import { MedicineInterface } from '../../models/ambulanceUse_system_models/medicine';
 
-import { ListMedicines, CreatAmbulanceUse } from '../../services/ambulanceUse_system_services/HttpClientService'
-import { ListAmbulances } from '../../services/ambulance_system_services/HttpClientService'
-import { MedicineInterface } from '../../models/ambulanceUse_system_models/medicine'
-import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance'
-import { AmbulanceUseInterface } from '../../models/ambulanceUse_system_models/ambulanceUse'
+import { ListMedicines, GetAmbulanceUseByID, UpdateAmbulanceUse, GetMedicineByID } from '../../services/ambulanceUse_system_services/HttpClientService';
+import { ListAmbulances } from '../../services/ambulance_system_services/HttpClientService';
+
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -21,7 +22,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function AmblanceUseCreate() {
+function AmbulanceUseUpdate() {
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -33,6 +34,34 @@ function AmblanceUseCreate() {
         setError(false);
     };
 
+    const [medicines, setMedicines] = useState<MedicineInterface[]>([]);
+    const getMedicines = async () => {
+        let res = await ListMedicines();
+        if (res) {
+            setMedicines(res);
+        }
+    };
+
+    const [ambulances, setAmbulances] = useState<AmbulancesInterface[]>([]);
+    const getAmbulances = async () => {
+        let res = await ListAmbulances();
+        if (res) {
+            setAmbulances(res);
+        }
+    };
+
+    const [ambulanceUse, setAmbulanceUse] = useState<AmbulanceUseInterface>({
+        Amount: 0,
+        Date: new Date(),
+    });
+    const getAmbulanceUseByID = async () => {
+        let res = await GetAmbulanceUseByID();
+        if (res) {
+            setAmbulanceUse(res);
+            console.log(res)
+        }
+    };
+
     const convertType = (data: string | number | undefined | null) => {
         let val = typeof data === "string" ? parseInt(data) : data;
         return val;
@@ -40,13 +69,30 @@ function AmblanceUseCreate() {
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name as keyof typeof ambulanceUse;
+        console.log(typeof event.target.valueAsNumber)
         setAmbulanceUse({
             ...ambulanceUse,
-            [name]: event.target.value,
+            [name]: event.target.valueAsNumber,
         });
+        console.log(ambulanceUse)
+
     };
 
-    const [disTextField, setDisTextField] = useState(true);
+    const [medicine, setMedicine] = useState<MedicineInterface>({
+        ID: 0,
+        MedicineName: "",
+        MedicineWarning: "",
+        MedicineType: "",
+        MeasureUnit: "",
+    });
+    const getMedicineByID = async () => {
+        let res = await GetMedicineByID();
+        if (res) {
+            setMedicine(res);
+        }
+    };
+
+    const [disTextField, setDisTextField] = useState(false);
     const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof ambulanceUse;
 
@@ -74,59 +120,40 @@ function AmblanceUseCreate() {
             ...ambulanceUse,
             [name]: event.target.value,
         });
+        // console.log(ambulanceUse)
     };
-
-    const [medicines, setMedicines] = useState<MedicineInterface[]>([]);
-    const getMedicines = async () => {
-        let res = await ListMedicines();
-        if (res) {
-            setMedicines(res);
-        }
-    };
-
-    const [medicine, setMedicine] = useState<MedicineInterface>({
-        ID: 0,
-        MedicineName: "",
-        MedicineWarning: "",
-        MedicineType: "",
-        MeasureUnit: "",
-    });
-
-    const [ambulance, setAmbulances] = useState<AmbulancesInterface[]>([]);
-    const getAmbulances = async () => {
-        let res = await ListAmbulances();
-        if (res) {
-            setAmbulances(res);
-        }
-    };
-
-    const [ambulanceUse, setAmbulanceUse] = useState<AmbulanceUseInterface>({
-        Amount: 0,
-        Date: new Date(),
-    });
 
     async function submit() {
+
         let data = {
+            ID: convertType(ambulanceUse.ID),
             EmployeeID: convertType(localStorage.getItem("id")),
             MedicineID: convertType(ambulanceUse.MedicineID),
             AmbulanceID: convertType(ambulanceUse.AmbulanceID),
-            Amount: typeof ambulanceUse.Amount == "string" ? parseInt(ambulanceUse.Amount) : 0,
+            Amount: ambulanceUse.Amount,
             Date: ambulanceUse.Date,
         };
-        let res = await CreatAmbulanceUse(data);
-        if (res) {
+
+        let res = await UpdateAmbulanceUse(data);
+        if (res.data) {
+            // console.log(res.data)
             setSuccess(true);
         } else {
+            // console.log(res.error)
             setError(true);
         }
     }
 
     useEffect(() => {
 
-        getMedicines();
         getAmbulances();
+        getMedicines();
+        getAmbulanceUseByID();
+        getMedicineByID();
         
+
     }, []);
+
 
     return (
         <div>
@@ -142,7 +169,7 @@ function AmblanceUseCreate() {
                     severity="success"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    บันทึกข้อมูลสำเร็จ
+                    อัพเดตข้อมูลสำเร็จ
                 </Alert>
             </Snackbar>
 
@@ -158,20 +185,19 @@ function AmblanceUseCreate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    บันทึกข้อมูลไม่สำเร็จ
+                    อัพเดตข้อมูลไม่สำเร็จ
                 </Alert>
             </Snackbar>
-
             <Container
                 component="main"
-                maxWidth="sm"
+                maxWidth="md"
                 sx={{
+                    mt: 5,
+                    mb: 2,
+                    p: 2,
                     boxShadow: 3,
-                    bgcolor: '#F1F6F5',
-                    p: 3,
-                    borderRadius: 3
+                    bgcolor: '#F1F6F5'
                 }}
-
             >
                 <CssBaseline />
                 <Stack
@@ -182,9 +208,10 @@ function AmblanceUseCreate() {
                         color="primary"
                         sx={{ fontWeight: 'bold' }}
                     >
-                        บันทึกข้อมูลการใช้ยาบนรถพยาบาล
+                        แก้ไขข้อมูล  ยาที่ใช้รถพยาบาล  ID {ambulanceUse?.ID}
                     </Typography>
                 </Stack>
+
                 <Grid container rowSpacing={2}>
                     <Grid item xs={12}>
                         <Typography>ยา</Typography>
@@ -225,6 +252,7 @@ function AmblanceUseCreate() {
                                 inputProps: { min: 1 },
                                 name: "Amount"
                             }}
+                            value={ambulanceUse.Amount}
                         />
 
                     </Grid>
@@ -247,7 +275,7 @@ function AmblanceUseCreate() {
                                 <option aria-label="None" value="">
                                     กรุณาเลือกรถพยาบาล
                                 </option>
-                                {ambulance.map((item: AmbulancesInterface) => (
+                                {ambulances.map((item: AmbulancesInterface) => (
                                     <option value={Number(item.ID)} key={item.ID}>
                                         เลขทะเบียน {item.Clp}
                                     </option>
@@ -295,13 +323,14 @@ function AmblanceUseCreate() {
                         onClick={submit}
                         sx={{ borderRadius: 10, '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
                     >
-                        บันทึกข้อมูล
+                        อัพเดตข้อมูล
                     </Button>
 
                 </Stack>
+
             </Container>
         </div>
     )
 }
 
-export default AmblanceUseCreate
+export default AmbulanceUseUpdate

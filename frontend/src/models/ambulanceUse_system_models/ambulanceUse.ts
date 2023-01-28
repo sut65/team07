@@ -4,17 +4,17 @@ import { AmbulancesInterface } from "../ambulance_system_models/ambulance";
 
 export interface AmbulanceUseInterface {
 
-    ID?: number | null,
-    Amount: number | null,
-    Date: Date | null,
+    ID?: number | any,
+    Amount: number | any,
+    Date: Date | any,
 
-    EmployeeID?: number | null,
+    EmployeeID?: number | any,
 	Employee?: EmployeeInterface,
 
-	MedicineID?: number | null,
+	MedicineID?: number | any,
 	Medicine?: MedicineInterface,
 
-	AmbulanceID?: number | null,
+	AmbulanceID?: number | any,
 	Ambulance?: AmbulancesInterface,
 
 }

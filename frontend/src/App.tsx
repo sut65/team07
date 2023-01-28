@@ -45,6 +45,8 @@ import CarWash from "./components/carWash_system_components/CarWash";
 import CarWashUpdate from "./components/carWash_system_components/CarWashUpdate";
 import CarWashCreate from "./components/carWash_system_components/CarWashCreate";
 import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreUpdate";
+import AmbulanceUseUpdate from "./components/ambulanceUse_system_components/AmbulanceUseUpdate";
+
 export default function App() {
   const [token, setToken] = React.useState<string>("");
   const palette: PaletteOptions = {
@@ -204,7 +206,7 @@ export default function App() {
                   {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
 
                   <Route path="/AmbulanceUse" element={<AmbulanceUse />} />
-                  <Route
+              <Route path="/AmbulanceUse/AmbulanceUseUpdate" element={<AmbulanceUseUpdate />} />                  <Route
                     path="/AmbulanceUse/AmbulanceUseCreate"
                     element={<AmblanceUseCreate />}
                   />

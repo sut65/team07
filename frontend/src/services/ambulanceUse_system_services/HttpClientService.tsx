@@ -50,6 +50,32 @@ async function GetAmbulanceUseByEmployee() {
     return res;
 }
 
+async function GetAmbulanceUseByID() {
+    let au_id = localStorage.getItem("au_id");
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(
+        `${apiUrl}/ambulanceUse/${au_id}`,
+        requestOptions
+    )
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 async function ListMedicines() {
     const requestOptions = {
         method: "GET",
@@ -72,11 +98,39 @@ async function ListMedicines() {
     return res;
 }
 
+async function GetMedicineByID() {
+    let mid = localStorage.getItem("mid");
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(
+        `${apiUrl}/medicine/${mid}`,
+        requestOptions
+    )
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 
 
 
 
 async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
+
+    console.log(data)
     
     const requestOptions = {
         method: "PATCH",
@@ -90,8 +144,8 @@ async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
     let res = await fetch(`${apiUrl}/ambulanceUse`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            if (res.data) {
-                return res.data
+            if (res) {
+                return res
             } else {
                 return false
             }
@@ -105,6 +159,8 @@ async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
 export {  
     CreatAmbulanceUse,
     GetAmbulanceUseByEmployee,
+    GetAmbulanceUseByID,
     ListMedicines,
+    GetMedicineByID,
     UpdateAmbulanceUse,
 }
