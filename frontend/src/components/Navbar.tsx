@@ -126,7 +126,7 @@ function Navbar() {
     {
       name: "รายการเหตุฉุกเฉิน",
       icon: <HealingIcon />,
-      path: "/CaseCreate",
+      path: "/Case",
     },
 
     {

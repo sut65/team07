@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -12,8 +12,10 @@ import Divider from "@mui/material/Divider";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { MobileDateTimePicker } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import './emergency.css';
+
 
 import { CaseInterface } from "../../models/emergency_system_models/case";
 import { EmergencyInterface } from "../../models/emergency_system_models/emergency";
@@ -24,6 +26,7 @@ import {
     GetGender,
     CreateEmercase,
 } from '../../services/emergency_system_service/HttpClientServices';
+
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -96,15 +99,15 @@ function CaseCreate() {
         });
     };
 
-    const convertType = (data: string | number | undefined) => {
+    const convertType = (data: string | number | undefined | null) => {
         let val = typeof data === "string" ? parseInt(data) : data;
         return val;
     };
 
     async function submit() {
         let data = {
-            //GenderID:         convertType(emercase.GenderID),
-            //EmergencyID:      convertType(emercase.EmergencyID),
+            GenderID: convertType(emercase.GenderID),
+            EmergencyID: convertType(emercase.EmergencyID),
             Location: emercase.Location,
             Patient: emercase.Patient,
             Age: emercase.Age,
@@ -183,26 +186,25 @@ function CaseCreate() {
                     </Grid>
 
                     <Grid item xs={6}>
-
-                    </Grid>
-
-                    {/*<Grid item xs={6}>
                         <FormControl fullWidth>
-                            <p>date</p>
-                            <MobileDateTimePicker
-                                value={dateWithInitialValue}
+                        <p>Date Time</p>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
+                                className='StyledTextField'
+                                value={emercase.Date}
                                 onChange={(newValue) => {
-                                    setDateWithInitialValue(newValue);
+                                    setCase({
+                                        ...emercase,
+                                        Date: newValue,
+                                    });
                                 }}
-                                label="With error handler"
-                                onError={console.log}
-                                minDate={dayjs('2018-01-01T00:00')}
-                                inputFormat="YYYY/MM/DD hh:mm a"
-                                mask="____/__/__ __:__ _M"
                                 renderInput={(params) => <TextField {...params} />}
                             />
+                        </LocalizationProvider>
                         </FormControl>
-                    </Grid>*/}
+                    </Grid>
+
+
 
                     <Grid item xs={12}>
                         <FormControl fullWidth variant="outlined">
@@ -281,7 +283,7 @@ function CaseCreate() {
                     <Grid item xs={12}>
                         <Button
                             component={RouterLink}
-                            to="/ScholarHistory"
+                            to="/Case"
                             variant="contained"
                             color="secondary"
                         >

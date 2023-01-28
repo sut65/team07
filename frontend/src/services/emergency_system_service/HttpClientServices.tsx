@@ -71,8 +71,8 @@ async function CreateEmercase(data: CaseInterface) {
   return res;
 }
 
-/*async function GetReportBySID() {
-  let sid = localStorage.getItem("sid");
+async function GetEmercaseBySID() {
+  let sid = localStorage.getItem("cid");
   const requestOptions = {
     method: "GET",
     headers: {
@@ -82,7 +82,7 @@ async function CreateEmercase(data: CaseInterface) {
   };
 
   let res = await fetch(
-    `${apiUrl}/report/${sid}`,
+    `${apiUrl}/Emercases/${sid}`,
     requestOptions
   )
     .then((response) => response.json())
@@ -95,12 +95,13 @@ async function CreateEmercase(data: CaseInterface) {
     });
 
   return res;
-}*/
+}
 
 
 export {
   GetGender,
   GetEmergency,
   CreateEmercase,
-  //CreateEmercaseByCID,
+  GetEmercaseBySID,
+ 
 };
