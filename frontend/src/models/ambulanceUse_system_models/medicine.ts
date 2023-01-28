@@ -1,9 +1,9 @@
 export interface MedicineInterface {
 
-    ID: number,
-    MedicineName: string,
-    MedicineWarning: string,
-    MedicineType: string,
-    MeasureUnit: string,
+    ID: number | any,
+    MedicineName: string | any,
+    MedicineWarning: string | any,
+    MedicineType: string | any,
+    MeasureUnit: string | any,
 
 } 

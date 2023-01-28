@@ -8,8 +8,8 @@ import (
 
 type Park struct {
 	gorm.Model
-	Name    string
-	Surname string
+	Name     string
+	Capacity int
 
 	//For Link Foreign key
 	CarDepots []CarDepot `gorm:"foreignKey:ParkID"`

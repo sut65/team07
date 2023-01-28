@@ -14,7 +14,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ambulance from "./image/Ambulance.png";
 import { SigninInterface } from "../models/user";
-import {apiUrl} from "../../src/services/utility"
+import { apiUrl, convertType } from "../../src/services/utility"
+import { EmployeeInterface } from "../models/employeeSystemModel/IEmployee";
 function Copyright(props: any) {
   return (
     <Typography
@@ -34,7 +35,7 @@ function Copyright(props: any) {
 
 export default function Signin() {
   const [signin, setSignin] = React.useState<Partial<SigninInterface>>();
-  
+
   const [success, setSuccess] = React.useState<boolean>(false);
   const [error, setError] = React.useState<boolean>(false);
 
@@ -61,18 +62,34 @@ export default function Signin() {
         if (res.data) {
           console.log(res.data);
           localStorage.setItem("token", res.data.Token);
-          localStorage.setItem("id", res.data.user_id);
+          localStorage.setItem("uid", res.data.user_id);
           localStorage.setItem("role", res.data.role_name);
 
           setSuccess(true);
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
+          
         } else {
           setError(true);
           console.log("error", res.error);
         }
       });
+
+    await fetch(`${apiUrl}/employeeId/${localStorage.getItem("uid")}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.data) {
+          localStorage.setItem("id", res.data.ID);
+          console.log(res)
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        }
+      })
   };
 
   return (

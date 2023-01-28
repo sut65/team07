@@ -238,6 +238,15 @@ function CarDepotUpdate() {
                     </Button>
                     <Button
                         variant="contained"
+                        color="error"
+                        component={RouterLink}
+                        to="/CarDepot"
+                        sx={{ borderRadius: 10, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
+                    >
+                        ถอยกลับ
+                    </Button>
+                    <Button
+                        variant="contained"
                         color="primary"
                         onClick={submit}
                         sx={{ borderRadius: 10, '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}

@@ -7,7 +7,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 
 
-import CardepotUpdate from './CarDepotUpdate'
+import CarDepotUpdate from './CarDepotUpdate'
 import { GetAmbulanceByID } from '../../services/ambulance_system_services/HttpClientService'
 
 export default function CarDepotList() {

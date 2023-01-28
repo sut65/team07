@@ -1,7 +1,8 @@
-import { AmbulanceUseInterface } from "../../models/ambulanceUse_system_models/ambulanceUse";
+import { CarWashsInterface } from "../../models/carWash_system_models/carWash";
 import { apiUrl } from "../utility";
 
-async function CreatAmbulanceUse(data: AmbulanceUseInterface) {
+
+async function CreatCarWashs(data:any) {
     const requestOptions = {
         method: "POST",
         headers: {
@@ -11,7 +12,35 @@ async function CreatAmbulanceUse(data: AmbulanceUseInterface) {
         body: JSON.stringify(data),
     };
 
-    let res = await fetch(`${apiUrl}/ambulanceUse`, requestOptions)
+    let res = await fetch(`${apiUrl}/carWash`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            console.log(res)
+            if (res) {
+                
+                return res;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+async function GetCarWashByID() {
+    let cid = localStorage.getItem("cid");
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(
+        `${apiUrl}/carWashs/${cid}`,
+        requestOptions
+    )
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -22,10 +51,11 @@ async function CreatAmbulanceUse(data: AmbulanceUseInterface) {
         });
 
     return res;
+
 }
 
-async function GetAmbulanceUseByEmployee() {
-    let eid = localStorage.getItem("id");
+async function GetCarWashByEmployee() {
+    let empid = localStorage.getItem("id");
     const requestOptions = {
         method: "GET",
         headers: {
@@ -35,7 +65,7 @@ async function GetAmbulanceUseByEmployee() {
     };
 
     let res = await fetch(
-        `${apiUrl}/ambulanceUses/${eid}`,
+        `${apiUrl}/carWash/${empid}`,
         requestOptions
     )
         .then((response) => response.json())
@@ -50,8 +80,7 @@ async function GetAmbulanceUseByEmployee() {
     return res;
 }
 
-async function GetAmbulanceUseByID() {
-    let au_id = localStorage.getItem("au_id");
+async function ListStatusAms() {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -60,10 +89,7 @@ async function GetAmbulanceUseByID() {
         },
     };
 
-    let res = await fetch(
-        `${apiUrl}/ambulanceUse/${au_id}`,
-        requestOptions
-    )
+    let res = await fetch(`${apiUrl}/statusAms`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -76,7 +102,7 @@ async function GetAmbulanceUseByID() {
     return res;
 }
 
-async function ListMedicines() {
+async function ListAmbulances() {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -85,7 +111,7 @@ async function ListMedicines() {
         },
     };
 
-    let res = await fetch(`${apiUrl}/medicines`, requestOptions)
+    let res = await fetch(`${apiUrl}/ambulances`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -98,8 +124,7 @@ async function ListMedicines() {
     return res;
 }
 
-async function GetMedicineByID() {
-    let mid = localStorage.getItem("mid");
+async function ListCarWashs() {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -108,10 +133,7 @@ async function GetMedicineByID() {
         },
     };
 
-    let res = await fetch(
-        `${apiUrl}/medicine/${mid}`,
-        requestOptions
-    )
+    let res = await fetch(`${apiUrl}/carWashs`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -124,13 +146,7 @@ async function GetMedicineByID() {
     return res;
 }
 
-
-
-
-
-async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
-
-    console.log(data)
+async function UpdateCarWash(data: CarWashsInterface) {
     
     const requestOptions = {
         method: "PATCH",
@@ -141,11 +157,11 @@ async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
         body: JSON.stringify(data)
     }
 
-    let res = await fetch(`${apiUrl}/ambulanceUse`, requestOptions)
+    let res = await fetch(`${apiUrl}/carWash`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            if (res) {
-                return res
+            if (res.data) {
+                return res.data
             } else {
                 return false
             }
@@ -153,14 +169,36 @@ async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
     return res
 }
 
+// Delete CarWash
+async function DeleteCarWash(ID:number) {
+    const reqOpt = {
+        method: "DELETE",
+        headers:{
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        }
+    };
+    
+    let res = await fetch(`${apiUrl}/carWash/${ID}`, reqOpt)
+    .then((response) => response.json())
+    .then((res) => {
+        if(res.data){
+            return res.data
+        } else{
+            return false
+        }
+    })
+    return res
+}
 
-
-
-export {  
-    CreatAmbulanceUse,
-    GetAmbulanceUseByEmployee,
-    GetAmbulanceUseByID,
-    ListMedicines,
-    GetMedicineByID,
-    UpdateAmbulanceUse,
+export {
+    
+    CreatCarWashs,
+    GetCarWashByID,
+    GetCarWashByEmployee,
+    ListStatusAms,
+    ListCarWashs,
+    ListAmbulances,
+    DeleteCarWash, 
+    UpdateCarWash,
 }

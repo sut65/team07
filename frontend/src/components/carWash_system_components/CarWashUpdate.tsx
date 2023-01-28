@@ -7,12 +7,11 @@ import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
-import './AmbulanceCreate.css';
+import './CarWashCreate.css';
 
-import { CompaniesInterface } from '../../models/ambulance_system_models/company';
-import { TypeAblsInterface } from '../../models/ambulance_system_models/typeAbl';
-import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
-import { ListCompanies, ListTypeAbls, GetAmbulanceByID, UpdateAmbulance } from '../../services/ambulance_system_services/HttpClientService';
+import { StatusAmsInterface } from '../../models/carWash_system_models/statusAm';
+import { CarWashsInterface } from '../../models/carWash_system_models/carWash';
+import { ListStatusAms,  GetCarWashByID, UpdateCarWash } from '../../services/carWash_system_services/HttpClientService';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -21,7 +20,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function AmbulanceUpdate() {
+
+function CarWashUpdate() {
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -33,32 +33,28 @@ function AmbulanceUpdate() {
         setError(false);
     };
 
-    const [companies, setCompanies] = useState<CompaniesInterface[]>([]);
-    const getCompanies = async () => {
-        let res = await ListCompanies();
+    const [statusAms, setStatusAms] = useState<StatusAmsInterface[]>([]);
+    const getStatusAms = async () => {
+        let res = await ListStatusAms();
         if (res) {
-            setCompanies(res);
+            setStatusAms(res);
         }
     };
 
-    const [typeAbls, setTypeAbls] = useState<TypeAblsInterface[]>([]);
-    const getTypeAbls = async () => {
-        let res = await ListTypeAbls();
-        if (res) {
-            setTypeAbls(res);
-        }
-    };
 
-    const [ambulance, setAmbulance] = useState<AmbulancesInterface>({
-        Clp: "",
+    const [carWash, setCarWash] = useState<CarWashsInterface>({
+        ComName: "",
+        ComTel: "",
+        ReceiptNum: "",
+        SerFees: 0,
         Date: new Date(),
-        CarBrand: "",
     });
 
-    const getAmbulanceDataByID = async () => {
-        let res = await GetAmbulanceByID();
+    const getCarWashDataByID = async () => {
+        let res = await GetCarWashByID();
         if (res) {
-            setAmbulance(res);
+            console.log(res)
+            setCarWash(res);
         }
     };
 
@@ -68,18 +64,18 @@ function AmbulanceUpdate() {
     };
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const name = event.target.name as keyof typeof ambulance;
-        setAmbulance({
-            ...ambulance,
+        const name = event.target.name as keyof typeof carWash;
+        setCarWash({
+            ...carWash,
             [name]: event.target.value,
         });
 
     };
 
     const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name as keyof typeof ambulance;
-        setAmbulance({
-            ...ambulance,
+        const name = event.target.name as keyof typeof carWash;
+        setCarWash({
+            ...carWash,
             [name]: event.target.value,
         });
     };
@@ -87,16 +83,18 @@ function AmbulanceUpdate() {
     async function submit() {
 
         let data = {
-            ID: convertType(ambulance.ID),
-            CompanyID: convertType(ambulance.CompanyID),
-            TypeAblID: convertType(ambulance.TypeAblID),
+            ID: convertType(localStorage.getItem("cid")),
+            StatusAmID: convertType(carWash.StatusAmID),
+            AmbulanceID: convertType(localStorage.getItem("id")), //Math.floor(Math.random() * 10)+1,
             EmployeeID: convertType(localStorage.getItem("id")), //Math.floor(Math.random() * 10)+1,
-            Clp: ambulance.Clp,
-            Date: ambulance.Date,
-            CarBrand: ambulance.CarBrand,
+            ComName: carWash.ComName,
+            ComTel: carWash.ComTel,
+            ReceiptNum: carWash.ReceiptNum,
+            SerFees: convertType(carWash.SerFees),
+            Date: carWash.Date,
         };
-        console.log(typeof data.Date)
-        let res = await UpdateAmbulance(data);
+        console.log(data)
+        let res = await UpdateCarWash(data);
         if (res) {
             setSuccess(true);
         } else {
@@ -106,9 +104,8 @@ function AmbulanceUpdate() {
 
     useEffect(() => {
 
-        getCompanies();
-        getTypeAbls();
-        getAmbulanceDataByID();
+        getStatusAms();
+        getCarWashDataByID();
 
     }, []);
 
@@ -147,14 +144,16 @@ function AmbulanceUpdate() {
             </Snackbar>
             <Container
                 component="main"
-                maxWidth="md"
+                maxWidth="sm"
                 sx={{
                     mt: 5,
                     mb: 2,
                     p: 2,
                     boxShadow: 3,
                     bgcolor: '#F1F6F5'
-                }}>
+                }}
+                disableGutters={true}
+            >
                 <CssBaseline />
                 <Stack
                     sx={{ p: 0, m: 0, mb: 3 }}
@@ -164,64 +163,41 @@ function AmbulanceUpdate() {
                         color="primary"
                         sx={{ fontWeight: 'bold' }}
                     >
-                        แก้ไขข้อมูล  รถพยาบาล  ID {ambulance?.ID}
+                        แก้ไขข้อมูลการล้างรถ
                     </Typography>
                 </Stack>
                 <Grid container spacing={2} >
-                    <Grid item={true} xs={6}>
+         
+      
+                    <Grid item={true} xs={12}>
                         <FormControl fullWidth variant="outlined">
-                            <Typography className='StyledTypography'> ประเภทรถ </Typography>
+                            <Typography className='StyledTypography'> สถานะ </Typography>
                             <Select
                                 className='StyledTextField'
                                 size="small"
                                 color="primary"
                                 native
-                                value={ambulance.TypeAblID + ""}
+                                value={carWash.StatusAmID + ""}
                                 onChange={handleChange}
                                 inputProps={{
-                                    name: "TypeAblID",
+                                    name: "StatusAmID",
                                 }}
                             >
                                 <option aria-label="None" value="">
-                                    กรุณาเลือกประเภทรถ
+                                กรุณาเลือกสถานะ
                                 </option>
-                                {typeAbls.map((item: TypeAblsInterface) => (
+                                {statusAms.map((item: StatusAmsInterface) => (
                                     <option value={item.ID} key={item.ID}>
-                                        {item.Name}
+                                        {item.Status}
                                     </option>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item={true} xs={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <Typography className='StyledTypography'> บริษัท </Typography>
-                            <Select
-                                className='StyledTextField'
-                                size="small"
-                                color="primary"
-                                native
-                                value={ambulance.CompanyID + ""}
-                                onChange={handleChange}
-                                inputProps={{
-                                    name: "CompanyID",
-                                }}
-                            >
-                                <option aria-label="None" value="">
-                                    กรุณาเลือกบริษัท
-                                </option>
-                                {companies.map((item: CompaniesInterface) => (
-                                    <option value={item.ID} key={item.ID}>
-                                        {item.Name}
-                                    </option>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item={true} xs={6}>
-                        <Typography className='StyledTypography'> เลขทะเบียนรถ </Typography>
+                    <Grid item={true} xs={12}>
+                        <Typography className='StyledTypography'> ชื่อบริษัท </Typography>
                         <TextField className='StyledTextField'
-                            autoComplete="off"
+                            autoComplete='off'
                             id="Name"
                             variant="outlined"
                             size="small"
@@ -229,15 +205,16 @@ function AmbulanceUpdate() {
                             fullWidth
                             onChange={handleChangeTextField}
                             inputProps={{
-                                name: "Clp",
+                                name: "ComName",
                             }}
-                            value={ambulance.Clp}
+                            value={carWash.ComName}
                         />
                     </Grid>
-                    <Grid item={true} xs={6}>
-                        <Typography className='StyledTypography'> ยี่ห้อรถ </Typography>
+                
+                    <Grid item={true} xs={12}>
+                        <Typography className='StyledTypography'> เบอร์โทรบริษัท </Typography>
                         <TextField className='StyledTextField'
-                            autoComplete="off"
+                            autoComplete='off'
                             id="Name"
                             variant="outlined"
                             size="small"
@@ -245,9 +222,35 @@ function AmbulanceUpdate() {
                             fullWidth
                             onChange={handleChangeTextField}
                             inputProps={{
-                                name: "CarBrand",
+                                name: "ComTel",
                             }}
-                            value={ambulance.CarBrand}
+                            value={carWash.ComTel}
+                        />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                        <Typography className='StyledTypography'> เลขใบเสร็จ </Typography>
+                        <TextField className='StyledTextField'
+                            autoComplete='off'
+                            id="Name"
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                            fullWidth
+                            onChange={handleChangeTextField}
+                            inputProps={{
+                                name: "ReceiptNum",
+                            }}
+                            value={carWash.ReceiptNum}
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <p>ค่าบริการ</p>
+                        <TextField
+                            name='SerFees'
+                            type="number"
+                            value={carWash.SerFees || ""}
+                            sx={{ width: "100%" }}
+                            onChange={handleChangeTextField}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -256,10 +259,10 @@ function AmbulanceUpdate() {
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     className='StyledTextField'
-                                    value={ambulance.Date}
+                                    value={carWash.Date}
                                     onChange={(newValue) => {
-                                        setAmbulance({
-                                            ...ambulance,
+                                        setCarWash({
+                                            ...carWash,
                                             Date: newValue,
                                         });
                                     }}
@@ -280,11 +283,21 @@ function AmbulanceUpdate() {
                         variant="contained"
                         color="error"
                         component={RouterLink}
-                        to="/Ambulance"
+                        to="/CarWash"
                         sx={{ borderRadius: 10, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
                     >
                         ยกเลิก
                     </Button>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        component={RouterLink}
+                        to="/CarWash"
+                        sx={{ borderRadius: 10, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
+                    >
+                           ถอยกลับ
+                    </Button>
+                        
                     <Button
                         variant="contained"
                         color="primary"
@@ -298,4 +311,4 @@ function AmbulanceUpdate() {
         </div>
     )
 }
-export default AmbulanceUpdate
+export default CarWashUpdate

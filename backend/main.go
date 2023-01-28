@@ -48,6 +48,8 @@ func main() {
 	r.POST("/signin", controller.Signin)
 
 	r.GET("/valid", controller.Validation)
+
+	r.GET("/employeeId/:id", controller.GetEmployeeByUID)
 	// -------------------------- Auth System ----------------------------
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
@@ -171,7 +173,6 @@ func main() {
 
 	r.GET("/genders", controller.GetGender)
 
-
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
@@ -213,6 +214,25 @@ func main() {
 
 	// --------------------------------- ระบบที่จอดรถพยาบาล -----------------------------
 
+	// --------------------------------- ระบบล้างรถพยาบาล -----------------------------
+	// List carWash
+	r.GET("/carWashs", controller.ListCarWashs)
+	// Get by id
+	r.GET("/carWashs/:id", controller.GetCarWash)
+	// Get by empid
+	r.GET("/carWash/:empid", controller.GetCarWashByEmployee)
+	// Create
+	r.POST("/carWash", controller.CreateCarWash)
+	// DELETE
+	r.DELETE("/carWash/:id", controller.DeleteCarWash)
+	// UPDATE
+	r.PATCH("/carWash", controller.UpdateCarWash)
+
+	// List statusAms
+	r.GET("/statusAms", controller.ListStatusAms)
+
+	// --------------------------------- ระบบล้างรถพยาบาล -----------------------------
+
 	// --------------------------------- ระบบเบิกยาเข้าสู่รถพยาบาล -----------------------------
 	// --------------------------------- Medicine Controller ------------------------------
 	// List Medicine in line 176
@@ -235,6 +255,8 @@ func main() {
 	r.POST("/ambulanceStore", controller.CreateAmbulanceStore)
 	// Update Ambulance Store
 	r.PATCH("/ambulanceStore", controller.UpdateAmbulanceStore)
+	// Delete Ambulance Store
+	r.DELETE("/ambulanceStore/:id", controller.DeleteAmbulanceStore)
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 	//Run server using gin gonic

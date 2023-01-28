@@ -64,6 +64,34 @@ async function GetAmbulanceWithID(ID: string | undefined) {
 }
 
 
+async function UpdateAmbulanceStore(ambStore : Partial<AmbulanceStoreInterface>){
+    let data = {
+        ID:convertType(ambStore.ID),
+        Amount: convertType(ambStore.Amount),
+        MedicineID:convertType(ambStore.MedicineID),
+        AmbulanceID: convertType(ambStore.AmbulanceID),
+        EmployeeID: convertType(localStorage.getItem("id") as string)
+    }
+
+    const reqOpt = {
+        method: "PATCH",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    }
+
+    let res = await fetch(`${apiUrl}/ambulanceStore`, reqOpt)
+    .then((response) => response.json())
+    .then((res) => {
+        if(res){
+            return res
+        }
+    })
+    return res
+}
+
 // Create Ambulance Stores
 async function CreateAmbulanceStore(abl: any) {
     let data = {
@@ -92,7 +120,59 @@ async function CreateAmbulanceStore(abl: any) {
     return res
 
 }
+
+
+
+
+async function GetMedicineByID(ID : string | undefined) {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/medicine/${ID}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+
+async function DeleteAmbulanceByID(ID : any){
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/ambulanceStore/${ID}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 export {
+    DeleteAmbulanceByID,
+    UpdateAmbulanceStore,
+    GetMedicineByID,
     CreateAmbulanceStore,
     GetAmbulanceStore,
     ListAmbulanceStores,

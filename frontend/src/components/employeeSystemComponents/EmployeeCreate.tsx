@@ -10,7 +10,7 @@ import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee'
 import { EmpStatusInterface } from '../../models/employeeSystemModel/IStatus'
 import { WorkingAreaInterface } from '../../models/employeeSystemModel/IWorkingArea'
 import { User } from '../../models/user'
-import { ListEducation, ListStatus, ListUser, ListWorkingArea, PostEmployee } from '../../services/employeeSystemServices/EmployeeHttpClient'
+import { ListEducation, ListEmployees, ListStatus, ListUser, ListWorkingArea, PostEmployee } from '../../services/employeeSystemServices/EmployeeHttpClient'
 import { convertType } from '../../services/utility'
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
@@ -31,6 +31,8 @@ export default function EmployeeCreate() {
     const [user, setUser] = React.useState<User[]>([]);
     const [workingArea, setWorkingArea] = React.useState<WorkingAreaInterface[]>([]);
     const [education, setEducation] = React.useState<EducationInterface[]>([]);
+
+    const [mymap, setMyMap] = React.useState(new Map())
 
     // for show data
     const [selectUser, setSelectUser] = React.useState<User>();
@@ -53,6 +55,17 @@ export default function EmployeeCreate() {
                 status: "cannot load status from this api"
             })
         }
+    }
+
+    // get employee in database for filter using user
+    const listEmployee = async () => {
+        const hashmaps = new Map()
+        let res = await ListEmployees()
+        for (var i = 0 ; i < res.length ; i++){
+            setMyMap(hashmaps.set(res.at(i).UserID, i))
+        }
+        // console.log(hashmaps)
+        return hashmaps
     }
 
     // get user
@@ -139,6 +152,7 @@ export default function EmployeeCreate() {
         getUser();
         getEducation();
         getWorkingArea();
+        listEmployee()
     }, [])
 
 
@@ -216,7 +230,11 @@ export default function EmployeeCreate() {
                                     กรุณาเลือก ชื่อผู้ใช้
                                 </option>
                                 {
-                                    user.map((item: User) =>
+                                    user.filter((item) => {
+                                        // console.log(mymap.has(item.ID))
+                                        // console.log(item.Role.Name)
+                                        return ! mymap.has(item.ID)
+                                    }).map((item: User) =>
                                     (<option value={item.ID} key={item.ID}>
                                         {item.Name}
                                     </option>)

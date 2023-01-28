@@ -68,7 +68,7 @@ func GetAmbulanceUse(c *gin.Context) {
 	var ambulanceUse entity.AmbulanceUse
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM ambulance_use WHERE id = ?", id).Scan(&ambulanceUse).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("Medicine").Raw("SELECT * FROM ambulance_uses WHERE id = ?", id).Find(&ambulanceUse).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -181,7 +181,7 @@ func UpdateAmbulanceUse(c *gin.Context) {
 		}
 		ambulanceUse.Medicine = medicine
 	} else {
-		if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&medicine); tx.RowsAffected == 0 {
+		if tx := entity.DB().Where("id = ?", ambulanceUse.MedicineID).First(&medicine); tx.RowsAffected == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found medicine"})
 			return
 		}
@@ -189,7 +189,7 @@ func UpdateAmbulanceUse(c *gin.Context) {
 	}
 
 	// if new have ambulance_id
-	if ambulance.EmployeeID != nil {
+	if ambulanceUse.AmbulanceID != nil {
 		if tx := entity.DB().Where("id = ?", ambulanceUse.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found ambulance"})
 			return

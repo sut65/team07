@@ -52,6 +52,10 @@ func SetupDatabase() {
 		&Park{},
 		&CarDepot{},
 
+		//ระบบล้างรถพยาบาล
+		&StatusAm{},
+		&CarWash{},
+
 		//ระบบตรวจเช็คสภาพรถ
 		&AmbulancePart{},
 		&StatusCheck{},
@@ -190,6 +194,19 @@ func SetupDatabase() {
 
 	db.Model(&WorkingArea{}).Create(&sut)
 
+	adminEmp := Employee{
+		Name:        "Admin",
+		Surname:     "Owner",
+		Age:         50,
+		User:        userAdmin,
+		WorkingArea: sut,
+		Status:      ready,
+		Education:   bacDeg,
+		Date:        time.Now(),
+	}
+
+	db.Model(&Employee{}).Create(&adminEmp)
+
 	// ระบบจัดซื้อรถพยาบาล ---------------------------------------------
 	var company = []Company{
 		{Name: "A_Company"},
@@ -217,14 +234,34 @@ func SetupDatabase() {
 	db.CreateInBatches(carStat, 3)
 	// ระบบเเจ้งซ่อม ----------------------------------------------------
 	// ระบบที่จอดรถพยาบาล ---------------------------------------------
-	var park = []Park{
-		{Name: "Srinakarin"},
-		{Name: "Suranaree"},
+	P1 := Park{
+		Name:     "Srinakarin",
+		Capacity: 100,
 	}
-	db.CreateInBatches(park, 2)
+
+	P2 := Park{
+		Name:     "Suranaree",
+		Capacity: 50,
+	}
+
+	P3 := Park{
+		Name:     "Sawaddee",
+		Capacity: 50,
+	}
+
+	db.Model(&Park{}).Create(&P1)
+	db.Model(&Park{}).Create(&P2)
+	db.Model(&Park{}).Create(&P3)
 
 	// ระบบที่จอดรถพยาบาล ---------------------------------------------
+	// ระบบล้างรถพยาบาล ---------------------------------------------
+	var statusAm = []StatusAm{
+		{Status: "Washing"},
+		{Status: "Washed"},
+	}
+	db.CreateInBatches(statusAm, 2)
 
+	// ระบบล้างรถพยาบาล ---------------------------------------------
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
 	var emergency = []Emergency{
 		{Name: "อุบัติหตุทั้วไป"},

@@ -1,37 +1,28 @@
 import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
-import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee'
+import { CarWashsInterface } from '../../models/carWash_system_models/carWash'
 import { Role } from '../../models/role'
-import { DeleteEmployee, ListEmployees, ListRoles } from '../../services/employeeSystemServices/EmployeeHttpClient'
+import { DeleteCarWash, ListCarWashs } from '../../services/carWash_system_services/HttpClientService'
 import { Link as RouterLink } from "react-router-dom";
 
 
-import "./EmployeeList.css"
-import EmployeeUpdate from './EmployeeUpdate'
 
-export default function EmployeeList() {
+import CarWashUpdate from './CarWashUpdate'
+import { GetAmbulanceByID } from '../../services/ambulance_system_services/HttpClientService'
 
-    //Employee State
-    const [employee, setEmployee] = React.useState<EmployeeInterface[]>([])
-    const getEmployee = async () => {
-        let res = await ListEmployees();
+export default function CarWashList() {
+
+    //CarWash State
+    const [carWash, setCarWash] = React.useState<CarWashsInterface[]>([])
+    const GetCarWashByEmployee = async () => {
+        let res = await ListCarWashs();
         if (res) {
-            setEmployee(res)
+            setCarWash(res)
             //debug
-            // console.log(res)
+            console.log(res)
         }
     }
 
-    //Role State
-    const [role, setRole] = React.useState<Role[]>([])
-    const getRoles = async () => {
-        let res = await ListRoles();
-        if (res) {
-            setRole(res)
-            //debug
-            // console.log(res)
-        }
-    }
 
 
     //For Delete state 
@@ -46,20 +37,21 @@ export default function EmployeeList() {
 
 
     React.useEffect(() => {
-        getEmployee();
-        getRoles();
+        GetCarWashByEmployee();
+        GetAmbulanceByID();
 
     }, [])
 
 
-    const convertDateFormat = (date: Date) => {
+    const convertDateFormat = (date: Date | null | any) => {
         const newDate = new Date(date)
         return `${newDate.getDate()} / ${newDate.getMonth() + 1} / ${newDate.getFullYear()} | ${newDate.getHours()} : ${newDate.getMinutes()}`
     }
 
 
 
-    const handleDialogDeleteOpen = (ID: number) => {
+    const handleDialogDeleteOpen = (ID: number | any) => {
+        localStorage.setItem("cid", ID)
         setDeleteID(ID)
         setOpenDelete(true)
     }
@@ -73,13 +65,13 @@ export default function EmployeeList() {
 
 
     const handleDelete = async () => {
-        let res = await DeleteEmployee(deleteID)
+        let res = await DeleteCarWash(deleteID)
         if (res) {
             console.log(res.data)
         } else {
             console.log(res.data)
         }
-        getEmployee();
+        GetCarWashByEmployee();
         setOpenDelete(false)
 
     }
@@ -110,7 +102,7 @@ export default function EmployeeList() {
                         color="text"
                         gutterBottom
                     >
-                        ข้อมูลพนักงาน
+                        ข้อมูลการล้างรถ
                     </Typography>
                 </Grid>
                 <Grid item xs={2} >
@@ -118,10 +110,9 @@ export default function EmployeeList() {
                         variant='contained'
                         color='primary'
                         component={RouterLink}
-                        to="/employee/create"
-                        className='submit-button'
+                        to="/CarWash/CarWashCreate"
                     >
-                        เพิ่มข้อมูลพนักงาน
+                        เพิ่มข้อมูลการล้างรถ
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
@@ -129,14 +120,13 @@ export default function EmployeeList() {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>ชื่อ</TableCell>
-                                    <TableCell>นามสกุล</TableCell>
-                                    <TableCell>ตำแหน่งงาน</TableCell> {/* Role Get From Searching*/}
-                                    <TableCell>พื้นที่ทำการ</TableCell>
-                                    <TableCell>อายุ</TableCell>
-                                    <TableCell>การศึกษา</TableCell>
-                                    <TableCell>เวลาบันทึก</TableCell>
-                                    <TableCell>ความพร้อม</TableCell>
+                                    <TableCell>เลขทะเบียนรถ</TableCell>
+                                    <TableCell>สถานะ</TableCell>
+                                    <TableCell>ชื่อบริษัท</TableCell> {/* Role Get From Searching*/}
+                                    <TableCell>เบอร์โทรบริษัท</TableCell>
+                                    <TableCell>เลขใบเสร็จ</TableCell>
+                                    <TableCell>ค่าบริการ</TableCell>
+                                    <TableCell>เวลา</TableCell>
                                     <TableCell>แก้ไข</TableCell>
                                     <TableCell>ลบ</TableCell>
                                 </TableRow>
@@ -145,46 +135,26 @@ export default function EmployeeList() {
                             {/* Body */}
                             <TableBody>
                                 {
-                                    employee.map((item) => (
+                                    carWash.map((item) => (
                                         <TableRow
                                             key={item.ID}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell>{item.Name}</TableCell>
-                                            <TableCell>{item.Surname}</TableCell>
-                                            <TableCell>
-                                                {
-                                                    role.filter((role) => {
-                                                        return item.User.RoleID === role.ID
-                                                    }).at(0)?.Name
-                                                }
-                                            </TableCell>{/* Role Get From Searching*/}
-                                            <TableCell>{item.WorkingArea.WorkingArea}</TableCell>
-                                            <TableCell>{item.Age}</TableCell>
-                                            <TableCell>{item.Education.Level}</TableCell>
+                                        ><TableCell>{item.Ambulance?.Clp}</TableCell>
+                                            <TableCell>{item.StatusAm?.Status}</TableCell>
+                                            <TableCell>{item.ComName}</TableCell>
+                                            <TableCell>{item.ComTel}</TableCell>
+                                            <TableCell>{item.ReceiptNum}</TableCell>
+                                            <TableCell>{item.SerFees}</TableCell>
                                             <TableCell>{convertDateFormat(item.Date)}</TableCell>
-                                            <TableCell>
-                                                {
-                                                    <div>
-                                                        <span className={
-                                                            (item.StatusID === 1) ? "green-dot" : (
-                                                                (item.StatusID === 2) ? "yellow-dot" : (
-                                                                    (item.StatusID === 3) ? "red-dot" : "offline-dot"
-                                                                )
-                                                            )
-                                                        }></span>
-                                                        {item.Status.Status}
-                                                    </div>
-                                                }
-                                            </TableCell>
-
                                             <TableCell>
                                                 {
                                                     <Button
                                                         variant='outlined'
                                                         color='warning'
                                                         component={RouterLink}
-                                                        to={"/employee/update/" + item.ID}
+                                                        to={"/CarWash/CarWashUpdate"}
+                                                        onClick={() => { handleDialogDeleteOpen(item.ID) }}
+                                            
                                                     >
                                                         Update
                                                     </Button>
@@ -214,7 +184,7 @@ export default function EmployeeList() {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {`คุณต้องการลบข้อมูลของพนักงาน ${employee.filter((emp) => (emp.ID === deleteID)).at(0)?.Name} จริงหรือไม่`}
+                    {`คุณต้องการลบข้อมูลของที่จอดรถ ${carWash.filter((c) => (c.ID === deleteID)).at(0)?.StatusAm?.Status} จริงหรือไม่`}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -230,7 +200,7 @@ export default function EmployeeList() {
 
             </Dialog>
 
-            {/* <EmployeeUpdate openUpdate={openUpdate} handleDialogUpdateclose={handleDialogUpdateclose} id={editID}/> */}
+            {/* <CarWashUpdate openUpdate={openUpdate} handleDialogUpdateclose={handleDialogUpdateclose} id={editID}/> */}
 
             {/* <Button onClick={debughandle}>Test</Button> */}
         </Container>
