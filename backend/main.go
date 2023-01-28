@@ -48,6 +48,8 @@ func main() {
 	r.POST("/signin", controller.Signin)
 
 	r.GET("/valid", controller.Validation)
+
+	r.GET("/employeeId/:id", controller.GetEmployeeByUID)
 	// -------------------------- Auth System ----------------------------
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------

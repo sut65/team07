@@ -73,7 +73,7 @@ export default function Signin() {
         }
       });
 
-    await fetch(`${apiUrl}/employees`, {
+    await fetch(`${apiUrl}/employeeId/${localStorage.getItem("uid")}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -82,8 +82,7 @@ export default function Signin() {
       .then((response) => response.json())
       .then((res) => {
         if (res.data) {
-          let id = res.data.filter((item: EmployeeInterface) => (item.UserID === convertType(localStorage.getItem("uid") as string))).at(0).ID
-          localStorage.setItem("id", id);
+          localStorage.setItem("id", res.data.ID);
           console.log(res)
 
           setTimeout(() => {
