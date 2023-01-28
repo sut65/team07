@@ -161,6 +161,23 @@ func GetEmployee(c *gin.Context) {
 	})
 }
 
+// Find by user id Employee
+func GetEmployeeByUID(c *gin.Context) {
+	var employee entity.Employee
+	id := c.Param("id")
+	if err := entity.DB().Preload("User").Preload("WorkingArea").Preload("Education").Preload("Status").Raw("SELECT id FROM employees WHERE user_id = ?", id).Find(&employee).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": employee,
+	})
+
+}
+
 // Create Employee
 // POST /employee
 func CreateEmployee(c *gin.Context) {
