@@ -56,7 +56,7 @@ export default function AmbulanceStoreUpdate() {
           if (res.data) {
             // handleSnackbarSuccess()
             setTimeout(() => {
-              navigator("/ambulance-store/" + id)
+              navigator("/ambulance-store/" + ambulanceStore.AmbulanceID)
             }, 1000)
           } else {
             console.log(res.error)

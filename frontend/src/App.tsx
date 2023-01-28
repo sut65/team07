@@ -41,6 +41,9 @@ import AmbulanceStoreCreate from "./components/ambulanceStoreSystemComponent/Amb
 import CarDepot from "./components/carDepot_system_components/CarDepot";
 import CarDepotUpdate from "./components/carDepot_system_components/CarDepotUpdate";
 import CarDepotCreate from "./components/carDepot_system_components/CarDepotCreate";
+import CarWash from "./components/carWash_system_components/CarWash";
+import CarWashUpdate from "./components/carWash_system_components/CarWashUpdate";
+import CarWashCreate from "./components/carWash_system_components/CarWashCreate";
 import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreUpdate";
 export default function App() {
   const [token, setToken] = React.useState<string>("");
@@ -93,11 +96,16 @@ export default function App() {
               <div className="container-router">
                 <Routes>
                   <Route path="/" element={<Home />} />
+
+
                   <Route
                     path="/AmbulanceCreate"
                     element={<AmbulanceCreate />}
                   />
                   <Route path="/CarDepotCreate" element={<CarDepotCreate />} />
+                  <Route path="/" element={<Signin />} />
+                  
+                  <Route path="/CarWashCreate" element={<CarWashCreate />} />
                   <Route path="/" element={<Signin />} />
 
                   {/* //Employee */}
@@ -128,6 +136,7 @@ export default function App() {
                   />
                   <Route path="/Ambulance" element={<Ambulance />} />
                   <Route path="/CarDepot" element={<CarDepot />} />
+                  <Route path="/CarWash" element={<CarWash />} />
                   <Route
                     path="/Ambulance/AmbulanceCreate"
                     element={<AmbulanceCreate />}
@@ -230,6 +239,14 @@ export default function App() {
                   <Route
                     path="/VehicleInspectionHistory"
                     element={<VehicleInspectionHistory />}
+                  />
+                  <Route
+                    path="/CarWash/CarWashCreate"
+                    element={<CarWashCreate />}
+                  />
+                  <Route
+                    path="/CarWash/CarWashUpdate"
+                    element={<CarWashUpdate />}
                   />
                 </Routes>
               </div>

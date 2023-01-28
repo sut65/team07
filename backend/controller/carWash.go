@@ -69,7 +69,7 @@ func GetCarWash(c *gin.Context) {
 	var carWash entity.CarWash
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM car_washs WHERE id = ?", id).Scan(&carWash).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM car_washes WHERE id = ?", id).Scan(&carWash).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -84,7 +84,7 @@ func GetCarWashByEmployee(c *gin.Context) {
 	var carWash []entity.CarWash
 	employee_id := c.Param("empid")
 
-	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("StatusAm").Raw("SELECT * FROM car_washs WHERE employee_id = ?", employee_id).Find(&carWash).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("StatusAm").Raw("SELECT * FROM car_washes WHERE employee_id = ?", employee_id).Find(&carWash).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -98,7 +98,7 @@ func ListCarWashs(c *gin.Context) {
 
 	var carWashs []entity.CarWash
 
-	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("StatusAm").Raw("SELECT * FROM car_washs").Find(&carWashs).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Ambulance").Preload("StatusAm").Raw("SELECT * FROM car_washes").Find(&carWashs).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -112,7 +112,7 @@ func DeleteCarWash(c *gin.Context) {
 
 	id := c.Param("id")
 
-	if tx := entity.DB().Exec("DELETE FROM car_washs WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM car_washes WHERE id = ?", id); tx.RowsAffected == 0 {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": "carWash not found"})
 		return
@@ -234,7 +234,7 @@ func ListStatusAms(c *gin.Context) {
 
 	var statusAms []entity.StatusAm
 
-	if err := entity.DB().Raw("SELECT * FROM statusAms").Scan(&statusAms).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM status_ams").Scan(&statusAms).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
