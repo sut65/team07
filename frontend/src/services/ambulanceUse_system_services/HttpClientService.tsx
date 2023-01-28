@@ -153,6 +153,28 @@ async function UpdateAmbulanceUse(data: AmbulanceUseInterface) {
     return res
 }
 
+async function DeleteAmbulanceUseByID(ID : any){
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/ambulanceUse/${ID}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 
 
 
@@ -163,4 +185,5 @@ export {
     ListMedicines,
     GetMedicineByID,
     UpdateAmbulanceUse,
+    DeleteAmbulanceUseByID,
 }

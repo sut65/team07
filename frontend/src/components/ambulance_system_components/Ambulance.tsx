@@ -155,7 +155,7 @@ function Ambulance() {
                             color="primary"
                             sx={{ borderRadius: 20, '&:hover': { color: '#065D95', backgroundColor: '#e3f2fd' } }}
                         >
-                            เพิ่มรถพยาบาล
+                            เพิ่มข้อมูล
                         </Button>
                     </Box>
                 </Box>

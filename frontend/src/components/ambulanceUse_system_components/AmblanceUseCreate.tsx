@@ -1,6 +1,6 @@
 import { Box, Button, CssBaseline, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { Container } from '@mui/system'
@@ -105,6 +105,7 @@ function AmblanceUseCreate() {
         Date: new Date(),
     });
 
+    const navigator = useNavigate();
     async function submit() {
         let data = {
             EmployeeID: convertType(localStorage.getItem("id")),
@@ -116,6 +117,9 @@ function AmblanceUseCreate() {
         let res = await CreatAmbulanceUse(data);
         if (res) {
             setSuccess(true);
+            setTimeout(() => {
+                navigator("/AmbulanceUse")
+            }, 1200)
         } else {
             setError(true);
         }
@@ -168,7 +172,9 @@ function AmblanceUseCreate() {
                 sx={{
                     boxShadow: 3,
                     bgcolor: '#F1F6F5',
-                    p: 3,
+                    mt: 5,
+                    mb: 2,
+                    p: 2,
                     borderRadius: 3
                 }}
 
@@ -293,7 +299,7 @@ function AmblanceUseCreate() {
                         variant="contained"
                         color="primary"
                         onClick={submit}
-                        sx={{ borderRadius: 10, '&:hover': { color: '#1543EE', backgroundColor: '#e3f2fd' } }}
+                        sx={{ borderRadius: 10, '&:hover': { color: '#065D95', backgroundColor: '#e3f2fd' } }}
                     >
                         บันทึกข้อมูล
                     </Button>
