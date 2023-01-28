@@ -253,6 +253,8 @@ func main() {
 	r.POST("/ambulanceStore", controller.CreateAmbulanceStore)
 	// Update Ambulance Store
 	r.PATCH("/ambulanceStore", controller.UpdateAmbulanceStore)
+	// Delete Ambulance Store
+	r.DELETE("/ambulanceStore/:id", controller.DeleteAmbulanceStore)
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 	//Run server using gin gonic
