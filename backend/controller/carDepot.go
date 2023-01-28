@@ -171,7 +171,7 @@ func UpdateCarDepot(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
 			return
 		}
-		ambulance.Employee = employee
+		carDepot.Employee = employee
 	}
 
 	// if have new ambulance_id

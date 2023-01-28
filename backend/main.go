@@ -171,7 +171,6 @@ func main() {
 
 	r.GET("/genders", controller.GetGender)
 
-
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
@@ -212,6 +211,25 @@ func main() {
 	r.GET("/parks", controller.ListParks)
 
 	// --------------------------------- ระบบที่จอดรถพยาบาล -----------------------------
+
+	// --------------------------------- ระบบล้างรถพยาบาล -----------------------------
+	// List carWash
+	r.GET("/carWashs", controller.ListCarWashs)
+	// Get by id
+	r.GET("/carWashs/:id", controller.GetCarWash)
+	// Get by empid
+	r.GET("/carWash/:empid", controller.GetCarWashByEmployee)
+	// Create
+	r.POST("/carWash", controller.CreateCarWash)
+	// DELETE
+	r.DELETE("/carWash/:id", controller.DeleteCarWash)
+	// UPDATE
+	r.PATCH("/carWash", controller.UpdateCarWash)
+
+	// List statusAms
+	r.GET("/statusAms", controller.ListStatusAms)
+
+	// --------------------------------- ระบบล้างรถพยาบาล -----------------------------
 
 	// --------------------------------- ระบบเบิกยาเข้าสู่รถพยาบาล -----------------------------
 	// --------------------------------- Medicine Controller ------------------------------
