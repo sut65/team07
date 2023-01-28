@@ -52,6 +52,10 @@ func SetupDatabase() {
 		&Park{},
 		&CarDepot{},
 
+		//ระบบล้างรถพยาบาล
+		&StatusAm{},
+		&CarWash{},
+
 		//ระบบตรวจเช็คสภาพรถ
 		&AmbulancePart{},
 		&StatusCheck{},
@@ -237,7 +241,14 @@ func SetupDatabase() {
 	db.CreateInBatches(park, 2)
 
 	// ระบบที่จอดรถพยาบาล ---------------------------------------------
+	// ระบบล้างรถพยาบาล ---------------------------------------------
+	var statusAm = []StatusAm{
+		{Status: "Washing"},
+		{Status: "Washed"},
+	}
+	db.CreateInBatches(statusAm, 2)
 
+	// ระบบล้างรถพยาบาล ---------------------------------------------
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
 	var emergency = []Emergency{
 		{Name: "อุบัติหตุทั้วไป"},
