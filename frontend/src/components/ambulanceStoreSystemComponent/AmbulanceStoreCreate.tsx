@@ -1,7 +1,7 @@
 import { Alert, Button, FormControl, Grid, Paper, Select, Snackbar, TextField, Typography } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link as RouterLink } from 'react-router-dom'
 import { AmbulanceStoreInterface } from '../../models/ambulanceStoreModels/IAmbulanceStore'
 import { MedicineInterface } from '../../models/ambulanceUse_system_models/medicine'
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance'
@@ -40,7 +40,7 @@ export default function AmbulanceStoreCreate() {
     }
   }
 
-  
+
   // To get A ambulance to display in comboBox
   const getAmbulance = async () => {
     let res = await GetAmbulanceWithID(id)
@@ -131,15 +131,15 @@ export default function AmbulanceStoreCreate() {
   const handleSnackbarSuccess = () => {
     setSnackBar({
       ...snackBar,
-      open:true
+      open: true
     })
   }
 
-  const handleSnackbarFailed = (errorCode : any) => {
+  const handleSnackbarFailed = (errorCode: any) => {
     setSnackBar({
       ...snackBar,
-      error:true,
-      errorMsg:errorCode
+      error: true,
+      errorMsg: errorCode
     })
   }
   return (
@@ -235,6 +235,9 @@ export default function AmbulanceStoreCreate() {
             </div>
           </Grid>
           <Grid item xs={12}>
+            <Button component={RouterLink} to={`/ambulance-store/${id}`} variant='outlined'>
+              ย้อนกลับ
+            </Button>
             <Button
               onClick={submit}
               style={{ float: "right" }}

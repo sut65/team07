@@ -1,6 +1,6 @@
 import { Box, Button, Container, FormControl, Grid, Paper, Select, TextField, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link as RouterLink} from 'react-router-dom'
 import { AmbulanceStoreInterface } from '../../models/ambulanceStoreModels/IAmbulanceStore'
 import { MedicineInterface } from '../../models/ambulanceUse_system_models/medicine'
 import { GetAmbulanceStore, UpdateAmbulanceStore } from '../../services/ambulanceStoreSystemServices/AmbulanceStoreHttpClientServices'
@@ -164,7 +164,12 @@ export default function AmbulanceStoreUpdate() {
                             {(selectMedicine?.ID === undefined) ? (ambulanceStore.Medicine?.MeasureUnit) : (selectMedicine.MeasureUnit)}
                         </div>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
+                    <Button component={RouterLink} to={`/ambulance-store/${ambulanceStore.AmbulanceID}`} variant='outlined'>
+                            ย้อนกลับ
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6}>
                         <Button
                             onClick={submit}
                             style={{ float: "right" }}
