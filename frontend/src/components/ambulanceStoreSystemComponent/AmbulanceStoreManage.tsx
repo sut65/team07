@@ -176,7 +176,15 @@ export default function AmbulanceStoreManage() {
                     <Grid item xs={12}>
                         <hr />
                     </Grid>
-                    <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+                    <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-around",  }}>
+                    <Button
+                            variant='outlined'
+                            color='secondary'
+                            component={RouterLink}
+                            to={"/ambulance-store/"}
+                        >
+                            กลับเข้าสู่หน้าเลือกรถพยาบาล
+                        </Button>
                         <Button
                             variant='contained'
                             color='primary'
