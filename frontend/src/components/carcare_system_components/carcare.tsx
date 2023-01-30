@@ -320,6 +320,25 @@ function CarCareCreate() {
                         </FormControl>
                     </Grid>
 
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <p>Recive Date</p>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    className='StyledTextField'
+                                    value={carcare.ReciveDate}
+                                    onChange={(newValue) => {
+                                        setCarcare({
+                                            ...carcare,
+                                            ReciveDate: newValue,
+                                        });
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                        </FormControl>
+                    </Grid>
+
                     {/* <Grid item xs={6}>
                         <FormControl fullWidth>
                             <p>Save Date</p>
