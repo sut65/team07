@@ -136,13 +136,14 @@ export default function EmployeeCreate() {
         // console.log(employee)
 
         let res = await PostEmployee(employee)
-        // console.log(res)
+        console.log(res)
         if(res.data){
             handleSnackBarOpen()
             setTimeout(() => {
                 navigator("/employee")
             }, 1000)
         }else{
+            console.log("Error")
             handleSnackBarError(res.error)
         }
     }
