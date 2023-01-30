@@ -18,7 +18,7 @@ type Disinfection struct {
 	gorm.Model
 	WorkTime	time.Time			`valid:"Past~Date must not be in the past"`
 	AmountDisinfectant		int		`valid:"required~The value must be in the range 1-9999, range(1|9999)~The value must be in the range 1-9999"`
-	Note	string 					//`valid:"required~Note cannot be blank"`
+	Note	string 					`valid:"required~Note cannot be blank"`
 
 	EmployeeID *uint
 	Employee Employee				`gorm:"references:id" valid:"-"`
