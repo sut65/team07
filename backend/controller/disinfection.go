@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -39,6 +40,12 @@ func CreateDisinfection(c *gin.Context) {
 		Disinfactant: 			disinfectant,			//โยง คสพ Entity Case
 		Ambulance:                 ambulance,                                   //โยง คสพ Entity Car
 		Employee:                  employee,                                    //โยง คสพ Entity Employee	
+	}
+
+	//Validate
+	if _, err := govalidator.ValidateStruct(disinfection); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	//บันทึก
