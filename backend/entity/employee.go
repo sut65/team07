@@ -33,7 +33,7 @@ type Employee struct {
 	gorm.Model
 	Name    string
 	Surname string
-	Age     int
+	Age     int `valid:"range(10|99)~Age is not in range 10 to 99"`
 	Date    time.Time
 
 	// Save User ID in FK
@@ -65,4 +65,5 @@ type Employee struct {
 	Disinfection    []Disinfection   `gorm:"foreignKey:EmployeeID"`
 	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:EmployeeID"`
 	AmbulanceUses   []AmbulanceUse   `gorm:"foreignKey:EmployeeID"`
+	CarCares        []Carcare        `gorm:"foreignKey:EmployeeID"`
 }

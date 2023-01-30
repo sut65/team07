@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -194,6 +195,14 @@ func CreateEmployee(c *gin.Context) {
 			"error": err.Error(),
 		})
 		c.Abort()
+		return
+	}
+
+	// Vakidation Value
+	if _, err := govalidator.ValidateStruct(&employee); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 

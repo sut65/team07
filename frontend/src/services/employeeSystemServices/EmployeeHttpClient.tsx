@@ -92,7 +92,7 @@ async function UpdateEmployee(emp : Partial<EmployeeInterface>){
         Name: emp.Name,
         Surname: emp.Surname,
         Age: convertType(emp.Age),
-        Date: emp.Date,
+        Date: new Date().toJSON().split("Z").at(0)+"+07:00",
         UserID:convertType(emp.UserID),
         WorkingAreaID: convertType(emp.WorkingAreaID),
         StatusID: convertType(emp.StatusID),
