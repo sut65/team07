@@ -13,47 +13,47 @@ import (
 // 	Note	string
 
 
-// func TestAllCorrectRecordTimeIN(t *testing.T) {
-// 	g := NewGomegaWithT(t)
+func TestAllCorrectRecordTimeIN(t *testing.T) {
+	g := NewGomegaWithT(t)
 
-// 	recIN := RecordTimeIn{
-// 		Note: "no", 
-// 		Odo: 100,
-// 		TimeIn: time.Now().Add(24 * time.Hour),
-// 	}
+	recIN := RecordTimeIn{
+		Note: "no", 
+		Odo: 100,
+		TimeIn: time.Now().Add(24 * time.Hour),
+	}
 
-// 	//ตรวจสอบด้วย govalidator
-// 	ok, err := govalidator.ValidateStruct(recIN)
+	//ตรวจสอบด้วย govalidator
+	ok, err := govalidator.ValidateStruct(recIN)
 
-// 	//ok ต้องไม่เป็นค่า true แปลว่าต้องจับ err ได้
-// 	g.Expect(ok).To(BeTrue())
+	//ok ต้องไม่เป็นค่า true แปลว่าต้องจับ err ได้
+	g.Expect(ok).To(BeTrue())
 
-// 	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
-// 	g.Expect(err).To(BeNil())
+	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
+	g.Expect(err).To(BeNil())
 
-// }
+}
 
-// func TestNoteNotBlank(t *testing.T) {
-// 	g := NewGomegaWithT(t)
+func TestNoteNotBlank(t *testing.T) {
+	g := NewGomegaWithT(t)
 
-// 	recIN := RecordTimeIn{
-// 		Note: "", //ผิด
-// 		Odo: 100,
-// 		TimeIn: time.Now().Add(24 * time.Hour),
-// 	}
+	recIN := RecordTimeIn{
+		Note: "", //ผิด
+		Odo: 100,
+		TimeIn: time.Now().Add(24 * time.Hour),
+	}
 
-// 	//ตรวจสอบด้วย govalidator
-// 	ok, err := govalidator.ValidateStruct(recIN)
+	//ตรวจสอบด้วย govalidator
+	ok, err := govalidator.ValidateStruct(recIN)
 
-// 	//ok ต้องไม่เป็นค่า true แปลว่าต้องจับ err ได้
-// 	g.Expect(ok).NotTo(BeTrue())
+	//ok ต้องไม่เป็นค่า true แปลว่าต้องจับ err ได้
+	g.Expect(ok).NotTo(BeTrue())
 
-// 	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
-// 	g.Expect(err).NotTo(BeNil())
+	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
+	g.Expect(err).NotTo(BeNil())
 
-// 	// err.Error ต้องมี error message แสดงออกมา
-// 	g.Expect(err.Error()).To(Equal("Note cannot be blank"))
-// }
+	// err.Error ต้องมี error message แสดงออกมา
+	g.Expect(err.Error()).To(Equal("Note cannot be blank"))
+}
 
 // func TestOdoNotZero(t *testing.T) {
 // 	g := NewGomegaWithT(t)
