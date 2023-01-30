@@ -74,6 +74,10 @@ func SetupDatabase() {
 
 		//ระบบบันทึกเวลาใช้รถขาเข้าของ พนง ขับรถ
 		&RecordTimeIn{},
+
+		// แจ้งซ่อม
+		&Carstat{},
+		&Carcare{},
 	)
 
 	db = database
