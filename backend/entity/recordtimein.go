@@ -12,7 +12,7 @@ type RecordTimeIn struct {
 	gorm.Model
 
 	TimeIn	time.Time	`valid:"Past~Date must not be in the past"`
-	Odo		int			//`valid:"required~The value must be in the range 1-99999, range(1|99999)~The value must be in the range 1-99999"`
+	Odo		int			`valid:"required~The value must be in the range 1-99999, range(1|99999)~The value must be in the range 1-99999"`
 	Note	string		`valid:"required~Note cannot be blank"`
 
 	EmployeeID *uint

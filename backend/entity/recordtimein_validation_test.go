@@ -55,34 +55,34 @@ func TestNoteNotBlank(t *testing.T) {
 	g.Expect(err.Error()).To(Equal("Note cannot be blank"))
 }
 
-// func TestOdoNotZero(t *testing.T) {
-// 	g := NewGomegaWithT(t)
+func TestOdoNotZero(t *testing.T) {
+	g := NewGomegaWithT(t)
 
-// 	fixture := []int{
-// 		0, 100000,
-// 	}
+	fixture := []int{
+		0, 100000,
+	}
 
-// 	for _, odo := range fixture {
-// 		recIN := RecordTimeIn{
-// 			Note: "ยางรั่ว", 
-// 			Odo: odo, //ผิด
-// 			TimeIn: time.Now().Add(24 * time.Hour),
-// 		}
+	for _, odo := range fixture {
+		recIN := RecordTimeIn{
+			Note: "ยางรั่ว", 
+			Odo: odo, //ผิด
+			TimeIn: time.Now().Add(24 * time.Hour),
+		}
 
-// 		//ตรวจสอบด้วย govalidator
-// 		ok, err := govalidator.ValidateStruct(recIN)
+		//ตรวจสอบด้วย govalidator
+		ok, err := govalidator.ValidateStruct(recIN)
 
-// 		//ok ต้องไม่เป็นค่า true แปลว่าต้องจับ err ได้
-// 		g.Expect(ok).ToNot(BeTrue())
+		//ok ต้องไม่เป็นค่า true แปลว่าต้องจับ err ได้
+		g.Expect(ok).ToNot(BeTrue())
 
-// 		// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
-// 		g.Expect(err).ToNot(BeNil())
+		// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
+		g.Expect(err).ToNot(BeNil())
 
-// 		// err.Error ต้องมี error message แสดงออกมา
-// 		g.Expect(err.Error()).To(Equal("The value must be in the range 1-99999"))
+		// err.Error ต้องมี error message แสดงออกมา
+		g.Expect(err.Error()).To(Equal("The value must be in the range 1-99999"))
 
-// 	}
-// }
+	}
+}
 
 func TestDateRecordTimeINNotPast(t *testing.T) {
 	g := NewGomegaWithT(t)
