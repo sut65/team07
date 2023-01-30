@@ -107,7 +107,7 @@ export default function App() {
                   />
                   <Route path="/CarDepotCreate" element={<CarDepotCreate />} />
                   <Route path="/" element={<Signin />} />
-                  
+
                   <Route path="/CarWashCreate" element={<CarWashCreate />} />
                   <Route path="/" element={<Signin />} />
                   {/* //Employee */}
@@ -191,7 +191,7 @@ export default function App() {
                   />
                   {/* <Route path="/RecordTimeInDelete" element={<RecordTimeInDelete />} /> */}
                   <Route path="/AmbulanceUse" element={<AmbulanceUse />} />
-              <Route path="/AmbulanceUse/AmbulanceUseUpdate" element={<AmbulanceUseUpdate />} />                  <Route
+                  <Route path="/AmbulanceUse/AmbulanceUseUpdate" element={<AmbulanceUseUpdate />} />                  <Route
                     path="/AmbulanceUse/AmbulanceUseCreate"
                     element={<AmblanceUseCreate />}
                   />
@@ -224,10 +224,18 @@ export default function App() {
                   <Route
                     path="/Case"
                     element={<Case />}
-                  />                  
+                  />
                   <Route
                     path="/CaseCreate"
                     element={<CaseCreate />}
+                  />
+                  <Route
+                    path="/CarCare"
+                    element={<Carcare />}
+                  />
+                  <Route
+                    path="/CarCareCreate"
+                    element={<CarCareCreate />}
                   />
                   <Route
                     path="/CarWash/CarWashCreate"

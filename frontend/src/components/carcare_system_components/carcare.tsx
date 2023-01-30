@@ -12,13 +12,14 @@ import Divider from "@mui/material/Divider";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider, MobileDateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { InputAdornment } from "@mui/material";
 import './carcare.css';
 
 
 import { CarcareInterface } from "../../models/carcare_system_models/carcare";
-import { CarStatInterface } from "../../models/carcare_system_models/carstat"; 
+import { CarStatInterface } from "../../models/carcare_system_models/carstat";
 import { VehicleInspectionInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
 
 import {
@@ -26,6 +27,8 @@ import {
     GetCarstat,
     GetVehicleInspection,
 } from '../../services/carcare_system_services/HttpClientService';
+import { buildTimeValue } from "@testing-library/user-event/dist/utils";
+
 
 
 
@@ -175,10 +178,10 @@ function CarCareCreate() {
                                 value={carcare.VehicleInspectionID + ""}
                                 onChange={handleChange}
                                 inputProps={{
-                                    name: "CarStatID",
+                                    name: "VehicleInspectionInterfaceID",
                                 }}
                             >
-                                {<option aria-label="None" >---CarStat---</option>}
+                                {<option aria-label="None" >---VehicleID---</option>}
                                 {vehicleInspections.map((item: VehicleInspectionInterface) => (
                                     <option key={item.ID} value={`${item.ID}`}>{item.ID}</option>
                                 ))}
@@ -188,20 +191,170 @@ function CarCareCreate() {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                        <p>Date Time</p>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-                                className='StyledTextField'
-                                value={carcare.SaveDate}
-                                onChange={(newValue) => {
-                                    setCarcare({
-                                        ...carcare,
-                                        SaveDate: newValue,
-                                    });
+                            <p>Status</p>
+                            <Select
+                                id="carstat"
+                                native
+                                value={carcare.VehicleInspectionID + ""}
+                                onChange={handleChange}
+                                inputProps={{
+                                    name: "CarStatID",
                                 }}
-                                renderInput={(params) => <TextField {...params} />}
+                            >
+                                {<option aria-label="None" >---CarStat---</option>}
+                                {carstats.map((item: CarStatInterface) => (
+                                    <option key={item.ID} value={`${item.ID}`}>{item.Name}</option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="filled" disabled>
+                            <p>Ambulance Brand</p>
+                            <TextField
+                                id="brand"
+                                variant="filled"
+                                onChange={handleChangeTextField}
+                                disabled
                             />
-                        </LocalizationProvider>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={3}>
+                        <FormControl fullWidth variant="filled" disabled>
+                            <p>Regitration</p>
+                            <TextField
+                                id="brand"
+                                variant="filled"
+                                onChange={handleChangeTextField}
+                                disabled
+                            />
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={3}>
+                        <FormControl fullWidth variant="filled" disabled>
+                            <p>ODO</p>
+                            <TextField
+                                id="brand"
+                                variant="filled"
+                                onChange={handleChangeTextField}
+                                disabled
+                            />
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="filled" disabled>
+                            <p>Ambulance Part Name</p>
+                            <TextField
+                                id="brand"
+                                variant="filled"
+                                onChange={handleChangeTextField}
+                                disabled
+                            />
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="filled" disabled>
+                            <p>Damage Detail</p>
+                            <TextField
+                                id="brand"
+                                variant="filled"
+                                onChange={handleChangeTextField}
+                                disabled
+                            />
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <p>Send Date</p>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    className='StyledTextField'
+                                    value={carcare.SendDate}
+                                    onChange={(newValue) => {
+                                        setCarcare({
+                                            ...carcare,
+                                            SaveDate: newValue,
+                                        });
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <p>Recive Date</p>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    className='StyledTextField'
+                                    value={carcare.ReciveDate}
+                                    onChange={(newValue) => {
+                                        setCarcare({
+                                            ...carcare,
+                                            ReciveDate: newValue,
+                                        });
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="filled" disabled>
+                            <p>Bill</p>
+                            <TextField
+                                id="bill"
+                                onChange={handleChangeTextField}
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">฿</InputAdornment>,
+                                }}
+                            />
+                        </FormControl>
+                    </Grid>
+
+                    {/* <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <p>Save Date</p>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <MobileDateTimePicker
+                                    value={carcare.SaveDate}
+                                    onChange={(newValue) => {
+                                        setCarcare({
+                                            ...carcare,
+                                            SaveDate: newValue,
+                                        });
+                                    }}
+                                    label="With error handler"
+                                    onError={console.log}
+                                    minDate={dayjs('2018-01-01T00:00')}
+                                    inputFormat="YYYY/MM/DD hh:mm a"
+                                    mask="____/__/__ __:__ _M"
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                        </FormControl>
+                    </Grid> */}
+
+                    <Grid item xs={12}>
+                        <FormControl fullWidth variant="outlined">
+                            <p>Note</p>
+                            <TextField
+                                id="note"
+                                multiline
+                                rows={3}
+                                onChange={handleChangeTextField}
+                                inputProps={{
+                                    name: "Note",
+                                }}
+                            />
                         </FormControl>
                     </Grid>
 

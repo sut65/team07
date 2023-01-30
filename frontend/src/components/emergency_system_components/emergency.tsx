@@ -204,8 +204,6 @@ function CaseCreate() {
                         </FormControl>
                     </Grid>
 
-
-
                     <Grid item xs={12}>
                         <FormControl fullWidth variant="outlined">
                             <p>Location</p>
