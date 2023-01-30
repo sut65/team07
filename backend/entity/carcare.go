@@ -16,11 +16,11 @@ type Carstat struct {
 
 type Carcare struct {
 	gorm.Model
-	SendDate  time.Time
-	ResiveDate time.Time
-	Bill      int
-	Note      string
-	SaveDate  time.Time
+	SendDate   time.Time
+	ReciveDate time.Time
+	Bill       int
+	Note       string
+	SaveDate   time.Time
 
 	// Save CarStat area ID in FK
 	CarStatID *uint

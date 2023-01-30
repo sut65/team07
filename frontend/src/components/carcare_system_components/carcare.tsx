@@ -14,18 +14,18 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import './emergency.css';
+import './carcare.css';
 
 
-import { CaseInterface } from "../../models/emergency_system_models/case";
-import { EmergencyInterface } from "../../models/emergency_system_models/emergency";
-import { GenderInterface } from "../../models/emergency_system_models/gender";
+import { CarcareInterface } from "../../models/carcare_system_models/carcare";
+import { CarStatInterface } from "../../models/carcare_system_models/carstat"; 
+import { VehicleInspectionInterface } from "../../models/vehicleinspection_system_models/vehicleinspection";
 
 import {
-    GetEmergency,
-    GetGender,
-    CreateEmercase,
-} from '../../services/emergency_system_service/HttpClientServices';
+    CreateCarecare,
+    GetCarstat,
+    GetVehicleInspection,
+} from '../../services/carcare_system_services/HttpClientService';
 
 
 
@@ -38,35 +38,36 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function CarCareCreate() {
 
-    const [emergencys, setEmergencys] = useState<EmergencyInterface[]>([]);
-    const [genders, setGenders] = useState<GenderInterface[]>([]);
-    const [emercase, setCase] = useState<CaseInterface>({
-        Location: "",
-        Patient: "",
-        Age: 0,
-        Status: "",
-        Date: new Date(),
+    const [carstats, setCarStats] = useState<CarStatInterface[]>([]);
+    const [vehicleInspections, setVehicleInspection] = useState<VehicleInspectionInterface[]>([]);
+    const [carcare, setCarcare] = useState<CarcareInterface>({
+
+        SendDate: new Date(),
+        ReciveDate: new Date(),
+        Bill: 0,
+        Note: "",
+        SaveDate: new Date(),
 
     });
 
-    const getGenders = async () => {
-        let res = await GetGender();
+    const getVehicleInspection = async () => {
+        let res = await GetVehicleInspection();
         if (res) {
-            setGenders(res);
+            setVehicleInspection(res);
         }
     };
 
-    const getEmergencys = async () => {
-        let res = await GetEmergency();
+    const getCarStats = async () => {
+        let res = await GetCarstat();
         if (res) {
-            setEmergencys(res);
+            setCarStats(res);
         }
     };
 
 
     useEffect(() => {
-        getGenders();
-        getEmergencys();
+        getVehicleInspection();
+        getCarStats();
     }, [])
 
     const [success, setSuccess] = React.useState(false);
@@ -84,17 +85,17 @@ function CarCareCreate() {
     };
 
     const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name as keyof typeof emercase;
-        setCase({
-            ...emercase,
+        const name = event.target.name as keyof typeof carcare;
+        setCarcare({
+            ...carcare,
             [name]: event.target.value,
         });
     };
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const name = event.target.name as keyof typeof emercase;
-        setCase({
-            ...emercase,
+        const name = event.target.name as keyof typeof carcare;
+        setCarcare({
+            ...carcare,
             [name]: event.target.value,
         });
     };
@@ -106,17 +107,17 @@ function CarCareCreate() {
 
     async function submit() {
         let data = {
-            GenderID: convertType(emercase.GenderID),
-            EmergencyID: convertType(emercase.EmergencyID),
-            Location: emercase.Location,
-            Patient: emercase.Patient,
-            Age: emercase.Age,
-            Status: emercase.Status,
-            Date: emercase.Date,
+            VehicleInspectionID: convertType(carcare.VehicleInspectionID),
+            CarStatID: convertType(carcare.CarStatID),
+            SendDate: carcare.SendDate,
+            ReciveDate: carcare.ReciveDate,
+            Bill: carcare.Bill,
+            Note: carcare.Note,
+            Savedate: carcare.SaveDate,
         }
         console.log(data)
 
-        let res = await CreateEmercase(data);
+        let res = await CreateCarecare(data);
         if (res) {
             setSuccess(true);
         } else {
@@ -158,7 +159,7 @@ function CarCareCreate() {
                             color="secondary"
                             gutterBottom
                         >
-                            Emergency
+                            CarStat
                         </Typography>
                     </Box>
                 </Box>
@@ -167,19 +168,19 @@ function CarCareCreate() {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                            <p>Emergency Type</p>
+                            <p>Ambulance ID</p>
                             <Select
-                                id="emergency"
+                                id="vehicleInspections"
                                 native
-                                value={emercase.GenderID + ""}
+                                value={carcare.VehicleInspectionID + ""}
                                 onChange={handleChange}
                                 inputProps={{
-                                    name: "EmergencyID",
+                                    name: "CarStatID",
                                 }}
                             >
-                                {<option aria-label="None" >---Emergency---</option>}
-                                {emergencys.map((item: EmergencyInterface) => (
-                                    <option key={item.ID} value={`${item.ID}`}>{item.Name}</option>
+                                {<option aria-label="None" >---CarStat---</option>}
+                                {vehicleInspections.map((item: VehicleInspectionInterface) => (
+                                    <option key={item.ID} value={`${item.ID}`}>{item.ID}</option>
                                 ))}
                             </Select>
                         </FormControl>
@@ -191,11 +192,11 @@ function CarCareCreate() {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 className='StyledTextField'
-                                value={emercase.Date}
+                                value={carcare.SaveDate}
                                 onChange={(newValue) => {
-                                    setCase({
-                                        ...emercase,
-                                        Date: newValue,
+                                    setCarcare({
+                                        ...carcare,
+                                        SaveDate: newValue,
                                     });
                                 }}
                                 renderInput={(params) => <TextField {...params} />}
@@ -204,86 +205,10 @@ function CarCareCreate() {
                         </FormControl>
                     </Grid>
 
-
-
-                    <Grid item xs={12}>
-                        <FormControl fullWidth variant="outlined">
-                            <p>Location</p>
-                            <TextField
-                                id="location"
-                                multiline
-                                rows={4}
-                                onChange={handleChangeTextField}
-                                inputProps={{
-                                    name: "Location",
-                                }}
-                            />
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <p>Patient</p>
-                            <TextField
-                                id="patient"
-                                variant="outlined"
-                                onChange={handleChangeTextField}
-                            />
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={3}>
-                        <FormControl fullWidth>
-                            <p>Gender</p>
-                            <Select
-                                id="gender"
-                                native
-                                value={emercase.GenderID + ""}
-                                onChange={handleChange}
-                                inputProps={{
-                                    name: "GenderID",
-                                }}
-                            >
-                                {<option aria-label="None" >---Gender---</option>}
-                                {genders.map((item: GenderInterface) => (
-                                    <option key={item.ID} value={`${item.ID}`}>{item.Name}</option>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={3}>
-                        <FormControl fullWidth variant="outlined">
-                            <p>Age</p>
-                            <TextField
-                                name="Age"
-                                type="number"
-                                value={emercase.Age}
-                                onChange={handleChangeTextField}
-                                required
-                            />
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <FormControl fullWidth variant="outlined">
-                            <p>Patient Status</p>
-                            <TextField
-                                id="status"
-                                multiline
-                                rows={4}
-                                onChange={handleChangeTextField}
-                                inputProps={{
-                                    name: "status",
-                                }}
-                            />
-                        </FormControl>
-                    </Grid>
-
                     <Grid item xs={12}>
                         <Button
                             component={RouterLink}
-                            to="/Case"
+                            to="/Carcare"
                             variant="contained"
                             color="secondary"
                         >

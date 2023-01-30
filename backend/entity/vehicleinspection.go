@@ -5,7 +5,6 @@ import (
 
 	"gorm.io/gorm"
 )
-
 type VehicleInspection struct {
 	gorm.Model
 

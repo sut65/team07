@@ -43,7 +43,7 @@ func CreateCarcare(c *gin.Context) {
 	// 11: สร้าง carcare
 	st := entity.Carcare{
 		SaveDate:          carcare.SaveDate,
-		ResiveDate:        carcare.ResiveDate,
+		ReciveDate:        carcare.ReciveDate,
 		Bill:              carcare.Bill,
 		Note:              carcare.Note,
 		CarStat:           carstat,
@@ -129,13 +129,12 @@ func UpdateCarcare(c *gin.Context) {
 	}
 
 	UpdateCarcare := entity.Carcare{
-		CarStat: carstat,
-		SendDate: carcare.SendDate,
-		ResiveDate: carcare.ResiveDate,
-		Bill: carcare.Bill,
-		Note: carcare.Note,
-		SaveDate: carcare.SaveDate,
-
+		CarStat:    carstat,
+		SendDate:   carcare.SendDate,
+		ReciveDate: carcare.ReciveDate,
+		Bill:       carcare.Bill,
+		Note:       carcare.Note,
+		SaveDate:   carcare.SaveDate,
 	}
 
 	if err := entity.DB().Where("id = ?", carcare.ID).Updates(&UpdateCarcare).Error; err != nil {

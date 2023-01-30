@@ -33,6 +33,7 @@ import LocalCarWashIcon from '@mui/icons-material/LocalCarWash';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DirectionsCarTwoToneIcon from '@mui/icons-material/DirectionsCarTwoTone';
+import CarRepairIcon from '@mui/icons-material/CarRepair';
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -133,6 +134,12 @@ function Navbar() {
       name: "การล้างรถพยาบาล",
       icon: <LocalCarWashIcon />,
       path: "/carWash",
+    },
+
+    {
+      name: "รายการเเจ้งซ่อม",
+      icon: <CarRepairIcon />,
+      path: "/Carcare",
     },
   ];
 
