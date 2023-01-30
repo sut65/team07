@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -47,6 +48,12 @@ func CreateRecordTimeIn(c *gin.Context) {
 		Odo:           recordtimein.Odo,    // ตั้งค่าฟิลด์ odo meter
 		TimeIn:        recordtimein.TimeIn, // ตั้งค่าฟิลด์ Date
 		Note:          recordtimein.Note,   // ตั้งค่าฟิลด์ note
+	}
+
+	//Validate
+	if _, err := govalidator.ValidateStruct(recordtimein); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	// 12: บันทึก
