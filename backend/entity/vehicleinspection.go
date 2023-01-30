@@ -25,7 +25,7 @@ type VehicleInspection struct {
 	AmbulancePartID *uint
 	AmbulancePart   AmbulancePart
 
-	Carcare []Carcare `gorm:"foreignKey:VehicleInspection"`
+	Carcare []Carcare `gorm:"foreignKey:VehicleInspectionID"`
 }
 
 type AmbulancePart struct {

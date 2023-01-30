@@ -7,7 +7,7 @@ import { TypeAblsInterface } from '../../models/ambulance_system_models/typeAbl'
 import { ListTypeAbls, CreatAmbulances, ListCompanies } from '../../services/ambulance_system_services/HttpClientService';
 import { DisinfectionInterface } from '../../models/disinfection_system_models/disinfection';
 import { Link as RouterLink } from "react-router-dom";
-import { HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
+import { CreatDisinfection, HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
 
 import { setDate } from 'date-fns';
 import { CompaniesInterface } from '../../models/ambulance_system_models/company';
@@ -57,15 +57,15 @@ function DisinfectionCreate() {
           console.log(err);
         }
       };
-      const getEmployee = async () => {
-        try {
-          let res = await HttpClientServices.get("/employees");
-          setEmployee(res.data);
-          console.log(res.data);
-        } catch (err) {
-          console.log(err);
-        }
-      };
+    //   const getEmployee = async () => {
+    //     try {
+    //       let res = await HttpClientServices.get("/employees");
+    //       setEmployee(res.data);
+    //       console.log(res.data);
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //   };
 
     const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -97,7 +97,7 @@ function DisinfectionCreate() {
 
     useEffect(() => {
         getAmbulance();
-        getEmployee();
+        // getEmployee();
         getDisinfectant();
       }, []);
 
@@ -112,14 +112,20 @@ function DisinfectionCreate() {
         };
         console.log(data)
 
-        try {
-            let res = await HttpClientServices.post("/disinfection", data);
-            setSuccess(true);
-            console.log(res.data);
-        } catch (err) {
-            setError(false);
-            console.log(JSON.stringify(err));
-        }
+        // try {
+        //     let res = await HttpClientServices.post("/disinfection", data);
+        //     setSuccess(true);
+        //     console.log(res.data);
+        // } catch (err) {
+        //     setError(false);
+        //     console.log(JSON.stringify(err));
+        // }
+        let res = await CreatDisinfection(data);
+            if (res) {
+                setSuccess(true);
+            } else {
+                setError(true);
+            }
     }
 
     return (
