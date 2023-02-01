@@ -12,7 +12,7 @@ type RecordTimeOUT struct {
 
 	Annotation            string    `valid:"required~Annotation cannot be blank"`
 	OdoMeter              uint      `valid:"required~OdoMeter: non zero value required, range(1|99999)~OdoMeter: non zero value required"`
-	RecordTimeOutDatetime time.Time `valid:"NotPast~Recordtimeoutdatetime must be in the not past"`
+	RecordTimeOutDatetime time.Time `valid:"NotPast~Day must be in the not past"`
 	//`valid:"notpast~RecordTimeOutDatetime must be in the not past`
 
 	EmployeeID *uint
