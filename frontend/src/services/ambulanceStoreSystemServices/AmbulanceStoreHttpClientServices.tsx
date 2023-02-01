@@ -71,7 +71,7 @@ async function UpdateAmbulanceStore(ambStore : Partial<AmbulanceStoreInterface>)
         MedicineID:convertType(ambStore.MedicineID),
         AmbulanceID: convertType(ambStore.AmbulanceID),
         EmployeeID: convertType(localStorage.getItem("id") as string),
-        Date: new Date().toJSON().split("Z").at(0) + "+07:00",
+        Date: new Date(),
     }
 
     const reqOpt = {
