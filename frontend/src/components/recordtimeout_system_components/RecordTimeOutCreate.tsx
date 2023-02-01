@@ -240,9 +240,9 @@ function RecordTimeOutCreate() {
         setSuccess(true);
         console.log(res);
         setMessage("บันทึกข้อมูลสำเร็จ");
-        setTimeout(() => {
-          window.location.href = "/RecordTimeOutHistory";
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.href = "/RecordTimeOutHistory";
+        // }, 800);
       } else {
         setError(true);
         setMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
@@ -467,7 +467,7 @@ function RecordTimeOutCreate() {
       </Paper>
       <Snackbar
         open={success}
-        autoHideDuration={3000}
+        // autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
@@ -477,7 +477,7 @@ function RecordTimeOutCreate() {
       </Snackbar>
       <Snackbar
         open={error}
-        autoHideDuration={3000}
+        // autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
