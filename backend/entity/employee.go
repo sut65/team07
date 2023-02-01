@@ -3,6 +3,7 @@ package entity
 import (
 	"time"
 
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
@@ -31,10 +32,10 @@ type Status struct {
 
 type Employee struct {
 	gorm.Model
-	Name    string
-	Surname string
-	Age     int `valid:"range(10|99)~Age is not in range 10 to 99"`
-	Date    time.Time
+	Name    string    `valid:"required~Name is not null"`
+	Surname string    `valid:"required~Surname is not null"`
+	Age     int       `valid:"range(10|99)~Age is not in range 10 to 99"`
+	Date    time.Time `valid:"DateEmployeeNotPast~Date must not be in the past,DateEmployeeNotFuture~Date must not be in the future"`
 
 	// Save User ID in FK
 	UserID *uint `gorm:"uniqueIndex"` //Set 1-1 relational database
@@ -66,4 +67,20 @@ type Employee struct {
 	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:EmployeeID"`
 	AmbulanceUses   []AmbulanceUse   `gorm:"foreignKey:EmployeeID"`
 	CarCares        []Carcare        `gorm:"foreignKey:EmployeeID"`
+}
+
+// ฟังก์ชันที่จะใช่ในการ validation EntryTime
+func init() {
+	govalidator.CustomTypeTagMap.Set("DateEmployeeNotPast", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		now := time.Now().Add(time.Minute * -20)
+		return t.After(now) || t.Equal(now)
+		//return t.Before(time.Now())
+	})
+
+	govalidator.CustomTypeTagMap.Set("DateEmployeeNotFuture", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		now := time.Now().Add(time.Minute * 20)
+		return t.Before(now) || t.Equal(now)
+	})
 }

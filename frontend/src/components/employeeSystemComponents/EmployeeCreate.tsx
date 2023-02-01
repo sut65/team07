@@ -141,7 +141,7 @@ export default function EmployeeCreate() {
             handleSnackBarOpen()
             setTimeout(() => {
                 navigator("/employee")
-            }, 1000)
+            }, 10000)
         }else{
             console.log("Error")
             handleSnackBarError(res.error)
@@ -187,14 +187,14 @@ export default function EmployeeCreate() {
     return (
         <Container maxWidth="lg">
             {/* Snackbar success Part */}
-            <Snackbar open={snackBar.open} autoHideDuration={3000} onClose={handleSnackBarClose}>
+            <Snackbar open={snackBar.open} autoHideDuration={10000} onClose={handleSnackBarClose}>
                 <Alert onClose={handleSnackBarClose} severity="success">
                     บันทึกสำเร็จ
                 </Alert>
             </Snackbar>
 
             {/* Snackbar Error part */}
-            <Snackbar open={snackBar.error} autoHideDuration={3000} onClose={handleSnackBarClose}>
+            <Snackbar open={snackBar.error} autoHideDuration={10000} onClose={handleSnackBarClose}>
                 <Alert onClose={handleSnackBarClose} severity="error">
                     ไม่สามารถบันทึกได้ : {snackBar.errorMsg}
                 </Alert>

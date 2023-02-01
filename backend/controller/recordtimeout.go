@@ -43,7 +43,8 @@ func CreateRecordTimeOut(c *gin.Context) {
 		RecordTimeOutDatetime: recordtimeout.RecordTimeOutDatetime, // field DateTime
 	}
 	if _, err := govalidator.ValidateStruct(rec); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	//บันทึก
 	if err := entity.DB().Create(&rec).Error; err != nil {
