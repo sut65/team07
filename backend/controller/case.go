@@ -46,9 +46,9 @@ func CreateEmercase(c *gin.Context) {
 		Patient:   emercase.Patient,
 		Age:       emercase.Age,
 		Status:    emercase.Status,
-		Emergency: emergency, 
-		Gender:    gender,    
-		Employee:  employee,  
+		Emergency: emergency,
+		Gender:    gender,
+		Employee:  employee,
 		Datetime:  emercase.Datetime,
 	}
 
@@ -150,11 +150,10 @@ func UpdateEmercase(c *gin.Context) {
 	})
 }
 
-
 // GET /emergencys
 func GetEmergency(c *gin.Context) {
 	var emergencys []entity.Emergency
-	if err := entity.DB().Raw("SELECT * FROM emergencys").Scan(&emergencys).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM emergencies").Scan(&emergencys).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -172,4 +171,3 @@ func GetGender(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": genders})
 }
-

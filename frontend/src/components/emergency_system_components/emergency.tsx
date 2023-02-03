@@ -85,6 +85,7 @@ function CaseCreate() {
 
     const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof emercase;
+        console.log(name)
         setCase({
             ...emercase,
             [name]: event.target.value,
@@ -171,7 +172,7 @@ function CaseCreate() {
                             <Select
                                 id="emergency"
                                 native
-                                value={emercase.GenderID + ""}
+                                value={emercase.EmergencyID + ""}
                                 onChange={handleChange}
                                 inputProps={{
                                     name: "EmergencyID",
