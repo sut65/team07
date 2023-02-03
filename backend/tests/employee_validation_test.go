@@ -9,7 +9,7 @@ import (
 	"github.com/sut65/team07/entity"
 )
 
-func TestAgeIsNotNegtive(t *testing.T) {
+func TestEmployeeAgeIsNotNegtive(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	ages := []int{
@@ -39,7 +39,7 @@ func TestAgeIsNotNegtive(t *testing.T) {
 
 }
 
-func TestDateNotBePast(t *testing.T) {
+func TestEmployeeDateNotBePast(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	emp := entity.Employee{
@@ -58,7 +58,7 @@ func TestDateNotBePast(t *testing.T) {
 	g.Expect(err.Error()).To(Equal("Date must not be in the past"))
 }
 
-func TestDateNotBeFuture(t *testing.T) {
+func TestEmployeeDateNotBeFuture(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	emp := entity.Employee{
@@ -77,7 +77,7 @@ func TestDateNotBeFuture(t *testing.T) {
 	g.Expect(err.Error()).To(Equal("Date must not be in the future"))
 }
 
-func TestNameNotBeNull(t *testing.T) {
+func TestEmployeeNameNotBeNull(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	emp := entity.Employee{
@@ -96,7 +96,7 @@ func TestNameNotBeNull(t *testing.T) {
 	g.Expect(err.Error()).To(Equal("Name is not null"))
 }
 
-func TestSurnameNotBeNull(t *testing.T) {
+func TestEmployeeSurnameNotBeNull(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	emp := entity.Employee{
