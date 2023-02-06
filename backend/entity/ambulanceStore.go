@@ -21,8 +21,8 @@ type Medicine struct {
 
 type AmbulanceStore struct {
 	gorm.Model
-	Amount int `valid:"AmbulanceStoreAmountNoNegitive~Amount is not less equal than 0"`
-	Date   time.Time
+	Amount int       `valid:"AmbulanceStoreAmountNoNegitive~Amount is not less equal than 0"`
+	Date   time.Time `valid:"AmbulanceStoreDateNotPast~Date must not be in the past, AmbulanceStoreDateNotFuture~Date must not be in the future"`
 
 	// For store ForeignKey
 	MedicineID *uint
@@ -44,5 +44,17 @@ func init() {
 	govalidator.CustomTypeTagMap.Set("AmbulanceStoreAmountNoNegitive", func(i interface{}, context interface{}) bool {
 		amount := i.(int)
 		return amount >= 0
+	})
+
+	govalidator.CustomTypeTagMap.Set("AmbulanceStoreDateNotPast", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		now := time.Now().Add(time.Minute * -10)
+		return t.After(now) || t.Equal(now)
+	})
+
+	govalidator.CustomTypeTagMap.Set("AmbulanceStoreDateNotFuture", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		now := time.Now().Add(time.Minute * 10)
+		return t.Before(now) || t.Equal(now)
 	})
 }
