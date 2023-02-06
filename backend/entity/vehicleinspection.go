@@ -5,6 +5,7 @@ import (
 
 	"gorm.io/gorm"
 )
+
 type VehicleInspection struct {
 	gorm.Model
 
@@ -13,10 +14,10 @@ type VehicleInspection struct {
 	VehicleInspectionDatetime time.Time `valid:"NotPast~Day must be in the not past"`
 
 	EmployeeID *uint
-	Employee   Employee
+	Employee   Employee `gorm:"references:id" valid:"-"`
 
 	AmbulanceID *uint
-	Ambulance   Ambulance
+	Ambulance   Ambulance `gorm:"references:id" valid:"-"`
 
 	StatusCheckID *uint
 	StatusCheck   StatusCheck

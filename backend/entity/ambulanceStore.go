@@ -3,6 +3,7 @@ package entity
 import (
 	"time"
 
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
@@ -20,21 +21,28 @@ type Medicine struct {
 
 type AmbulanceStore struct {
 	gorm.Model
-	Amount int
+	Amount int `valid:"AmbulanceStoreAmountNoNegitive~Amount is not less equal than 0"`
 	Date   time.Time
 
 	// For store ForeignKey
 	MedicineID *uint
 	// For easy to use
-	Medicine Medicine
+	Medicine Medicine `gorm:"references:id" valid:"-"`
 
 	// For store ForeignKey
 	AmbulanceID *uint
 	// For easy to use
-	Ambulance Ambulance
+	Ambulance Ambulance `gorm:"references:id" valid:"-"`
 
 	// For store ForeignKey
 	EmployeeID *uint
 	// For easy to use
-	Employee Employee
+	Employee Employee `gorm:"references:id" valid:"-"`
+}
+
+func init() {
+	govalidator.CustomTypeTagMap.Set("AmbulanceStoreAmountNoNegitive", func(i interface{}, context interface{}) bool {
+		amount := i.(int)
+		return amount >= 0
+	})
 }

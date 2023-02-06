@@ -16,13 +16,13 @@ type RecordTimeOUT struct {
 	//`valid:"notpast~RecordTimeOutDatetime must be in the not past`
 
 	EmployeeID *uint
-	Employee   Employee
+	Employee   Employee `gorm:"references:id" valid:"-"`
 
 	AmbulanceID *uint
-	Ambulance   Ambulance
+	Ambulance   Ambulance `gorm:"references:id" valid:"-"`
 
 	CaseID *uint
-	Case   Case
+	Case   Case `gorm:"references:id" valid:"-"`
 
 	RecordTimeIn []RecordTimeIn `gorm:"foreignKey:RecordTimeOUTID"`
 }
