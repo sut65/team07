@@ -5,15 +5,42 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import moment from "moment";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Slide } from "@mui/material";
+import { TransitionProps } from "@mui/material/transitions";
 
-import { GetEmercaseBySID } from "../../services/emergency_system_service/HttpClientServices";
-import { CaseInterface } from "../recordtimeout_system_components/RecordTimeOutCreate";
+import { CaseInterface } from "../../models/emergency_system_models/case";
+import { GetEmercaseAll } from "../../services/emergency_system_service/HttpClientServices";
+import { convertType } from "../../services/utility";
+
+import { DeleteCaseByID } from "../../services/emergency_system_service/HttpClientServices"; 
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+      children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function Case() {
+
+  const getDeletegetCaseByID = async () => {
+    let c_id = convertType(localStorage.getItem("c_id"))
+    let res = await DeleteCaseByID(c_id);
+    if (res) {
+        console.log(res.data);
+    } else {
+        console.log(res.data);
+    }
+    getCaseByID();
+};
   const [cases, setCases] = useState<CaseInterface[]>([]);
 
-  const getCaseBySiD = async () => {
-    let res = await GetEmercaseBySID();
+  const getCaseByID = async () => {
+    let res = await GetEmercaseAll();
+    console.log(res)
     if (res) {
       setCases(res);
     }
@@ -21,7 +48,7 @@ function Case() {
 
   useEffect(() => {
 
-    getCaseBySiD();
+    getCaseByID();
 
   }, []);
 
@@ -45,7 +72,7 @@ function Case() {
       field: "Location",
       headerName: "สถานที่เหตุ",
       width: 350,
-      valueFormatter: (params) => params.value.Name,
+      valueFormatter: (params) => params.value.Location,
       headerAlign: "center",
     },
 
@@ -53,7 +80,7 @@ function Case() {
       field: "Patient",
       headerName: "ชื่อผู้ประสบเหตุ",
       width: 250,
-      valueFormatter: (params) => params.value.ReasonInfo,
+      valueFormatter: (params) => params.value.Patient,
       headerAlign: "center",
     },
 
@@ -61,7 +88,7 @@ function Case() {
       field: "Age",
       headerName: "อายุ",
       width: 50,
-      valueFormatter: (params) => params.value.ReasonInfo,
+      valueFormatter: (params) => params.value.Age,
       headerAlign: "center",
     },
 
@@ -69,7 +96,7 @@ function Case() {
       field: "Gender",
       headerName: "เพศ",
       width: 60,
-      valueFormatter: (params) => params.value.ReasonInfo,
+      valueFormatter: (params) => params.value.Name,
       headerAlign: "center",
     },
 
@@ -77,16 +104,15 @@ function Case() {
       field: "Status",
       headerName: "อาการโดยรวม",
       width: 250,
-      valueFormatter: (params) => params.value.ReasonInfo,
+      valueFormatter: (params) => params.value.Status,
       headerAlign: "center",
     },
 
     {
-      field: "Scholarship",
-      headerName: "ผู้รับเเจ้ง",
-      width: 150,
-      valueFormatter: (params) => params.value.ScholarName,
-      headerAlign: "center",
+      field: "Date",
+      headerName: "วันที่เกิดเหตุ",
+      width: 240, headerAlign: "center",
+      align: "center", valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A")
     },
 
     {
@@ -112,20 +138,16 @@ function Case() {
     },
 
     {
-      field: "Delete",
-      headerName: "Delete",
-      sortable: true,
-      width: 100,
-      align: "center",
-      headerAlign: "center",
+      field: "Delete", headerName: "", width: 100, align: "center", headerAlign: "center",
       renderCell: ({ row }: Partial<GridRowParams>) =>
-        <Button component={RouterLink}
-          to="/Ambulance/AmbulanceUpdate"
+        <Button
           size="small"
           variant="contained"
           color="error"
           onClick={() => {
-            localStorage.setItem("aid", row.ID);
+            localStorage.setItem("c_id", row.ID);
+            handleClickOpen();
+
           }}
           sx={{ borderRadius: 20, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
         >
@@ -133,6 +155,27 @@ function Case() {
         </Button>,
     },
   ];
+
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+      setOpen(true);
+  };
+
+  const handleClose = () => {
+      setOpen(false);
+  };
+
+  const handleDelete = () => {
+      getDeletegetCaseByID();
+      setOpen(false);
+
+  }
+
+  useEffect(() => {
+
+      getCaseByID();
+
+  }, []);
 
   return (
     <div>
@@ -184,9 +227,28 @@ function Case() {
             sx={{ mt: 2, backgroundColor: '#fff' }}
           />
         </div>
+
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{`คุณต้องการลบข้อมูลรถพยาบาล เลขทะเบียน ${localStorage.getItem("clp")}  ใช่ไหม?`}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              หากคุณลบข้อมูลนี้แล้วนั้น คุณจะไม่สามารถกู้คืนได้อีก
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button color="error" sx={{ borderRadius: 20, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }} onClick={handleClose}>ยกเลิก</Button>
+            <Button sx={{ borderRadius: 20, '&:hover': { color: '#065D95', backgroundColor: '#e3f2fd' } }} onClick={handleDelete}>ยืนยัน</Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </div>
   );
 }
 
 export default Case;
+

@@ -6,14 +6,14 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
-import { GetEmercaseBySID } from "../../services/emergency_system_service/HttpClientServices";
+import { GetEmercaseAll } from "../../services/emergency_system_service/HttpClientServices";
 import { CaseInterface } from "../recordtimeout_system_components/RecordTimeOutCreate";
 
 function Carcare() {
   const [cases, setCases] = useState<CaseInterface[]>([]);
 
-  const getCaseBySiD = async () => {
-    let res = await GetEmercaseBySID();
+  const getCaseByiD = async () => {
+    let res = await GetEmercaseAll();
     if (res) {
       setCases(res);
     }
@@ -21,7 +21,7 @@ function Carcare() {
 
   useEffect(() => {
 
-    getCaseBySiD();
+    getCaseByiD();
 
   }, []);
 
