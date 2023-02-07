@@ -26,6 +26,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function AmbulanceCreate() {
 
+    const [message, setAlertMessage] = React.useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -90,13 +91,18 @@ function AmbulanceCreate() {
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
         };
+        console.log(data.Date)
+        
         let res = await CreatAmbulances(data);
-        if (res) {
+        console.log(res)
+        if (res.data) {
+            setAlertMessage("บันทึกข้อมูลสำเร็จ");
             setSuccess(true);
             setTimeout(() => {
                 navigator("/Ambulance")
-            }, 1200)
+            }, 5000)
         } else {
+            setAlertMessage(res.error);
             setError(true);
         }
     }
@@ -114,7 +120,7 @@ function AmbulanceCreate() {
         <div>
             <Snackbar 
                 open={success} 
-                autoHideDuration={2000} 
+                autoHideDuration={5000} 
                 onClose={handleClose} 
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{mt:10}}
@@ -124,13 +130,13 @@ function AmbulanceCreate() {
                     severity="success" 
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    บันทึกข้อมูลสำเร็จ
+                    {message}
                 </Alert>
             </Snackbar>
 
             <Snackbar 
                 open={error} 
-                autoHideDuration={2000} 
+                autoHideDuration={5000} 
                 onClose={handleClose} 
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{mt:10}}
@@ -140,7 +146,7 @@ function AmbulanceCreate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3}}
                 >
-                    บันทึกข้อมูลไม่สำเร็จ
+                    {message}
                 </Alert>
             </Snackbar>
 
