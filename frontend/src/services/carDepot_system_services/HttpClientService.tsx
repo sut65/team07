@@ -15,17 +15,18 @@ async function CreatCarDepots(data:any) {
     let res = await fetch(`${apiUrl}/carDepot`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            console.log(res)
-            if (res) {
-                
+            if (res.data) {
                 return res;
             } else {
-                return false;
-            }
+                return res.error;
+                ;
+                } ;
+            
         });
 
     return res;
 }
+
 
 async function GetCarDepotByID() {
     let cid = localStorage.getItem("cid");

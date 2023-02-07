@@ -25,7 +25,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 
 function CarDepotCreate() {
-
+    const [Alertmsg, setAlertmsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -94,13 +94,17 @@ function CarDepotCreate() {
             Date: carDepot.Date,
 
         };
-        console.log(data)
         let res = await CreatCarDepots(data);
+        console.log(res)
         if (res.data) {
+            setAlertmsg("บันทึกสำเร็จ");
             setSuccess(true);
+            setError(false)
         } else {
+            setAlertmsg("บันทึกไม่สำเร็จ"+res);
             console.log(res)
             setError(true);
+            
         }
     }
 
@@ -116,7 +120,7 @@ function CarDepotCreate() {
         <div>
             <Snackbar 
                 open={success} 
-                autoHideDuration={2000} 
+                autoHideDuration={10000} 
                 onClose={handleClose} 
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{mt:10}}
@@ -126,13 +130,13 @@ function CarDepotCreate() {
                     severity="success" 
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    บันทึกข้อมูลสำเร็จ
+                    {Alertmsg}
                 </Alert>
             </Snackbar>
 
             <Snackbar 
                 open={error} 
-                autoHideDuration={2000} 
+                autoHideDuration={10000} 
                 onClose={handleClose} 
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{mt:10}}
@@ -142,7 +146,7 @@ function CarDepotCreate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3}}
                 >
-                    บันทึกข้อมูลไม่สำเร็จ
+                    {Alertmsg}
                 </Alert>
             </Snackbar>
 
