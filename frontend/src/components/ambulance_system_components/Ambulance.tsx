@@ -52,7 +52,7 @@ function Ambulance() {
         { field: "CarBrand", headerName: "ยี่ห้อรถ", width: 130, headerAlign: "center", align: "center" },
         { field: "TypeAbl", headerName: "ประเภทรถ", width: 270, headerAlign: "center", align: "center", valueFormatter: (params) => params.value.Name, },
         { field: "Company", headerName: "ซื้อที่บริษัท", width: 150, headerAlign: "center", align: "center", valueFormatter: (params) => params.value.Name, },
-        { field: "Date", headerName: "วันที่ซื้อ", width: 240, headerAlign: "center", align: "center", valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY") },
+        { field: "Date", headerName: "วันที่ซื้อ", width: 240, headerAlign: "center", align: "center", valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A") },
         {
             field: "Edit",
             headerName: "",
