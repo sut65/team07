@@ -163,17 +163,17 @@ func main() {
 	r.GET("/disinfactants", controller.ListDisinfectants)
 
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
-	r.GET("/Emercases", controller.CreateEmercase)
-	r.GET("/Emercase/:id", controller.GetEmercase)
-	r.POST("/Emercase", controller.CreateEmercase)
-	r.DELETE("/Emercase/:id", controller.DeleteEmercase)
-	r.PATCH("/Emercase", controller.UpdateEmercase)
+	r.GET("/emercases", controller.ListEmercase)
+	r.GET("/emercase/:id", controller.GetEmercase)
+	r.POST("/emercase", controller.CreateEmercase)
+	r.DELETE("/emercase/:id", controller.DeleteEmercase)
+	r.PATCH("/emercases", controller.UpdateEmercase)
 
-	r.GET("/emergencys", controller.GetEmergency)
+	r.GET("/emergencies", controller.GetEmergency)
 
 	r.GET("/genders", controller.GetGender)
-
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
+	
 
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
 
