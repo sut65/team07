@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -19,6 +20,12 @@ func CreateAmbulanceUse(c *gin.Context) {
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 7 bind เข้าตัวแปร ambulanceUse
 	if err := c.ShouldBindJSON(&ambulanceUse); err != nil {
 
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(ambulanceUse); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -139,6 +146,14 @@ func UpdateAmbulanceUse(c *gin.Context) {
 		})
 		c.Abort()
 		return
+	}
+
+	if _, err := govalidator.ValidateStruct(ambulanceUse); err != nil {
+
+		if err.Error() != "วันที่ไม่ควรเป็นอดีต" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
 	// Check abl is haved ?

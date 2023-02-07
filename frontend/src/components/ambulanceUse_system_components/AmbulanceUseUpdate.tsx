@@ -24,6 +24,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function AmbulanceUseUpdate() {
 
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -136,13 +137,13 @@ function AmbulanceUseUpdate() {
 
         let res = await UpdateAmbulanceUse(data);
         if (res.data) {
-            // console.log(res.data)
+            setAlertMessage("อัพเดตข้อมูลสำเร็จ")
             setSuccess(true);
             setTimeout(() => {
                 navigator("/AmbulanceUse")
             }, 1200)
         } else {
-            // console.log(res.error)
+            setAlertMessage(res.error)
             setError(true);
         }
     }
@@ -172,7 +173,7 @@ function AmbulanceUseUpdate() {
                     severity="success"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลสำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
 
@@ -188,7 +189,7 @@ function AmbulanceUseUpdate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลไม่สำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Container

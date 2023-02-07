@@ -147,6 +147,15 @@ func UpdateAmbulance(c *gin.Context) {
 		return
 	}
 
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(ambulance); err != nil {
+
+		if err.Error() != "วันที่ไม่ควรเป็นอดีต" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
 	// Check abl is haved ?
 	if tx := entity.DB().Where("id = ?", ambulance.ID).First(&ambulanceold); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Ambulance id = %d not found", ambulance.ID)})
