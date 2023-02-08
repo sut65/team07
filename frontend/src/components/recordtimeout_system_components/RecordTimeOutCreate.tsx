@@ -78,7 +78,9 @@ function RecordTimeOutCreate() {
     if (event.target.name === "CaseID") {
       cases.forEach((val: any) => {
         if (val.ID === Number(event.target.value)) {
-          setDetailCase(`ไอดีเคส: ${val.ID} สถานที่เกิดเหตุ: ${val.Location}`);
+          setDetailCase(
+            `สถานที่เกิดเหตุ: ${val.Location} ผู้ป่วย: ${val.Patient} อาการ: ${val.Status}`
+          );
         }
       });
       if (event.target.value === "") {
@@ -100,9 +102,7 @@ function RecordTimeOutCreate() {
     if (event.target.name === "AmbulanceID") {
       const a = abl.filter((v) => v.ID === Number(event.target.value))[0];
       if (a) {
-        setDetailAbl(
-          `ไอดีรถ: ${a.ID} ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`
-        );
+        setDetailAbl(`ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`);
       } else {
         setDetailAbl("รายละเอียด");
       }
@@ -174,10 +174,10 @@ function RecordTimeOutCreate() {
       setTypeAbl(res.results.Ambulance?.TypeAblID);
       getAmbulance(res.results?.Ambulance?.TypeAblID);
       setDetailCase(
-        `ไอดีเคส: ${res.results.CaseID} สถานที่เกิดเหตุ: ${res.results.Case.Location}`
+        `สถานที่เกิดเหตุ: ${res.results.Case.Location}  ผู้ป่วย: ${res.results.Case.Patient} อาการ: ${res.results.Case.Status}`
       );
       setDetailAbl(
-        `ไอดีรถ: ${res.results.AmbulanceID} ยี่ห้อรถ: ${res.results.Ambulance.CarBrand} เลขทะเบียนรถ: ${res.results.Ambulance.Clp}`
+        `ยี่ห้อรถ: ${res.results.Ambulance.CarBrand} เลขทะเบียนรถ: ${res.results.Ambulance.Clp}`
       );
       // console.log(res);
     } else {
