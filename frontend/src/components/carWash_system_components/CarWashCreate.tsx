@@ -25,7 +25,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 
 function CarWashCreate() {
-
+    const [Alertmsg, setAlertmsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -100,11 +100,14 @@ function CarWashCreate() {
             Date: carWash.Date,
 
         };
-        console.log(data)
         let res = await CreatCarWashs(data);
+        console.log(res)
         if (res.data) {
+            setAlertmsg("บันทึกสำเร็จ");
             setSuccess(true);
+            setError(false)
         } else {
+            setAlertmsg("บันทึกไม่สำเร็จ"+res);
             console.log(res)
             setError(true);
         }
@@ -132,7 +135,7 @@ function CarWashCreate() {
                     severity="success" 
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    บันทึกข้อมูลสำเร็จ
+                    {Alertmsg}
                 </Alert>
             </Snackbar>
 
@@ -148,7 +151,7 @@ function CarWashCreate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3}}
                 >
-                    บันทึกข้อมูลไม่สำเร็จ
+                    {Alertmsg}
                 </Alert>
             </Snackbar>
 

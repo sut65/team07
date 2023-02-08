@@ -8,11 +8,11 @@ import React, { useEffect, useState } from 'react'
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import './CarDepotCreate.css';
-
+import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance';
 import { ParksInterface } from '../../models/carDepot_system_models/park';
 import { CarDepotsInterface } from '../../models/carDepot_system_models/carDepot';
 import { ListParks,  GetCarDepotByID, UpdateCarDepot } from '../../services/carDepot_system_services/HttpClientService';
-
+import { ListAmbulances } from '../../services/ambulance_system_services/HttpClientService';
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
     ref,
@@ -21,7 +21,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function CarDepotUpdate() {
-
+    const [Alertmsg, setAlertmsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -40,6 +40,15 @@ function CarDepotUpdate() {
         }
     };
 
+
+    const [ambulances, setAmbulances] = useState<AmbulancesInterface[]>([]);
+    const getAmbulances = async () => {
+        let res = await ListAmbulances();
+        if (res) {
+            setAmbulances(res);
+            console.log(res)
+        }
+    };
 
     const [carDepot, setCarDepot] = useState<CarDepotsInterface>({
         EmpCode: "",
@@ -80,20 +89,25 @@ function CarDepotUpdate() {
     async function submit() {
 
         let data = {
-            ID: convertType(localStorage.getItem("cid")),
+            ID: convertType(localStorage.getItem("id")),
             ParkID: convertType(carDepot.ParkID),
-            AmbulanceID: convertType(localStorage.getItem("id")), //Math.floor(Math.random() * 10)+1,
-            EmployeeID: convertType(localStorage.getItem("id")), //Math.floor(Math.random() * 10)+1,
+            EmployeeID: convertType(localStorage.getItem("id")),
+            AmbulanceID: convertType(localStorage.getItem("id")),
             EmpCode: carDepot.EmpCode,
+            PNum: convertType(carDepot.PNum),
             Date: carDepot.Date,
-            PNum: carDepot.PNum,
         };
-        console.log(data)
         let res = await UpdateCarDepot(data);
-        if (res) {
+        console.log(res)
+        if (res.data) {
+            setAlertmsg("อัพเดตสำเร็จ");
             setSuccess(true);
+            setError(false)
         } else {
+            setAlertmsg("อัพเดตไม่สำเร็จ"+res);
+            console.log(res)
             setError(true);
+            
         }
     }
 
@@ -118,7 +132,7 @@ function CarDepotUpdate() {
                     severity="success"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลสำเร็จ
+                    {Alertmsg}
                 </Alert>
             </Snackbar>
 
@@ -134,7 +148,7 @@ function CarDepotUpdate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลไม่สำเร็จ
+                    {Alertmsg}
                 </Alert>
             </Snackbar>
             <Container
@@ -156,7 +170,7 @@ function CarDepotUpdate() {
                         color="primary"
                         sx={{ fontWeight: 'bold' }}
                     >
-                        แก้ไขข้อมูล คลังจอดรถ {carDepot?.ID}
+                        แก้ไขข้อมูลคลังจอดรถ {carDepot?.ID}
                     </Typography>
                 </Stack>
                 <Grid container spacing={2} >
@@ -184,8 +198,25 @@ function CarDepotUpdate() {
                                 ))}
                             </Select>
                         </FormControl>
+                    </Grid>         
+          <Grid item xs={12}>
+                        <p>เลขช่องจอดรถ</p>
+                        <TextField
+                            name='PNum'
+                            type="number"
+                            value={carDepot.PNum || ""}
+                            InputProps={{
+                                inputProps: {
+                                    min: 1,
+                                    max: 200
+                                }
+                            }}
+                            sx={{ width: "100%" }}
+                            onChange={handleChangeTextField}
+                        />
                     </Grid>
-                    <Grid item={true} xs={6}>
+                   
+                    <Grid item={true} xs={12}>
                         <Typography className='StyledTypography'> รหัสพนักงาน </Typography>
                         <TextField className='StyledTextField'
                             autoComplete="off"

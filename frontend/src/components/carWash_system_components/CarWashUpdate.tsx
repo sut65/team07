@@ -22,11 +22,11 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 
 function CarWashUpdate() {
-
+    const [Alertmsg, setAlertmsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
+        if (reason === "clickaway") { //
             return;
         }
         setSuccess(false);
@@ -93,11 +93,15 @@ function CarWashUpdate() {
             SerFees: convertType(carWash.SerFees),
             Date: carWash.Date,
         };
-        console.log(data)
         let res = await UpdateCarWash(data);
-        if (res) {
+        console.log(res)
+        if (res.data) {
+            setAlertmsg("อัพเดตข้อมูลสำเร็จ");
             setSuccess(true);
+            setError(false)
         } else {
+            setAlertmsg("อัพเดตข้อมูลไม่สำเร็จ"+res);
+            console.log(res)
             setError(true);
         }
     }
@@ -123,7 +127,7 @@ function CarWashUpdate() {
                     severity="success"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลสำเร็จ
+                    {Alertmsg}
                 </Alert>
             </Snackbar>
 
@@ -139,7 +143,7 @@ function CarWashUpdate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลไม่สำเร็จ
+                    {Alertmsg}
                 </Alert>
             </Snackbar>
             <Container

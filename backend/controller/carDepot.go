@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -22,22 +23,30 @@ func CreateCarDepot(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	// 3: ค้นหา employee ด้วย id
-	if tx := entity.DB().Where("id = ?", carDepot.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "employees not found"})
+	// Validation Value
+	if _, err := govalidator.ValidateStruct(&carDepot); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 
+	// 3: ค้นหา employee ด้วย id
+	if tx := entity.DB().Where("id = ?", carDepot.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": " employees not found"})
+		return
+	}
+	
+
 	// 8: ค้นหา park ด้วย id
 	if tx := entity.DB().Where("id = ?", carDepot.ParkID).First(&park); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "parks not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": " parks not found"})
 		return
 	}
 
 	// 9: ค้นหา ambulance ด้วย id
 	if tx := entity.DB().Where("id = ?", carDepot.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": " ambulance not found"})
 		return
 	}
 
@@ -59,6 +68,7 @@ func CreateCarDepot(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": cd})
+
 }
 
 // GET /carDepot/:id
@@ -139,6 +149,14 @@ func UpdateCarDepot(c *gin.Context) {
 		c.Abort()
 		return
 	}
+	// Validation Value
+	if _, err := govalidator.ValidateStruct(&carDepot); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	
 
 	// Check carDepot is haved ?
 	if tx := entity.DB().Where("id = ?", carDepot.ID).First(&carDepotold); tx.RowsAffected == 0 {
