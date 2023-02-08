@@ -31,7 +31,7 @@ func TestAmbulanceStoreDateNotBePast(t *testing.T) {
 
 	ambstore := entity.AmbulanceStore{
 		Amount: 200,
-		Date:   time.Now().Add(time.Minute * -25), // ผิด
+		Date:   time.Now().Add(time.Minute * -30), // ผิด
 	}
 
 	ok, err := govalidator.ValidateStruct(ambstore)
@@ -48,7 +48,7 @@ func TestAmbulanceStoreDateNotBeFuture(t *testing.T) {
 
 	ambstore := entity.AmbulanceStore{
 		Amount: 200,
-		Date:   time.Now().Add(time.Minute * 25), // ผิด
+		Date:   time.Now().Add(time.Minute * 30), // ผิด
 	}
 
 	ok, err := govalidator.ValidateStruct(ambstore)
