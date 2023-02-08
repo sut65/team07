@@ -150,7 +150,7 @@ function RecordTimeInCreate() {
                 open={success}
                 autoHideDuration={8000}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="success">
                     {message}
@@ -161,7 +161,7 @@ function RecordTimeInCreate() {
                 open={error}
                 autoHideDuration={8000}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="error">
                     {message}
@@ -259,7 +259,7 @@ function RecordTimeInCreate() {
                         name: "Odo",
                         }}
                         onChange={handleChangeTextField}
-                        value={String(recordtimein?.Odo)}
+                        value={recordtimein.Odo}
                     />
                 </FormControl>
                 </Grid>
