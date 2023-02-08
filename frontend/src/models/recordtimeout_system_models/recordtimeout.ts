@@ -1,6 +1,9 @@
 import { AmbulancesInterface } from "../ambulance_system_models/ambulance";
 import { EmployeeInterface } from "../employeeSystemModel/IEmployee";
+import { CaseInterface } from "../emergency_system_models/case";
+
 export interface RecordTimeOutInterface {
+
   ID?: number;
   Annotation?: string;
   OdoMeter?: number;
@@ -9,7 +12,7 @@ export interface RecordTimeOutInterface {
   Ambulance?: AmbulancesInterface;
 
   CaseID?: number;
-  //   Case ?: CaseInterface;
+  Case?: CaseInterface;
 
   EmployeeID?: number;
   Employee?: EmployeeInterface;

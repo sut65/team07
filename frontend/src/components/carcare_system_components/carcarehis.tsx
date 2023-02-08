@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
 import { GetEmercaseAll } from "../../services/emergency_system_service/HttpClientServices";
-import { CaseInterface } from "../recordtimeout_system_components/RecordTimeOutCreate";
+import { CaseInterface } from "../../models/emergency_system_models/case";
 
 function Carcare() {
   const [cases, setCases] = useState<CaseInterface[]>([]);
