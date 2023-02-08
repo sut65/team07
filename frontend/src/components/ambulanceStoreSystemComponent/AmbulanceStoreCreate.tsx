@@ -87,7 +87,7 @@ export default function AmbulanceStoreCreate() {
       handleSnackbarSuccess()
       setTimeout(() => {
         navigator("/ambulance-store/" + id)
-      }, 1000)
+      }, 5000)
     } else {
       handleSnackbarFailed(res.error)
     }
@@ -145,14 +145,14 @@ export default function AmbulanceStoreCreate() {
   return (
     <Container maxWidth="lg">
       {/* Snackbar success Part */}
-      <Snackbar open={snackBar.open} autoHideDuration={3000} onClose={handleSnackeBarClose}>
+      <Snackbar open={snackBar.open} autoHideDuration={5000} onClose={handleSnackeBarClose}>
         <Alert onClose={handleSnackeBarClose} severity="success" >
           บันทึกการเบิกยาเรียบร้อย
         </Alert>
       </Snackbar>
 
       {/* Snackbar Failed Part */}
-      <Snackbar open={snackBar.error} autoHideDuration={3000} onClose={handleSnackeBarClose}>
+      <Snackbar open={snackBar.error} autoHideDuration={5000} onClose={handleSnackeBarClose}>
         <Alert onClose={handleSnackeBarClose} severity="error" >
           บันทึกไม่สำเร็จ กรุณาลองใหม่ {snackBar.errorMsg}
         </Alert>

@@ -151,7 +151,7 @@ export default function AmbulanceStoreUpdate() {
       {/* Snackbar Failed Part */}
       <Snackbar
         open={snackBar.error}
-        autoHideDuration={3000}
+        autoHideDuration={5000}
         onClose={handleSnackeBarClose}
       >
         <Alert onClose={handleSnackeBarClose} severity="error">
