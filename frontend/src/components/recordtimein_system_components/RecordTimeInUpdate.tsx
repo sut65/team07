@@ -1,9 +1,9 @@
-import { Button, CssBaseline, FormControl, Grid, IconButton, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, Divider, FormControl, Grid, IconButton, Paper, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { Container } from '@mui/system'
+import { Box, Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
@@ -14,7 +14,8 @@ import { GetDisinfectionByID, ListAmbulances, ListDisinfectants, UpdateDisinfect
 import { DisintantInterface } from '../../models/disinfection_system_models/disinfectant';
 import { any } from 'prop-types';
 //import { HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
-import { GetRecordTimeInByEmployee, GetRecordTimeInByID, HttpClientServices, ListRecordtimeouts, UpdateRecordTimeIn } from '../../services/recordtimein_system_services/HttpClientServices';
+import { GetRecordTimeInByEmployee, GetRecordTimeInByID, ListRecordtimeouts, UpdateRecordTimeIn } from '../../services/recordtimein_system_services/HttpClientServices';
+import { HttpClientServices } from '../../services/recordtimeout_system_services/HttpClientServices';
 import { RecordTimeInInterface } from '../../models/recordtimein_system_models/recordtimein';
 import { RecordTimeOutInterface } from '../../models/recordtimeout_system_models/recordtimeout';
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee';
@@ -37,6 +38,7 @@ function RecordTimeInUpdate() {
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
@@ -111,14 +113,15 @@ function RecordTimeInUpdate() {
     //     setError(true);
     // }
 
-    try {
-      let res = await HttpClientServices.patch("/recordtimein", data);
-      setSuccess(true);
-      console.log(res);
-    } catch (err) {
-      setError(false);
-      console.log(err)
-    }
+    let res = await HttpClientServices.patch(`/recordtimein`, data);
+      if (!res.error) {
+        setSuccess(true);
+        console.log(res);
+        setMessage("อัพเดทข้อมูลสำเร็จ");
+      } else {
+        setError(true);
+        setMessage("อัพเดทข้อมูลไม่สำเร็จ " + res.message);
+      }
   }
 
     useEffect(() => {
@@ -155,32 +158,36 @@ function RecordTimeInUpdate() {
                 component="main"
                 maxWidth="md"
                 sx={{
-                    mt: 5,
-                    mb: 2,
-                    p: 2,
-                    boxShadow: 3,
-                    bgcolor: 'rgb(252, 254, 255)'
+                    marginTop: 2,
                 }}>
                 <CssBaseline />
-
-                <Stack
-                    sx={{ p: 0, m: 0, mb: 5 }}
+                <Paper
+                    className="paper"
+                    elevation={6}
+                    sx={{
+                    padding: 2,
+                    borderRadius: 3,
+                    }}
                 >
-                    <Typography
+                    <Box>
+                        <Typography
                         variant="h5"
                         color="secondary"
-                        sx={{ fontWeight: 'bold' }}
+                        sx={{padding: 2, fontWeight: 'bold' }}
                     >
                         บันทึกข้อมูลการใช้รถขาเข้าของพนักงานขับรถ ลำดับที่ {recordtimein.ID}
                     </Typography>
-                    
-                </Stack>
+                    </Box>
+                    <Divider />
                 
-                <Grid container spacing={2}>
+                    
+                    
+                
+                <Grid container spacing={2} sx={{ padding: 1 }}><br></br>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} >
                         <FormControl fullWidth variant="outlined">
-                            <Typography className='StyledTypography'> ข้อมูลจากขาออก : </Typography>
+                            <Typography className='StyledTypography'> เคสที่ออกปฏิบัติงาน : </Typography>
                             <Select
                                 className='StyledTextField'
                                 id="ID"
@@ -195,7 +202,7 @@ function RecordTimeInUpdate() {
                             ><option>กรุณาเลือกเคส</option>
                                 {recordtimeout.map((item: RecordTimeOutInterface) => (
                                 <option value={item.ID!} key={item.ID}>
-                                    {item.CaseID}
+                                    ลำดับเคส: {item.CaseID} สถานที่เกิดเหตุ: {item.Case?.Location}
                                 </option>
                                 ))}
                             </Select>
@@ -233,7 +240,7 @@ function RecordTimeInUpdate() {
                         id="Odo"
                         name="Odo"
                         type="number"
-                        size="small"
+                        size="medium"
                         InputProps={{
                         inputProps: { min: 1, max: 99999 },
                         name: "Odo",
@@ -244,12 +251,13 @@ function RecordTimeInUpdate() {
                 </FormControl>
                 </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
               <Typography> วัน/เวลา ทำการฆ่าเชื้อ </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 className='StyledTextField'
+                
                 value={recordtimein.TimeIn}
                 onChange={(newValue) => {
                     setRecordtimein({
@@ -257,7 +265,7 @@ function RecordTimeInUpdate() {
                         TimeIn: newValue,
                     });
                 }}
-                renderInput={(params) => <TextField {...params} size="small" />
+                renderInput={(params) => <TextField {...params}/>
                 }
               />
               </LocalizationProvider>
@@ -273,7 +281,8 @@ function RecordTimeInUpdate() {
                         id="Note"
                         name="Note"
                         type="string"
-                        size="small"
+                        size="medium"
+
                         color="primary"
                         inputProps={{
                         name: "Note",
@@ -309,6 +318,7 @@ function RecordTimeInUpdate() {
             อัพเดตข้อมูล
           </Button>
         </Stack>
+        </Paper>
       </Container>
     </div>
   )

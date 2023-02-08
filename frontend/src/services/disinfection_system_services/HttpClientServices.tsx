@@ -26,20 +26,46 @@ export class HttpClientServices {
     return result;
   }
 
-  // Method: POST
   static async post(url: string, payload: any) {
-    let result: any;
-    await requestOptions
-      .post(url, payload)
-      .then((response) => {
-        result = response.data;
-      })
-      .catch((err) => {
-        throw new Error(err.response.error);
-      });
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
 
-    return result;
+    let res = await fetch(`${apiUrl}${url}`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res);
+
+        if (res.data) {
+          return { error: false, results: res.data };
+        } else {
+          console.log(res);
+
+          return { error: true, message: res.error };
+        }
+      });
+    return res;
   }
+
+  // Method: POST
+  // static async post(url: string, payload: any) {
+  //   let result: any;
+  //   await requestOptions
+  //     .post(url, payload)
+  //     .then((response) => {
+  //       result = response.data;
+  //     })
+  //     .catch((err) => {
+  //       throw new Error(err.response.error);
+  //     });
+
+  //   return result;
+  // }
 
   // Method: PUT
   static async put(url: string, payload: any) {

@@ -1,4 +1,4 @@
-import { SelectChangeEvent, Container, CssBaseline, Stack, Typography, Grid, FormControl, TextField, Select, Button, AlertProps, Snackbar } from '@mui/material';
+import { SelectChangeEvent, Container, CssBaseline, Stack, Typography, Grid, FormControl, TextField, Select, Button, AlertProps, Snackbar, Paper, Divider, Box } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import React, { useEffect, useState } from 'react'
@@ -8,7 +8,6 @@ import { ListTypeAbls, CreatAmbulances, ListCompanies } from '../../services/amb
 import { DisinfectionInterface } from '../../models/disinfection_system_models/disinfection';
 import { Link as RouterLink } from "react-router-dom";
 import { CreatDisinfection, HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
-
 import { setDate } from 'date-fns';
 import { CompaniesInterface } from '../../models/ambulance_system_models/company';
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee';
@@ -28,6 +27,7 @@ function DisinfectionCreate() {
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [message, setAlertMessage] = useState("");
 
     const [emp, setEmployee] = useState<EmployeeInterface[]>([]);
     
@@ -111,7 +111,16 @@ function DisinfectionCreate() {
             DisinfactantID: convertType(disinfection?.DisinfactantID) ?? 0,
         };
         console.log(data)
-
+        let res = await HttpClientServices.post("/disinfection", data);
+            if (!res.error) {
+              setSuccess(true);
+              console.log(res);
+              setAlertMessage("บันทึกข้อมูลสำเร็จ");
+            } else {
+              setError(true);
+              setAlertMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
+              // console.log(res.message);
+            }
         // try {
         //     let res = await HttpClientServices.post("/disinfection", data);
         //     setSuccess(true);
@@ -120,45 +129,36 @@ function DisinfectionCreate() {
         //     setError(false);
         //     console.log(JSON.stringify(err));
         // }
-        let res = await CreatDisinfection(data);
-            if (res) {
-                setSuccess(true);
-            } else {
-                setError(true);
-            }
+        // let res = await CreatDisinfection(data);
+        //     if (res) {
+        //         setSuccess(true);
+        //     } else {
+        //         setError(true);
+        //     }
     }
 
     return (
         <div>
-            <Snackbar 
-                open={success} 
-                autoHideDuration={2000} 
-                onClose={handleClose} 
+             <Snackbar
+                id="success"
+                open={success}
+                autoHideDuration={8000}
+                onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                sx={{mt:10}}
             >
-                <Alert 
-                    onClose={handleClose} 
-                    severity="success" 
-                    sx={{ width: '100%', borderRadius: 3 }}
-                >
-                    บันทึกข้อมูลสำเร็จ
+                <Alert onClose={handleClose} severity="success">
+                    {message}
                 </Alert>
             </Snackbar>
-
-            <Snackbar 
-                open={error} 
-                autoHideDuration={2000} 
-                onClose={handleClose} 
+            <Snackbar
+                id="error"
+                open={error}
+                autoHideDuration={8000}
+                onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                sx={{mt:10}}
             >
-                <Alert 
-                    onClose={handleClose} 
-                    severity="error"
-                    sx={{ width: '100%', borderRadius: 3}}
-                >
-                    บันทึกข้อมูลไม่สำเร็จ
+                <Alert onClose={handleClose} severity="error">
+                    {message}
                 </Alert>
             </Snackbar>
             
@@ -166,25 +166,30 @@ function DisinfectionCreate() {
                 component="main"
                 maxWidth="md"
                 sx={{
-                    mt: 5,
-                    mb: 2,
-                    p: 2,
-                    boxShadow: 3,
-                    bgcolor: 'rgb(252, 254, 255)'
+                    marginTop: 2,
+                    
                 }}>
                 <CssBaseline />
-
-                <Stack sx={{ p: 0, m: 0, mb: 5 }}>
-                    <Typography
-                        variant="h5"
-                        color="secondary"
-                        sx={{ fontWeight: 'bold' }}
-                    >
-                        บันทึกข้อมูลการฆ่าเชื้อรถพยาบาล
-                    </Typography>  
-                </Stack>
+                <Paper
+                    className="paper"
+                    elevation={6}
+                    sx={{
+                    padding: 2,
+                    borderRadius: 3,
+                    }}
+                >
+                    <Box>
+                        <Typography
+                            variant="h5"
+                            color="secondary"
+                            sx={{ padding: 2, fontWeight: "bold" }}
+                        >
+                            บันทึกข้อมูลการฆ่าเชื้อรถพยาบาล
+                        </Typography>
+                    </Box>
+                    <Divider />
                 
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ padding: 1 }}>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>ชนิดน้ำยาฆ่าเชื้อ :</p>
@@ -210,7 +215,7 @@ function DisinfectionCreate() {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>ปริมาณที่ใช้น้ำยาฆ่าเชื้อ</p>
+                            <p>ปริมาณที่ใช้น้ำยาฆ่าเชื้อ : </p>
                             <TextField
                             className='StyledTextField'
                             id="AmountDisinfectant"
@@ -257,9 +262,10 @@ function DisinfectionCreate() {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                        <Typography> วัน/เวลา ทำการฆ่าเชื้อ </Typography>
+                        <Typography> วัน/เวลา ทำการฆ่าเชื้อ : </Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
+                            
                                 value={disinfection.WorkTime}
                                 onChange={(newValue) => {
                                     setDisinfection({
@@ -267,21 +273,21 @@ function DisinfectionCreate() {
                                         WorkTime: newValue,
                                     });
                                 }}
-                                renderInput={(params) => <TextField {...params} size="small" />
+                                renderInput={(params) => <TextField {...params} size="medium" />
                                 }
                             />
                         </LocalizationProvider>
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={4}>
-                        <Typography>หมายเหตุ</Typography>
+                    <Grid item xs={6}>
+                        <Typography>หมายเหตุ : </Typography>
                         <FormControl fullWidth variant="outlined">
                         <TextField
                             id="ID"
                             name="Note"
                             type="string"
-                            size="small"
+                            size="medium"
                             color="primary"
                             value={disinfection.Note}
                             inputProps={{
@@ -303,10 +309,10 @@ function DisinfectionCreate() {
                 >
                     <Button
                         variant="contained"
-                        color="error"
+                        color="primary"
                         component={RouterLink}
                         to="/DisinfectionHistory"
-                        sx={{'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+                        sx={{'&:hover': {color: '#1543EE', backgroundColor: '#e3f2fd'}}}
                     >
                         ถอยกลับ
                     </Button>
@@ -320,7 +326,7 @@ function DisinfectionCreate() {
                     </Button>
 
             </Stack>
-            </Container>
+            </Paper></Container>
         </div>
     )
 }

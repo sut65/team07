@@ -41,6 +41,9 @@ export default function DisinfectionDelete(props: any) {
       let res = await HttpClientServices.delete(`/recordtimein/${params}`);
       console.log(res.data);
       setSuccess(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
     } catch (err) {
       setError(true);
       console.log(err);
@@ -73,18 +76,18 @@ export default function DisinfectionDelete(props: any) {
           </Button>
         </DialogActions>
         <Snackbar
-        open={success}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          open={success}
+          autoHideDuration={2000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert onClose={handleClose} severity="success">
-          ลบข้อมูลสำเร็จ
-        </Alert>
-      </Snackbar>
+          <Alert onClose={handleClose} severity="success">
+            ลบข้อมูลสำเร็จ
+          </Alert>
+        </Snackbar>
       <Snackbar
         open={error}
-        autoHideDuration={2000}
+        //autoHideDuration={2000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
