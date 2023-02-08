@@ -97,7 +97,7 @@ async function UpdateAmbulanceStore(ambStore : Partial<AmbulanceStoreInterface>)
 async function CreateAmbulanceStore(abl: any) {
     let data = {
         Amount: convertType(abl.Amount),
-        Date: new Date().toJSON().split("Z").at(0) + "+07:00",
+        Date: new Date(),
         MedicineID: convertType(abl.MedicineID),
         AmbulanceID: convertType(abl.AmbulanceID),
         EmployeeID: convertType(abl.EmployeeID)

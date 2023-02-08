@@ -154,7 +154,7 @@ export default function AmbulanceStoreCreate() {
       {/* Snackbar Failed Part */}
       <Snackbar open={snackBar.error} autoHideDuration={3000} onClose={handleSnackeBarClose}>
         <Alert onClose={handleSnackeBarClose} severity="error" >
-          บันทึกไม่สำเร็จ กรุณาลองใหม่
+          บันทึกไม่สำเร็จ กรุณาลองใหม่ {snackBar.errorMsg}
         </Alert>
       </Snackbar>
 
