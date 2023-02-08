@@ -206,9 +206,9 @@ export default function VehicleInspectionCreate() {
         setSuccess(true);
         console.log(res);
         setMessage("อัพเดตข้อมูลสำเร็จ");
-        setTimeout(() => {
-          window.location.href = "/VehicleInspectionHistory";
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.href = "/VehicleInspectionHistory";
+        // }, 800);
       } else {
         setError(true);
         setMessage("อัพเดตข้อมูลไม่สำเร็จ " + res.message);
