@@ -125,7 +125,7 @@ function CarWashCreate() {
         <div>
             <Snackbar 
                 open={success} 
-                autoHideDuration={2000} 
+                autoHideDuration={10000} 
                 onClose={handleClose} 
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{mt:10}}
