@@ -228,9 +228,9 @@ function RecordTimeOutCreate() {
         setSuccess(true);
         console.log(res);
         setMessage("อัพเดทข้อมูลสำเร็จ");
-        setTimeout(() => {
-          window.location.href = "/RecordTimeOutHistory";
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.href = "/RecordTimeOutHistory";
+        // }, 800);
       } else {
         setError(true);
         setMessage("อัพเดทข้อมูลไม่สำเร็จ " + res.message);
