@@ -206,9 +206,9 @@ export default function VehicleInspectionCreate() {
         setSuccess(true);
         console.log(res);
         setMessage("อัพเดตข้อมูลสำเร็จ");
-        setTimeout(() => {
-          window.location.href = "/VehicleInspectionHistory";
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.href = "/VehicleInspectionHistory";
+        // }, 800);
       } else {
         setError(true);
         setMessage("อัพเดตข้อมูลไม่สำเร็จ " + res.message);
@@ -221,9 +221,9 @@ export default function VehicleInspectionCreate() {
         setSuccess(true);
         console.log(res);
         setMessage("บันทึกข้อมูลสำเร็จ");
-        setTimeout(() => {
-          window.location.href = "/VehicleInspectionHistory";
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.href = "/VehicleInspectionHistory";
+        // }, 800);
       } else {
         setError(true);
         setMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
@@ -430,7 +430,7 @@ export default function VehicleInspectionCreate() {
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  openTo={"year"}
+                  openTo={"day"}
                   value={vehicleinspection?.VehicleInspectionDatetime}
                   onChange={(newValue) => {
                     const id =
@@ -476,7 +476,7 @@ export default function VehicleInspectionCreate() {
       </Paper>
       <Snackbar
         open={success}
-        autoHideDuration={3000}
+        // autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
@@ -486,7 +486,7 @@ export default function VehicleInspectionCreate() {
       </Snackbar>
       <Snackbar
         open={error}
-        autoHideDuration={3000}
+        // autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >

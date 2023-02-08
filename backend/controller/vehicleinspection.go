@@ -42,13 +42,14 @@ func CreateVehicleInspection(c *gin.Context) {
 		OdoMeter:                  vehicleinspection.OdoMeter, //กรอกเลขไมล์
 		Fail:                      vehicleinspection.Fail,
 		StatusCheck:               statuscheck,
-		AmbulancePart:             ambulancepart,                               //โยง คสพ Entity Case
-		Ambulance:                 ambulance,                                   //โยง คสพ Entity Car
-		Employee:                  employee,                                    //โยง คสพ Entity Employee
-		VehicleInspectionDatetime: vehicleinspection.VehicleInspectionDatetime, // field DateTime
+		AmbulancePart:             ambulancepart,                                       //โยง คสพ Entity Case
+		Ambulance:                 ambulance,                                           //โยง คสพ Entity Car
+		Employee:                  employee,                                            //โยง คสพ Entity Employee
+		VehicleInspectionDatetime: vehicleinspection.VehicleInspectionDatetime.Local(), // field DateTime
 	}
 	if _, err := govalidator.ValidateStruct(veh); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	//บันทึก
 	if err := entity.DB().Create(&veh).Error; err != nil {

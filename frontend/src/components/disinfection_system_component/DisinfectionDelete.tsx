@@ -42,6 +42,9 @@ export default function DisinfectionDelete(props: any) {
       let res = await HttpClientServices.delete(`/disinfection/${params}`);
       // console.log(res.data);
       setSuccess(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
     } catch (err) {
       setError(true);
       console.log(err);

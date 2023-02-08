@@ -367,8 +367,13 @@ func SetupDatabase() {
 
 	case2 := Case{
 		Location:  "ปต2",
+		Patient:   "Bamboo",
+		Age:       22,
+		Status:    "เป็นลม",
+		Datetime:  time.Now(),
 		Gender:    gender[1],
 		Emergency: emergency[1],
+		Employee:  empNurse,
 	}
 	db.Model(&Case{}).Create((&case2))
 
@@ -377,6 +382,8 @@ func SetupDatabase() {
 		CarBrand: "TOYOTA 1",
 		TypeAbl:  typeAbl[0],
 		Employee: empDis,
+		Company:  company[2],
+		Date:     time.Now(),
 	}
 	db.Model(&Ambulance{}).Create(&ambulance1)
 
@@ -425,4 +432,5 @@ func SetupDatabase() {
 		{MedicineName: "Mepivacaine", MedicineWarning: "ต้องใช้ยาตามขนาด 5 มก. / กก.", MedicineType: "ยาชา", MeasureUnit: "มก."},
 	}
 	db.CreateInBatches(medicine, 4)
+
 }
