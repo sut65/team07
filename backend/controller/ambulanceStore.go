@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -188,6 +189,13 @@ func CreateAmbulanceStore(c *gin.Context) {
 		return
 	}
 
+	if _, err := govalidator.ValidateStruct(&store); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
 	// find data in database
 	// Find medicine in database
 	if tx := entity.DB().Where("id = ?", store.MedicineID).First(&medicine); tx.RowsAffected == 0 {
@@ -287,6 +295,13 @@ func UpdateAmbulanceStore(c *gin.Context) {
 	if tx := entity.DB().Where("id = ?", newStore.EmployeeID).First(&employee); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "not found employee",
+		})
+		return
+	}
+
+	if _, err := govalidator.ValidateStruct(&newStore); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
 		})
 		return
 	}

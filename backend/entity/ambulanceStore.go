@@ -48,13 +48,13 @@ func init() {
 
 	govalidator.CustomTypeTagMap.Set("AmbulanceStoreDateNotPast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		now := time.Now().Add(time.Minute * -10)
+		now := time.Now().Add(time.Minute * -25)
 		return t.After(now) || t.Equal(now)
 	})
 
 	govalidator.CustomTypeTagMap.Set("AmbulanceStoreDateNotFuture", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		now := time.Now().Add(time.Minute * 10)
+		now := time.Now().Add(time.Minute * 25)
 		return t.Before(now) || t.Equal(now)
 	})
 }
