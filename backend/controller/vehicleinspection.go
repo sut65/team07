@@ -48,7 +48,8 @@ func CreateVehicleInspection(c *gin.Context) {
 		VehicleInspectionDatetime: vehicleinspection.VehicleInspectionDatetime, // field DateTime
 	}
 	if _, err := govalidator.ValidateStruct(veh); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	//บันทึก
 	if err := entity.DB().Create(&veh).Error; err != nil {

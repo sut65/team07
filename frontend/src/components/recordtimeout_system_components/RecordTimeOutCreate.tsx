@@ -39,6 +39,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 //   DateTime: Date;
 // }
 
+
+
 function RecordTimeOutCreate() {
   const params = useParams();
   const [recordtimeout, setRecordTimeOut] = useState<
@@ -425,7 +427,8 @@ function RecordTimeOutCreate() {
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  openTo={"year"}
+               
+                  openTo={"day"}
                   value={recordtimeout?.RecordTimeOutDatetime}
                   onChange={(newValue) => {
                     const id =
@@ -433,6 +436,7 @@ function RecordTimeOutCreate() {
                     // console.log(newValue);
                     setRecordTimeOut({ ...recordtimeout, [id]: newValue });
                   }}
+                  
                   inputFormat="dd/MM/yyyy"
                   renderInput={(params) => (
                     <TextField {...params} size="small" />
