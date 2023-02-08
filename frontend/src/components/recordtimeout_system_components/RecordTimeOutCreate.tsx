@@ -21,6 +21,7 @@ import { HttpClientServices } from "../../services/recordtimeout_system_services
 import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
 import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
 import { TypeAblsInterface } from "../../models/ambulance_system_models/typeAbl";
+import { CaseInterface } from "../../models/emergency_system_models/case";
 import { useParams } from "react-router-dom";
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -29,14 +30,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export interface CaseInterface {
-  ID: number;
-  Patient: string;
-  Location: string;
-  Age: number;
-  Status: string;
-  DateTime: Date;
-}
+// export interface CaseInterface {
+//   ID: number;
+//   Patient: string;
+//   Location: string;
+//   Age: number;
+//   Status: string;
+//   DateTime: Date;
+// }
 
 function RecordTimeOutCreate() {
   const params = useParams();
@@ -300,7 +301,7 @@ function RecordTimeOutCreate() {
                   กรุณาเลือกเคส
                 </option>
                 {cases.map((item: CaseInterface) => (
-                  <option value={item.ID} key={item.ID}>
+                  <option value={Number(item.ID)} key={item.ID}>
                     {item.ID}
                   </option>
                 ))}
