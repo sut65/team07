@@ -37,10 +37,10 @@ func CreateRecordTimeOut(c *gin.Context) {
 		// RecordTimeOutID: recordtimeout.RecordTimeOutID,
 		OdoMeter:              recordtimeout.OdoMeter, //กรอกเลขไมล์
 		Annotation:            recordtimeout.Annotation,
-		Case:                  cases,                               //โยง คสพ Entity Case
-		Ambulance:             ambulances,                          //โยง คสพ Entity Car
-		Employee:              employees,                           //โยง คสพ Entity Employee
-		RecordTimeOutDatetime: recordtimeout.RecordTimeOutDatetime, // field DateTime
+		Case:                  cases,                                       //โยง คสพ Entity Case
+		Ambulance:             ambulances,                                  //โยง คสพ Entity Car
+		Employee:              employees,                                   //โยง คสพ Entity Employee
+		RecordTimeOutDatetime: recordtimeout.RecordTimeOutDatetime.Local(), // field DateTime
 	}
 	if _, err := govalidator.ValidateStruct(rec); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

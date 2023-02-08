@@ -1,4 +1,4 @@
-import { Button, CssBaseline, FormControl, Grid, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, CssBaseline, Divider, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Link as RouterLink } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -15,7 +15,7 @@ import { RecordTimeInInterface } from '../../models/recordtimein_system_models/r
 import { ListCompanies, ListTypeAbls, CreatAmbulances, ListAmbulances } from '../../services/ambulance_system_services/HttpClientService';
 import { RecordTimeOutInterface } from '../../models/recordtimeout_system_models/recordtimeout';
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee';
-import { HttpClientServices } from '../../services/recordtimein_system_services/HttpClientServices';
+import { HttpClientServices } from '../../services/recordtimeout_system_services/HttpClientServices';
 import { ListEmployees } from '../../services/employeeSystemServices/EmployeeHttpClient';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -30,7 +30,7 @@ function RecordTimeInCreate() {
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-    const [message, setMessage] = useState("");
+    const [message, setAlertMessage] = useState("");
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
@@ -112,12 +112,24 @@ function RecordTimeInCreate() {
                 TimeIn: recordtimein.TimeIn,
                 Odo: convertType(recordtimein.Odo),
             };
-            let res = await CreatRecordTimeIn(data);
-            if (res) {
-                setSuccess(true);
+            let res = await HttpClientServices.post("/recordtimein", data);
+            if (!res.error) {
+              setSuccess(true);
+              console.log(res);
+              setAlertMessage("บันทึกข้อมูลสำเร็จ");
             } else {
-                setError(true);
+              setError(true);
+              setAlertMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
+              // console.log(res.message);
             }
+            // let res = await CreatRecordTimeIn(data);
+            // if (res) {
+            //     setSuccess(true);
+            //     setAlertMessage("บันทึกข้อมูลสำเร็จ");
+            // } else {
+            //     setError(true);
+            //     setAlertMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
+            // }
         // let res = await CreatRecordTimeIn(data);
 
     }
@@ -134,23 +146,25 @@ function RecordTimeInCreate() {
     return (
         <div>
             <Snackbar
+                id="success"
                 open={success}
-                autoHideDuration={3000}
+                autoHideDuration={8000}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                บันทึกสำเร็จ
+                    {message}
                 </Alert>
             </Snackbar>
             <Snackbar
+                id="error"
                 open={error}
-                autoHideDuration={3000}
+                autoHideDuration={8000}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="error">
-                บันทึกข้อมูลไม่สำเร็จ
+                    {message}
                 </Alert>
             </Snackbar>
         
@@ -159,32 +173,34 @@ function RecordTimeInCreate() {
                 component="main"
                 maxWidth="md"
                 sx={{
-                    mt: 5,
-                    mb: 2,
-                    p: 2,
-                    boxShadow: 3,
-                    bgcolor: 'rgb(252, 254, 255)'
+                    marginTop: 2,
                 }}>
                 <CssBaseline />
-
-                <Stack
-                    sx={{ p: 0, m: 0, mb: 5 }}
+                <Paper
+                    className="paper"
+                    elevation={6}
+                    sx={{
+                    padding: 2,
+                    borderRadius: 3,
+                    }}
                 >
-                    <Typography
+                    <Box>
+                        <Typography
                         variant="h5"
                         color="secondary"
-                        sx={{ fontWeight: 'bold' }}
+                        sx={{padding: 2, fontWeight: 'bold' }}
                     >
                         บันทึกข้อมูลการใช้รถขาเข้าของพนักงานขับรถ
                     </Typography>
-                    
-                </Stack>
+                    </Box>
+                    <Divider />
                 
-                <Grid container spacing={2}>
+                
+                <Grid container spacing={2} sx={{ padding: 1 }}>
 
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                         <FormControl fullWidth variant="outlined">
-                            <Typography className='StyledTypography'> ข้อมูลจากขาออก : </Typography>
+                            <Typography className='StyledTypography'> เคสที่ออกปฏิบัติงาน : </Typography>
                             <Select
                                 className='StyledTextField'
                                 id="ID"
@@ -199,7 +215,7 @@ function RecordTimeInCreate() {
                             ><option>กรุณาเลือกเคส</option>
                                 {recordtimeOUT.map((item: RecordTimeOutInterface) => (
                                 <option value={item.ID!} key={item.ID}>
-                                    {item.CaseID}
+                                    ลำดับเคส: {item.CaseID} สถานที่เกิดเหตุ: {item.Case?.Location}
                                 </option>
                                 ))}
                             </Select>
@@ -237,7 +253,7 @@ function RecordTimeInCreate() {
                         id="Odo"
                         name="Odo"
                         type="number"
-                        size="small"
+                        size="medium"
                         InputProps={{
                         inputProps: { min: 1, max: 99999 },
                         name: "Odo",
@@ -277,7 +293,7 @@ function RecordTimeInCreate() {
                         id="Note"
                         name="Note"
                         type="string"
-                        size="small"
+                        size="medium"
                         color="primary"
                         inputProps={{
                         name: "Note",
@@ -312,7 +328,7 @@ function RecordTimeInCreate() {
                     <Button variant="contained" color="secondary" onClick={submit}> บันทึกข้อมูล </Button>
 
                 </Stack>
-
+            </Paper>
             </Container>
         </div>
     )

@@ -50,7 +50,7 @@ function DisinfectionHistory() {
   const columns: GridColDef[] = [
     {
       field: "ID",
-      headerName: "#",
+      headerName: "ลำดับ",
       width: 80,
       align: "center",
       headerAlign: "center",
@@ -151,37 +151,46 @@ function DisinfectionHistory() {
   return (
     <div>
       <Container className="container" maxWidth="lg">
+        <Paper
+            className="paper"
+            elevation={6}
+            sx={{
+              padding: 2.5,
+              borderRadius: 3,
+            }}
+          >
+            <Box display="flex">
+              <Box flexGrow={1}>
+                
+                <Typography sx={{ fontWeight: "bold" }}
+                variant="h5"
+                color="primary">
+                  ประวัติการบันทึกการฆ่าเชื้อรถพยาบาล
+                </Typography>
+              </Box>
+              <Box>
+                <Button
+                  component={RouterLink}
+                  to="/DisinfectionCreate"
+                  variant="contained"
+                  color="primary"
+                >
+                  เพิ่มการบันทึก
+                </Button>
+              </Box>
+            </Box>
 
-        <Box display="flex">
-          <Box flexGrow={1}>
-            <br></br>
-            <Typography component="h1" variant="h5" color="primary" gutterBottom>
-              ประวัติการบันทึกการฆ่าเชื้อรถพยาบาล
-            </Typography>
-          </Box>
-          <Box><br></br>
-            <Button
-              component={RouterLink}
-              to="/DisinfectionCreate"
-              variant="contained"
-              color="primary"
-            >
-              เพิ่มการบันทึก
-            </Button>
-          </Box>
-        </Box>
+            <div style={{ height: 400, maxWidth: "100%", marginTop: "20px" }}>
+              <DataGrid
+                rows={disinfection}
+                getRowId={(row) => row.ID}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />
+            </div>
 
-        <div style={{ height: 400, maxWidth: "100%", marginTop: "20px" }}>
-          <DataGrid
-            rows={disinfection}
-            getRowId={(row) => row.ID}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-          />
-        </div>
-
-
+        </Paper>
       </Container>
 
     </div>

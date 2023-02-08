@@ -1,9 +1,9 @@
-import { Button, CssBaseline, FormControl, Grid, IconButton, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
+import { Button, CssBaseline, Divider, FormControl, Grid, IconButton, Paper, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { Container } from '@mui/system'
+import { Box, Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
@@ -158,31 +158,36 @@ function DisinfectionUpdate(props: any) {
         </Alert>
       </Snackbar>
       <Container
-        component="main"
-        maxWidth="md"
-        sx={{
-          mt: 5,
-          mb: 2,
-          p: 2,
-          boxShadow: 3,
-          bgcolor: 'rgb(252, 254, 255)'
-        }}>
-        <CssBaseline />
-        <Stack
-          sx={{ p: 0, m: 0, mb: 3 }}
-        >
-          <Typography
-            variant="h5"
-            color="primary"
-            sx={{ fontWeight: 'bold' }}
-          >
-            แก้ไขข้อมูล  การฆ่าเชื้อรถพยาบาล  ลำดับที่ {disinfection?.ID}
-          </Typography>
-        </Stack>
-        <Grid container spacing={2} >
+                component="main"
+                maxWidth="md"
+                sx={{
+                    marginTop: 2,
+                    
+                }}>
+                <CssBaseline />
+                <Paper
+                    className="paper"
+                    elevation={6}
+                    sx={{
+                    padding: 2,
+                    borderRadius: 3,
+                    }}
+                >
+                  <Box>
+                      <Typography
+                        variant="h5"
+                        color="primary"
+                        sx={{ padding: 2, fontWeight: 'bold' }}
+                      >
+                        แก้ไขข้อมูล  การฆ่าเชื้อรถพยาบาล  ลำดับที่ {disinfection?.ID}
+                      </Typography>
+                   </Box>
+                    <Divider />
+          
+        <Grid container spacing={2} sx={{ padding: 1 }}>
 
           <Grid item={true} xs={12}>
-            <FormControl fullWidth variant="outlined"><br></br>
+            <FormControl fullWidth variant="outlined">
               <Typography className='StyledTypography'> ชนิดน้ำยาฆ่าเชื้อ : </Typography>
               <Select
                 className='StyledTextField'
@@ -315,6 +320,7 @@ function DisinfectionUpdate(props: any) {
             อัพเดตข้อมูล
           </Button>
         </Stack>
+      </Paper>
       </Container>
     </div>
   )

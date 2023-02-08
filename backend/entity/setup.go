@@ -380,6 +380,16 @@ func SetupDatabase() {
 	}
 	db.Model(&Ambulance{}).Create(&ambulance1)
 
+	//Dimmy
+	// RecordTimeOUT_1 := RecordTimeOUT{
+	// 	Annotation: "ฝนตกหนัก",
+	// 	OdoMeter: 2000,
+	// 	Employee: emp,
+	// 	Case: case2,
+	// 	Ambulance: ambulance1,
+	// }
+	// db.Model(&RecordTimeOUT{}).Create(&RecordTimeOUT_1)
+
 	//ตรวจเช็คสภาพรถ
 	statuscheck := []StatusCheck{
 		{StatusName: "ผ่าน"},
@@ -425,4 +435,8 @@ func SetupDatabase() {
 		{MedicineName: "Mepivacaine", MedicineWarning: "ต้องใช้ยาตามขนาด 5 มก. / กก.", MedicineType: "ยาชา", MeasureUnit: "มก."},
 	}
 	db.CreateInBatches(medicine, 4)
+
+
+
+
 }
