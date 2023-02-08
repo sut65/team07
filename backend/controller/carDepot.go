@@ -28,15 +28,12 @@ func CreateCarDepot(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-<<<<<<< HEAD
 		return
 	}
 
 	// 3: ค้นหา employee ด้วย id
 	if tx := entity.DB().Where("id = ?", carDepot.EmployeeID).First(&employee); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "employees not found"})
-=======
->>>>>>> issue-46-48-52
 		return
 	}
 
@@ -45,7 +42,6 @@ func CreateCarDepot(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": " employees not found"})
 		return
 	}
-	
 
 	// 8: ค้นหา park ด้วย id
 	if tx := entity.DB().Where("id = ?", carDepot.ParkID).First(&park); tx.RowsAffected == 0 {
@@ -165,7 +161,6 @@ func UpdateCarDepot(c *gin.Context) {
 		})
 		return
 	}
-	
 
 	// Check carDepot is haved ?
 	if tx := entity.DB().Where("id = ?", carDepot.ID).First(&carDepotold); tx.RowsAffected == 0 {
