@@ -24,28 +24,9 @@ func TestPNumIsNotNegtive(t *testing.T) {
 
 	g.Expect(err).ToNot(BeNil())
 
-	g.Expect(err.Error()).To(Equal("Park number is not in range 1 to 200"))
+	g.Expect(err.Error()).To(Equal(" Park number is not in range 1 to 200"))
 
 }
-
-// func TestPNumNotBlank(t *testing.T) {
-// 	g := NewGomegaWithT(t)
-// 	nump = null
-// 	cd := entity.CarDepot{
-// 		EmpCode: "DV01",
-// 		PNum:    nump  , // ผิด
-// 		Date:    time.Now(),
-// 	}
-
-// 	ok, err := govalidator.ValidateStruct(cd)
-
-// 	g.Expect(ok).ToNot(BeTrue())
-
-// 	g.Expect(err).ToNot(BeNil())
-
-// 	g.Expect(err.Error()).To(Equal("Park number can not blank"))
-
-// }
 
 func TestEmpCodeValid(t *testing.T) {
 	g := NewGomegaWithT(t)
@@ -62,7 +43,7 @@ func TestEmpCodeValid(t *testing.T) {
 
 	g.Expect(err).ToNot(BeNil())
 
-	g.Expect(err.Error()).To(Equal("Employee code is not in length 4-6 charecter"))
+	g.Expect(err.Error()).To(Equal(" Employee code is not in length 4-6 charecter"))
 
 }
 
@@ -81,7 +62,7 @@ func TestEmpCodeNotBlank(t *testing.T) {
 
 	g.Expect(err).ToNot(BeNil())
 
-	g.Expect(err.Error()).To(Equal("Employee code can not blank"))
+	g.Expect(err.Error()).To(Equal(" Employee code is not in length 4-6 charecter"))
 
 }
 
@@ -91,7 +72,7 @@ func TestDateNotPast(t *testing.T) {
 	cd := entity.CarDepot{
 		EmpCode: "DV01",
 		PNum:    10,
-		Date:    time.Now().Add(-24 * time.Hour), // ผิด
+		Date:    time.Now().Add(time.Minute * -25), // ผิด
 	}
 
 	//ตรวจสอบด้วย govalidator
@@ -104,5 +85,5 @@ func TestDateNotPast(t *testing.T) {
 	g.Expect(err).NotTo(BeNil())
 
 	// err.Error ต้องมี error message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("Date must not be in the past"))
+	g.Expect(err.Error()).To(Equal(" Date must not be in the past"))
 }

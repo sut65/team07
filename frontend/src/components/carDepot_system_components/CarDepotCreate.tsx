@@ -231,7 +231,7 @@ function CarDepotCreate() {
                             InputProps={{
                                 inputProps: {
                                     min: 1,
-                                    max: 100
+                                    max: 200
                                 }
                             }}
                             sx={{ width: "100%" }}

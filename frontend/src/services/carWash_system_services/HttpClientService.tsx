@@ -15,13 +15,13 @@ async function CreatCarWashs(data:any) {
     let res = await fetch(`${apiUrl}/carWash`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            console.log(res)
-            if (res) {
-                
+            if (res.data) {
                 return res;
             } else {
-                return false;
-            }
+                return res.error;
+                ;
+                } ;
+            
         });
 
     return res;
@@ -161,11 +161,13 @@ async function UpdateCarWash(data: CarWashsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data
+                return res;
             } else {
-                return false
-            }
-        })
+                return res.error;
+                ;
+                } ;
+            
+        });
     return res
 }
 

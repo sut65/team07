@@ -162,12 +162,15 @@ async function UpdateCarDepot(data: CarDepotsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data
+                return res;
             } else {
-                return false
-            }
-        })
-    return res
+                return res.error;
+                ;
+                } ;
+            
+        });
+
+    return res;
 }
 
 // Delete CarDepot
