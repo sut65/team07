@@ -49,6 +49,7 @@ import AmbulanceUseUpdate from "./components/ambulanceUse_system_components/Ambu
 import Case from "./components/emergency_system_components/emergencyhis";
 import CarCareCreate from "./components/carcare_system_components/carcare";
 import Carcare from "./components/carcare_system_components/carcarehis";
+import EmployeeCurrenct from "./components/employeeSystemComponents/EmployeeCurrenct";
 
 export default function App() {
   const [token, setToken] = React.useState<string>("");
@@ -116,6 +117,10 @@ export default function App() {
                   <Route
                     path="/employee/update/:id"
                     element={<EmployeeUpdate />}
+                  />
+                  <Route 
+                    path="/employee-currenct"
+                    element={<EmployeeCurrenct />}
                   />
                   <Route path="/Ambulance" element={<Ambulance />} />
                   <Route
