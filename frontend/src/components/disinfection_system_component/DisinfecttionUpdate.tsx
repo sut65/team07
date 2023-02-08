@@ -27,6 +27,8 @@ function DisinfectionUpdate(props: any) {
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setAlertMessage] = useState("");
+
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
@@ -99,21 +101,17 @@ function DisinfectionUpdate(props: any) {
       DisinfactantID: convertType(disinfection.DisinfactantID),
     };
     console.log(data)
-    // let res = await UpdateDisinfection(data);
-    // if (res) {
-    //     setSuccess(true);
-    // } else {
-    //     setError(true);
-    // }
 
-    try {
-      let res = await HttpClientServices.patch("/disinfection", data);
-      setSuccess(true);
-      // console.log(res.data);
-    } catch (err) {
-      setError(false);
-      console.log(err)
-    }
+    let res = await HttpClientServices.patch("/disinfection", data);
+            if (!res.error) {
+              setSuccess(true);
+              console.log(res);
+              setAlertMessage("อัพเดตข้อมูลสำเร็จ");
+            } else {
+              setError(true);
+              setAlertMessage("อัพเดตข้อมูลไม่สำเร็จ " + res.message);
+              // console.log(res.message);
+            }
   }
 
   useEffect(() => {
@@ -126,37 +124,28 @@ function DisinfectionUpdate(props: any) {
 
   return (
     <div>
-      <Snackbar
-        open={success}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{ mt: 10 }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity="success"
-          sx={{ width: '100%', borderRadius: 3 }}
-        >
-          อัพเดตข้อมูลสำเร็จ
-        </Alert>
-      </Snackbar>
-
-      <Snackbar
-        open={error}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{ mt: 10 }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity="error"
-          sx={{ width: '100%', borderRadius: 3 }}
-        >
-          อัพเดตข้อมูลไม่สำเร็จ
-        </Alert>
-      </Snackbar>
+           <Snackbar
+                id="success"
+                open={success}
+                autoHideDuration={8000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert onClose={handleClose} severity="success">
+                    {message}
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                id="error"
+                open={error}
+                autoHideDuration={8000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert onClose={handleClose} severity="error">
+                    {message}
+                </Alert>
+            </Snackbar>
       <Container
                 component="main"
                 maxWidth="md"

@@ -144,7 +144,7 @@ function DisinfectionCreate() {
                 open={success}
                 autoHideDuration={8000}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="success">
                     {message}
@@ -155,7 +155,7 @@ function DisinfectionCreate() {
                 open={error}
                 autoHideDuration={8000}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="error">
                     {message}

@@ -34,7 +34,7 @@ func CreateDisinfection(c *gin.Context) {
 	}
 
 	dft := entity.Disinfection{
-		WorkTime: 				disinfection.WorkTime,
+		WorkTime: 				disinfection.WorkTime.Local(),
 		AmountDisinfectant:		disinfection.AmountDisinfectant,	
 		Note: 					disinfection.Note,	
 		Disinfactant: 			disinfectant,			//โยง คสพ Entity Case
@@ -117,17 +117,17 @@ func UpdateDisinfection(c *gin.Context) {
 		return
 	}
 
-	if disinfection.Note == "" {
-		disinfection.Note = disinfection_old.Note
-	}
+	// if disinfection.Note == "" {
+	// 	disinfection.Note = disinfection_old.Note
+	// }
 
-	if disinfection.AmountDisinfectant == 0 {
-		disinfection.AmountDisinfectant = disinfection_old.AmountDisinfectant
-	}
+	// if disinfection.AmountDisinfectant == 0 {
+	// 	disinfection.AmountDisinfectant = disinfection_old.AmountDisinfectant
+	// }
 
-	if disinfection.WorkTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		disinfection.WorkTime = disinfection_old.WorkTime
-	}
+	// if disinfection.WorkTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+	// 	disinfection.WorkTime = disinfection_old.WorkTime
+	// }
 
 	// if new have company_id
 	if disinfection.AmbulanceID != nil {
@@ -178,6 +178,12 @@ func UpdateDisinfection(c *gin.Context) {
 		disinfection.Employee = employee
 	}
 
+	//Validate
+	if _, err := govalidator.ValidateStruct(disinfection); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	// Update abl in database
 	if err := entity.DB().Save(&disinfection).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -189,45 +195,6 @@ func UpdateDisinfection(c *gin.Context) {
 		"data":   disinfection,
 	})
 
-
-	// if err := c.ShouldBindJSON(&disinfection); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// 	return
-	// }
-	// if tx := entity.DB().Where("id = ?", disinfection.ID).First(&disinfection); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "vehicleinspection not found"})
-	// 	return
-	// }
-	// if tx := entity.DB().Where("id = ?", disinfectant.ID).First(&disinfectant); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "statuscheck not found"})
-	// 	return
-	// }
-	// if tx := entity.DB().Where("id = ?", ambulance.ID).First(&ambulance); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
-	// 	return
-	// }
-	// if tx := entity.DB().Where("id = ?", employee.ID).First(&employee); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
-	// 	return
-	// }
-
-	// UpdateDisinfection := entity.Disinfection{
-	// 	WorkTime: 				disinfection.WorkTime,
-	// 	AmountDisinfectant:		disinfection.AmountDisinfectant,	
-	// 	Note: 					disinfection.Note,	
-	// 	Disinfactant: 			disinfectant,			//โยง คสพ Entity Disinfectant
-	// 	Ambulance:                 ambulance,                                   //โยง คสพ Entity Car
-	// 	Employee:                  employee,                                    //โยง คสพ Entity Employee	
-	// }
-
-	// if err := entity.DB().Where("id = ?", disinfection.ID).Updates(&UpdateDisinfection).Error; err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// 	return
-	// }
-	// c.JSON(http.StatusOK, gin.H{
-	// 	"status": "Updating success!!",
-	// 	"data":   UpdateDisinfection,
-	// })
 }
 
 // GET /companies

@@ -13,9 +13,9 @@ import { DisinfectionInterface } from '../../models/disinfection_system_models/d
 import { GetDisinfectionByID, ListAmbulances, ListDisinfectants, UpdateDisinfection } from '../../services/disinfection_system_services/HttpClientServices';
 import { DisintantInterface } from '../../models/disinfection_system_models/disinfectant';
 import { any } from 'prop-types';
-//import { HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
+import { HttpClientServices } from '../../services/disinfection_system_services/HttpClientServices';
 import { GetRecordTimeInByEmployee, GetRecordTimeInByID, ListRecordtimeouts, UpdateRecordTimeIn } from '../../services/recordtimein_system_services/HttpClientServices';
-import { HttpClientServices } from '../../services/recordtimeout_system_services/HttpClientServices';
+//import { HttpClientServices } from '../../services/recordtimeout_system_services/HttpClientServices';
 import { RecordTimeInInterface } from '../../models/recordtimein_system_models/recordtimein';
 import { RecordTimeOutInterface } from '../../models/recordtimeout_system_models/recordtimeout';
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee';
@@ -38,7 +38,7 @@ function RecordTimeInUpdate() {
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setAlertMessage] = useState("");
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
@@ -114,14 +114,15 @@ function RecordTimeInUpdate() {
     // }
 
     let res = await HttpClientServices.patch(`/recordtimein`, data);
-      if (!res.error) {
-        setSuccess(true);
-        console.log(res);
-        setMessage("อัพเดทข้อมูลสำเร็จ");
-      } else {
-        setError(true);
-        setMessage("อัพเดทข้อมูลไม่สำเร็จ " + res.message);
-      }
+    if (!res.error) {
+      setSuccess(true);
+      console.log(res);
+      setAlertMessage("อัพเดตข้อมูลสำเร็จ");
+    } else {
+      setError(true);
+      setAlertMessage("อัพเดตข้อมูลไม่สำเร็จ " + res.message);
+      // console.log(res.message);
+    }
   }
 
     useEffect(() => {
@@ -133,23 +134,25 @@ function RecordTimeInUpdate() {
   return (
     <div>
        <Snackbar
+                id="success"
                 open={success}
-                autoHideDuration={3000}
+                autoHideDuration={8000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                บันทึกสำเร็จ
+                    {message}
                 </Alert>
             </Snackbar>
             <Snackbar
+                id="error"
                 open={error}
-                autoHideDuration={3000}
+                autoHideDuration={8000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="error">
-                บันทึกข้อมูลไม่สำเร็จ
+                    {message}
                 </Alert>
             </Snackbar>
         
