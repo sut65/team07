@@ -1,8 +1,5 @@
 import { CaseInterface } from "../../models/emergency_system_models/case";
-
-
-
-const apiUrl = "http://localhost:8080";
+import { apiUrl } from "../utility";
 
 async function GetEmergency() {
   const requestOptions = {
@@ -13,7 +10,7 @@ async function GetEmergency() {
     },
   };
 
-  let res = await fetch(`${apiUrl}/emergencys`, requestOptions)
+  let res = await fetch(`${apiUrl}/emergencies`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -50,29 +47,29 @@ async function GetGender() {
 
 async function CreateEmercase(data: CaseInterface) {
   const requestOptions = {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+      method: "POST",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/Emercases`, requestOptions)
-    .then((response) => response.json())
-    .then((res) => {
-      if (res.data) {
-        return res.data;
-      } else {
-        return false;
-      }
-    });
+  let res = await fetch(`${apiUrl}/emercase`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
 
   return res;
 }
 
-async function GetEmercaseBySID() {
-  let sid = localStorage.getItem("cid");
+async function GetEmercaseAll() {
+  let cid = localStorage.getItem("cid");
   const requestOptions = {
     method: "GET",
     headers: {
@@ -82,7 +79,7 @@ async function GetEmercaseBySID() {
   };
 
   let res = await fetch(
-    `${apiUrl}/Emercases/${sid}`,
+    `${apiUrl}/emercases`,
     requestOptions
   )
     .then((response) => response.json())
@@ -97,11 +94,59 @@ async function GetEmercaseBySID() {
   return res;
 }
 
+async function GetEmercaseByEmployee() {
+  let eid = localStorage.getItem("id");
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+  };
 
+  let res = await fetch(
+      `${apiUrl}/emercase/${eid}`,
+      requestOptions
+  )
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
+
+
+async function DeleteCaseByID(ID : any){
+  const requestOptions = {
+      method: "DELETE",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(`${apiUrl}/emercase/${ID}`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
 export {
   GetGender,
   GetEmergency,
   CreateEmercase,
-  GetEmercaseBySID,
- 
+  GetEmercaseAll, 
+  GetEmercaseByEmployee,
+  DeleteCaseByID,
 };

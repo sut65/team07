@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -20,6 +21,13 @@ func CreateCarDepot(c *gin.Context) {
 	if err := c.ShouldBindJSON(&carDepot); err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// Validation Value
+	if _, err := govalidator.ValidateStruct(&carDepot); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 
@@ -59,6 +67,7 @@ func CreateCarDepot(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": cd})
+
 }
 
 // GET /carDepot/:id

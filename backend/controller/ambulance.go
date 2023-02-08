@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -23,15 +24,21 @@ func CreateAmbulance(c *gin.Context) {
 		return
 	}
 
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(ambulance); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	// 8: ค้นหา company ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "companies not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกบริษัทที่จัดซื้อ"})
 		return
 	}
 
 	// 9: ค้นหา typeAbl ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "type_abls not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกประเภทรถพยาบาล"})
 		return
 	}
 
@@ -138,6 +145,15 @@ func UpdateAmbulance(c *gin.Context) {
 		})
 		c.Abort()
 		return
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(ambulance); err != nil {
+
+		if err.Error() != "วันที่ไม่ควรเป็นอดีต" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
 	// Check abl is haved ?

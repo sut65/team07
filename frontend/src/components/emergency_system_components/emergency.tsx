@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -105,21 +105,27 @@ function CaseCreate() {
         return val;
     };
 
+    const navigator = useNavigate();
+
     async function submit() {
         let data = {
+            EmployeeID: convertType(localStorage.getItem("id")),
             GenderID: convertType(emercase.GenderID),
             EmergencyID: convertType(emercase.EmergencyID),
             Location: emercase.Location,
             Patient: emercase.Patient,
-            Age: emercase.Age,
+            Age: convertType(emercase.Age),
             Status: emercase.Status,
             Date: emercase.Date,
-        }
+        };
         console.log(data)
 
         let res = await CreateEmercase(data);
         if (res) {
             setSuccess(true);
+            setTimeout(() => {
+                navigator("/Ambulance")
+            }, 1200)
         } else {
             setError(true);
         }
@@ -227,6 +233,9 @@ function CaseCreate() {
                                 id="patient"
                                 variant="outlined"
                                 onChange={handleChangeTextField}
+                                inputProps={{
+                                    name: "Patient",
+                                }}
                             />
                         </FormControl>
                     </Grid>
@@ -257,9 +266,14 @@ function CaseCreate() {
                             <TextField
                                 name="Age"
                                 type="number"
-                                value={emercase.Age}
+                                value={emercase.Age || ""}
                                 onChange={handleChangeTextField}
-                                required
+                                    InputProps={{
+                                        inputProps: {
+                                            min: 1,
+                                            max: 100
+                                        }
+                                    }}
                             />
                         </FormControl>
                     </Grid>
@@ -273,7 +287,7 @@ function CaseCreate() {
                                 rows={4}
                                 onChange={handleChangeTextField}
                                 inputProps={{
-                                    name: "status",
+                                    name: "Status",
                                 }}
                             />
                         </FormControl>
@@ -304,5 +318,7 @@ function CaseCreate() {
 }
 
 export default CaseCreate;
+
+
 
 

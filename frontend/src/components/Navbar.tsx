@@ -158,9 +158,7 @@ function Navbar() {
 
   const profile = () => {
     // setSuccess(true);
-    window.location.href = "/";
-    console.log("profile");
-    alert("profile");
+    window.location.href = "/employee-currenct" ;
   };
 
   const signout = () => {

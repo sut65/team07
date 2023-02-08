@@ -15,11 +15,7 @@ async function CreatAmbulances(data: AmbulancesInterface) {
     let res = await fetch(`${apiUrl}/ambulance`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            if (res.data) {
-                return res.data;
-            } else {
-                return false;
-            }
+                return res;
         });
 
     return res;
@@ -158,11 +154,7 @@ async function UpdateAmbulance(data: AmbulancesInterface) {
     let res = await fetch(`${apiUrl}/ambulance`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            if (res.data) {
-                return res.data
-            } else {
-                return false
-            }
+                return res
         })
     return res
 }

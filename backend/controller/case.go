@@ -65,8 +65,9 @@ func CreateEmercase(c *gin.Context) {
 // GET /emercase/:id
 func GetEmercase(c *gin.Context) {
 	var emercase entity.Case
+	println("xsxefvyjm")
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM emercases WHERE id = ?", id).Scan(&emercase).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM cases WHERE id = ?", id).Scan(&emercase).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -77,7 +78,7 @@ func GetEmercase(c *gin.Context) {
 // GET /emercases
 func ListEmercase(c *gin.Context) {
 	var emercases []entity.Case
-	if err := entity.DB().Raw("SELECT * FROM emercases").Scan(&emercases).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM cases").Scan(&emercases).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -88,7 +89,7 @@ func ListEmercase(c *gin.Context) {
 // DELETE /emercases/:id
 func DeleteEmercase(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM emercases WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM cases WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "emercase not found"})
 		return
 	}
@@ -152,13 +153,13 @@ func UpdateEmercase(c *gin.Context) {
 
 // GET /emergencys
 func GetEmergency(c *gin.Context) {
-	var emergencys []entity.Emergency
-	if err := entity.DB().Raw("SELECT * FROM emergencies").Scan(&emergencys).Error; err != nil {
+	var emergencies []entity.Emergency
+	if err := entity.DB().Raw("SELECT * FROM emergencies").Scan(&emergencies).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": emergencys})
+	c.JSON(http.StatusOK, gin.H{"data": emergencies})
 }
 
 // GET /genders

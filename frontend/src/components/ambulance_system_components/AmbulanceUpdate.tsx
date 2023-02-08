@@ -22,7 +22,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function AmbulanceUpdate() {
-
+    
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -69,6 +70,7 @@ function AmbulanceUpdate() {
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name as keyof typeof ambulance;
+        console.log(event.target.value)
         setAmbulance({
             ...ambulance,
             [name]: event.target.value,
@@ -78,6 +80,7 @@ function AmbulanceUpdate() {
 
     const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof ambulance;
+        
         setAmbulance({
             ...ambulance,
             [name]: event.target.value,
@@ -98,12 +101,14 @@ function AmbulanceUpdate() {
             CarBrand: ambulance.CarBrand,
         };
         let res = await UpdateAmbulance(data);
-        if (res) {
+        if (res.data) {
+            setAlertMessage("อัพเดตข้อมูลสำเร็จ")
             setSuccess(true);
             setTimeout(() => {
                 navigator("/Ambulance")
             }, 1200)
         } else {
+            setAlertMessage(res.error)
             setError(true);
         }
     }
@@ -130,7 +135,7 @@ function AmbulanceUpdate() {
                     severity="success"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลสำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
 
@@ -146,7 +151,7 @@ function AmbulanceUpdate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลไม่สำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Container
@@ -263,6 +268,7 @@ function AmbulanceUpdate() {
                                     className='StyledTextField'
                                     value={ambulance.Date}
                                     onChange={(newValue) => {
+                                        console.log(newValue?.getMinutes)
                                         setAmbulance({
                                             ...ambulance,
                                             Date: newValue,

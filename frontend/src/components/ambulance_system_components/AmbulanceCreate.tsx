@@ -26,6 +26,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function AmbulanceCreate() {
 
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -89,14 +90,16 @@ function AmbulanceCreate() {
             Clp: ambulance.Clp,
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
-        };
+        };     
         let res = await CreatAmbulances(data);
-        if (res) {
+        if (res.data) {
+            setAlertMessage("บันทึกข้อมูลสำเร็จ");
             setSuccess(true);
             setTimeout(() => {
                 navigator("/Ambulance")
             }, 1200)
         } else {
+            setAlertMessage(res.error);
             setError(true);
         }
     }
@@ -124,7 +127,7 @@ function AmbulanceCreate() {
                     severity="success" 
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    บันทึกข้อมูลสำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
 
@@ -140,7 +143,7 @@ function AmbulanceCreate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3}}
                 >
-                    บันทึกข้อมูลไม่สำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
 
