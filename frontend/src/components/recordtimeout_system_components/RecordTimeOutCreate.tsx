@@ -39,8 +39,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 //   DateTime: Date;
 // }
 
-
-
 function RecordTimeOutCreate() {
   const params = useParams();
   const [recordtimeout, setRecordTimeOut] = useState<
@@ -53,6 +51,7 @@ function RecordTimeOutCreate() {
 
   const [employee, setEmployee] = useState<EmployeeInterface>();
   const [cases, setCases] = useState<CaseInterface[]>([]);
+  
 
   const [abl, setAmbulance] = useState<AmbulancesInterface[]>([]);
   const [typeAbls, setTypeAbls] = useState<TypeAblsInterface[]>([]);
@@ -78,16 +77,7 @@ function RecordTimeOutCreate() {
 
     //handleChange เคสที่ได้รับแจ้ง เพื่อ set details case
     if (event.target.name === "CaseID") {
-      cases.forEach((val: any) => {
-        if (val.ID === Number(event.target.value)) {
-          setDetailCase(
-            `สถานที่เกิดเหตุ: ${val.Location} ผู้ป่วย: ${val.Patient} อาการ: ${val.Status}`
-          );
-        }
-      });
-      if (event.target.value === "") {
-        setDetailCase("รายละเอียด");
-      }
+      getCaseByID(event.target.value);
     }
     //handleChange ประเภทรถพยาบาล เพื่อให้สามารถเลือกรถพยาบาลของแต่ละประเภทได้
     if (event.target.name === "TypeAblID") {
@@ -97,17 +87,18 @@ function RecordTimeOutCreate() {
       if (event.target.value === "") {
         setAmbulance([]);
       } else {
-        getAmbulance(event.target.value);
+        getAmbulanceByTypeABLID(event.target.value);
       }
     }
 
     if (event.target.name === "AmbulanceID") {
-      const a = abl.filter((v) => v.ID === Number(event.target.value))[0];
-      if (a) {
-        setDetailAbl(`ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`);
-      } else {
-        setDetailAbl("รายละเอียด");
-      }
+      getAmbulanceByABLID(event.target.value)
+      // const a = abl.filter((v) => v.ID === Number(event.target.value))[0];
+      // if (a) {
+        // setDetailAbl(`ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`);
+      // } else {
+      //   setDetailAbl("รายละเอียด");
+      // }
     }
   };
 
@@ -119,9 +110,22 @@ function RecordTimeOutCreate() {
     });
   };
 
+
+
   //get Ambulance
-  const getAmbulance = async (id: string) => {
+  const getAmbulanceByABLID = async (id: string) => {
     let res = await HttpClientServices.get(`/abl/${id}`);
+    if (!res.error) {
+      setDetailAbl(`ยี่ห้อรถ: ${res.results.CarBrand} เลขทะเบียนรถ: ${res.results.Clp}`);
+      //console.log(res);
+    } else {
+      console.log(res.error);
+    }
+  };
+
+  //get Ambulance
+  const getAmbulanceByTypeABLID = async (id: string) => {
+    let res = await HttpClientServices.get(`/typeabl/${id}`);
     if (!res.error) {
       setAmbulance(res.results);
       //console.log(res);
@@ -135,6 +139,18 @@ function RecordTimeOutCreate() {
     if (!res.error) {
       setCases(res.results);
       // console.log(res);
+    } else {
+      console.log(res.error);
+    }
+  };
+  //get CaseID
+  const getCaseByID = async (id: string) => {
+    let res = await HttpClientServices.get(`/cases/${id}`);
+    if (!res.error) {
+      setDetailCase(
+        `สถานที่เกิดเหตุ: ${res.results.Location} ผู้ป่วย: ${res.results.Patient} อาการ: ${res.results.Status}`
+      );
+      console.log(res.results);
     } else {
       console.log(res.error);
     }
@@ -174,7 +190,7 @@ function RecordTimeOutCreate() {
       });
       // console.log(res?.Ambulance?.TypeAblID);
       setTypeAbl(res.results.Ambulance?.TypeAblID);
-      getAmbulance(res.results?.Ambulance?.TypeAblID);
+      getAmbulanceByTypeABLID(res.results?.Ambulance?.TypeAblID);
       setDetailCase(
         `สถานที่เกิดเหตุ: ${res.results.Case.Location}  ผู้ป่วย: ${res.results.Case.Patient} อาการ: ${res.results.Case.Status}`
       );
@@ -349,7 +365,7 @@ function RecordTimeOutCreate() {
 
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <Typography>รถพยาบาล</Typography>
+              <Typography>ไอดีรถพยาบาล</Typography>
               <Select
                 id="ID"
                 native
@@ -363,11 +379,11 @@ function RecordTimeOutCreate() {
                 value={String(recordtimeout.AmbulanceID)}
               >
                 <option aria-label="None" value="">
-                  กรุณาเลือกรถพยาบาล
+                  กรุณาเลือกไอดีรถพยาบาล
                 </option>
                 {abl.map((item: AmbulancesInterface) => (
                   <option value={Number(item.ID)} key={item.ID}>
-                    {item.CarBrand}
+                    {item.ID}
                   </option>
                 ))}
               </Select>
@@ -427,7 +443,6 @@ function RecordTimeOutCreate() {
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-               
                   openTo={"day"}
                   value={recordtimeout?.RecordTimeOutDatetime}
                   onChange={(newValue) => {
@@ -436,7 +451,6 @@ function RecordTimeOutCreate() {
                     // console.log(newValue);
                     setRecordTimeOut({ ...recordtimeout, [id]: newValue });
                   }}
-                  
                   inputFormat="dd/MM/yyyy"
                   renderInput={(params) => (
                     <TextField {...params} size="small" />

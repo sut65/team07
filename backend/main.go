@@ -133,8 +133,10 @@ func main() {
 	r.POST("/recordtimeout", controller.CreateRecordTimeOut)
 	r.DELETE("/recordtimeout/:id", controller.DeleteRecordTimeOut)
 	r.PATCH("/recordtimeout", controller.UpdateRecordTimeOut)
-	r.GET("/abl/:type_id", controller.GetAmbulanceByTypeAblID)
+	r.GET("/typeabl/:type_id", controller.GetAmbulanceByTypeAblID)
+	r.GET("/abl/:abl_id", controller.GetAmbulanceByAblID)
 	r.GET("/cases", controller.GetCase)
+	r.GET("/cases/:case_id", controller.GetCaseByID)
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
 	r.GET("/recordtimeins", controller.ListRecordTimeIns)
 	r.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
@@ -173,7 +175,6 @@ func main() {
 
 	r.GET("/genders", controller.GetGender)
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
-	
 
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
 
