@@ -150,10 +150,8 @@ export default function RecordTimeOut(props: any) {
             <Grid item xs={7}>
               {params.Annotation}
             </Grid>
-           
           </Grid> <br/>
           <Divider />
-         
           <Grid item xs={12} container>
             <Grid item xs={5}>
               {params.Employee.User.Role.Name} :
@@ -163,7 +161,6 @@ export default function RecordTimeOut(props: any) {
             </Grid>
           </Grid>
         </DialogContent>
-
         <DialogActions>
           <Button onClick={handleClose} color="error">
             Close

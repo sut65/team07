@@ -151,7 +151,17 @@ func UpdateRecordTimeOut(c *gin.Context) {
 func GetAmbulanceByTypeAblID(c *gin.Context) {
 	var ambulance []entity.Ambulance
 	id := c.Param("type_id")
-	if err := entity.DB().Raw("SELECT * FROM ambulances WHERE type_abl_id = ?", id).Find(&ambulance).Error; err != nil {
+	if err := entity.DB().Raw("SELECT id FROM ambulances WHERE type_abl_id = ? EXCEPT SELECT record_time_outs.ambulance_id FROM record_time_outs ", id).Find(&ambulance).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ambulance})
+}
+
+func GetAmbulanceByAblID(c *gin.Context) {
+	var ambulance entity.Ambulance
+	id := c.Param("abl_id")
+	if err := entity.DB().Raw("SELECT * FROM ambulances WHERE id = ?", id).Find(&ambulance).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -161,7 +171,18 @@ func GetAmbulanceByTypeAblID(c *gin.Context) {
 // GET /GetCase
 func GetCase(c *gin.Context) {
 	var cases []entity.Case
-	if err := entity.DB().Raw("SELECT * FROM cases ORDER BY id DESC").Find(&cases).Error; err != nil {
+	if err := entity.DB().Raw("SELECT id FROM cases EXCEPT SELECT record_time_outs.case_id FROM record_time_outs ORDER BY id DESC ").Find(&cases).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": cases})
+}
+
+// GET /GetCaseID
+func GetCaseByID(c *gin.Context) {
+	var cases entity.Case
+	id := c.Param("case_id")
+	if err := entity.DB().Raw("SELECT * FROM cases WHERE id = ?", id).Find(&cases).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

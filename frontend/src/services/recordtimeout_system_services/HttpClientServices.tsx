@@ -38,12 +38,10 @@ export class HttpClientServices {
       .then((response) => response.json())
       .then((res) => {
         console.log(res);
-
         if (res.data) {
           return { error: false, results: res.data };
         } else {
           console.log(res);
-
           return { error: true, message: res.error };
         }
       });
