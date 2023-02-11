@@ -121,7 +121,6 @@ function AmbulanceUseUpdate() {
             ...ambulanceUse,
             [name]: event.target.value,
         });
-        // console.log(ambulanceUse)
     };
 
     const navigator = useNavigate();
