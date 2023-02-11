@@ -9,7 +9,7 @@ import (
 
 type AmbulanceUse struct {
 	gorm.Model
-	Amount int       `valid:"AmbulanceUseAmountNoNegitive~จำนวนไม่ควรมีค่าเป็นลบ"`
+	Amount int       `valid:"range(1|10000)~จำนวนไม่ควรมีค่าเป็นลบ,required~โปรดใส่จำนวนยาที่ใช้"`
 	Date   time.Time `valid:"AmbulanceUseDateNotPast~วันที่ไม่ควรเป็นอดีต,AmbulanceUseDateNotFuture~วันที่ไม่ควรเป็นอนาคต"`
 
 	// Save Company area ID in FK
@@ -31,13 +31,13 @@ type AmbulanceUse struct {
 func init() {
 	govalidator.CustomTypeTagMap.Set("AmbulanceUseDateNotPast", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		now := time.Now().Add(time.Minute * -10)
+		now := time.Now().Add(time.Minute * -5)
 		return t.Equal(now) || t.After(now)
 	})
 
 	govalidator.CustomTypeTagMap.Set("AmbulanceUseDateNotFuture", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
-		now := time.Now().Add(time.Minute * 10)
+		now := time.Now().Add(time.Minute * 5)
 		return t.Before(now) || t.Equal(now)
 	})
 

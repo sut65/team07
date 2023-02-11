@@ -90,7 +90,8 @@ function AmbulanceCreate() {
             Clp: ambulance.Clp,
             Date: ambulance.Date,
             CarBrand: ambulance.CarBrand,
-        };     
+        };
+        console.log(data.Date)     
         let res = await CreatAmbulances(data);
         if (res.data) {
             setAlertMessage("บันทึกข้อมูลสำเร็จ");

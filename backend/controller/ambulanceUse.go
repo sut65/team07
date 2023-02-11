@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
@@ -24,10 +25,8 @@ func CreateAmbulanceUse(c *gin.Context) {
 		return
 	}
 
-	// แทรกการ validate ไว้ช่วงนี้ของ controller
-	if _, err := govalidator.ValidateStruct(ambulanceUse); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if time.Now().Add(time.Minute*-5).Before(ambulanceUse.Date) && ambulanceUse.Date.Before(time.Now()) {
+		ambulanceUse.Date = time.Now()
 	}
 
 	// 8: ค้นหา employee ด้วย id
@@ -38,13 +37,19 @@ func CreateAmbulanceUse(c *gin.Context) {
 
 	// 9: ค้นหา medicine ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulanceUse.MedicineID).First(&medicine); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "medicines not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกยาที่ใช้"})
+		return
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(ambulanceUse); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	// 10: ค้นหา ambulance ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulanceUse.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulances not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกรถพยาบาล"})
 		return
 	}
 
@@ -148,8 +153,8 @@ func UpdateAmbulanceUse(c *gin.Context) {
 		return
 	}
 
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
 	if _, err := govalidator.ValidateStruct(ambulanceUse); err != nil {
-
 		if err.Error() != "วันที่ไม่ควรเป็นอดีต" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -191,13 +196,13 @@ func UpdateAmbulanceUse(c *gin.Context) {
 	// if new have medicine_id
 	if ambulanceUse.MedicineID != nil {
 		if tx := entity.DB().Where("id = ?", ambulanceUse.MedicineID).First(&medicine); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found medicine"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกยาที่ใช้"})
 			return
 		}
 		ambulanceUse.Medicine = medicine
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulanceUse.MedicineID).First(&medicine); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found medicine"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกยาที่ใช้"})
 			return
 		}
 		ambulanceUse.Medicine = medicine
@@ -206,13 +211,13 @@ func UpdateAmbulanceUse(c *gin.Context) {
 	// if new have ambulance_id
 	if ambulanceUse.AmbulanceID != nil {
 		if tx := entity.DB().Where("id = ?", ambulanceUse.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found ambulance"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกรถพยาบาล"})
 			return
 		}
 		ambulanceUse.Ambulance = ambulance
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulanceUse.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found ambulance"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกรถพยาบาล"})
 			return
 		}
 		ambulanceUse.Ambulance = ambulance

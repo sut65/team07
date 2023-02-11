@@ -222,6 +222,7 @@ function AmblanceUseCreate() {
                         <Typography>จำนวน</Typography>
                         <TextField
                             disabled={disTextField}
+                            // defaultValue={1}
                             autoComplete='off'
                             placeholder='โปรดระบุจำนวนยาที่ใช้'
                             type="number"
