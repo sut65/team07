@@ -103,13 +103,7 @@ function RecordTimeOutCreate() {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
     const name = event.target.name as keyof typeof recordtimeout;
-    console.log(value, name);
-    
-    if(value === '-' && name === 'OdoMeter'){
-      event.preventDefault();
-    }
     setRecordTimeOut({
       ...recordtimeout,
       [name]: event.target.value,
