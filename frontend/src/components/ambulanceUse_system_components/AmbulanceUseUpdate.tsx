@@ -138,9 +138,9 @@ function AmbulanceUseUpdate() {
         if (res.data) {
             setAlertMessage("อัพเดตข้อมูลสำเร็จ")
             setSuccess(true);
-            // setTimeout(() => {
-            //     navigator("/AmbulanceUse")
-            // }, 3000)
+            setTimeout(() => {
+                navigator("/AmbulanceUse")
+            }, 3000)
         } else {
             setAlertMessage(res.error)
             setError(true);
@@ -162,7 +162,7 @@ function AmbulanceUseUpdate() {
         <div>
             <Snackbar
                 open={success}
-                //autoHideDuration={3000}
+                autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{ mt: 10 }}
@@ -178,7 +178,7 @@ function AmbulanceUseUpdate() {
 
             <Snackbar
                 open={error}
-                //autoHideDuration={3000}
+                autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{ mt: 10 }}

@@ -96,9 +96,9 @@ function AmbulanceCreate() {
         if (res.data) {
             setAlertMessage("บันทึกข้อมูลสำเร็จ");
             setSuccess(true);
-            // setTimeout(() => {
-            //     navigator("/Ambulance")
-            // }, 3000)
+            setTimeout(() => {
+                navigator("/Ambulance")
+            }, 3000)
         } else {
             setAlertMessage(res.error);
             setError(true);
@@ -118,7 +118,7 @@ function AmbulanceCreate() {
         <div>
             <Snackbar 
                 open={success} 
-                //autoHideDuration={3000} 
+                autoHideDuration={3000} 
                 onClose={handleClose} 
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{mt:10}}
@@ -134,7 +134,7 @@ function AmbulanceCreate() {
 
             <Snackbar 
                 open={error} 
-                //autoHideDuration={3000} 
+                autoHideDuration={3000} 
                 onClose={handleClose} 
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{mt:10}}
