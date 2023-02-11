@@ -139,9 +139,9 @@ export default function EmployeeCreate() {
         console.log(res)
         if(res.data){
             handleSnackBarOpen()
-            setTimeout(() => {
-                navigator("/employee")
-            }, 10000)
+            // setTimeout(() => {
+            //     navigator("/employee")
+            // }, 10000)
         }else{
             console.log("Error")
             handleSnackBarError(res.error)

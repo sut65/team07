@@ -76,9 +76,9 @@ export default function EmployeeUpdate() {
         
         if(res.data){
             handleSnackBarOpen()
-            setTimeout(() => {
-                navigator("/employee")
-            }, 500)
+            // setTimeout(() => {
+            //     navigator("/employee")
+            // }, 5000)
         }else{
             handleSnackBarError(res.error)
         }
