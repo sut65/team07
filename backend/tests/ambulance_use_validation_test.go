@@ -13,7 +13,24 @@ func TestAmounMustBeGreaterThanZero(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	ablu := entity.AmbulanceUse {
-		Amount: -11,
+		Amount: 0,
+		Date: time.Now(),
+	}
+
+	ok, err := govalidator.ValidateStruct(ablu)
+
+	g.Expect(ok).ToNot(BeTrue()) //เช็คว่ามันเป็นค่าจริงไหม
+
+	g.Expect(err).ToNot(BeNil()) //เช็คว่ามันว่างไหม
+
+	g.Expect(err.Error()).To(Equal("โปรดใส่จำนวนยาที่ใช้"))
+}
+
+func TestAmounNoNegitive(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	ablu := entity.AmbulanceUse {
+		Amount: -1,
 		Date: time.Now(),
 	}
 

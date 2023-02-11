@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,10 @@ func CreateAmbulance(c *gin.Context) {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	if time.Now().Add(time.Minute*-5).Before(ambulance.Date) && ambulance.Date.Before(time.Now()) {
+		ambulance.Date = time.Now()
 	}
 
 	// แทรกการ validate ไว้ช่วงนี้ของ controller
@@ -149,7 +154,6 @@ func UpdateAmbulance(c *gin.Context) {
 
 	// แทรกการ validate ไว้ช่วงนี้ของ controller
 	if _, err := govalidator.ValidateStruct(ambulance); err != nil {
-
 		if err.Error() != "วันที่ไม่ควรเป็นอดีต" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -178,14 +182,14 @@ func UpdateAmbulance(c *gin.Context) {
 	// if new have company_id
 	if ambulance.CompanyID != nil {
 		if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกบริษัทที่จัดซื้อ"})
 			return
 		}
 		fmt.Print("NOT NULL")
 		ambulance.Company = company
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกบริษัทที่จัดซื้อ"})
 			return
 		}
 		fmt.Print("NULL")
@@ -195,13 +199,13 @@ func UpdateAmbulance(c *gin.Context) {
 	// if new have typeAbl_id
 	if ambulance.TypeAblID != nil {
 		if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found typeAbl"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกประเภทรถพยาบาล"})
 			return
 		}
 		ambulance.TypeAbl = typeAbl
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found typeAbl"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกประเภทรถพยาบาล"})
 			return
 		}
 		ambulance.TypeAbl = typeAbl

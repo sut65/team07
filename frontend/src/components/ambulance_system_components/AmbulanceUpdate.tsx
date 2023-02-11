@@ -70,7 +70,7 @@ function AmbulanceUpdate() {
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name as keyof typeof ambulance;
-        console.log(event.target.value)
+
         setAmbulance({
             ...ambulance,
             [name]: event.target.value,
@@ -268,12 +268,12 @@ function AmbulanceUpdate() {
                                     className='StyledTextField'
                                     value={ambulance.Date}
                                     onChange={(newValue) => {
-                                        console.log(newValue?.getMinutes)
                                         setAmbulance({
                                             ...ambulance,
                                             Date: newValue,
                                         });
                                     }}
+                                    disabled={true}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
                             </LocalizationProvider>

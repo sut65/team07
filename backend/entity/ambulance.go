@@ -56,13 +56,13 @@ type Ambulance struct {
 func init() {
     govalidator.CustomTypeTagMap.Set("AmbulanceDateNotPast", func(i interface{}, context interface{}) bool {
         t := i.(time.Time)
-		now := time.Now().Add(time.Minute * -10)
+		now := time.Now().Add(time.Minute * -5)
 		return t.Equal(now) || t.After(now)
     })
 
     govalidator.CustomTypeTagMap.Set("AmbulanceDateNotFuture", func(i interface{}, context interface{}) bool {
         t := i.(time.Time)
-		now := time.Now().Add(time.Minute * 10)
+		now := time.Now().Add(time.Minute * 5)
         return t.Before(now) || t.Equal(now)
     })
 
