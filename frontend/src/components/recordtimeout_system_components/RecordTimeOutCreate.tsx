@@ -45,13 +45,13 @@ function RecordTimeOutCreate() {
     Partial<RecordTimeOutInterface>
   >({ RecordTimeOutDatetime: new Date() });
 
+  const [checkParam, setcheckParam] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
 
   const [employee, setEmployee] = useState<EmployeeInterface>();
   const [cases, setCases] = useState<CaseInterface[]>([]);
-  
 
   const [abl, setAmbulance] = useState<AmbulancesInterface[]>([]);
   const [typeAbls, setTypeAbls] = useState<TypeAblsInterface[]>([]);
@@ -92,10 +92,10 @@ function RecordTimeOutCreate() {
     }
 
     if (event.target.name === "AmbulanceID") {
-      getAmbulanceByABLID(event.target.value)
+      getAmbulanceByABLID(event.target.value);
       // const a = abl.filter((v) => v.ID === Number(event.target.value))[0];
       // if (a) {
-        // setDetailAbl(`ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`);
+      // setDetailAbl(`ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`);
       // } else {
       //   setDetailAbl("รายละเอียด");
       // }
@@ -103,20 +103,26 @@ function RecordTimeOutCreate() {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     const name = event.target.name as keyof typeof recordtimeout;
+    console.log(value, name);
+    
+    if(value === '-' && name === 'OdoMeter'){
+      event.preventDefault();
+    }
     setRecordTimeOut({
       ...recordtimeout,
       [name]: event.target.value,
     });
   };
 
-
-
   //get Ambulance
   const getAmbulanceByABLID = async (id: string) => {
     let res = await HttpClientServices.get(`/abl/${id}`);
     if (!res.error) {
-      setDetailAbl(`ยี่ห้อรถ: ${res.results.CarBrand} เลขทะเบียนรถ: ${res.results.Clp}`);
+      setDetailAbl(
+        `ยี่ห้อรถ: ${res.results.CarBrand} เลขทะเบียนรถ: ${res.results.Clp}`
+      );
       //console.log(res);
     } else {
       console.log(res.error);
@@ -188,16 +194,19 @@ function RecordTimeOutCreate() {
         OdoMeter: res.results.OdoMeter,
         RecordTimeOutDatetime: new Date(),
       });
-      // console.log(res?.Ambulance?.TypeAblID);
+      // console.log(res?.results);
       setTypeAbl(res.results.Ambulance?.TypeAblID);
       getAmbulanceByTypeABLID(res.results?.Ambulance?.TypeAblID);
-      setDetailCase(
-        `สถานที่เกิดเหตุ: ${res.results.Case.Location}  ผู้ป่วย: ${res.results.Case.Patient} อาการ: ${res.results.Case.Status}`
-      );
-      setDetailAbl(
-        `ยี่ห้อรถ: ${res.results.Ambulance.CarBrand} เลขทะเบียนรถ: ${res.results.Ambulance.Clp}`
-      );
-      // console.log(res);
+
+      getCaseByID(res.results.CaseID);
+      getAmbulanceByABLID(res.results.Ambulance.TypeAblID);
+      // setDetailCase(
+      //   `สถานที่เกิดเหตุ: ${res.results.Case.Location}  ผู้ป่วย: ${res.results.Case.Patient} อาการ: ${res.results.Case.Status}`
+      // );
+      // setDetailAbl(
+      //   `ยี่ห้อรถ: ${res.results.Ambulance.CarBrand} เลขทะเบียนรถ: ${res.results.Ambulance.Clp}`
+      // );
+      console.log(recordtimeout);
     } else {
       console.log(res.error);
       setError(true);
@@ -213,6 +222,7 @@ function RecordTimeOutCreate() {
     // get recordtimeout
     const param = params ? params : null;
     if (param?.id) {
+      setcheckParam(true);
       getRecordTimeOut(param?.id);
     }
 
@@ -270,6 +280,8 @@ function RecordTimeOutCreate() {
     }
   }
 
+
+
   return (
     <Container
       className="container"
@@ -299,34 +311,39 @@ function RecordTimeOutCreate() {
         </Box>
         <Divider />
         <Grid container spacing={2} sx={{ padding: 1 }}>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <Typography>เคสที่ได้รับแจ้ง</Typography>
-              <Select
-                id="ID"
-                native
-                name="CaseID"
-                size="small"
-                type="number"
-                value={String(recordtimeout?.CaseID)}
-                onChange={handleChange}
-                inputProps={{
-                  name: "CaseID",
-                }}
-                autoFocus
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกเคส
-                </option>
-                {cases.map((item: CaseInterface) => (
-                  <option value={Number(item.ID)} key={item.ID}>
-                    {item.ID}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+          {!checkParam && (
+            <>
+              <Grid item xs={4}>
+                <FormControl fullWidth variant="outlined">
+                  <Typography>เคสที่ได้รับแจ้ง</Typography>
+                  <Select
+                    id="ID"
+                    native
+                    name="CaseID"
+                    size="small"
+                    type="number"
+                    value={String(recordtimeout?.CaseID)}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "CaseID",
+                    }}
+                    autoFocus
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกเคส
+                    </option>
+                    {cases.map((item: CaseInterface) => (
+                      <option value={Number(item.ID)} key={item.ID}>
+                        {item.ID}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </>
+          )}
           <Grid item xs={12}>
+          <Typography>รายละเอียดเคสที่ได้รับ</Typography>
             <TextField
               disabled
               fullWidth
@@ -337,60 +354,65 @@ function RecordTimeOutCreate() {
             />
           </Grid>
 
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <Typography>ประเภทรถพยาบาล</Typography>
-              <Select
-                id="ID"
-                native
-                name="TypeAblID"
-                size="small"
-                onChange={handleChange}
-                inputProps={{
-                  name: "TypeAblID",
-                }}
-                value={String(typeAbl)}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกประเภทรถพยาบาล
-                </option>
-                {typeAbls.map((item: TypeAblsInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+          {!checkParam && (
+            <>
+              <Grid item xs={4}>
+                <FormControl fullWidth variant="outlined">
+                  <Typography>ประเภทรถพยาบาล</Typography>
+                  <Select
+                    id="ID"
+                    native
+                    name="TypeAblID"
+                    size="small"
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "TypeAblID",
+                    }}
+                    value={String(typeAbl)}
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกประเภทรถพยาบาล
+                    </option>
+                    {typeAbls.map((item: TypeAblsInterface) => (
+                      <option value={item.ID} key={item.ID}>
+                        {item.Name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <Typography>ไอดีรถพยาบาล</Typography>
-              <Select
-                id="ID"
-                native
-                name="AmbulanceID"
-                size="small"
-                onChange={handleChange}
-                inputProps={{
-                  name: "AmbulanceID",
-                }}
-                disabled={typeAbl != "" ? false : true}
-                value={String(recordtimeout.AmbulanceID)}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกไอดีรถพยาบาล
-                </option>
-                {abl.map((item: AmbulancesInterface) => (
-                  <option value={Number(item.ID)} key={item.ID}>
-                    {item.ID}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+              <Grid item xs={4}>
+                <FormControl fullWidth variant="outlined">
+                  <Typography>ไอดีรถพยาบาล</Typography>
+                  <Select
+                    id="ID"
+                    native
+                    name="AmbulanceID"
+                    size="small"
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "AmbulanceID",
+                    }}
+                    disabled={typeAbl != "" ? false : true}
+                    value={String(recordtimeout.AmbulanceID)}
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกไอดีรถพยาบาล
+                    </option>
+                    {abl.map((item: AmbulancesInterface) => (
+                      <option value={Number(item.ID)} key={item.ID}>
+                        {item.ID}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </>
+          )}
 
           <Grid item xs={12}>
+          <Typography>รายละเอียดรถพยาบาล</Typography>
             <TextField
               // label="detail"
               disabled
@@ -415,6 +437,7 @@ function RecordTimeOutCreate() {
                 }}
                 onChange={handleInputChange}
                 value={recordtimeout?.OdoMeter ?? ""}
+                
                 required
               />
             </FormControl>

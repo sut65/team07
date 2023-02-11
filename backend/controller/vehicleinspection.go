@@ -199,3 +199,14 @@ func ListAmbulanceParts(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": ambulanceparts})
 }
+
+// GET /ambulance/:id
+func GetAmbulanceByTypeAbl(c *gin.Context) {
+	var ambulance []entity.Ambulance
+	id := c.Param("type_id")
+	if err := entity.DB().Raw("SELECT * FROM ambulances WHERE type_abl_id = ?  ", id).Find(&ambulance).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ambulance})
+}

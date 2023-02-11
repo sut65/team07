@@ -36,6 +36,7 @@ export default function VehicleInspectionCreate() {
   const [vehicleinspection, setVehicleInspection] = React.useState<
     Partial<VehicleInspectionInterface>
   >({ VehicleInspectionDatetime: new Date() });
+  const [checkParam, setcheckParam] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [abl, setAmbulance] = React.useState<AmbulancesInterface[]>([]);
@@ -107,7 +108,7 @@ export default function VehicleInspectionCreate() {
   };
   //get Ambulance
   const getAmbulance = async (id: string) => {
-    let res = await HttpClientServices.get(`/abl/${id}`);
+    let res = await HttpClientServices.get(`/checkabl/${id}`);
     if (!res.error) {
       setAmbulance(res.results);
       // console.log(res.results);
@@ -176,6 +177,7 @@ export default function VehicleInspectionCreate() {
   React.useEffect(() => {
     const param = params ? params : null;
     if (param?.id) {
+      setcheckParam(true);
       getVehicleInspection(param?.id);
     }
     getTypeAbl();
@@ -272,6 +274,8 @@ export default function VehicleInspectionCreate() {
         <Divider />
 
         <Grid container spacing={2} sx={{ padding: 1 }}>
+        {!checkParam && (
+            <>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography>ประเภทรถพยาบาล</Typography>
@@ -297,7 +301,7 @@ export default function VehicleInspectionCreate() {
               </Select>
             </FormControl>
           </Grid>
-
+          
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography>รถพยาบาล</Typography>
@@ -324,8 +328,10 @@ export default function VehicleInspectionCreate() {
               </Select>
             </FormControl>
           </Grid>
-
+          </>
+          )}
           <Grid item xs={12}>
+          <Typography>รายละเอียดรถพยาบาล</Typography>
             <TextField
               disabled
               fullWidth

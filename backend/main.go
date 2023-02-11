@@ -151,6 +151,7 @@ func main() {
 	r.POST("/vehicleinspection", controller.CreateVehicleInspection)
 	r.DELETE("/vehicleinspection/:id", controller.DeleteVehicleInspection)
 	r.PATCH("/vehicleinspection", controller.UpdateVehicleInspection)
+	r.GET("/checkabl/:type_id", controller.GetAmbulanceByTypeAbl)
 
 	r.GET("/statuschecks", controller.ListStatusChecks)
 	r.GET("/statuscheck/:id", controller.GetStatusCheck)
