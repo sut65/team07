@@ -222,11 +222,11 @@ export default function AmbulanceStoreCreate() {
               type="number"
               value={ambulanceStore.Amount || ""}
               placeholder="200"
-              InputProps={{
-                inputProps: {
-                  min: 1
-                }
-              }}
+              // InputProps={{
+              //   inputProps: {
+              //     min: 1
+              //   }
+              // }}
               onChange={handleChange}
               disabled={(selectMedicine === undefined || selectMedicine.ID === 0) ? true : false}
             />
