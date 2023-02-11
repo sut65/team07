@@ -119,9 +119,9 @@ function AmblanceUseCreate() {
         if (res.data) {
             setAlertMessage("บันทึกข้อมูลสำเร็จ")
             setSuccess(true);
-            setTimeout(() => {
-                navigator("/AmbulanceUse")
-            }, 1200)
+            // setTimeout(() => {
+            //     navigator("/AmbulanceUse")
+            // }, 3000)
         } else {
             setAlertMessage(res.error)
             setError(true);
@@ -139,7 +139,7 @@ function AmblanceUseCreate() {
         <div>
             <Snackbar
                 open={success}
-                autoHideDuration={2000}
+                //autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{ mt: 10 }}
@@ -155,7 +155,7 @@ function AmblanceUseCreate() {
 
             <Snackbar
                 open={error}
-                autoHideDuration={2000}
+                //autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{ mt: 10 }}

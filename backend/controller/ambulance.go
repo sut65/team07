@@ -154,7 +154,19 @@ func UpdateAmbulance(c *gin.Context) {
 
 	// แทรกการ validate ไว้ช่วงนี้ของ controller
 	if _, err := govalidator.ValidateStruct(ambulance); err != nil {
-		if err.Error() != "วันที่ไม่ควรเป็นอดีต" {
+		if err.Error() != "วันที่ไม่ควรเป็นอดีต" || err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกเลขทะเบียนรถ" || err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกเลขทะเบียนรถให้ถูกต้อง" || err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกยี่ห้อรถ" {
+			if err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกเลขทะเบียนรถ" {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดกรอกเลขทะเบียนรถ"})
+				return
+
+			} else if err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกเลขทะเบียนรถให้ถูกต้อง" {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดกรอกเลขทะเบียนรถให้ถูกต้อง"})
+				return
+				
+			} else if err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกยี่ห้อรถ" {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดกรอกยี่ห้อรถ"})
+				return
+			}
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
