@@ -365,6 +365,18 @@ func SetupDatabase() {
 	db.CreateInBatches(gender, 2)
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
 
+	case1 := Case{
+		Location:  "หน้าเรียนรวม 1",
+		Patient:   "นกน้อย",
+		Age:       22,
+		Status:    "ตกท่อ",
+		Datetime:  time.Now(),
+		Gender:    gender[0],
+		Emergency: emergency[1],
+		Employee:  empNurse,
+	}
+	db.Model(&Case{}).Create((&case1))
+
 	case2 := Case{
 		Location:  "ปต2",
 		Patient:   "Bamboo",
@@ -378,7 +390,7 @@ func SetupDatabase() {
 	db.Model(&Case{}).Create((&case2))
 
 	ambulance1 := Ambulance{
-		Clp:      "บบ 36771",
+		Clp:      "บบ 3677",
 		CarBrand: "TOYOTA 1",
 		TypeAbl:  typeAbl[0],
 		Employee: empDis,
@@ -386,6 +398,16 @@ func SetupDatabase() {
 		Date:     time.Now(),
 	}
 	db.Model(&Ambulance{}).Create(&ambulance1)
+
+	ambulance2 := Ambulance{
+		Clp:      "กข 1234",
+		CarBrand: "TOYOTA 2",
+		TypeAbl:  typeAbl[0],
+		Employee: empDis,
+		Company:  company[1],
+		Date:     time.Now(),
+	}
+	db.Model(&Ambulance{}).Create(&ambulance2)
 
 	//ตรวจเช็คสภาพรถ
 	statuscheck := []StatusCheck{
