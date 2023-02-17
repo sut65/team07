@@ -69,7 +69,7 @@ async function CreateEmercase(data: CaseInterface) {
 }
 
 async function GetEmercaseAll() {
-  let cid = localStorage.getItem("cid");
+  let ec_id = localStorage.getItem("ec_id");
   const requestOptions = {
     method: "GET",
     headers: {
@@ -94,33 +94,6 @@ async function GetEmercaseAll() {
   return res;
 }
 
-async function GetEmercaseByEmployee() {
-  let eid = localStorage.getItem("id");
-  const requestOptions = {
-      method: "GET",
-      headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-      },
-  };
-
-  let res = await fetch(
-      `${apiUrl}/emercase/${eid}`,
-      requestOptions
-  )
-      .then((response) => response.json())
-      .then((res) => {
-          if (res.data) {
-              return res.data;
-          } else {
-              return false;
-          }
-      });
-
-  return res;
-}
-
-
 async function DeleteCaseByID(ID : any){
   const requestOptions = {
       method: "DELETE",
@@ -142,11 +115,63 @@ async function DeleteCaseByID(ID : any){
 
   return res;
 }
+
+async function GetEmercaseByID() {
+  let cid = localStorage.getItem("cid");
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(
+      `${apiUrl}/emercase/${cid}`,
+      requestOptions
+  )
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+
+}
+
+async function UpdateUpdateCase(data: CaseInterface) {
+    
+  const requestOptions = {
+      method: "PATCH",
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+  }
+
+  let res = await fetch(`${apiUrl}/emercases`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data
+          } else {
+              return false
+          }
+      })
+  return res
+}
+
 export {
   GetGender,
   GetEmergency,
   CreateEmercase,
   GetEmercaseAll, 
-  GetEmercaseByEmployee,
   DeleteCaseByID,
+  GetEmercaseByID,
+  UpdateUpdateCase,
 };

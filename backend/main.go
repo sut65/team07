@@ -177,6 +177,16 @@ func main() {
 	r.GET("/genders", controller.GetGender)
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 
+	// ---------------------------------- ระบบเเจ้งซ่อม -------------------------------
+	r.GET("/carcares", controller.ListCarcare)
+	r.GET("/carcare/:id", controller.GetCarcare)
+	r.POST("/carcare", controller.CreateCarcare)
+	r.DELETE("/carcare/:id", controller.DeleteCarcare)
+	r.PATCH("/carcares", controller.UpdateCarcare)
+
+	r.GET("/carstats", controller.Getcarstat)
+	// ---------------------------------- ระบบเเจ้งซ่อม -------------------------------
+	
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
 
 	// List ambulanceUses

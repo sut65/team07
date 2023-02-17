@@ -16,6 +16,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import './Emergency.css';
 
+
 import { CaseInterface } from "../../models/emergency_system_models/case";
 import { EmergencyInterface } from "../../models/emergency_system_models/emergency";
 import { GenderInterface } from "../../models/emergency_system_models/gender";
@@ -23,8 +24,11 @@ import { GenderInterface } from "../../models/emergency_system_models/gender";
 import {
     GetEmergency,
     GetGender,
-    CreateEmercase,
+    GetEmercaseByID,
+    UpdateUpdateCase,
 } from '../../services/emergency_system_service/HttpClientServices';
+
+
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -33,25 +37,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function CaseCreate() {
+function CaseUpdate() {
 
     const [emergencys, setEmergencys] = useState<EmergencyInterface[]>([]);
-    const [genders, setGenders] = useState<GenderInterface[]>([]);
-    const [emercase, setCase] = useState<CaseInterface>({
-        Location: "",
-        Patient: "",
-        Age: 0,
-        Status: "",
-        Datetime: new Date(),
-
-    });
-
-    const getGenders = async () => {
-        let res = await GetGender();
-        if (res) {
-            setGenders(res);
-        }
-    };
 
     const getEmergencys = async () => {
         let res = await GetEmergency();
@@ -60,11 +48,30 @@ function CaseCreate() {
         }
     };
 
+    const [genders, setGenders] = useState<GenderInterface[]>([]);
 
-    useEffect(() => {
-        getGenders();
-        getEmergencys();
-    }, [])
+        const getGenders = async () => {
+        let res = await GetGender();
+        if (res) {
+            setGenders(res);
+        }
+    };
+
+    const GetEmercaseDataByID = async () => {
+        let res = await GetEmercaseByID();
+        if (res) {
+            setCase(res);
+        }
+    };
+
+    const [emercase, setCase] = useState<CaseInterface>({
+        Location: "",
+        Patient: "",
+        Age: 0,
+        Status: "",
+        Datetime: new Date(),
+
+    });
 
     const [success, setSuccess] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -113,10 +120,11 @@ function CaseCreate() {
             Patient: emercase.Patient,
             Age: convertType(emercase.Age),
             Status: emercase.Status,
-            Datetime: emercase.Datetime,
+            Date: emercase.Datetime,
         };
         console.log(data)
-        let res = await CreateEmercase(data);
+
+        let res = await UpdateUpdateCase(data);
         if (res) {
             setSuccess(true);
             setTimeout(() => {
@@ -126,6 +134,14 @@ function CaseCreate() {
             setError(true);
         }
     }
+
+    useEffect(() => {
+
+        getGenders();
+        getEmergencys();
+        GetEmercaseDataByID();
+        
+    }, []) 
 
     return (
         <Container maxWidth="md">
@@ -310,7 +326,7 @@ function CaseCreate() {
     );
 }
 
-export default CaseCreate;
+export default CaseUpdate;
 
 
 

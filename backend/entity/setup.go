@@ -388,6 +388,16 @@ func SetupDatabase() {
 		Employee:  empNurse,
 	}
 	db.Model(&Case{}).Create((&case2))
+	emp := Employee{
+		Name:        "Amb",
+		Surname:     "Dis",
+		Age:         20,
+		User:        userDis,
+		Status:      working,
+		Education:   bacDeg,
+		WorkingArea: sut,
+	}
+	db.Model(&Employee{}).Create(&emp)
 
 	ambulance1 := Ambulance{
 		Clp:      "บบ 3677",

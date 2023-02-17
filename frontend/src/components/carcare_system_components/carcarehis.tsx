@@ -5,23 +5,24 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import moment from "moment";
 
-import { GetEmercaseAll } from "../../services/emergency_system_service/HttpClientServices";
-import { CaseInterface } from "../../models/emergency_system_models/case";
+import { GetCarcareAll } from "../../services/carcare_system_services/HttpClientService";
+import { CarcareInterface } from "../../models/carcare_system_models/carcare"; 
 
 function Carcare() {
-  const [cases, setCases] = useState<CaseInterface[]>([]);
+  const [carcares, setCarcare] = useState<CarcareInterface[]>([]);
 
-  const getCaseByiD = async () => {
-    let res = await GetEmercaseAll();
+  const getCarcareByiD = async () => {
+    let res = await GetCarcareAll();
     if (res) {
-      setCases(res);
+      setCarcare(res);
     }
   };
 
   useEffect(() => {
 
-    getCaseByiD();
+    getCarcareByiD();
 
   }, []);
 
@@ -34,34 +35,36 @@ function Carcare() {
     },
 
     {
-      field: "Car ID",
+      field: "VehicleInspectionInterfaceID",
       headerName: "หมายเลขรถ",
       width: 100,
-      valueFormatter: (params) => params.value.Name,
       headerAlign: "center",
+      valueFormatter: (params) => params.value.VehicleInspectionInterfaceID,
     },
 
     {
-      field: "Send Date",
+      field: "SendDate",
       headerName: "วันส่งซ่อม",
       width: 200,
-      valueFormatter: (params) => params.value.Name,
       headerAlign: "center",
+      align: "center",
+      valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A")
     },
 
     {
-      field: "Recive Date",
+      field: "ReciveDate",
       headerName: "วันรับรถ",
       width: 200,
-      valueFormatter: (params) => params.value.ReasonInfo,
       headerAlign: "center",
+      align: "center",
+      valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A")
     },
 
     {
       field: "Bill",
       headerName: "งบประมาณ",
       width: 100,
-      valueFormatter: (params) => params.value.ReasonInfo,
+      valueFormatter: (params) => params.value.Bill,
       headerAlign: "center",
     },
 
@@ -69,16 +72,17 @@ function Carcare() {
       field: "Note",
       headerName: "ข้อเสนอเเนะ",
       width: 300,
-      valueFormatter: (params) => params.value.ReasonInfo,
+      valueFormatter: (params) => params.value.Note,
       headerAlign: "center",
     },
 
     {
-      field: "Save Date",
+      field: "SaveDate",
       headerName: "วันที่เเจ้งซอม",
       width: 200,
-      valueFormatter: (params) => params.value.ReasonInfo,
       headerAlign: "center",
+      align: "center",
+      valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A")
     },
 
     {
@@ -89,13 +93,12 @@ function Carcare() {
       align: "center",
       headerAlign: "center",
       renderCell: ({ row }: Partial<GridRowParams>) =>
-        <Button component={RouterLink}
-          to="/Ambulance/AmbulanceUpdate"
+        <Button 
           size="small"
           variant="contained"
           color="error"
           onClick={() => {
-            localStorage.setItem("aid", row.ID);
+            localStorage.setItem("cc_id", row.ID);
           }}
           sx={{ borderRadius: 20, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
         >
@@ -111,13 +114,12 @@ function Carcare() {
       align: "center",
       headerAlign: "center",
       renderCell: ({ row }: Partial<GridRowParams>) =>
-        <Button component={RouterLink}
-          to="/Ambulance/AmbulanceUpdate"
+        <Button 
           size="small"
           variant="contained"
           color="error"
           onClick={() => {
-            localStorage.setItem("aid", row.ID);
+            localStorage.setItem("cc_id", row.ID);
           }}
           sx={{ borderRadius: 20, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
         >
@@ -166,7 +168,7 @@ function Carcare() {
         </Box>
         <div style={{ borderRadius: 20 }}>
           <DataGrid
-            rows={cases}
+            rows={carcares}
             getRowId={(row) => row.ID}
             columns={columns}
             pageSize={5}

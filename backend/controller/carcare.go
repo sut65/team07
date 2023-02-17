@@ -149,11 +149,11 @@ func UpdateCarcare(c *gin.Context) {
 
 // GET /emergencys
 func Getcarstat(c *gin.Context) {
-	var emergencys []entity.Carstat
-	if err := entity.DB().Raw("SELECT * FROM emergencys").Scan(&emergencys).Error; err != nil {
+	var carstats []entity.Carstat
+	if err := entity.DB().Raw("SELECT * FROM carstats").Scan(&carstats).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": emergencys})
+	c.JSON(http.StatusOK, gin.H{"data": carstats})
 }

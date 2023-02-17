@@ -15,7 +15,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { DatePicker, LocalizationProvider, MobileDateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { InputAdornment } from "@mui/material";
-import './carcare.css';
+import './Carcare.css';
 
 
 import { CarcareInterface } from "../../models/carcare_system_models/carcare";
@@ -27,9 +27,6 @@ import {
     GetCarstat,
     GetVehicleInspection,
 } from '../../services/carcare_system_services/HttpClientService';
-import { buildTimeValue } from "@testing-library/user-event/dist/utils";
-
-
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -171,7 +168,7 @@ function CarCareCreate() {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                            <p>Ambulance ID</p>
+                            <p>vehicleInspections ID</p>
                             <Select
                                 id="vehicleInspections"
                                 native
@@ -195,7 +192,7 @@ function CarCareCreate() {
                             <Select
                                 id="carstat"
                                 native
-                                value={carcare.VehicleInspectionID + ""}
+                                value={carcare.CarStatID + ""}
                                 onChange={handleChange}
                                 inputProps={{
                                     name: "CarStatID",
@@ -225,7 +222,7 @@ function CarCareCreate() {
                         <FormControl fullWidth variant="filled" disabled>
                             <p>Regitration</p>
                             <TextField
-                                id="brand"
+                                id="Regitration"
                                 variant="filled"
                                 onChange={handleChangeTextField}
                                 disabled
@@ -237,7 +234,7 @@ function CarCareCreate() {
                         <FormControl fullWidth variant="filled" disabled>
                             <p>ODO</p>
                             <TextField
-                                id="brand"
+                                id="ODO"
                                 variant="filled"
                                 onChange={handleChangeTextField}
                                 disabled
@@ -249,7 +246,7 @@ function CarCareCreate() {
                         <FormControl fullWidth variant="filled" disabled>
                             <p>Ambulance Part Name</p>
                             <TextField
-                                id="brand"
+                                id="Ambulance Part Name"
                                 variant="filled"
                                 onChange={handleChangeTextField}
                                 disabled
@@ -261,7 +258,7 @@ function CarCareCreate() {
                         <FormControl fullWidth variant="filled" disabled>
                             <p>Damage Detail</p>
                             <TextField
-                                id="brand"
+                                id="Damage Detail"
                                 variant="filled"
                                 onChange={handleChangeTextField}
                                 disabled
