@@ -23,6 +23,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function AmblanceUseCreate() {
 
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -115,12 +116,14 @@ function AmblanceUseCreate() {
             Date: ambulanceUse.Date,
         };
         let res = await CreatAmbulanceUse(data);
-        if (res) {
+        if (res.data) {
+            setAlertMessage("บันทึกข้อมูลสำเร็จ")
             setSuccess(true);
             setTimeout(() => {
                 navigator("/AmbulanceUse")
-            }, 1200)
+            }, 3000)
         } else {
+            setAlertMessage(res.error)
             setError(true);
         }
     }
@@ -136,7 +139,7 @@ function AmblanceUseCreate() {
         <div>
             <Snackbar
                 open={success}
-                autoHideDuration={2000}
+                autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{ mt: 10 }}
@@ -146,13 +149,13 @@ function AmblanceUseCreate() {
                     severity="success"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    บันทึกข้อมูลสำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
 
             <Snackbar
                 open={error}
-                autoHideDuration={2000}
+                autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{ mt: 10 }}
@@ -162,7 +165,7 @@ function AmblanceUseCreate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    บันทึกข้อมูลไม่สำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
 
@@ -219,6 +222,7 @@ function AmblanceUseCreate() {
                         <Typography>จำนวน</Typography>
                         <TextField
                             disabled={disTextField}
+                            // defaultValue={1}
                             autoComplete='off'
                             placeholder='โปรดระบุจำนวนยาที่ใช้'
                             type="number"

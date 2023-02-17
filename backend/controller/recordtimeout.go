@@ -37,10 +37,10 @@ func CreateRecordTimeOut(c *gin.Context) {
 		// RecordTimeOutID: recordtimeout.RecordTimeOutID,
 		OdoMeter:              recordtimeout.OdoMeter, //กรอกเลขไมล์
 		Annotation:            recordtimeout.Annotation,
-		Case:                  cases,                               //โยง คสพ Entity Case
-		Ambulance:             ambulances,                          //โยง คสพ Entity Car
-		Employee:              employees,                           //โยง คสพ Entity Employee
-		RecordTimeOutDatetime: recordtimeout.RecordTimeOutDatetime, // field DateTime
+		Case:                  cases,                                       //โยง คสพ Entity Case
+		Ambulance:             ambulances,                                  //โยง คสพ Entity Car
+		Employee:              employees,                                   //โยง คสพ Entity Employee
+		RecordTimeOutDatetime: recordtimeout.RecordTimeOutDatetime.Local(), // field DateTime
 	}
 	if _, err := govalidator.ValidateStruct(rec); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -58,7 +58,7 @@ func CreateRecordTimeOut(c *gin.Context) {
 func GetRecordTimeOut(c *gin.Context) {
 	var recordtimeout entity.RecordTimeOUT
 	id := c.Param("id")
-	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Employee").Preload("Ambulance.TypeAbl").
+	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Case.Emergency").Preload("Case.Gender").Preload("Employee").Preload("Ambulance.TypeAbl").
 		Preload("Employee.User").Preload("Employee.User.Role").Raw("SELECT * FROM record_time_outs WHERE id = ?", id).Find(&recordtimeout).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -70,7 +70,7 @@ func GetRecordTimeOut(c *gin.Context) {
 // GET /users
 func ListRecordTimeOuts(c *gin.Context) {
 	var recordtimeouts []entity.RecordTimeOUT
-	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Employee").Preload("Ambulance.TypeAbl").Preload("Employee.User.Role").Preload("Employee.User").Raw("SELECT * FROM record_time_outs").Find(&recordtimeouts).Error; err != nil {
+	if err := entity.DB().Preload("Ambulance").Preload("Case").Preload("Case.Emergency").Preload("Case.Gender").Preload("Employee").Preload("Ambulance.TypeAbl").Preload("Employee.User.Role").Preload("Employee.User").Raw("SELECT * FROM record_time_outs").Find(&recordtimeouts).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -151,7 +151,17 @@ func UpdateRecordTimeOut(c *gin.Context) {
 func GetAmbulanceByTypeAblID(c *gin.Context) {
 	var ambulance []entity.Ambulance
 	id := c.Param("type_id")
-	if err := entity.DB().Raw("SELECT * FROM ambulances WHERE type_abl_id = ?", id).Find(&ambulance).Error; err != nil {
+	if err := entity.DB().Raw("SELECT id FROM ambulances WHERE type_abl_id = ? EXCEPT SELECT record_time_outs.ambulance_id FROM record_time_outs ", id).Find(&ambulance).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ambulance})
+}
+
+func GetAmbulanceByAblID(c *gin.Context) {
+	var ambulance entity.Ambulance
+	id := c.Param("abl_id")
+	if err := entity.DB().Raw("SELECT * FROM ambulances WHERE id = ?", id).Find(&ambulance).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -161,7 +171,18 @@ func GetAmbulanceByTypeAblID(c *gin.Context) {
 // GET /GetCase
 func GetCase(c *gin.Context) {
 	var cases []entity.Case
-	if err := entity.DB().Raw("SELECT * FROM cases ORDER BY id DESC").Find(&cases).Error; err != nil {
+	if err := entity.DB().Raw("SELECT id FROM cases EXCEPT SELECT record_time_outs.case_id FROM record_time_outs ORDER BY id DESC ").Find(&cases).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": cases})
+}
+
+// GET /GetCaseID
+func GetCaseByID(c *gin.Context) {
+	var cases entity.Case
+	id := c.Param("case_id")
+	if err := entity.DB().Raw("SELECT * FROM cases WHERE id = ?", id).Find(&cases).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

@@ -42,13 +42,14 @@ func CreateVehicleInspection(c *gin.Context) {
 		OdoMeter:                  vehicleinspection.OdoMeter, //กรอกเลขไมล์
 		Fail:                      vehicleinspection.Fail,
 		StatusCheck:               statuscheck,
-		AmbulancePart:             ambulancepart,                               //โยง คสพ Entity Case
-		Ambulance:                 ambulance,                                   //โยง คสพ Entity Car
-		Employee:                  employee,                                    //โยง คสพ Entity Employee
-		VehicleInspectionDatetime: vehicleinspection.VehicleInspectionDatetime, // field DateTime
+		AmbulancePart:             ambulancepart,                                       //โยง คสพ Entity Case
+		Ambulance:                 ambulance,                                           //โยง คสพ Entity Car
+		Employee:                  employee,                                            //โยง คสพ Entity Employee
+		VehicleInspectionDatetime: vehicleinspection.VehicleInspectionDatetime.Local(), // field DateTime
 	}
 	if _, err := govalidator.ValidateStruct(veh); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	//บันทึก
 	if err := entity.DB().Create(&veh).Error; err != nil {
@@ -197,4 +198,15 @@ func ListAmbulanceParts(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": ambulanceparts})
+}
+
+// GET /ambulance/:id
+func GetAmbulanceByTypeAbl(c *gin.Context) {
+	var ambulance []entity.Ambulance
+	id := c.Param("type_id")
+	if err := entity.DB().Raw("SELECT * FROM ambulances WHERE type_abl_id = ?  ", id).Find(&ambulance).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ambulance})
 }

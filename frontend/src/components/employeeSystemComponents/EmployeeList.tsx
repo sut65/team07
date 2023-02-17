@@ -15,6 +15,7 @@ export default function EmployeeList() {
     const [employee, setEmployee] = React.useState<EmployeeInterface[]>([])
     const getEmployee = async () => {
         let res = await ListEmployees();
+        console.log(res)
         if (res) {
             setEmployee(res)
             //debug

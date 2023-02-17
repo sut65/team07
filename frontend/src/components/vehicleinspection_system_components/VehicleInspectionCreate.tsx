@@ -36,6 +36,7 @@ export default function VehicleInspectionCreate() {
   const [vehicleinspection, setVehicleInspection] = React.useState<
     Partial<VehicleInspectionInterface>
   >({ VehicleInspectionDatetime: new Date() });
+  const [checkParam, setcheckParam] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [abl, setAmbulance] = React.useState<AmbulancesInterface[]>([]);
@@ -107,7 +108,7 @@ export default function VehicleInspectionCreate() {
   };
   //get Ambulance
   const getAmbulance = async (id: string) => {
-    let res = await HttpClientServices.get(`/abl/${id}`);
+    let res = await HttpClientServices.get(`/checkabl/${id}`);
     if (!res.error) {
       setAmbulance(res.results);
       // console.log(res.results);
@@ -176,6 +177,7 @@ export default function VehicleInspectionCreate() {
   React.useEffect(() => {
     const param = params ? params : null;
     if (param?.id) {
+      setcheckParam(true);
       getVehicleInspection(param?.id);
     }
     getTypeAbl();
@@ -206,9 +208,9 @@ export default function VehicleInspectionCreate() {
         setSuccess(true);
         console.log(res);
         setMessage("อัพเดตข้อมูลสำเร็จ");
-        setTimeout(() => {
-          window.location.href = "/VehicleInspectionHistory";
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.href = "/VehicleInspectionHistory";
+        // }, 800);
       } else {
         setError(true);
         setMessage("อัพเดตข้อมูลไม่สำเร็จ " + res.message);
@@ -221,9 +223,9 @@ export default function VehicleInspectionCreate() {
         setSuccess(true);
         console.log(res);
         setMessage("บันทึกข้อมูลสำเร็จ");
-        setTimeout(() => {
-          window.location.href = "/VehicleInspectionHistory";
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.href = "/VehicleInspectionHistory";
+        // }, 800);
       } else {
         setError(true);
         setMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
@@ -272,6 +274,8 @@ export default function VehicleInspectionCreate() {
         <Divider />
 
         <Grid container spacing={2} sx={{ padding: 1 }}>
+        {!checkParam && (
+            <>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography>ประเภทรถพยาบาล</Typography>
@@ -297,7 +301,7 @@ export default function VehicleInspectionCreate() {
               </Select>
             </FormControl>
           </Grid>
-
+          
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <Typography>รถพยาบาล</Typography>
@@ -324,8 +328,10 @@ export default function VehicleInspectionCreate() {
               </Select>
             </FormControl>
           </Grid>
-
+          </>
+          )}
           <Grid item xs={12}>
+          <Typography>รายละเอียดรถพยาบาล</Typography>
             <TextField
               disabled
               fullWidth
@@ -430,7 +436,7 @@ export default function VehicleInspectionCreate() {
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  openTo={"year"}
+                  openTo={"day"}
                   value={vehicleinspection?.VehicleInspectionDatetime}
                   onChange={(newValue) => {
                     const id =
@@ -476,7 +482,7 @@ export default function VehicleInspectionCreate() {
       </Paper>
       <Snackbar
         open={success}
-        autoHideDuration={3000}
+        // autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
@@ -486,7 +492,7 @@ export default function VehicleInspectionCreate() {
       </Snackbar>
       <Snackbar
         open={error}
-        autoHideDuration={3000}
+        // autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >

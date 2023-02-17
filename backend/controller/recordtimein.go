@@ -46,7 +46,7 @@ func CreateRecordTimeIn(c *gin.Context) {
 		Ambulance:     ambulance,           // โยงความสัมพันธ์กับ Entity Ambalance
 		RecordTimeOUT: recordtimeout,       // โยงความสัมพันธ์กับ Entity Recordtimeout
 		Odo:           recordtimein.Odo,    // ตั้งค่าฟิลด์ odo meter
-		TimeIn:        recordtimein.TimeIn, // ตั้งค่าฟิลด์ Date
+		TimeIn:        recordtimein.TimeIn.Local(), // ตั้งค่าฟิลด์ Date
 		Note:          recordtimein.Note,   // ตั้งค่าฟิลด์ note
 	}
 
@@ -150,18 +150,6 @@ func UpdateRecordTimeIn(c *gin.Context) {
 		return
 	}
 
-	if recordtimeIN.Note == "" {
-		recordtimeIN.Note = recordtimeIN_old.Note
-	}
-
-	if recordtimeIN.Odo == 0 {
-		recordtimeIN.Odo = recordtimeIN_old.Odo
-	}
-
-	if recordtimeIN.TimeIn.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		recordtimeIN.TimeIn = recordtimeIN_old.TimeIn
-	}
-
 	// if new have company_id
 	if recordtimeIN.AmbulanceID != nil {
 		if tx := entity.DB().Where("id = ?", recordtimeIN.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
@@ -209,6 +197,12 @@ func UpdateRecordTimeIn(c *gin.Context) {
 			return
 		}
 		recordtimeIN.Employee = employee
+	}
+
+	//Validate
+	if _, err := govalidator.ValidateStruct(recordtimeIN); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	// Update abl in database

@@ -33,7 +33,7 @@ async function GetCarstat() {
     },
   };
 
-  let res = await fetch(`${apiUrl}/emergencys`, requestOptions)
+  let res = await fetch(`${apiUrl}/carstats`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -70,11 +70,38 @@ async function CreateCarecare(data: CarcareInterface) {
   return res;
 }
 
+async function GetCarcareAll() {
+  let ec_id = localStorage.getItem("cc_id");
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(
+    `${apiUrl}/emercases`,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 
 export {
 
   GetVehicleInspection,
   GetCarstat,
   CreateCarecare,
+  GetCarcareAll,
 
 };

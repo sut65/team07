@@ -5,17 +5,17 @@ import { EmployeeInterface } from "../employeeSystemModel/IEmployee";
 export interface CarDepotsInterface {
 
     ID?: number | null ,
-    EmpCode: string | null,
-    PNum: number | null,
-    Date: Date | null,
+    EmpCode: string | any,
+    PNum: number | any,
+    Date: Date | any,
     
 
     ParkID?: number | null,
     Park?: ParksInterface,
 
-    AmbulanceID?: number | null,
+    AmbulanceID?: number | any,
     Ambulance?: AmbulancesInterface,
     
-    EmployeeID?: number | null,
+    EmployeeID?: number | any,
     EmployeeInterface?: EmployeeInterface,
 }

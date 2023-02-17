@@ -156,6 +156,13 @@ func SetupDatabase() {
 	}
 	db.Model(&User{}).Create(&userOther)
 
+	userTest := User{
+		Name:     "Emp0001",
+		Password: string(pw),
+		Role:     driver,
+	}
+	db.Model(&User{}).Create(&userTest)
+
 	voc := Education{
 		Path:  "สายอาชีพ",
 		Level: "ปวช",
@@ -198,6 +205,18 @@ func SetupDatabase() {
 
 	db.Model(&WorkingArea{}).Create(&sut)
 
+	koratCity := WorkingArea{
+		WorkingArea: "Korat City",
+	}
+
+	db.Model(&WorkingArea{}).Create(&koratCity)
+
+	Hospital := WorkingArea{
+		WorkingArea: "Hospital",
+	}
+
+	db.Model(&WorkingArea{}).Create(&Hospital)
+
 	adminEmp := Employee{
 		Name:        "Admin",
 		Surname:     "Owner",
@@ -210,6 +229,71 @@ func SetupDatabase() {
 	}
 
 	db.Model(&Employee{}).Create(&adminEmp)
+
+	empManager := Employee{
+		Name:        "Manager",
+		Surname:     "Manager",
+		Age:         30,
+		User:        userManager,
+		WorkingArea: sut,
+		Status:      ready,
+		Education:   bacDeg,
+		Date:        time.Now(),
+	}
+
+	db.Model(&Employee{}).Create(&empManager)
+
+	empNurse := Employee{
+		Name:        "Nurse",
+		Surname:     "Nurse",
+		Age:         30,
+		User:        userNerse,
+		WorkingArea: sut,
+		Status:      ready,
+		Education:   bacDeg,
+		Date:        time.Now(),
+	}
+
+	db.Model(&Employee{}).Create(&empNurse)
+
+	empDriver := Employee{
+		Name:        "Driver",
+		Surname:     "Driver",
+		Age:         30,
+		User:        userDriver,
+		WorkingArea: sut,
+		Status:      ready,
+		Education:   bacDeg,
+		Date:        time.Now(),
+	}
+
+	db.Model(&Employee{}).Create(&empDriver)
+
+	empDis := Employee{
+		Name:        "Dis",
+		Surname:     "Dis",
+		Age:         30,
+		User:        userDis,
+		WorkingArea: sut,
+		Status:      ready,
+		Education:   bacDeg,
+		Date:        time.Now(),
+	}
+
+	db.Model(&Employee{}).Create(&empDis)
+
+	empOther := Employee{
+		Name:        "Noti",
+		Surname:     "Noti",
+		Age:         30,
+		User:        userOther,
+		WorkingArea: sut,
+		Status:      ready,
+		Education:   bacDeg,
+		Date:        time.Now(),
+	}
+
+	db.Model(&Employee{}).Create(&empOther)
 
 	// ระบบจัดซื้อรถพยาบาล ---------------------------------------------
 	var company = []Company{
@@ -281,13 +365,29 @@ func SetupDatabase() {
 	db.CreateInBatches(gender, 2)
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
 
+	case1 := Case{
+		Location:  "หน้าเรียนรวม 1",
+		Patient:   "นกน้อย",
+		Age:       22,
+		Status:    "ตกท่อ",
+		Datetime:  time.Now(),
+		Gender:    gender[0],
+		Emergency: emergency[1],
+		Employee:  empNurse,
+	}
+	db.Model(&Case{}).Create((&case1))
+
 	case2 := Case{
 		Location:  "ปต2",
+		Patient:   "Bamboo",
+		Age:       22,
+		Status:    "เป็นลม",
+		Datetime:  time.Now(),
 		Gender:    gender[1],
 		Emergency: emergency[1],
+		Employee:  empNurse,
 	}
 	db.Model(&Case{}).Create((&case2))
-
 	emp := Employee{
 		Name:        "Amb",
 		Surname:     "Dis",
@@ -300,12 +400,24 @@ func SetupDatabase() {
 	db.Model(&Employee{}).Create(&emp)
 
 	ambulance1 := Ambulance{
-		Clp:      "บบ 36771",
+		Clp:      "บบ 3677",
 		CarBrand: "TOYOTA 1",
 		TypeAbl:  typeAbl[0],
-		Employee: emp,
+		Employee: empDis,
+		Company:  company[2],
+		Date:     time.Now(),
 	}
 	db.Model(&Ambulance{}).Create(&ambulance1)
+
+	ambulance2 := Ambulance{
+		Clp:      "กข 1234",
+		CarBrand: "TOYOTA 2",
+		TypeAbl:  typeAbl[0],
+		Employee: empDis,
+		Company:  company[1],
+		Date:     time.Now(),
+	}
+	db.Model(&Ambulance{}).Create(&ambulance2)
 
 	//ตรวจเช็คสภาพรถ
 	statuscheck := []StatusCheck{
@@ -339,7 +451,7 @@ func SetupDatabase() {
 		WorkTime:           time.Now(),
 		AmountDisinfectant: 500,
 		Note:               "-",
-		Employee:           emp,
+		Employee:           empDis,
 		Ambulance:          ambulance1,
 		Disinfactant:       disinfectant[1],
 	}
@@ -352,4 +464,5 @@ func SetupDatabase() {
 		{MedicineName: "Mepivacaine", MedicineWarning: "ต้องใช้ยาตามขนาด 5 มก. / กก.", MedicineType: "ยาชา", MeasureUnit: "มก."},
 	}
 	db.CreateInBatches(medicine, 4)
+
 }

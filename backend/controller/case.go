@@ -24,13 +24,13 @@ func CreateEmercase(c *gin.Context) {
 
 	// ค้นหา emergency ด้วย id
 	if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "companies not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกประเภทเหตุฉุกเฉิน"})
 		return
 	}
 
 	// ค้นหา gender ด้วย id
 	if tx := entity.DB().Where("id = ?", emercase.GenderID).First(&gender); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "type_abls not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกเพศ"})
 		return
 	}
 
@@ -65,7 +65,6 @@ func CreateEmercase(c *gin.Context) {
 // GET /emercase/:id
 func GetEmercase(c *gin.Context) {
 	var emercase entity.Case
-	println("xsxefvyjm")
 	id := c.Param("id")
 	if err := entity.DB().Raw("SELECT * FROM cases WHERE id = ?", id).Scan(&emercase).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -135,8 +134,8 @@ func UpdateEmercase(c *gin.Context) {
 		Patient:   emercase.Patient,
 		Age:       emercase.Age,
 		Status:    emercase.Status,
-		Emergency: emergency, // โยงความสัมพันธ์กับ Entity Company
-		Gender:    gender,    // โยงความสัมพันธ์กับ Entity TypeAbl
+		Emergency: emergency, // โยงความสัมพันธ์กับ Entity Emergency
+		Gender:    gender,    // โยงความสัมพันธ์กับ Entity Gender
 		Employee:  employee,  // โยงความสัมพันธ์กับ Entity Employee
 		Datetime:  emercase.Datetime,
 	}

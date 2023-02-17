@@ -24,6 +24,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function AmbulanceUseUpdate() {
 
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -120,7 +121,6 @@ function AmbulanceUseUpdate() {
             ...ambulanceUse,
             [name]: event.target.value,
         });
-        // console.log(ambulanceUse)
     };
 
     const navigator = useNavigate();
@@ -136,13 +136,13 @@ function AmbulanceUseUpdate() {
 
         let res = await UpdateAmbulanceUse(data);
         if (res.data) {
-            // console.log(res.data)
+            setAlertMessage("อัพเดตข้อมูลสำเร็จ")
             setSuccess(true);
             setTimeout(() => {
                 navigator("/AmbulanceUse")
-            }, 1200)
+            }, 3000)
         } else {
-            // console.log(res.error)
+            setAlertMessage(res.error)
             setError(true);
         }
     }
@@ -162,7 +162,7 @@ function AmbulanceUseUpdate() {
         <div>
             <Snackbar
                 open={success}
-                autoHideDuration={2000}
+                autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{ mt: 10 }}
@@ -172,13 +172,13 @@ function AmbulanceUseUpdate() {
                     severity="success"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลสำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
 
             <Snackbar
                 open={error}
-                autoHideDuration={2000}
+                autoHideDuration={3000}
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                 sx={{ mt: 10 }}
@@ -188,7 +188,7 @@ function AmbulanceUseUpdate() {
                     severity="error"
                     sx={{ width: '100%', borderRadius: 3 }}
                 >
-                    อัพเดตข้อมูลไม่สำเร็จ
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Container
@@ -299,6 +299,7 @@ function AmbulanceUseUpdate() {
                                             Date: newValue,
                                         });
                                     }}
+                                    disabled={true}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
                             </LocalizationProvider>

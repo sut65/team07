@@ -15,17 +15,18 @@ async function CreatCarDepots(data:any) {
     let res = await fetch(`${apiUrl}/carDepot`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
-            console.log(res)
-            if (res) {
-                
+            if (res.data) {
                 return res;
             } else {
-                return false;
-            }
+                return res.error;
+                ;
+                } ;
+            
         });
 
     return res;
 }
+
 
 async function GetCarDepotByID() {
     let cid = localStorage.getItem("cid");
@@ -161,12 +162,15 @@ async function UpdateCarDepot(data: CarDepotsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data
+                return res;
             } else {
-                return false
-            }
-        })
-    return res
+                return res.error;
+                ;
+                } ;
+            
+        });
+
+    return res;
 }
 
 // Delete CarDepot

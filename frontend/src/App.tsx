@@ -27,7 +27,6 @@ import EmployeeCreate from "./components/employeeSystemComponents/EmployeeCreate
 import EmployeeUpdate from "./components/employeeSystemComponents/EmployeeUpdate";
 import Ambulance from "./components/ambulance_system_components/Ambulance";
 import AmbulanceUpdate from "./components/ambulance_system_components/AmbulanceUpdate";
-import CaseCreate from "./components/emergency_system_components/emergency";
 
 import AmbulanceUse from "./components/ambulanceUse_system_components/AmbulanceUse";
 import AmblanceUseCreate from "./components/ambulanceUse_system_components/AmblanceUseCreate";
@@ -46,9 +45,14 @@ import CarWashUpdate from "./components/carWash_system_components/CarWashUpdate"
 import CarWashCreate from "./components/carWash_system_components/CarWashCreate";
 import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreUpdate";
 import AmbulanceUseUpdate from "./components/ambulanceUse_system_components/AmbulanceUseUpdate";
-import Case from "./components/emergency_system_components/emergencyhis";
-import CarCareCreate from "./components/carcare_system_components/carcare";
-import Carcare from "./components/carcare_system_components/carcarehis";
+import EmployeeCurrenct from "./components/employeeSystemComponents/EmployeeCurrenct";
+import Case from "./components/emergency_system_components/Emergencyhis";
+import CaseUpdate from "./components/emergency_system_components/EmergencyUpdate";
+import Carcare from "./components/carcare_system_components/Carcarehis";
+import CarCareCreate from "./components/carcare_system_components/Carcare";
+import CaseCreate from "./components/emergency_system_components/Emergency";
+
+
 
 export default function App() {
   const [token, setToken] = React.useState<string>("");
@@ -116,6 +120,10 @@ export default function App() {
                   <Route
                     path="/employee/update/:id"
                     element={<EmployeeUpdate />}
+                  />
+                  <Route 
+                    path="/employee-currenct"
+                    element={<EmployeeCurrenct />}
                   />
                   <Route path="/Ambulance" element={<Ambulance />} />
                   <Route
@@ -228,6 +236,10 @@ export default function App() {
                   <Route
                     path="/CaseCreate"
                     element={<CaseCreate />}
+                  />
+                  <Route
+                    path="/CaseUpdate"
+                    element={<CaseUpdate />}
                   />
                   <Route
                     path="/CarCare"

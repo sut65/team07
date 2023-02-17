@@ -103,28 +103,22 @@ export default function RecordTimeOut(props: any) {
               {moment(params.RecordTimeOutDatetime).format("HH:mm")} น.
             </Grid>
             <Grid item xs={5}>
-              ประเภทเคสที่ได้รับ:
-            </Grid>
-            <Grid item xs={7}>
-              {params.Case.ID}
-            </Grid>
-            <Grid item xs={5}>
               เคสที่ได้รับแจ้ง (Case):
             </Grid>
             <Grid item xs={7}>
-              {params.Case.ID} {`(${params.Case.ID})`}
+              {params.Case.Status} {`(${params.Case.Emergency.Name})`}
             </Grid>
             <Grid item xs={5}>
               สถานที่เกิดเหตุ:
             </Grid>
             <Grid item xs={7}>
-              {params.Case.ID}
+              {params.Case.Location}
             </Grid>
             <Grid item xs={5}>
               รายละเอียดผู้ป่วย:
             </Grid>
             <Grid item xs={7}>
-              {params.Case.ID} อายุ {params.Case.ID}
+               {params.Case.Patient} อายุ {params.Case.Age}
             </Grid>
             <Grid item xs={5}>
               ประเภทรถ:
@@ -156,10 +150,8 @@ export default function RecordTimeOut(props: any) {
             <Grid item xs={7}>
               {params.Annotation}
             </Grid>
-           
           </Grid> <br/>
           <Divider />
-         
           <Grid item xs={12} container>
             <Grid item xs={5}>
               {params.Employee.User.Role.Name} :
@@ -169,7 +161,6 @@ export default function RecordTimeOut(props: any) {
             </Grid>
           </Grid>
         </DialogContent>
-
         <DialogActions>
           <Button onClick={handleClose} color="error">
             Close

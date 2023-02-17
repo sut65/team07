@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -20,6 +21,13 @@ func CreateCarWash(c *gin.Context) {
 	if err := c.ShouldBindJSON(&carWash); err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// Validation Value
+	if _, err := govalidator.ValidateStruct(&carWash); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 
@@ -142,13 +150,20 @@ func UpdateCarWash(c *gin.Context) {
 		return
 	}
 
+
 	// Check carWash is haved ?
 	if tx := entity.DB().Where("id = ?", carWash.ID).First(&carWashold); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("CarWash id = %d not found", carWash.ID)})
 		c.Abort()
 		return
 	}
-
+	// Validation Value
+	if _, err := govalidator.ValidateStruct(&carWash); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 	if carWash.ComName == "" {
 		carWash.ComName = carWashold.ComName
 	}

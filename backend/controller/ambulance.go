@@ -3,7 +3,9 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -23,15 +25,25 @@ func CreateAmbulance(c *gin.Context) {
 		return
 	}
 
+	if time.Now().Add(time.Minute*-5).Before(ambulance.Date) && ambulance.Date.Before(time.Now()) {
+		ambulance.Date = time.Now()
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(ambulance); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	// 8: ค้นหา company ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "companies not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกบริษัทที่จัดซื้อ"})
 		return
 	}
 
 	// 9: ค้นหา typeAbl ด้วย id
 	if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "type_abls not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกประเภทรถพยาบาล"})
 		return
 	}
 
@@ -140,6 +152,26 @@ func UpdateAmbulance(c *gin.Context) {
 		return
 	}
 
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(ambulance); err != nil {
+		if err.Error() != "วันที่ไม่ควรเป็นอดีต" || err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกเลขทะเบียนรถ" || err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกเลขทะเบียนรถให้ถูกต้อง" || err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกยี่ห้อรถ" {
+			if err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกเลขทะเบียนรถ" {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดกรอกเลขทะเบียนรถ"})
+				return
+
+			} else if err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกเลขทะเบียนรถให้ถูกต้อง" {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดกรอกเลขทะเบียนรถให้ถูกต้อง"})
+				return
+				
+			} else if err.Error() == "วันที่ไม่ควรเป็นอดีต;โปรดกรอกยี่ห้อรถ" {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดกรอกยี่ห้อรถ"})
+				return
+			}
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
 	// Check abl is haved ?
 	if tx := entity.DB().Where("id = ?", ambulance.ID).First(&ambulanceold); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Ambulance id = %d not found", ambulance.ID)})
@@ -162,14 +194,14 @@ func UpdateAmbulance(c *gin.Context) {
 	// if new have company_id
 	if ambulance.CompanyID != nil {
 		if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกบริษัทที่จัดซื้อ"})
 			return
 		}
 		fmt.Print("NOT NULL")
 		ambulance.Company = company
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulance.CompanyID).First(&company); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found company"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกบริษัทที่จัดซื้อ"})
 			return
 		}
 		fmt.Print("NULL")
@@ -179,13 +211,13 @@ func UpdateAmbulance(c *gin.Context) {
 	// if new have typeAbl_id
 	if ambulance.TypeAblID != nil {
 		if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found typeAbl"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกประเภทรถพยาบาล"})
 			return
 		}
 		ambulance.TypeAbl = typeAbl
 	} else {
 		if tx := entity.DB().Where("id = ?", ambulance.TypeAblID).First(&typeAbl); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found typeAbl"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "โปรดเลือกประเภทรถพยาบาล"})
 			return
 		}
 		ambulance.TypeAbl = typeAbl

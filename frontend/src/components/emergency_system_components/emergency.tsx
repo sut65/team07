@@ -14,8 +14,7 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import './emergency.css';
-
+import './Emergency.css';
 
 import { CaseInterface } from "../../models/emergency_system_models/case";
 import { EmergencyInterface } from "../../models/emergency_system_models/emergency";
@@ -26,8 +25,6 @@ import {
     GetGender,
     CreateEmercase,
 } from '../../services/emergency_system_service/HttpClientServices';
-
-
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -45,7 +42,7 @@ function CaseCreate() {
         Patient: "",
         Age: 0,
         Status: "",
-        Date: new Date(),
+        Datetime: new Date(),
 
     });
 
@@ -116,22 +113,18 @@ function CaseCreate() {
             Patient: emercase.Patient,
             Age: convertType(emercase.Age),
             Status: emercase.Status,
-            Date: emercase.Date,
+            Datetime: emercase.Datetime,
         };
         console.log(data)
-
         let res = await CreateEmercase(data);
         if (res) {
             setSuccess(true);
             setTimeout(() => {
-                navigator("/Ambulance")
+                navigator("/Case")
             }, 1200)
         } else {
             setError(true);
         }
-    }
-    function dayjs(arg0: string): Date | (() => Date | null) | null {
-        throw new Error("Function not implemented.");
     }
 
     return (
@@ -198,11 +191,11 @@ function CaseCreate() {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 className='StyledTextField'
-                                value={emercase.Date}
+                                value={emercase.Datetime}
                                 onChange={(newValue) => {
                                     setCase({
                                         ...emercase,
-                                        Date: newValue,
+                                        Datetime: newValue,
                                     });
                                 }}
                                 renderInput={(params) => <TextField {...params} />}

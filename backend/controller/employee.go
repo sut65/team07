@@ -285,6 +285,14 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
+	// Vakidation Value
+	if _, err := govalidator.ValidateStruct(&employee); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
 	// Check emp is haved ?
 	if tx := entity.DB().Where("id = ?", employee.ID).First(&employeeold); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Employee id = %d not found", employee.ID)})

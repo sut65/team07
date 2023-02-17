@@ -9,7 +9,7 @@ export interface CaseInterface {
     Patient?:           string | null,
     Age?:               number | null,
     Status?:            string | null,
-    Date:               Date | null,
+    Datetime?:          Date | null,
 
     GenderID?:          number | null,
     Gender?:            GenderInterface,

@@ -21,6 +21,7 @@ import { HttpClientServices } from "../../services/recordtimeout_system_services
 import { EmployeeInterface } from "../../models/employeeSystemModel/IEmployee";
 import { AmbulancesInterface } from "../../models/ambulance_system_models/ambulance";
 import { TypeAblsInterface } from "../../models/ambulance_system_models/typeAbl";
+import { CaseInterface } from "../../models/emergency_system_models/case";
 import { useParams } from "react-router-dom";
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -29,14 +30,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export interface CaseInterface {
-  ID: number;
-  Patient: string;
-  Location: string;
-  Age: number;
-  Status: string;
-  DateTime: Date;
-}
+// export interface CaseInterface {
+//   ID: number;
+//   Patient: string;
+//   Location: string;
+//   Age: number;
+//   Status: string;
+//   DateTime: Date;
+// }
 
 function RecordTimeOutCreate() {
   const params = useParams();
@@ -44,6 +45,7 @@ function RecordTimeOutCreate() {
     Partial<RecordTimeOutInterface>
   >({ RecordTimeOutDatetime: new Date() });
 
+  const [checkParam, setcheckParam] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
@@ -75,14 +77,7 @@ function RecordTimeOutCreate() {
 
     //handleChange เคสที่ได้รับแจ้ง เพื่อ set details case
     if (event.target.name === "CaseID") {
-      cases.forEach((val: any) => {
-        if (val.ID === Number(event.target.value)) {
-          setDetailCase(`ไอดีเคส: ${val.ID} สถานที่เกิดเหตุ: ${val.Location}`);
-        }
-      });
-      if (event.target.value === "") {
-        setDetailCase("รายละเอียด");
-      }
+      getCaseByID(event.target.value);
     }
     //handleChange ประเภทรถพยาบาล เพื่อให้สามารถเลือกรถพยาบาลของแต่ละประเภทได้
     if (event.target.name === "TypeAblID") {
@@ -92,19 +87,18 @@ function RecordTimeOutCreate() {
       if (event.target.value === "") {
         setAmbulance([]);
       } else {
-        getAmbulance(event.target.value);
+        getAmbulanceByTypeABLID(event.target.value);
       }
     }
 
     if (event.target.name === "AmbulanceID") {
-      const a = abl.filter((v) => v.ID === Number(event.target.value))[0];
-      if (a) {
-        setDetailAbl(
-          `ไอดีรถ: ${a.ID} ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`
-        );
-      } else {
-        setDetailAbl("รายละเอียด");
-      }
+      getAmbulanceByABLID(event.target.value);
+      // const a = abl.filter((v) => v.ID === Number(event.target.value))[0];
+      // if (a) {
+      // setDetailAbl(`ยี่ห้อรถ: ${a.CarBrand} เลขทะเบียนรถ: ${a.Clp}`);
+      // } else {
+      //   setDetailAbl("รายละเอียด");
+      // }
     }
   };
 
@@ -117,8 +111,21 @@ function RecordTimeOutCreate() {
   };
 
   //get Ambulance
-  const getAmbulance = async (id: string) => {
+  const getAmbulanceByABLID = async (id: string) => {
     let res = await HttpClientServices.get(`/abl/${id}`);
+    if (!res.error) {
+      setDetailAbl(
+        `ยี่ห้อรถ: ${res.results.CarBrand} เลขทะเบียนรถ: ${res.results.Clp}`
+      );
+      //console.log(res);
+    } else {
+      console.log(res.error);
+    }
+  };
+
+  //get Ambulance
+  const getAmbulanceByTypeABLID = async (id: string) => {
+    let res = await HttpClientServices.get(`/typeabl/${id}`);
     if (!res.error) {
       setAmbulance(res.results);
       //console.log(res);
@@ -132,6 +139,18 @@ function RecordTimeOutCreate() {
     if (!res.error) {
       setCases(res.results);
       // console.log(res);
+    } else {
+      console.log(res.error);
+    }
+  };
+  //get CaseID
+  const getCaseByID = async (id: string) => {
+    let res = await HttpClientServices.get(`/cases/${id}`);
+    if (!res.error) {
+      setDetailCase(
+        `สถานที่เกิดเหตุ: ${res.results.Location} ผู้ป่วย: ${res.results.Patient} อาการ: ${res.results.Status}`
+      );
+      console.log(res.results);
     } else {
       console.log(res.error);
     }
@@ -169,16 +188,19 @@ function RecordTimeOutCreate() {
         OdoMeter: res.results.OdoMeter,
         RecordTimeOutDatetime: new Date(),
       });
-      // console.log(res?.Ambulance?.TypeAblID);
+      // console.log(res?.results);
       setTypeAbl(res.results.Ambulance?.TypeAblID);
-      getAmbulance(res.results?.Ambulance?.TypeAblID);
-      setDetailCase(
-        `ไอดีเคส: ${res.results.CaseID} สถานที่เกิดเหตุ: ${res.results.Case.Location}`
-      );
-      setDetailAbl(
-        `ไอดีรถ: ${res.results.AmbulanceID} ยี่ห้อรถ: ${res.results.Ambulance.CarBrand} เลขทะเบียนรถ: ${res.results.Ambulance.Clp}`
-      );
-      // console.log(res);
+      getAmbulanceByTypeABLID(res.results?.Ambulance?.TypeAblID);
+
+      getCaseByID(res.results.CaseID);
+      getAmbulanceByABLID(res.results.Ambulance.TypeAblID);
+      // setDetailCase(
+      //   `สถานที่เกิดเหตุ: ${res.results.Case.Location}  ผู้ป่วย: ${res.results.Case.Patient} อาการ: ${res.results.Case.Status}`
+      // );
+      // setDetailAbl(
+      //   `ยี่ห้อรถ: ${res.results.Ambulance.CarBrand} เลขทะเบียนรถ: ${res.results.Ambulance.Clp}`
+      // );
+      console.log(recordtimeout);
     } else {
       console.log(res.error);
       setError(true);
@@ -194,6 +216,7 @@ function RecordTimeOutCreate() {
     // get recordtimeout
     const param = params ? params : null;
     if (param?.id) {
+      setcheckParam(true);
       getRecordTimeOut(param?.id);
     }
 
@@ -225,9 +248,9 @@ function RecordTimeOutCreate() {
         setSuccess(true);
         console.log(res);
         setMessage("อัพเดทข้อมูลสำเร็จ");
-        setTimeout(() => {
-          window.location.href = "/RecordTimeOutHistory";
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.href = "/RecordTimeOutHistory";
+        // }, 800);
       } else {
         setError(true);
         setMessage("อัพเดทข้อมูลไม่สำเร็จ " + res.message);
@@ -250,6 +273,8 @@ function RecordTimeOutCreate() {
       }
     }
   }
+
+
 
   return (
     <Container
@@ -280,34 +305,39 @@ function RecordTimeOutCreate() {
         </Box>
         <Divider />
         <Grid container spacing={2} sx={{ padding: 1 }}>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <Typography>เคสที่ได้รับแจ้ง</Typography>
-              <Select
-                id="ID"
-                native
-                name="CaseID"
-                size="small"
-                type="number"
-                value={String(recordtimeout?.CaseID)}
-                onChange={handleChange}
-                inputProps={{
-                  name: "CaseID",
-                }}
-                autoFocus
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกเคส
-                </option>
-                {cases.map((item: CaseInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.ID}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+          {!checkParam && (
+            <>
+              <Grid item xs={4}>
+                <FormControl fullWidth variant="outlined">
+                  <Typography>เคสที่ได้รับแจ้ง</Typography>
+                  <Select
+                    id="ID"
+                    native
+                    name="CaseID"
+                    size="small"
+                    type="number"
+                    value={String(recordtimeout?.CaseID)}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "CaseID",
+                    }}
+                    autoFocus
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกเคส
+                    </option>
+                    {cases.map((item: CaseInterface) => (
+                      <option value={Number(item.ID)} key={item.ID}>
+                        {item.ID}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </>
+          )}
           <Grid item xs={12}>
+          <Typography>รายละเอียดเคสที่ได้รับ</Typography>
             <TextField
               disabled
               fullWidth
@@ -318,60 +348,65 @@ function RecordTimeOutCreate() {
             />
           </Grid>
 
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <Typography>ประเภทรถพยาบาล</Typography>
-              <Select
-                id="ID"
-                native
-                name="TypeAblID"
-                size="small"
-                onChange={handleChange}
-                inputProps={{
-                  name: "TypeAblID",
-                }}
-                value={String(typeAbl)}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกประเภทรถพยาบาล
-                </option>
-                {typeAbls.map((item: TypeAblsInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+          {!checkParam && (
+            <>
+              <Grid item xs={4}>
+                <FormControl fullWidth variant="outlined">
+                  <Typography>ประเภทรถพยาบาล</Typography>
+                  <Select
+                    id="ID"
+                    native
+                    name="TypeAblID"
+                    size="small"
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "TypeAblID",
+                    }}
+                    value={String(typeAbl)}
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกประเภทรถพยาบาล
+                    </option>
+                    {typeAbls.map((item: TypeAblsInterface) => (
+                      <option value={item.ID} key={item.ID}>
+                        {item.Name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <Typography>รถพยาบาล</Typography>
-              <Select
-                id="ID"
-                native
-                name="AmbulanceID"
-                size="small"
-                onChange={handleChange}
-                inputProps={{
-                  name: "AmbulanceID",
-                }}
-                disabled={typeAbl != "" ? false : true}
-                value={String(recordtimeout.AmbulanceID)}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกรถพยาบาล
-                </option>
-                {abl.map((item: AmbulancesInterface) => (
-                  <option value={Number(item.ID)} key={item.ID}>
-                    {item.CarBrand}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+              <Grid item xs={4}>
+                <FormControl fullWidth variant="outlined">
+                  <Typography>ไอดีรถพยาบาล</Typography>
+                  <Select
+                    id="ID"
+                    native
+                    name="AmbulanceID"
+                    size="small"
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "AmbulanceID",
+                    }}
+                    disabled={typeAbl != "" ? false : true}
+                    value={String(recordtimeout.AmbulanceID)}
+                  >
+                    <option aria-label="None" value="">
+                      กรุณาเลือกไอดีรถพยาบาล
+                    </option>
+                    {abl.map((item: AmbulancesInterface) => (
+                      <option value={Number(item.ID)} key={item.ID}>
+                        {item.ID}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </>
+          )}
 
           <Grid item xs={12}>
+          <Typography>รายละเอียดรถพยาบาล</Typography>
             <TextField
               // label="detail"
               disabled
@@ -396,6 +431,7 @@ function RecordTimeOutCreate() {
                 }}
                 onChange={handleInputChange}
                 value={recordtimeout?.OdoMeter ?? ""}
+                
                 required
               />
             </FormControl>
@@ -424,7 +460,7 @@ function RecordTimeOutCreate() {
               <Typography> วัน/เวลา </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  openTo={"year"}
+                  openTo={"day"}
                   value={recordtimeout?.RecordTimeOutDatetime}
                   onChange={(newValue) => {
                     const id =

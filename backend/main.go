@@ -133,8 +133,10 @@ func main() {
 	r.POST("/recordtimeout", controller.CreateRecordTimeOut)
 	r.DELETE("/recordtimeout/:id", controller.DeleteRecordTimeOut)
 	r.PATCH("/recordtimeout", controller.UpdateRecordTimeOut)
-	r.GET("/abl/:type_id", controller.GetAmbulanceByTypeAblID)
+	r.GET("/typeabl/:type_id", controller.GetAmbulanceByTypeAblID)
+	r.GET("/abl/:abl_id", controller.GetAmbulanceByAblID)
 	r.GET("/cases", controller.GetCase)
+	r.GET("/cases/:case_id", controller.GetCaseByID)
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
 	r.GET("/recordtimeins", controller.ListRecordTimeIns)
 	r.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
@@ -149,6 +151,7 @@ func main() {
 	r.POST("/vehicleinspection", controller.CreateVehicleInspection)
 	r.DELETE("/vehicleinspection/:id", controller.DeleteVehicleInspection)
 	r.PATCH("/vehicleinspection", controller.UpdateVehicleInspection)
+	r.GET("/checkabl/:type_id", controller.GetAmbulanceByTypeAbl)
 
 	r.GET("/statuschecks", controller.ListStatusChecks)
 	r.GET("/statuscheck/:id", controller.GetStatusCheck)
@@ -173,8 +176,17 @@ func main() {
 
 	r.GET("/genders", controller.GetGender)
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
-	
 
+	// ---------------------------------- ระบบเเจ้งซ่อม -------------------------------
+	r.GET("/carcares", controller.ListCarcare)
+	r.GET("/carcare/:id", controller.GetCarcare)
+	r.POST("/carcare", controller.CreateCarcare)
+	r.DELETE("/carcare/:id", controller.DeleteCarcare)
+	r.PATCH("/carcares", controller.UpdateCarcare)
+
+	r.GET("/carstats", controller.Getcarstat)
+	// ---------------------------------- ระบบเเจ้งซ่อม -------------------------------
+	
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
 
 	// List ambulanceUses
