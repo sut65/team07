@@ -66,9 +66,9 @@ type Employee struct {
 	Disinfection    []Disinfection   `gorm:"foreignKey:EmployeeID"`
 	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:EmployeeID"`
 	AmbulanceUses   []AmbulanceUse   `gorm:"foreignKey:EmployeeID"`
-	CarCares        []Carcare        `gorm:"foreignKey:EmployeeID"`
-	Case			[]Case			 `gorm:"foreignKey:EmployeeID"`	
-}	
+	Oders        	[]Oder           `gorm:"foreignKey:EmployeeID"`
+	Cases           []Case           `gorm:"foreignKey:EmployeeID"`
+}
 
 // ฟังก์ชันที่จะใช่ในการ validation EntryTime
 func init() {

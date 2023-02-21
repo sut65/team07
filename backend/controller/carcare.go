@@ -7,45 +7,45 @@ import (
 	"github.com/sut65/team07/entity"
 )
 
-// POST /carcare
+// POST /caroder
 func CreateCarcare(c *gin.Context) {
 
-	var carcare entity.Carcare
+	var caroder entity.Oder
 	var carstat entity.Carstat
 	var employee entity.Employee
 	var vehicleinspection entity.VehicleInspection
 
-	// bind เข้าตัวแปร carcare
-	if err := c.ShouldBindJSON(&carcare); err != nil {
+	// bind เข้าตัวแปร caroder
+	if err := c.ShouldBindJSON(&caroder); err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	// ค้นหา carstat ด้วย id
-	if tx := entity.DB().Where("id = ?", carcare.CarStatID).First(&carstat); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", caroder.CarStatID).First(&carstat); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "companies not found"})
 		return
 	}
 
 	// ค้นหา vehicleInspection ด้วย id
-	if tx := entity.DB().Where("id = ?", carcare.VehicleInspectionID).First(&vehicleinspection); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", caroder.VehicleInspectionID).First(&vehicleinspection); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "type_abls not found"})
 		return
 	}
 
 	// ค้นหา employee ด้วย id
-	if tx := entity.DB().Where("id = ?", carcare.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", caroder.EmployeeID).First(&employee); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "employees not found"})
 		return
 	}
 
-	// 11: สร้าง carcare
-	st := entity.Carcare{
-		SaveDate:          carcare.SaveDate,
-		ReciveDate:        carcare.ReciveDate,
-		Bill:              carcare.Bill,
-		Note:              carcare.Note,
+	// 11: สร้าง caroder
+	st := entity.Oder{
+		SaveDate:          caroder.SaveDate,
+		ReciveDate:        caroder.ReciveDate,
+		Bill:              caroder.Bill,
+		Note:              caroder.Note,
 		CarStat:           carstat,
 		VehicleInspection: vehicleinspection,
 		Employee:          employee,
@@ -61,21 +61,21 @@ func CreateCarcare(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": st})
 }
 
-// GET /carcare/:id
+// GET /caroder/:id
 func GetCarcare(c *gin.Context) {
-	var carcare entity.Carcare
+	var caroder entity.Oder
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM carcares WHERE id = ?", id).Scan(&carcare).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM carcares WHERE id = ?", id).Scan(&caroder).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": carcare})
+	c.JSON(http.StatusOK, gin.H{"data": caroder})
 }
 
 // GET /carcares
 func ListCarcare(c *gin.Context) {
-	var carcares []entity.Carcare
+	var carcares []entity.Oder
 	if err := entity.DB().Raw("SELECT * FROM carcares").Scan(&carcares).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -88,7 +88,7 @@ func ListCarcare(c *gin.Context) {
 func DeleteCarcare(c *gin.Context) {
 	id := c.Param("id")
 	if tx := entity.DB().Exec("DELETE FROM carcares WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "carcare not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "caroder not found"})
 		return
 	}
 
@@ -98,18 +98,18 @@ func DeleteCarcare(c *gin.Context) {
 // PATCH /carcares
 func UpdateCarcare(c *gin.Context) {
 
-	var carcare entity.Carcare
+	var caroder entity.Oder
 	var carstat entity.Carstat
 	var vehicleinspection entity.VehicleInspection
 	var employee entity.Employee
 
-	if err := c.ShouldBindJSON(&carcare); err != nil {
+	if err := c.ShouldBindJSON(&caroder); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", carcare.ID).First(&carcare); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "carcare not found"})
+	if tx := entity.DB().Where("id = ?", caroder.ID).First(&caroder); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "caroder not found"})
 		return
 	}
 
@@ -128,16 +128,16 @@ func UpdateCarcare(c *gin.Context) {
 		return
 	}
 
-	UpdateCarcare := entity.Carcare{
+	UpdateCarcare := entity.Oder{
 		CarStat:    carstat,
-		SendDate:   carcare.SendDate,
-		ReciveDate: carcare.ReciveDate,
-		Bill:       carcare.Bill,
-		Note:       carcare.Note,
-		SaveDate:   carcare.SaveDate,
+		SendDate:   caroder.SendDate,
+		ReciveDate: caroder.ReciveDate,
+		Bill:       caroder.Bill,
+		Note:       caroder.Note,
+		SaveDate:   caroder.SaveDate,
 	}
 
-	if err := entity.DB().Where("id = ?", carcare.ID).Updates(&UpdateCarcare).Error; err != nil {
+	if err := entity.DB().Where("id = ?", caroder.ID).Updates(&UpdateCarcare).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

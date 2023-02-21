@@ -77,7 +77,7 @@ func GetEmercase(c *gin.Context) {
 // GET /emercases
 func ListEmercase(c *gin.Context) {
 	var emercases []entity.Case
-	if err := entity.DB().Raw("SELECT * FROM cases").Scan(&emercases).Error; err != nil {
+	if err := entity.DB().Preload("Emergency").Preload("Gender").Raw("SELECT * FROM cases").Find(&emercases).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

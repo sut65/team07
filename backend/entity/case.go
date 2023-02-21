@@ -12,7 +12,7 @@ type Emergency struct {
 	Name string
 
 	//For Link Foreign key
-	Case []Case `gorm:"foreignKey:EmergencyID"`
+	Cases []Case `gorm:"foreignKey:EmergencyID"`
 }
 
 type Gender struct {
@@ -20,7 +20,7 @@ type Gender struct {
 	Name string
 
 	//For Link Foreign key
-	Case []Case `gorm:"foreignKey:GenderID"`
+	Cases []Case `gorm:"foreignKey:GenderID"`
 }
 
 type Case struct {
