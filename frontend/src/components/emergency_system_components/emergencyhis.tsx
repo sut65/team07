@@ -232,7 +232,7 @@ function Case() {
           keepMounted
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle>{`คุณต้องการลบข้อมูลเหตุฉุกเฉิน ${localStorage.getItem("ec_id")}  ใช่หรือไม่?`}</DialogTitle>
+          <DialogTitle>{`คุณต้องการลบข้อมูลเหตุฉุกเฉินหมายเลข ${localStorage.getItem("ec_id")}  ใช่หรือไม่?`}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
               หากคุณลบข้อมูลนี้แล้วนั้น คุณจะไม่สามารถกู้คืนได้อีก

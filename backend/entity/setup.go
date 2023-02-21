@@ -77,7 +77,7 @@ func SetupDatabase() {
 
 		// แจ้งซ่อม
 		&Carstat{},
-		&Carcare{},
+		&Oder{},
 	)
 
 	db = database
@@ -365,29 +365,29 @@ func SetupDatabase() {
 	db.CreateInBatches(gender, 2)
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
 
-	case1 := Case{
-		Location:  "หน้าเรียนรวม 1",
-		Patient:   "นกน้อย",
-		Age:       22,
-		Status:    "ตกท่อ",
-		Datetime:  time.Now(),
-		Gender:    gender[0],
-		Emergency: emergency[1],
-		Employee:  empNurse,
-	}
-	db.Model(&Case{}).Create((&case1))
+	// case1 := Case{
+	// 	Location:  "หน้าเรียนรวม 1",
+	// 	Patient:   "นกน้อย",
+	// 	Age:       22,
+	// 	Status:    "ตกท่อ",
+	// 	Datetime:  time.Now(),
+	// 	Gender:    gender[0],
+	// 	Emergency: emergency[1],
+	// 	Employee:  empNurse,
+	// }
+	// db.Model(&Case{}).Create((&case1))
 
-	case2 := Case{
-		Location:  "ปต2",
-		Patient:   "Bamboo",
-		Age:       22,
-		Status:    "เป็นลม",
-		Datetime:  time.Now(),
-		Gender:    gender[1],
-		Emergency: emergency[1],
-		Employee:  empNurse,
-	}
-	db.Model(&Case{}).Create((&case2))
+	// case2 := Case{
+	// 	Location:  "ปต2",
+	// 	Patient:   "Bamboo",
+	// 	Age:       22,
+	// 	Status:    "เป็นลม",
+	// 	Datetime:  time.Now(),
+	// 	Gender:    gender[1],
+	// 	Emergency: emergency[1],
+	// 	Employee:  empNurse,
+	// }
+	// db.Model(&Case{}).Create((&case2))
 	emp := Employee{
 		Name:        "Amb",
 		Surname:     "Dis",

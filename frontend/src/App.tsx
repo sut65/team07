@@ -46,11 +46,12 @@ import CarWashCreate from "./components/carWash_system_components/CarWashCreate"
 import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/AmbulanceStoreUpdate";
 import AmbulanceUseUpdate from "./components/ambulanceUse_system_components/AmbulanceUseUpdate";
 import EmployeeCurrenct from "./components/employeeSystemComponents/EmployeeCurrenct";
-import Case from "./components/emergency_system_components/Emergencyhis";
 import CaseUpdate from "./components/emergency_system_components/EmergencyUpdate";
-import Carcare from "./components/carcare_system_components/Carcarehis";
-import CarCareCreate from "./components/carcare_system_components/Carcare";
-import CaseCreate from "./components/emergency_system_components/Emergency";
+import CarCareCreate from "./components/carcare_system_components/carcare";
+import Carcare from "./components/carcare_system_components/carcarehis";
+import CaseCreate from "./components/emergency_system_components/emergency";
+import Case from "./components/emergency_system_components/emergencyhis";
+
 
 
 

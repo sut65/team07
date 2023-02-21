@@ -11,10 +11,10 @@ type Carstat struct {
 	Name string
 
 	//For Link Foreign key
-	Carcare []Carcare `gorm:"foreignKey:CarStatID"`
+	Oders []Oder `gorm:"foreignKey:CarStatID"`
 }
 
-type Carcare struct {
+type Oder struct {
 	gorm.Model
 	SendDate   time.Time
 	ReciveDate time.Time
