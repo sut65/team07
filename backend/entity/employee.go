@@ -66,7 +66,7 @@ type Employee struct {
 	Disinfection    []Disinfection   `gorm:"foreignKey:EmployeeID"`
 	AmbulanceStores []AmbulanceStore `gorm:"foreignKey:EmployeeID"`
 	AmbulanceUses   []AmbulanceUse   `gorm:"foreignKey:EmployeeID"`
-	Oders        	[]Oder           `gorm:"foreignKey:EmployeeID"`
+	Oders           []Oder           `gorm:"foreignKey:EmployeeID"`
 	Cases           []Case           `gorm:"foreignKey:EmployeeID"`
 }
 
