@@ -61,6 +61,9 @@ export default function AmbulanceStoreCreate() {
   // For select Medicine
   const [selectMedicine, setSelectMedicine] = React.useState<MedicineInterface>()
 
+  // For clear Medicine 
+  const [clearMedicine, _] = React.useState<MedicineInterface>()
+
   React.useEffect(() => {
     getMedicine()
     getAmbulance()
@@ -104,13 +107,7 @@ export default function AmbulanceStoreCreate() {
       if (event.target.value !== "") {
         setSelectMedicine(medicine.filter((medfind) => (medfind.ID === convertType(event.target.value))).at(0))
       } else {
-        setSelectMedicine({
-          ID: 0,
-          MedicineWarning: "",
-          MedicineName: "",
-          MeasureUnit: "",
-          MedicineType: ""
-        })
+        setSelectMedicine(clearMedicine)
       }
     }
 

@@ -42,6 +42,8 @@ export default function AmbulanceStoreUpdate() {
 
   // For List Medicine
   const [medicine, setMedicine] = React.useState<MedicineInterface[]>([]);
+  // For clear Medicine
+  const [clearMedicine, _] = React.useState<MedicineInterface>()
 
   // For select Medicine
   const [selectMedicine, setSelectMedicine] =
@@ -120,13 +122,8 @@ export default function AmbulanceStoreUpdate() {
             .at(0)
         );
       } else {
-        setSelectMedicine({
-          ID: 0,
-          MedicineWarning: "",
-          MedicineName: "",
-          MeasureUnit: "",
-          MedicineType: "",
-        });
+        setSelectMedicine(clearMedicine)
+
       }
     }
     setAmbulanceStore({
