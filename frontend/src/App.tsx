@@ -47,10 +47,10 @@ import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/Amb
 import AmbulanceUseUpdate from "./components/ambulanceUse_system_components/AmbulanceUseUpdate";
 import EmployeeCurrenct from "./components/employeeSystemComponents/EmployeeCurrenct";
 import CaseUpdate from "./components/emergency_system_components/EmergencyUpdate";
-import CarCareCreate from "./components/carcare_system_components/carcare";
-import Carcare from "./components/carcare_system_components/carcarehis";
-import CaseCreate from "./components/emergency_system_components/emergency";
-import Case from "./components/emergency_system_components/emergencyhis";
+import CarCareCreate from "./components/carcare_system_components/Carcare";
+import Carcare from "./components/carcare_system_components/Carcarehis";
+import CaseCreate from "./components/emergency_system_components/Emergency";
+import Case from "./components/emergency_system_components/Emergencyhis";
 
 
 
@@ -111,10 +111,8 @@ export default function App() {
                     element={<AmbulanceCreate />}
                   />
                   <Route path="/CarDepotCreate" element={<CarDepotCreate />} />
-                  <Route path="/" element={<Signin />} />
 
                   <Route path="/CarWashCreate" element={<CarWashCreate />} />
-                  <Route path="/" element={<Signin />} />
                   {/* //Employee */}
                   <Route path="/Employee" element={<EmployeeList />} />
                   <Route path="/employee/create" element={<EmployeeCreate />} />
