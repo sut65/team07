@@ -84,22 +84,22 @@ func SetupDatabase() {
 
 	// ทำการเพิ่ม Dummy Role
 	admin := Role{
-		Name: "admin",
+		Name: "Admin",
 	}
 	carManager := Role{
-		Name: "Car Manager",
+		Name: "CarManager",
 	}
 	nurse := Role{
 		Name: "Nurse",
 	}
 	driver := Role{
-		Name: "Diver",
+		Name: "Driver",
 	}
 	disinfection := Role{
-		Name: "Disinfection Staff",
+		Name: "DisinfectionStaff",
 	}
 	notificationStaff := Role{
-		Name: "Notification Staff",
+		Name: "NotificationStaff",
 	}
 
 	db.Model(&Role{}).Create(&admin)

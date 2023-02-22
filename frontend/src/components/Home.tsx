@@ -46,7 +46,7 @@ function Home() {
     },
   ];
   return (
-    <Container className="container" maxWidth="md" >
+    <Container className="container" maxWidth="md">
       <Box sx={{ display: "flex", m: 1 }}>
         <Paper
           elevation={2}
@@ -67,7 +67,7 @@ function Home() {
           <Grid item xs={12} container style={{ marginTop: 5 }}>
             {item.map((item: Item) => {
               return (
-                <Grid item xs={4}>
+                <Grid item xs={4} key={item?.img}>
                   <img
                     style={{ width: "200px", height: "200px" }}
                     className="img"
