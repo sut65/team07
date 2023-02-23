@@ -86,6 +86,9 @@ func SetupDatabase() {
 	admin := Role{
 		Name: "Admin",
 	}
+	carBuyer := Role{
+		Name: "CarBuyer",
+	}
 	carManager := Role{
 		Name: "CarManager",
 	}
@@ -108,6 +111,7 @@ func SetupDatabase() {
 	db.Model(&Role{}).Create(&driver)
 	db.Model(&Role{}).Create(&disinfection)
 	db.Model(&Role{}).Create(&notificationStaff)
+	db.Model(&Role{}).Create(&carBuyer)
 
 	// ทำการเพิ่ม Dummy user ผู้ดูแลระบบ
 	pw, err := bcrypt.GenerateFromPassword([]byte("123456"), bcrypt.DefaultCost)
@@ -155,6 +159,13 @@ func SetupDatabase() {
 		Role:     notificationStaff,
 	}
 	db.Model(&User{}).Create(&userOther)
+
+	userCarBuyer := User{
+		Name:     "Buyer",
+		Password: string(pw),
+		Role:     carBuyer,
+	}
+	db.Model(&User{}).Create(&userCarBuyer)
 
 	userTest := User{
 		Name:     "Emp0001",
@@ -242,6 +253,19 @@ func SetupDatabase() {
 	}
 
 	db.Model(&Employee{}).Create(&empManager)
+
+	empCarBuyer := Employee{
+		Name:        "Buyer",
+		Surname:     "Buyer",
+		Age:         30,
+		User:        userCarBuyer,
+		WorkingArea: sut,
+		Status:      ready,
+		Education:   bacDeg,
+		Date:        time.Now(),
+	}
+
+	db.Model(&Employee{}).Create(&empCarBuyer)
 
 	empNurse := Employee{
 		Name:        "Nurse",
@@ -400,7 +424,7 @@ func SetupDatabase() {
 	db.Model(&Employee{}).Create(&emp)
 
 	ambulance1 := Ambulance{
-		Clp:      "บบ 3677",
+		Clp:      "DS3677",
 		CarBrand: "TOYOTA 1",
 		TypeAbl:  typeAbl[0],
 		Employee: empDis,
@@ -410,7 +434,7 @@ func SetupDatabase() {
 	db.Model(&Ambulance{}).Create(&ambulance1)
 
 	ambulance2 := Ambulance{
-		Clp:      "กข 1234",
+		Clp:      "SA1234",
 		CarBrand: "TOYOTA 2",
 		TypeAbl:  typeAbl[0],
 		Employee: empDis,
