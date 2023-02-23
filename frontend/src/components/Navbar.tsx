@@ -139,7 +139,7 @@ function Navbar() {
     {
       name: "รายการเเจ้งซ่อม",
       icon: <CarRepairIcon />,
-      path: "/Carcare",
+      path: "/Carcarehis",
     },
   ];
 

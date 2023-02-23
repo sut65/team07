@@ -47,11 +47,11 @@ import AmbulanceStoreUpdate from "./components/ambulanceStoreSystemComponent/Amb
 import AmbulanceUseUpdate from "./components/ambulanceUse_system_components/AmbulanceUseUpdate";
 import EmployeeCurrenct from "./components/employeeSystemComponents/EmployeeCurrenct";
 import CaseUpdate from "./components/emergency_system_components/EmergencyUpdate";
-import CarCareCreate from "./components/carcare_system_components/carcare";
-import Carcare from "./components/carcare_system_components/carcarehis";
-import CaseCreate from "./components/emergency_system_components/emergency";
-import Case from "./components/emergency_system_components/emergencyhis";
-
+import Case from "./components/emergency_system_components/Emergencyhis";
+import CaseCreate from "./components/emergency_system_components/Emergency";
+import CarCareCreate from "./components/carcare_system_components/Carcare";
+import Carcarehis from "./components/carcare_system_components/Carcarehis";
+import Carcare from "./components/carcare_system_components/Carcare";
 
 
 
@@ -122,7 +122,7 @@ export default function App() {
                     path="/employee/update/:id"
                     element={<EmployeeUpdate />}
                   />
-                  <Route 
+                  <Route
                     path="/employee-currenct"
                     element={<EmployeeCurrenct />}
                   />
@@ -249,6 +249,10 @@ export default function App() {
                   <Route
                     path="/CarCareCreate"
                     element={<CarCareCreate />}
+                  />
+                  <Route
+                    path="/CarCarehis"
+                    element={<Carcarehis />}
                   />
                   <Route
                     path="/CarWash/CarWashCreate"

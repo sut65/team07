@@ -2,7 +2,7 @@ import { CarcareInterface } from "../../models/carcare_system_models/carcare";
 
 const apiUrl = "http://localhost:8080";
 
-async function GetVehicleInspection() {
+async function GetVehicleInspectioByID() {
     const requestOptions = {
       method: "GET",
       headers: {
@@ -81,7 +81,7 @@ async function GetCarcareAll() {
   };
 
   let res = await fetch(
-    `${apiUrl}/emercases`,
+    `${apiUrl}/carcares`,
     requestOptions
   )
     .then((response) => response.json())
@@ -99,7 +99,7 @@ async function GetCarcareAll() {
 
 export {
 
-  GetVehicleInspection,
+  GetVehicleInspectioByID as GetVehicleInspection,
   GetCarstat,
   CreateCarecare,
   GetCarcareAll,

@@ -77,7 +77,7 @@ func SetupDatabase() {
 
 		// แจ้งซ่อม
 		&Carstat{},
-		&Oder{},
+		&Carcare{},
 	)
 
 	db = database
@@ -464,5 +464,4 @@ func SetupDatabase() {
 		{MedicineName: "Mepivacaine", MedicineWarning: "ต้องใช้ยาตามขนาด 5 มก. / กก.", MedicineType: "ยาชา", MeasureUnit: "มก."},
 	}
 	db.CreateInBatches(medicine, 4)
-
 }
