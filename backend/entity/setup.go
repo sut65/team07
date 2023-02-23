@@ -412,22 +412,22 @@ func SetupDatabase() {
 	// 	Employee:  empNurse,
 	// }
 	// db.Model(&Case{}).Create((&case2))
-	emp := Employee{
-		Name:        "Amb",
-		Surname:     "Dis",
-		Age:         20,
-		User:        userDis,
-		Status:      working,
-		Education:   bacDeg,
-		WorkingArea: sut,
-	}
-	db.Model(&Employee{}).Create(&emp)
+	// emp := Employee{
+	// 	Name:        "Amb",
+	// 	Surname:     "Dis",
+	// 	Age:         20,
+	// 	User:        userDis,
+	// 	Status:      working,
+	// 	Education:   bacDeg,
+	// 	WorkingArea: sut,
+	// }
+	// db.Model(&Employee{}).Create(&emp)
 
 	ambulance1 := Ambulance{
 		Clp:      "DS3677",
 		CarBrand: "TOYOTA 1",
 		TypeAbl:  typeAbl[0],
-		Employee: empDis,
+		Employee: empCarBuyer,
 		Company:  company[2],
 		Date:     time.Now(),
 	}
@@ -437,7 +437,7 @@ func SetupDatabase() {
 		Clp:      "SA1234",
 		CarBrand: "TOYOTA 2",
 		TypeAbl:  typeAbl[0],
-		Employee: empDis,
+		Employee: empCarBuyer,
 		Company:  company[1],
 		Date:     time.Now(),
 	}
