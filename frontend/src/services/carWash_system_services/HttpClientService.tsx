@@ -12,7 +12,7 @@ async function CreatCarWashs(data:any) {
         body: JSON.stringify(data),
     };
 
-    let res = await fetch(`${apiUrl}/carWash`, requestOptions)
+    let res = await fetch(`${apiUrl}/driver/carWash`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -157,7 +157,7 @@ async function UpdateCarWash(data: CarWashsInterface) {
         body: JSON.stringify(data)
     }
 
-    let res = await fetch(`${apiUrl}/carWash`, requestOptions)
+    let res = await fetch(`${apiUrl}/driver/carWash`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -181,7 +181,7 @@ async function DeleteCarWash(ID:number) {
         }
     };
     
-    let res = await fetch(`${apiUrl}/carWash/${ID}`, reqOpt)
+    let res = await fetch(`${apiUrl}/driver/carWash/${ID}`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res.data){
