@@ -112,7 +112,7 @@ function RecordTimeInCreate() {
                 TimeIn: recordtimein.TimeIn,
                 Odo: convertType(recordtimein.Odo),
             };
-            let res = await HttpClientServices.post("/recordtimein", data);
+            let res = await HttpClientServices.post("/driver/recordtimein", data);
             if (!res.error) {
               setSuccess(true);
               console.log(res);

@@ -140,7 +140,7 @@ async function GetDisinfectionByID() {
   };
 
   let res = await fetch(
-      `${apiUrl}/disinfection/${did}`,
+      `${apiUrl}/disinfectionStaff/disinfection/${did}`,
       requestOptions
   )
       .then((response) => response.json())
@@ -167,7 +167,7 @@ async function GetDisinfectionByEmployee() {
   };
 
   let res = await fetch(
-      `${apiUrl}/disinfection/${eid}`,
+      `${apiUrl}/disinfectionStaff/disinfection/${eid}`,
       requestOptions
   )
       .then((response) => response.json())
@@ -191,7 +191,7 @@ async function ListDisinfectants() {
       },
   };
 
-  let res = await fetch(`${apiUrl}/disinfactants`, requestOptions)
+  let res = await fetch(`${apiUrl}/disinfectionStaff/disinfactants`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {
@@ -213,7 +213,7 @@ async function ListDisinfactions() {
       },
   };
 
-  let res = await fetch(`${apiUrl}/disinfections`, requestOptions)
+  let res = await fetch(`${apiUrl}/disinfectionStaff/disinfections`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {
@@ -237,7 +237,7 @@ async function UpdateDisinfection(data: DisinfectionInterface) {
       body: JSON.stringify(data)
   }
 
-  let res = await fetch(`${apiUrl}/disinfection`, requestOptions)
+  let res = await fetch(`${apiUrl}/disinfectionStaff/disinfection`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {
@@ -258,7 +258,7 @@ async function ListAmbulances() {
       },
   };
 
-  let res = await fetch(`${apiUrl}/ambulances`, requestOptions)
+  let res = await fetch(`${apiUrl}/disinfectionStaff/ambulances`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {

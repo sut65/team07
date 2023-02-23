@@ -41,7 +41,7 @@ function CarWashCreate() {
         let res = await ListAmbulances();
         if (res) {
             setAmbulances(res);
-            //console.log(res)
+            console.log(res)
         }
     };
 
@@ -92,7 +92,7 @@ function CarWashCreate() {
         let data = {
             StatusAmID: convertType(carWash.StatusAmID),
             EmployeeID: convertType(localStorage.getItem("id")),
-            AmbulanceID: convertType(localStorage.getItem("id")),
+            AmbulanceID: convertType(carWash.AmbulanceID),
             ComName: carWash.ComName,
             ComTel: carWash.ComTel,
             ReceiptNum: carWash.ReceiptNum,

@@ -89,10 +89,10 @@ function CarDepotUpdate() {
     async function submit() {
 
         let data = {
-            ID: convertType(localStorage.getItem("id")),
+            ID: convertType(localStorage.getItem("cid")),
             ParkID: convertType(carDepot.ParkID),
             EmployeeID: convertType(localStorage.getItem("id")),
-            AmbulanceID: convertType(localStorage.getItem("id")),
+            AmbulanceID: convertType(carDepot.AmbulanceID),
             EmpCode: carDepot.EmpCode,
             PNum: convertType(carDepot.PNum),
             Date: carDepot.Date,
