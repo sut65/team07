@@ -24,13 +24,13 @@ func CreateCarcare(c *gin.Context) {
 
 	// ค้นหา carstat ด้วย id
 	if tx := entity.DB().Where("id = ?", caroder.CarStatID).First(&carstat); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "companies not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "carstat not found"})
 		return
 	}
 
 	// ค้นหา vehicleInspection ด้วย id
 	if tx := entity.DB().Where("id = ?", caroder.VehicleInspectionID).First(&vehicleinspection); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "type_abls not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "vehicleInspection not found"})
 		return
 	}
 
@@ -40,7 +40,7 @@ func CreateCarcare(c *gin.Context) {
 		return
 	}
 
-	// 11: สร้าง caroder
+	// 11: สร้าง Carcare
 	st := entity.Carcare{
 		SaveDate:          caroder.SaveDate,
 		ReciveDate:        caroder.ReciveDate,

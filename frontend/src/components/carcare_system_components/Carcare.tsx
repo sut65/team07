@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -129,21 +129,28 @@ function CarCareCreate() {
         return val;
     };
 
+    const navigator = useNavigate();
+
     async function submit() {
         let data = {
+            EmployeeID: convertType(localStorage.getItem("id")),
             VehicleInspectionID: convertType(carcare.VehicleInspectionID),
             CarStatID: convertType(carcare.CarStatID),
             SendDate: carcare.SendDate,
             ReciveDate: carcare.ReciveDate,
-            Bill: carcare.Bill,
+            Bill: typeof carcare.Bill == "string" ? parseInt(carcare.Bill) : 0,
             Note: carcare.Note,
             Savedate: carcare.SaveDate,
         }
         console.log(data)
 
         let res = await CreateCarecare(data);
+        console.log(res)
         if (res) {
             setSuccess(true);
+            setTimeout(() => {
+                navigator("/Carcare")
+            }, 1200)
         } else {
             setError(true);
         }
@@ -303,7 +310,7 @@ function CarCareCreate() {
                                     onChange={(newValue) => {
                                         setCarcare({
                                             ...carcare,
-                                            SaveDate: newValue,
+                                            SendDate: newValue,
                                         });
                                     }}
                                     renderInput={(params) => <TextField {...params} />}
@@ -351,28 +358,10 @@ function CarCareCreate() {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                            <p>Recive Date</p>
+                            <p>Save Date</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     className='StyledTextField'
-                                    value={carcare.ReciveDate}
-                                    onChange={(newValue) => {
-                                        setCarcare({
-                                            ...carcare,
-                                            ReciveDate: newValue,
-                                        });
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </LocalizationProvider>
-                        </FormControl>
-                    </Grid>
-
-                    {/* <Grid item xs={6}>
-                        <FormControl fullWidth>
-                            <p>Save Date</p>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <MobileDateTimePicker
                                     value={carcare.SaveDate}
                                     onChange={(newValue) => {
                                         setCarcare({
@@ -380,17 +369,11 @@ function CarCareCreate() {
                                             SaveDate: newValue,
                                         });
                                     }}
-                                    label="With error handler"
-                                    onError={console.log}
-                                    minDate={dayjs('2018-01-01T00:00')}
-                                    inputFormat="YYYY/MM/DD hh:mm a"
-                                    mask="____/__/__ __:__ _M"
                                     renderInput={(params) => <TextField {...params} />}
                                 />
                             </LocalizationProvider>
                         </FormControl>
-                    </Grid> */}
-
+                    </Grid>
                     <Grid item xs={12}>
                         <FormControl fullWidth variant="outlined">
                             <p>Note</p>

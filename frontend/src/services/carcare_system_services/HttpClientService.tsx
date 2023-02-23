@@ -57,7 +57,7 @@ async function CreateCarecare(data: CarcareInterface) {
     body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/Carecares`, requestOptions)
+  let res = await fetch(`${apiUrl}/car-manager/carcare`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
