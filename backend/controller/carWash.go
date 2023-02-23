@@ -33,19 +33,19 @@ func CreateCarWash(c *gin.Context) {
 
 	// 3: ค้นหา employee ด้วย id
 	if tx := entity.DB().Where("id = ?", carWash.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "employees not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": " employees not found"})
 		return
 	}
 
 	// 8: ค้นหา statusAm ด้วย id
 	if tx := entity.DB().Where("id = ?", carWash.StatusAmID).First(&statusAm); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "statusAm not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": " statusAm not found"})
 		return
 	}
 
 	// 9: ค้นหา ambulance ด้วย id
 	if tx := entity.DB().Where("id = ?", carWash.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ambulance not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": " ambulance not found"})
 		return
 	}
 
@@ -187,13 +187,13 @@ func UpdateCarWash(c *gin.Context) {
 	// if have new employee_id
 	if carWash.EmployeeID != nil {
 		if tx := entity.DB().Where("id = ?", carWash.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": " not found employee"})
 			return
 		}
 		carWash.Employee = employee
 	} else {
 		if tx := entity.DB().Where("id = ?", carWash.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": " not found employee"})
 			return
 		}
 		carWash.Employee = employee
@@ -202,14 +202,14 @@ func UpdateCarWash(c *gin.Context) {
 	// if have new ambulance_id
 	if carWash.AmbulanceID != nil {
 		if tx := entity.DB().Where("id = ?", carWash.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found ambulance"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": " not found ambulance"})
 			return
 		}
 		fmt.Print("NOT NULL")
 		carWash.Ambulance = ambulance
 	} else {
 		if tx := entity.DB().Where("id = ?", carWash.AmbulanceID).First(&ambulance); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found ambulance"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": " not found ambulance"})
 			return
 		}
 		fmt.Print("NULL")
@@ -219,13 +219,13 @@ func UpdateCarWash(c *gin.Context) {
 	// if have new StatusAm
 	if carWash.StatusAmID != nil {
 		if tx := entity.DB().Where("id = ?", carWash.StatusAmID).First(&statusAm); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found statusAm"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": " not found statusAm"})
 			return
 		}
 		carWash.StatusAm = statusAm
 	} else {
 		if tx := entity.DB().Where("id = ?", carWash.StatusAmID).First(&statusAm); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "not found statusAm"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": " not found statusAm"})
 			return
 		}
 		carWash.StatusAm = statusAm
