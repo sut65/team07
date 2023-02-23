@@ -5,10 +5,24 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
-import moment from "moment";
+import { DialogTitle, DialogContent, DialogContentText, DialogActions, Dialog, Slide } from "@mui/material";
 
-import { GetCarcareAll } from "../../services/carcare_system_services/HttpClientService";
+import moment from "moment";
+import { TransitionProps } from "@mui/material/transitions";
+import { DeleteCarcareByID, GetCarcareAll } from "../../services/carcare_system_services/HttpClientService";
 import { CarcareInterface } from "../../models/carcare_system_models/carcare"; 
+import { convertType } from "../../services/utility";
+
+
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function Carcarehis() {
   const [carcares, setCarcare] = useState<CarcareInterface[]>([]);
@@ -19,6 +33,35 @@ function Carcarehis() {
       setCarcare(res);
     }
   };
+
+
+  const [open, setOpen] = useState(false);
+  const getDeletegetCarcareByID = async () => {
+    let cc_id = convertType(localStorage.getItem("cc_id"))
+    let res = await DeleteCarcareByID(cc_id);
+    if (res) {
+      console.log(res.data);
+    } else {
+      console.log(res.data);
+    }
+    getCarcareByiD();
+  };
+  
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+
+  const handleDelete = () => {
+    getDeletegetCarcareByID();
+    setOpen(false);
+
+  }
 
   useEffect(() => {
 
@@ -69,7 +112,6 @@ function Carcarehis() {
       headerName: "งบประมาณ",
       width: 100,
       valueFormatter: (params) => {
-        console.log(params.value.Bill)
         return params.value.Bill
       },
       headerAlign: "center",
@@ -114,19 +156,16 @@ function Carcarehis() {
     },
 
     {
-      field: "Delete",
-      headerName: "Delete",
-      sortable: true,
-      width: 100,
-      align: "center",
-      headerAlign: "center",
+      field: "Delete", headerName: "Delete", width: 100, align: "center", headerAlign: "center",
       renderCell: ({ row }: Partial<GridRowParams>) =>
-        <Button 
+        <Button
           size="small"
           variant="contained"
           color="error"
           onClick={() => {
             localStorage.setItem("cc_id", row.ID);
+            handleClickOpen();
+
           }}
           sx={{ borderRadius: 20, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
         >
@@ -185,6 +224,35 @@ function Carcarehis() {
             sx={{ mt: 2, backgroundColor: '#fff' }}
           />
         </div>
+        
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          aria-describedby="alert-dialog-slide-description"
+        >
+        <DialogTitle>{`คุณต้องการลบข้อมูลใบสั่งซ่อมหมายเลข ${localStorage.getItem("cc_id")}  ใช่หรือไม่?`}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              หากคุณลบข้อมูลนี้แล้วนั้น คุณจะไม่สามารถกู้คืนได้อีก
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color="error"
+              sx={{
+                borderRadius: 10,
+                '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' }
+              }} onClick={handleClose}
+            >ยกเลิก</Button>
+            <Button sx={{
+              borderRadius: 10,
+              '&:hover': { color: '#065D95', backgroundColor: '#e3f2fd' }
+            }}
+              onClick={handleDelete}
+            >ยืนยัน</Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </div>
 
