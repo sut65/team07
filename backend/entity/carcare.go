@@ -11,7 +11,7 @@ type Carstat struct {
 	Name string
 
 	//For Link Foreign key
-	Oders []Carcare `gorm:"foreignKey:CarStatID"`
+	Carcares []Carcare `gorm:"foreignKey:CarStatID"`
 }
 
 type Carcare struct {

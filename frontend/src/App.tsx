@@ -12,6 +12,7 @@ import RouterDisinfection from "./router/RouterDisinfection";
 import RouterEmployee from "./router/RouterEmployee";
 import RouterNotificationStaff from "./router/RouterNotificationStaff";
 import RouterNurse from "./router/RouterNurse";
+import RouterCarBuyer from "./router/RouterCarBuyer"
 import "./App.css";
 
 
