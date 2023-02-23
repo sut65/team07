@@ -55,7 +55,7 @@ async function CreateEmercase(data: CaseInterface) {
       body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/emercase`, requestOptions)
+  let res = await fetch(`${apiUrl}/staff/emercase`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {
@@ -103,7 +103,7 @@ async function DeleteCaseByID(ID : any){
       },
   };
 
-  let res = await fetch(`${apiUrl}/emercase/${ID}`, requestOptions)
+  let res = await fetch(`${apiUrl}/staff/emercase/${ID}`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {
@@ -154,7 +154,7 @@ async function UpdateUpdateCase(data: CaseInterface) {
       body: JSON.stringify(data)
   }
 
-  let res = await fetch(`${apiUrl}/emercases`, requestOptions)
+  let res = await fetch(`${apiUrl}/staff/emercases`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {

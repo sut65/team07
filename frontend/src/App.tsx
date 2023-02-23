@@ -72,7 +72,7 @@ export default function App() {
           <RouterNurse />
         ) : token && role === "DisinfectionStaff" ? (
           <RouterDisinfection />
-        ) : token && role === "DisinfectionStaff" ? (
+        ) : token && role === "NotificationStaff" ? (
           <RouterNotificationStaff />
         ) : token && role === "CarBuyer" ? (
           <RouterCarBuyer />
