@@ -25,7 +25,7 @@ import {
     GetEmergency,
     GetGender,
     GetEmercaseByID,
-    UpdateUpdateCase,
+    UpdateCase,
 } from '../../services/emergency_system_service/HttpClientServices';
 
 
@@ -125,13 +125,13 @@ function CaseUpdate() {
         };
         console.log(data)
 
-        let res = await UpdateUpdateCase(data);
+        let res = await UpdateCase(data);
         if (res.data) {
             setSuccess(true);
             console.log(res.data)
-            // setTimeout(() => {
-            //     navigator("/Case")
-            // }, 1200)
+            setTimeout(() => {
+                navigator("/Case")
+            }, 1200)
         } else {
             setError(true);
             console.log(res.error)

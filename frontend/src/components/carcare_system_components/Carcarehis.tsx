@@ -31,11 +31,13 @@ function Carcarehis() {
     let res = await GetCarcareAll();
     if (res) {
       setCarcare(res);
+      console.log(res)
     }
   };
 
 
   const [open, setOpen] = useState(false);
+
   const getDeletegetCarcareByID = async () => {
     let cc_id = convertType(localStorage.getItem("cc_id"))
     let res = await DeleteCarcareByID(cc_id);
@@ -54,8 +56,6 @@ function Carcarehis() {
   const handleClose = () => {
     setOpen(false);
   };
-
-
 
   const handleDelete = () => {
     getDeletegetCarcareByID();
@@ -84,7 +84,6 @@ function Carcarehis() {
       width: 100,
       headerAlign: "center",
       valueFormatter: (params) =>{
-        console.log(params)
         return  params.value.VehicleInspection
       },
     },
@@ -95,7 +94,7 @@ function Carcarehis() {
       width: 200,
       headerAlign: "center",
       align: "center",
-      valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A")
+      valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY")
     },
 
     {
@@ -104,7 +103,7 @@ function Carcarehis() {
       width: 200,
       headerAlign: "center",
       align: "center",
-      valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY hh:mm A")
+      valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY")
     },
 
     {
@@ -120,8 +119,16 @@ function Carcarehis() {
     {
       field: "Note",
       headerName: "ข้อเสนอเเนะ",
-      width: 450,
+      width: 350,
       valueFormatter: (params) => params.value.Note,
+      headerAlign: "center",
+    },
+
+    {
+      field: "CarStat",
+      headerName: "สถานะการส่งซ่อม",
+      width: 100,
+      valueFormatter: (params) => params.value.Name,
       headerAlign: "center",
     },
 
@@ -142,12 +149,14 @@ function Carcarehis() {
       align: "center",
       headerAlign: "center",
       renderCell: ({ row }: Partial<GridRowParams>) =>
-        <Button 
+        <Button  component={RouterLink}
+          to="/CarcareUpdate"
           size="small"
           variant="contained"
           color="error"
           onClick={() => {
             localStorage.setItem("cc_id", row.ID);
+            localStorage.setItem("ve_id",row.VehicleInspectionID);
           }}
           sx={{ borderRadius: 20, '&:hover': { color: '#FC0000', backgroundColor: '#F9EBEB' } }}
         >
