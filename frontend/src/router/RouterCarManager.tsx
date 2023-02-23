@@ -1,8 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-//จัดซื้อรถ
-import AmbulanceCreate from "../components/ambulance_system_components/AmbulanceCreate";
-import Ambulance from "../components/ambulance_system_components/Ambulance";
-import AmbulanceUpdate from "../components/ambulance_system_components/AmbulanceUpdate";
+
 
 //แจ้งซ่อม
 import CarCareCreate from "../components/carcare_system_components/Carcare";
@@ -19,16 +16,7 @@ function RouterCarManager() {
       <div className="container-router">
       <Routes>
       <Route path="/" element={<Home />} />
-        <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
-        <Route path="/Ambulance" element={<Ambulance />} />
-        <Route
-          path="/Ambulance/AmbulanceCreate"
-          element={<AmbulanceCreate />}
-        />
-        <Route
-          path="/Ambulance/AmbulanceUpdate"
-          element={<AmbulanceUpdate />}
-        />
+       
 
         <Route path="/CarCare" element={<Carcare />} />
         <Route path="/CarCareCreate" element={<CarCareCreate />} />

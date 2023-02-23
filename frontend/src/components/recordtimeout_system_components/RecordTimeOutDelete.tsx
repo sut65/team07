@@ -45,7 +45,7 @@ export default function RecordTimeOutDelete(props: any) {
   };
 
   async function submit() {
-    let res = await HttpClientServices.delete(`/recordtimeout/${params}`);
+    let res = await HttpClientServices.delete(`/driver/recordtimeout/${params}`);
     if(!res.error){
       console.log(res.results);
       setTimeout(() => {

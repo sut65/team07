@@ -13,7 +13,7 @@ async function CreatRecordTimeIn(data: RecordTimeInInterface) {
       body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/recordtimein`, requestOptions)
+  let res = await fetch(`${apiUrl}/driver/recordtimein`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           // if (res.data) {
@@ -183,7 +183,7 @@ async function UpdateRecordTimeIn(data: RecordTimeInInterface) {
       body: JSON.stringify(data)
   }
 
-  let res = await fetch(`${apiUrl}/recordtimein`, requestOptions)
+  let res = await fetch(`${apiUrl}/driver/recordtimein`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {

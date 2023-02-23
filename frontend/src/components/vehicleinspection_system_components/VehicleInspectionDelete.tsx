@@ -43,7 +43,7 @@ export default function VehiclecinspectionDelete(props: any) {
   };
 
   async function submit() {
-    let res = await HttpClientServices.delete(`/vehicleinspection/${params}`);
+    let res = await HttpClientServices.delete(`/car-manager/vehicleinspection/${params}`);
     if(!res.error){
       console.log(res.results);
       setTimeout(() => {

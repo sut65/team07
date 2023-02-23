@@ -203,7 +203,7 @@ export default function VehicleInspectionCreate() {
       //update
       const ID = { ID: Number(param?.id) };
       data = { ...data, ...ID };
-      let res = await HttpClientServices.patch(`/vehicleinspection`, data);
+      let res = await HttpClientServices.patch(`/car-manager/vehicleinspection`, data);
       if (!res.error) {
         setSuccess(true);
         console.log(res);
@@ -218,7 +218,7 @@ export default function VehicleInspectionCreate() {
       }
     } else {
       //create
-      let res = await HttpClientServices.post("/vehicleinspection", data);
+      let res = await HttpClientServices.post("/car-manager/vehicleinspection", data);
       if (!res.error) {
         setSuccess(true);
         console.log(res);

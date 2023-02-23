@@ -84,6 +84,21 @@ func main() {
 	// Get by id
 	r.GET("/ambulances/:id", controller.GetAmbulance)
 
+	r.GET("/recordtimeins", controller.ListRecordTimeIns)
+	r.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
+	r.GET("/recordtimeins/:id", controller.GetRecordTimeIn)
+
+	r.GET("/disinfections", controller.ListDisinfactions)
+	r.GET("/disinfection/:id", controller.GetDisinfection)
+	r.GET("/disinfactants", controller.ListDisinfectants)
+
+	r.GET("/recordtimeouts", controller.ListRecordTimeOuts)
+	r.GET("/recordtimeout/:id", controller.GetRecordTimeOut)
+	r.GET("/typeabl/:type_id", controller.GetAmbulanceByTypeAblID)
+	r.GET("/abl/:abl_id", controller.GetAmbulanceByAblID)
+	r.GET("/cases", controller.GetCase)
+	r.GET("/cases/:case_id", controller.GetCaseByID)
+
 	// Path ทุกคนใช้ร่วมกันทั้งหมด
 
 	{
@@ -140,12 +155,9 @@ func main() {
 	{
 		protected := DriverApi.Use(middlewares.Authorizes())
 
-		// driver Checking
+		// Driver Checking
 		protected.Use(middlewares.CheckDriver())
 		{
-			protected.GET("/recordtimeins", controller.ListRecordTimeIns)
-			protected.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
-			protected.GET("/recordtimeins/:id", controller.GetRecordTimeIn)
 			protected.POST("/recordtimein", controller.CreateRecordTimeIn)
 			protected.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
 			protected.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
@@ -157,6 +169,11 @@ func main() {
 			protected.POST("/carDepot", controller.CreateCarDepot)
 			protected.DELETE("/carDepot/:id", controller.DeleteCarDepot)
 			protected.PATCH("/carDepot", controller.UpdateCarDepot)
+
+			protected.POST("/recordtimeout", controller.CreateRecordTimeOut)
+			protected.DELETE("/recordtimeout/:id", controller.DeleteRecordTimeOut)
+			protected.PATCH("/recordtimeout", controller.UpdateRecordTimeOut)
+			
 		}
 	}
 
@@ -165,15 +182,12 @@ func main() {
 	{
 		protected := DisinfectionStaffApi.Use(middlewares.Authorizes())
 
-		// Dis Checking
+		// Admin Checking
 		protected.Use(middlewares.CheckDisinfectionStaff())
 		{
-			protected.GET("/disinfections", controller.ListDisinfactions)
-			protected.GET("/disinfection/:id", controller.GetDisinfection)
 			protected.POST("/disinfection", controller.CreateDisinfection)
 			protected.DELETE("/disinfection/:id", controller.DeleteDisinfection)
 			protected.PATCH("/disinfection", controller.UpdateDisinfection)
-			protected.GET("/disinfactants", controller.ListDisinfectants)
 		}
 	}
 
@@ -232,9 +246,11 @@ func main() {
 	CarManagerApi := r.Group("/car-manager")
 	{
 		protected := CarManagerApi.Use(middlewares.Authorizes())
-		protected.Use(middlewares.CheckCarBuyer())
+		protected.Use(middlewares.CheckCarManager())
 		{
-
+			protected.POST("/vehicleinspection", controller.CreateVehicleInspection)
+			protected.DELETE("/vehicleinspection/:id", controller.DeleteVehicleInspection)
+			protected.PATCH("/vehicleinspection", controller.UpdateVehicleInspection)
 		}
 	}
 
@@ -275,23 +291,11 @@ func main() {
 	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
 
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาออกเข้าของพนักงาน -------------------------------
-	r.GET("/recordtimeouts", controller.ListRecordTimeOuts)
-	r.GET("/recordtimeout/:id", controller.GetRecordTimeOut)
-	r.POST("/recordtimeout", controller.CreateRecordTimeOut)
-	r.DELETE("/recordtimeout/:id", controller.DeleteRecordTimeOut)
-	r.PATCH("/recordtimeout", controller.UpdateRecordTimeOut)
-	r.GET("/typeabl/:type_id", controller.GetAmbulanceByTypeAblID)
-	r.GET("/abl/:abl_id", controller.GetAmbulanceByAblID)
-	r.GET("/cases", controller.GetCase)
-	r.GET("/cases/:case_id", controller.GetCaseByID)
+	
 
 	r.GET("/vehicleinspections", controller.ListVehicleInspections)
 	r.GET("/vehicleinspection/:id", controller.GetVehicleInspection)
-	r.POST("/vehicleinspection", controller.CreateVehicleInspection)
-	r.DELETE("/vehicleinspection/:id", controller.DeleteVehicleInspection)
-	r.PATCH("/vehicleinspection", controller.UpdateVehicleInspection)
 	r.GET("/checkabl/:type_id", controller.GetAmbulanceByTypeAbl)
-
 	r.GET("/statuschecks", controller.ListStatusChecks)
 	r.GET("/statuscheck/:id", controller.GetStatusCheck)
 	r.GET("/ambulanceparts", controller.ListAmbulanceParts)

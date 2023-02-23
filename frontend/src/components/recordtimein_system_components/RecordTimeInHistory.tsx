@@ -35,7 +35,7 @@ function RecordTimeInHistory() {
 
   const getRecordTimeIns = async () => {
     try {
-      let res = await HttpClientServices.get("/driver/recordtimeins");
+      let res = await HttpClientServices.get("/recordtimeins");
       setRecordtimein(res.data);
       // console.log(res.data);
     } catch (err) {

@@ -140,7 +140,7 @@ async function GetDisinfectionByID() {
   };
 
   let res = await fetch(
-      `${apiUrl}/disinfectionStaff/disinfection/${did}`,
+      `${apiUrl}/disinfection/${did}`,
       requestOptions
   )
       .then((response) => response.json())
@@ -191,7 +191,7 @@ async function ListDisinfectants() {
       },
   };
 
-  let res = await fetch(`${apiUrl}/disinfectionStaff/disinfactants`, requestOptions)
+  let res = await fetch(`${apiUrl}/disinfactants`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {
@@ -258,7 +258,7 @@ async function ListAmbulances() {
       },
   };
 
-  let res = await fetch(`${apiUrl}/disinfectionStaff/ambulances`, requestOptions)
+  let res = await fetch(`${apiUrl}/ambulances`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
           if (res.data) {

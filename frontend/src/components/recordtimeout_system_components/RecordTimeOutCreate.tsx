@@ -243,7 +243,7 @@ function RecordTimeOutCreate() {
       //update
       const ID = { ID: Number(param?.id) };
       data = { ...data, ...ID };
-      let res = await HttpClientServices.patch(`/recordtimeout`, data);
+      let res = await HttpClientServices.patch(`/driver/recordtimeout`, data);
       if (!res.error) {
         setSuccess(true);
         console.log(res);
@@ -258,7 +258,7 @@ function RecordTimeOutCreate() {
       }
     } else {
       //create
-      let res = await HttpClientServices.post("/recordtimeout", data);
+      let res = await HttpClientServices.post("/driver/recordtimeout", data);
       if (!res.error) {
         setSuccess(true);
         console.log(res);

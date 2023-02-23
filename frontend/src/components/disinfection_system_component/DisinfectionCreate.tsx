@@ -50,22 +50,13 @@ function DisinfectionCreate() {
       };
       const getDisinfectant = async () => {
         try {
-          let res = await HttpClientServices.get("/disinfectionStaff/disinfactants");
+          let res = await HttpClientServices.get("/disinfactants");
           setDisinfeatant(res.data);
           console.log(res.data);
         } catch (err) {
           console.log(err);
         }
       };
-    //   const getEmployee = async () => {
-    //     try {
-    //       let res = await HttpClientServices.get("/employees");
-    //       setEmployee(res.data);
-    //       console.log(res.data);
-    //     } catch (err) {
-    //       console.log(err);
-    //     }
-    //   };
 
     const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -97,7 +88,6 @@ function DisinfectionCreate() {
 
     useEffect(() => {
         getAmbulance();
-        // getEmployee();
         getDisinfectant();
       }, []);
 
@@ -121,20 +111,6 @@ function DisinfectionCreate() {
               setAlertMessage("บันทึกข้อมูลไม่สำเร็จ " + res.message);
               // console.log(res.message);
             }
-        // try {
-        //     let res = await HttpClientServices.post("/disinfection", data);
-        //     setSuccess(true);
-        //     console.log(res.data);
-        // } catch (err) {
-        //     setError(false);
-        //     console.log(JSON.stringify(err));
-        // }
-        // let res = await CreatDisinfection(data);
-        //     if (res) {
-        //         setSuccess(true);
-        //     } else {
-        //         setError(true);
-        //     }
     }
 
     return (
