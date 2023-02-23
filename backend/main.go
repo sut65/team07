@@ -142,16 +142,10 @@ func main() {
 			protected.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
 			protected.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
 
-			protected.GET("/carWashs", controller.ListCarWashs)
-			protected.GET("/carWashs/:id", controller.GetCarWash)
-			protected.GET("/carWash/:empid", controller.GetCarWashByEmployee)
 			protected.POST("/carWash", controller.CreateCarWash)
 			protected.DELETE("/carWash/:id", controller.DeleteCarWash)
 			protected.PATCH("/carWash", controller.UpdateCarWash)
 
-			protected.GET("/carDepots", controller.ListCarDepots)
-			protected.GET("/carDepots/:id", controller.GetCarDepot)
-			protected.GET("/carDepot/:empid", controller.GetCarDepotByEmployee)
 			protected.POST("/carDepot", controller.CreateCarDepot)
 			protected.DELETE("/carDepot/:id", controller.DeleteCarDepot)
 			protected.PATCH("/carDepot", controller.UpdateCarDepot)
