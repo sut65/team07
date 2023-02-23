@@ -113,6 +113,7 @@ function CaseUpdate() {
 
     async function submit() {
         let data = {
+            ID: emercase.ID,
             EmployeeID: convertType(localStorage.getItem("id")),
             GenderID: convertType(emercase.GenderID),
             EmergencyID: convertType(emercase.EmergencyID),
@@ -125,13 +126,15 @@ function CaseUpdate() {
         console.log(data)
 
         let res = await UpdateUpdateCase(data);
-        if (res) {
+        if (res.data) {
             setSuccess(true);
-            setTimeout(() => {
-                navigator("/Case")
-            }, 1200)
+            console.log(res.data)
+            // setTimeout(() => {
+            //     navigator("/Case")
+            // }, 1200)
         } else {
             setError(true);
+            console.log(res.error)
         }
     }
 
@@ -231,6 +234,7 @@ function CaseUpdate() {
                                 inputProps={{
                                     name: "Location",
                                 }}
+                                value={emercase.Location}
                             />
                         </FormControl>
                     </Grid>
@@ -245,6 +249,7 @@ function CaseUpdate() {
                                 inputProps={{
                                     name: "Patient",
                                 }}
+                                value={emercase.Patient}
                             />
                         </FormControl>
                     </Grid>
@@ -298,6 +303,7 @@ function CaseUpdate() {
                                 inputProps={{
                                     name: "Status",
                                 }}
+                                value={emercase.Status}
                             />
                         </FormControl>
                     </Grid>

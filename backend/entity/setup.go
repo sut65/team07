@@ -77,7 +77,7 @@ func SetupDatabase() {
 
 		// แจ้งซ่อม
 		&Carstat{},
-		&Oder{},
+		&Carcare{},
 	)
 
 	db = database
@@ -389,29 +389,29 @@ func SetupDatabase() {
 	db.CreateInBatches(gender, 2)
 	// ระบบเเจ้งเหตุ ----------------------------------------------------
 
-	// case1 := Case{
-	// 	Location:  "หน้าเรียนรวม 1",
-	// 	Patient:   "นกน้อย",
-	// 	Age:       22,
-	// 	Status:    "ตกท่อ",
-	// 	Datetime:  time.Now(),
-	// 	Gender:    gender[0],
-	// 	Emergency: emergency[1],
-	// 	Employee:  empNurse,
-	// }
-	// db.Model(&Case{}).Create((&case1))
+	case1 := Case{
+		Location:  "หน้าเรียนรวม 1",
+		Patient:   "นกน้อย",
+		Age:       22,
+		Status:    "ตกท่อ",
+		Datetime:  time.Now(),
+		Gender:    gender[0],
+		Emergency: emergency[1],
+		Employee:  empNurse,
+	}
+	db.Model(&Case{}).Create((&case1))
 
-	// case2 := Case{
-	// 	Location:  "ปต2",
-	// 	Patient:   "Bamboo",
-	// 	Age:       22,
-	// 	Status:    "เป็นลม",
-	// 	Datetime:  time.Now(),
-	// 	Gender:    gender[1],
-	// 	Emergency: emergency[1],
-	// 	Employee:  empNurse,
-	// }
-	// db.Model(&Case{}).Create((&case2))
+	case2 := Case{
+		Location:  "ปต2",
+		Patient:   "Bamboo",
+		Age:       22,
+		Status:    "เป็นลม",
+		Datetime:  time.Now(),
+		Gender:    gender[1],
+		Emergency: emergency[1],
+		Employee:  empNurse,
+	}
+	db.Model(&Case{}).Create((&case2))
 	// emp := Employee{
 	// 	Name:        "Amb",
 	// 	Surname:     "Dis",
@@ -471,15 +471,15 @@ func SetupDatabase() {
 	}
 	db.Model(&Disinfactant{}).Create(&disinfectant)
 
-	disinfection_1 := Disinfection{
-		WorkTime:           time.Now(),
-		AmountDisinfectant: 500,
-		Note:               "-",
-		Employee:           empDis,
-		Ambulance:          ambulance1,
-		Disinfactant:       disinfectant[1],
-	}
-	db.Model(&Disinfection{}).Create(&disinfection_1)
+	// disinfection_1 := Disinfection{
+	// 	WorkTime:           time.Now(),
+	// 	AmountDisinfectant: 500,
+	// 	Note:               "-",
+	// 	Employee:           empDis,
+	// 	Ambulance:          ambulance1,
+	// 	Disinfactant:       disinfectant[1],
+	// }
+	// db.Model(&Disinfection{}).Create(&disinfection_1)
 
 	var medicine = []Medicine{
 		{MedicineName: "Paracetamol", MedicineWarning: "ไม่ควรเกิน 500-1000 มก.", MedicineType: "ยาแก้ปวด", MeasureUnit: "เม็ด"},
@@ -488,5 +488,4 @@ func SetupDatabase() {
 		{MedicineName: "Mepivacaine", MedicineWarning: "ต้องใช้ยาตามขนาด 5 มก. / กก.", MedicineType: "ยาชา", MeasureUnit: "มก."},
 	}
 	db.CreateInBatches(medicine, 4)
-
 }

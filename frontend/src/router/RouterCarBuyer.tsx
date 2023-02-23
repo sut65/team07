@@ -7,7 +7,7 @@ import AmbulanceUpdate from "../components/ambulance_system_components/Ambulance
 import Navbar from "../components/Navbar";
 import Home from "../components/Home"
 import EmployeeCurrenct from "../components/employeeSystemComponents/EmployeeCurrenct";
-export const RouterCarBuyer = () => {
+const RouterCarBuyer = () => {
   return (
     <Router>
       <Navbar />
@@ -30,3 +30,5 @@ export const RouterCarBuyer = () => {
     </Router>
   );
 };
+
+export default RouterCarBuyer;

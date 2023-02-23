@@ -10,7 +10,7 @@ import moment from "moment";
 import { GetCarcareAll } from "../../services/carcare_system_services/HttpClientService";
 import { CarcareInterface } from "../../models/carcare_system_models/carcare"; 
 
-function Carcare() {
+function Carcarehis() {
   const [carcares, setCarcare] = useState<CarcareInterface[]>([]);
 
   const getCarcareByiD = async () => {
@@ -26,6 +26,7 @@ function Carcare() {
 
   }, []);
 
+
   const columns: GridColDef[] = [
     {
       field: "ID",
@@ -35,11 +36,14 @@ function Carcare() {
     },
 
     {
-      field: "VehicleInspectionInterfaceID",
-      headerName: "หมายเลขรถ",
+      field: "VehicleInspectionID",
+      headerName: "ใบตรวจเช็คสภาพ",
       width: 100,
       headerAlign: "center",
-      valueFormatter: (params) => params.value.VehicleInspectionInterfaceID,
+      valueFormatter: (params) =>{
+        console.log(params)
+        return  params.value.VehicleInspection
+      },
     },
 
     {
@@ -64,14 +68,17 @@ function Carcare() {
       field: "Bill",
       headerName: "งบประมาณ",
       width: 100,
-      valueFormatter: (params) => params.value.Bill,
+      valueFormatter: (params) => {
+        console.log(params.value.Bill)
+        return params.value.Bill
+      },
       headerAlign: "center",
     },
 
     {
       field: "Note",
       headerName: "ข้อเสนอเเนะ",
-      width: 300,
+      width: 450,
       valueFormatter: (params) => params.value.Note,
       headerAlign: "center",
     },
@@ -152,7 +159,7 @@ function Carcare() {
               color="secondary"
               gutterBottom
             >
-              ข้อมูลการเเจ้งเหตุ
+              ข้อมูลการเเจ้งซ่อม
             </Typography>
           </Box>
           <Box>
@@ -180,7 +187,8 @@ function Carcare() {
         </div>
       </Container>
     </div>
+
   );
 }
 
-export default Carcare;
+export default Carcarehis;

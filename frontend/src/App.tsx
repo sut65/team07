@@ -12,8 +12,12 @@ import RouterDisinfection from "./router/RouterDisinfection";
 import RouterEmployee from "./router/RouterEmployee";
 import RouterNotificationStaff from "./router/RouterNotificationStaff";
 import RouterNurse from "./router/RouterNurse";
+import RouterCarBuyer from "./router/RouterCarBuyer"
 import "./App.css";
-import { RouterCarBuyer } from "./router/RouterCarBuyer";
+
+
+
+
 
 export default function App() {
   const [role, setRole] = React.useState<string>("");
@@ -72,7 +76,7 @@ export default function App() {
           <RouterNurse />
         ) : token && role === "DisinfectionStaff" ? (
           <RouterDisinfection />
-        ) : token && role === "DisinfectionStaff" ? (
+        ) : token && role === "NotificationStaff" ? (
           <RouterNotificationStaff />
         ) : token && role === "CarBuyer" ? (
           <RouterCarBuyer />
