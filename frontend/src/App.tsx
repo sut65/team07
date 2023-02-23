@@ -13,6 +13,7 @@ import RouterEmployee from "./router/RouterEmployee";
 import RouterNotificationStaff from "./router/RouterNotificationStaff";
 import RouterNurse from "./router/RouterNurse";
 import "./App.css";
+import { RouterCarBuyer } from "./router/RouterCarBuyer";
 
 export default function App() {
   const [role, setRole] = React.useState<string>("");
@@ -61,7 +62,6 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <>
-      
         {token && role === "Admin" ? (
           <RouterEmployee />
         ) : token && role == "Driver" ? (
@@ -74,6 +74,8 @@ export default function App() {
           <RouterDisinfection />
         ) : token && role == "DisinfectionStaff" ? (
           <RouterNotificationStaff />
+        ) : token && role === "CarBuyer" ? (
+          <RouterCarBuyer />
         ) : (
           <Signin />
         )}
