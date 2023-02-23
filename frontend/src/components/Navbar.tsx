@@ -24,16 +24,16 @@ import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
 import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
-import PeopleIcon from '@mui/icons-material/People';
-import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import HealingIcon from '@mui/icons-material/Healing';
-import SanitizerIcon from '@mui/icons-material/Sanitizer';
-import LocalCarWashIcon from '@mui/icons-material/LocalCarWash';
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import DirectionsCarTwoToneIcon from '@mui/icons-material/DirectionsCarTwoTone';
-import CarRepairIcon from '@mui/icons-material/CarRepair';
+import PeopleIcon from "@mui/icons-material/People";
+import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import HealingIcon from "@mui/icons-material/Healing";
+import SanitizerIcon from "@mui/icons-material/Sanitizer";
+import LocalCarWashIcon from "@mui/icons-material/LocalCarWash";
+import LocalParkingIcon from "@mui/icons-material/LocalParking";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import DirectionsCarTwoToneIcon from "@mui/icons-material/DirectionsCarTwoTone";
+import CarRepairIcon from "@mui/icons-material/CarRepair";
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -53,95 +53,116 @@ function Navbar() {
     setOpen(false);
   };
 
-  const toggleDrawer = (open: boolean) => (
-    event: React.KeyboardEvent | React.MouseEvent
-  ) => {
-    if (
-      event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
 
-    setState(open);
-  };
+      setState(open);
+    };
 
   var menu: any[] = [];
-  menu = [
-    { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
 
-    {
-      name: "รายการข้อมูลจัดซื้อรถพยาบาล",
-      icon: <AirportShuttleIcon />,
-      path: "/Ambulance",
-    },
+  if (localStorage.getItem("role") === "Admin") {
+    menu = [
+      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      {
+        name: "ข้อมูลพนักงาน",
+        icon: <PeopleIcon />,
+        path: "/Employee",
+      },
+    ];
+  } else if (localStorage.getItem("role") === "Nurse") {
+    menu = [
+      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      {
+        name: "ข้อมูลการใช้ยา",
+        icon: <MedicalServicesIcon />,
+        path: "/AmbulanceUse",
+      },
+      {
+        name: "เบิกยาเข้ารถพยาบาล",
+        icon: <LocalHospitalIcon />,
+        path: "/ambulance-store",
+      },
+    ];
+  } else if (localStorage.getItem("role") === "Driver") {
+    menu = [
+      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      {
+        name: "รายการบันทึกข้อมูลใช้รถ",
+        icon: <TimeToLeaveIcon />,
+        path: "/RecordTimeOutHistory",
+      },
+      {
+        name: "รายการใช้รถขาเข้าของพนักงานขับรถ",
+        icon: <DirectionsCarTwoToneIcon />,
+        path: "/RecordTimeInHistory",
+      },
+      {
+        name: "ที่จอดรถพยาบาล",
+        icon: <LocalParkingIcon />,
+        path: "/carDepot",
+      },
+      {
+        name: "การล้างรถพยาบาล",
+        icon: <LocalCarWashIcon />,
+        path: "/carWash",
+      },
+    ];
+  } else if (localStorage.getItem("role") === "CarBuyer") {
+    menu = [
+      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
 
-    {
-      name: "รายการบันทึกข้อมูลใช้รถ",
-      icon: <TimeToLeaveIcon />,
-      path: "/RecordTimeOutHistory",
-    },
+      {
+        name: "รายการข้อมูลจัดซื้อรถพยาบาล",
+        icon: <AirportShuttleIcon />,
+        path: "/Ambulance",
+      },
+    ];
+  } else if (localStorage.getItem("role") === "DisinfectionStaff") {
+    menu = [
+      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      {
+        name: "รายการฆ่าเชื้อรถพยาบาล",
+        icon: <SanitizerIcon />,
+        path: "/DisinfectionHistory",
+      },
+    ];
+  } else if (localStorage.getItem("role") === "NotificationStaff") {
+    menu = [
+      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      {
+        name: "รายการเหตุฉุกเฉิน",
+        icon: <HealingIcon />,
+        path: "/Case",
+      },
+    ];
+  } else if (localStorage.getItem("role") === "CarManager") {
+    menu = [
+      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
 
-    {
-      name: "รายการตรวจเช็คสภาพรถ",
-      icon: <LibraryBooksIcon />,
-      path: "/VehicleInspectionHistory",
-    },
-
-    {
-      name: "รายการใช้รถขาเข้าของพนักงานขับรถ",
-      icon: <DirectionsCarTwoToneIcon />,
-      path: "/RecordTimeInHistory",
-    },
-
-    {
-      name: "ที่จอดรถพยาบาล",
-      icon: <LocalParkingIcon />,
-      path: "/carDepot",
-    },
-
-    {
-      name: "ข้อมูลพนักงาน",
-      icon: <PeopleIcon/>,
-      path: "/Employee"
-    },
-
-    {
-      name: "รายการฆ่าเชื้อรถพยาบาล",
-      icon: <SanitizerIcon />,
-      path: "/DisinfectionHistory",
-    },
-
-    {
-      name: "ข้อมูลการใช้ยา",
-      icon: <MedicalServicesIcon />,
-      path: "/AmbulanceUse",
-    },
-    {
-      name: "เบิกยาเข้ารถพยาบาล",
-      icon: <LocalHospitalIcon/>,
-      path: "/ambulance-store"
-    }
-    ,
-    {
-      name: "รายการเหตุฉุกเฉิน",
-      icon: <HealingIcon />,
-      path: "/Case",
-    },
-
-    {
-      name: "การล้างรถพยาบาล",
-      icon: <LocalCarWashIcon />,
-      path: "/carWash",
-    },
-
-    {
-      name: "รายการเเจ้งซ่อม",
-      icon: <CarRepairIcon />,
-      path: "/Carcare",
-    },
-  ];
+      {
+        name: "รายการตรวจเช็คสภาพรถ",
+        icon: <LibraryBooksIcon />,
+        path: "/VehicleInspectionHistory",
+      },
+      {
+        name: "รายการเเจ้งซ่อม",
+        icon: <CarRepairIcon />,
+        path: "/Carcare",
+      },
+    ];
+  }else {
+    menu = [
+      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+    ]
+  }
 
   const list = [
     {
@@ -158,7 +179,7 @@ function Navbar() {
 
   const profile = () => {
     // setSuccess(true);
-    window.location.href = "/employee-currenct" ;
+    window.location.href = "/employee-currenct";
   };
 
   const signout = () => {
@@ -204,10 +225,7 @@ function Navbar() {
             >
               <Avatar sx={{ width: 32, height: 32 }}>
                 {/* test */}
-                {localStorage
-                  ?.getItem("role")
-                  ?.charAt(0)
-                  .toUpperCase()}
+                {localStorage?.getItem("role")?.charAt(0).toUpperCase()}
               </Avatar>
             </IconButton>
             <Popper

@@ -6,6 +6,7 @@ import AmbulanceUpdate from "../components/ambulance_system_components/Ambulance
 
 import Navbar from "../components/Navbar";
 import Home from "../components/Home"
+import EmployeeCurrenct from "../components/employeeSystemComponents/EmployeeCurrenct";
 export const RouterCarBuyer = () => {
   return (
     <Router>
@@ -22,6 +23,7 @@ export const RouterCarBuyer = () => {
             path="/Ambulance/AmbulanceUpdate"
             element={<AmbulanceUpdate />}
           />
+        <Route path="/employee-currenct" element={<EmployeeCurrenct />} />
 
         </Routes>
       </div>

@@ -9,6 +9,7 @@ import VehicleInspectionCreate from "../components/vehicleinspection_system_comp
 import VehicleInspectionHistory from "../components/vehicleinspection_system_components/VehicleInspectionHistory";
 import Navbar from "../components/Navbar";
 import Home from "../components/Home"
+import EmployeeCurrenct from "../components/employeeSystemComponents/EmployeeCurrenct";
 function RouterCarManager() {
   return (
     <Router>
@@ -29,6 +30,8 @@ function RouterCarManager() {
           path="/VehicleInspectionHistory"
           element={<VehicleInspectionHistory />}
         />
+        <Route path="/employee-currenct" element={<EmployeeCurrenct />} />
+
       </Routes>
       </div>
     </Router>

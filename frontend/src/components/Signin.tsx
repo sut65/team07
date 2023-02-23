@@ -101,7 +101,7 @@ export default function Signin() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random)",
+          backgroundImage: "url(https://images.artwanted.com/large/67/40207_1114467.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -126,7 +126,7 @@ export default function Signin() {
           </Typography>
 
           <Typography component="h1" variant="h5">
-            Sign in
+            เข้าสู่ระบบ
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
@@ -135,7 +135,7 @@ export default function Signin() {
               required
               fullWidth
               id="username"
-              label="Username"
+              label="ชื่อผู้ใช้"
               name="username"
               autoComplete="username"
               autoFocus
@@ -147,7 +147,7 @@ export default function Signin() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="รหัสผ่าน"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -163,16 +163,16 @@ export default function Signin() {
               sx={{ mt: 3, mb: 2 }}
               onClick={Submit}
             >
-              Sign In
+              เข้าสู่ระบบ
             </Button>
-            <Button
+            {/* <Button
               fullWidth
               variant="contained"
               sx={{ mb: 2 }}
               color="inherit"
             >
               Sign Up
-            </Button>
+            </Button> */}
 
             <Copyright />
           </Box>

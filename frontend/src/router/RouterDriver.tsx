@@ -18,6 +18,7 @@ import CarWashCreate from "../components/carWash_system_components/CarWashCreate
 //พนักงานขับรถ
 import Home from "../components/Home"
 import Navbar from "../components/Navbar";
+import EmployeeCurrenct from "../components/employeeSystemComponents/EmployeeCurrenct";
 function RouterDriver() {
   return (
     <Router>
@@ -47,6 +48,8 @@ function RouterDriver() {
         <Route path="/CarWash" element={<CarWash />} />
         <Route path="/CarWash/CarWashCreate" element={<CarWashCreate />} />
         <Route path="/CarWash/CarWashUpdate" element={<CarWashUpdate />} />
+        <Route path="/employee-currenct" element={<EmployeeCurrenct />} />
+
       </Routes>
       </div>
     </Router>

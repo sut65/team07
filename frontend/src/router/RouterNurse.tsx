@@ -12,6 +12,7 @@ import AmbulanceStoreHome from "../components/ambulanceStoreSystemComponent/Ambu
 import AmbulanceStoreManage from "../components/ambulanceStoreSystemComponent/AmbulanceStoreManage";
 import Navbar from "../components/Navbar";
 import Home from "../components/Home"
+import EmployeeCurrenct from "../components/employeeSystemComponents/EmployeeCurrenct";
 function RouterNurse() {
   return (
     <Router>
@@ -39,6 +40,8 @@ function RouterNurse() {
           path="/AmbulanceUse/AmbulanceUseCreate"
           element={<AmblanceUseCreate />}
         />
+        <Route path="/employee-currenct" element={<EmployeeCurrenct />} />
+
       </Routes>
       </div>
     </Router>
