@@ -12,7 +12,7 @@ async function CreatAmbulances(data: AmbulancesInterface) {
         body: JSON.stringify(data),
     };
 
-    let res = await fetch(`${apiUrl}/ambulance`, requestOptions)
+    let res = await fetch(`${apiUrl}/car-buyer/ambulance`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
                 return res;
@@ -151,7 +151,7 @@ async function UpdateAmbulance(data: AmbulancesInterface) {
         body: JSON.stringify(data)
     }
 
-    let res = await fetch(`${apiUrl}/ambulance`, requestOptions)
+    let res = await fetch(`${apiUrl}/car-buyer/ambulance`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
                 return res
@@ -168,7 +168,7 @@ async function DeleteAmbulanceByID(ID : any){
         },
     };
 
-    let res = await fetch(`${apiUrl}/ambulance/${ID}`, requestOptions)
+    let res = await fetch(`${apiUrl}/car-buyer/ambulance/${ID}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
