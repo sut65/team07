@@ -64,15 +64,15 @@ export default function App() {
       <>
         {token && role === "Admin" ? (
           <RouterEmployee />
-        ) : token && role == "Driver" ? (
+        ) : token && role === "Driver" ? (
           <RouterDriver />
-        ) : token && role == "CarManager" ? (
+        ) : token && role === "CarManager" ? (
           <RouterCarManager />
-        ) : token && role == "Nurse" ? (
+        ) : token && role === "Nurse" ? (
           <RouterNurse />
-        ) : token && role == "DisinfectionStaff" ? (
+        ) : token && role === "DisinfectionStaff" ? (
           <RouterDisinfection />
-        ) : token && role == "DisinfectionStaff" ? (
+        ) : token && role === "DisinfectionStaff" ? (
           <RouterNotificationStaff />
         ) : token && role === "CarBuyer" ? (
           <RouterCarBuyer />

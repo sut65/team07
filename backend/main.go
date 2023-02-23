@@ -43,12 +43,9 @@ func main() {
 
 	r.GET("/roles", controller.ListRole)
 	r.GET("/users", controller.ListUser)
-
-	r.POST("/signin", controller.Signin)
-
 	r.GET("/valid", controller.Validation)
-
 	r.GET("/employeeId/:id", controller.GetEmployeeByUID)
+
 	// -------------------------- Auth System ----------------------------
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
@@ -90,6 +87,11 @@ func main() {
 	// Path ทุกคนใช้ร่วมกันทั้งหมด
 
 	{
+		/*
+		* ระบบ Login ทุกคนต้องเข้าใช้ได้
+		 */
+
+		r.POST("/signin", controller.Signin)
 
 	}
 
@@ -102,8 +104,8 @@ func main() {
 		protected.Use(middlewares.CheckAdmin())
 		{
 
-			r.POST("/role", controller.CreateRole)
-			r.POST("/signup", controller.Signup)
+			protected.POST("/role", controller.CreateRole)
+			protected.POST("/signup", controller.Signup)
 
 			{
 				/* Working Area With admin edit */
@@ -140,16 +142,10 @@ func main() {
 			protected.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
 			protected.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
 
-			protected.GET("/carWashs", controller.ListCarWashs)
-			protected.GET("/carWashs/:id", controller.GetCarWash)
-			protected.GET("/carWash/:empid", controller.GetCarWashByEmployee)
 			protected.POST("/carWash", controller.CreateCarWash)
 			protected.DELETE("/carWash/:id", controller.DeleteCarWash)
 			protected.PATCH("/carWash", controller.UpdateCarWash)
 
-			protected.GET("/carDepots", controller.ListCarDepots)
-			protected.GET("/carDepots/:id", controller.GetCarDepot)
-			protected.GET("/carDepot/:empid", controller.GetCarDepotByEmployee)
 			protected.POST("/carDepot", controller.CreateCarDepot)
 			protected.DELETE("/carDepot/:id", controller.DeleteCarDepot)
 			protected.PATCH("/carDepot", controller.UpdateCarDepot)
@@ -170,6 +166,75 @@ func main() {
 			protected.DELETE("/disinfection/:id", controller.DeleteDisinfection)
 			protected.PATCH("/disinfection", controller.UpdateDisinfection)
 			protected.GET("/disinfactants", controller.ListDisinfectants)
+		}
+	}
+
+	// ตำแหน่ง Nurse จัดการโดย เพชร นก
+
+	NurseApi := r.Group("/nurse")
+	{
+		protected := NurseApi.Use(middlewares.Authorizes())
+		protected.Use(middlewares.CheckNurse())
+		{
+			// --------------------------------- ระบบเบิกยาเข้าสู่รถพยาบาล -----------------------------
+			// --------------------------------- Medicine Controller ------------------------------
+			// List Medicine in line 176
+
+			// Get Medicine by id
+			protected.GET("/medicine/:id", controller.GetMedicine)
+			// Create Medicine
+			protected.POST("/medicine", controller.CreateMedicine)
+			// Update Medicine
+			protected.PATCH("/medicine", controller.UpdateMedicine)
+			// Delete Medicine
+			protected.DELETE("/medicine/:id", controller.DeleteMedicine)
+
+			// --------------------------------- Ambulance Store Controller ------------------------------
+			// List ambulance Store
+			protected.GET("/ambulanceStores", controller.ListAmbulanceStore)
+			// Get Ambulance Store
+			protected.GET("/ambulanceStore/:id", controller.GetAmbulanceStore)
+			// Create Ambulance Store
+			protected.POST("/ambulanceStore", controller.CreateAmbulanceStore)
+			// Update Ambulance Store
+			protected.PATCH("/ambulanceStore", controller.UpdateAmbulanceStore)
+			// Delete Ambulance Store
+			protected.DELETE("/ambulanceStore/:id", controller.DeleteAmbulanceStore)
+
+			// --------------------------------- ระบบเบิกยาเข้าสู่รถพยาบาล -----------------------------
+		}
+	}
+
+	// ตำแหน่ง Notification Staff จัดการโดย พี่ต่อ
+
+	NotiApi := r.Group("/staff")
+	{
+		protected := NotiApi.Use(middlewares.Authorizes())
+		protected.Use(middlewares.CheckNoti())
+		{
+
+		}
+	}
+
+	// ตำแหน่ง Car manager จัดการโดย พี่แบม พี่ต่อ
+
+	CarManagerApi := r.Group("/car-manager")
+	{
+		protected := CarManagerApi.Use(middlewares.Authorizes())
+		protected.Use(middlewares.CheckCarBuyer())
+		{
+
+		}
+	}
+
+	// ตำแหน่ง Car Buyer จัดการโดย นก
+
+	buyerApi := r.Group("/car-buyer")
+	{
+		protected := buyerApi.Use(middlewares.Authorizes())
+		protected.Use(middlewares.CheckCarBuyer())
+		{
+
 		}
 	}
 
@@ -300,31 +365,6 @@ func main() {
 	r.GET("/statusAms", controller.ListStatusAms)
 
 	// --------------------------------- ระบบล้างรถพยาบาล -----------------------------
-
-	// --------------------------------- ระบบเบิกยาเข้าสู่รถพยาบาล -----------------------------
-	// --------------------------------- Medicine Controller ------------------------------
-	// List Medicine in line 176
-
-	// Get Medicine by id
-	r.GET("/medicine/:id", controller.GetMedicine)
-	// Create Medicine
-	r.POST("/medicine", controller.CreateMedicine)
-	// Update Medicine
-	r.PATCH("/medicine", controller.UpdateMedicine)
-	// Delete Medicine
-	r.DELETE("/medicine/:id", controller.DeleteMedicine)
-
-	// --------------------------------- Ambulance Store Controller ------------------------------
-	// List ambulance Store
-	r.GET("/ambulanceStores", controller.ListAmbulanceStore)
-	// Get Ambulance Store
-	r.GET("/ambulanceStore/:id", controller.GetAmbulanceStore)
-	// Create Ambulance Store
-	r.POST("/ambulanceStore", controller.CreateAmbulanceStore)
-	// Update Ambulance Store
-	r.PATCH("/ambulanceStore", controller.UpdateAmbulanceStore)
-	// Delete Ambulance Store
-	r.DELETE("/ambulanceStore/:id", controller.DeleteAmbulanceStore)
 
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 	//Run server using gin gonic
