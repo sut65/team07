@@ -10,6 +10,7 @@ function RouterEmployee() {
   return (
     <Router>
       <Navbar />
+      <div className="container-router">
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/Employee" element={<EmployeeList />} />
@@ -17,6 +18,7 @@ function RouterEmployee() {
         <Route path="/employee/update/:id" element={<EmployeeUpdate />} />
         <Route path="/employee-currenct" element={<EmployeeCurrenct />} />
       </Routes>
+      </div>
     </Router>
   );
 }

@@ -111,14 +111,13 @@ func main() {
 		}
 	}
 
-	DriverApi := r.Group("/disinfectionStaff")
+	DriverApi := r.Group("/driver")
 	{
 		protected := DriverApi.Use(middlewares.Authorizes())
 
 		// Admin Checking
 		protected.Use(middlewares.CheckDriver())
 		{
-			// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
 			protected.GET("/recordtimeins", controller.ListRecordTimeIns)
 			protected.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
 			protected.GET("/recordtimeins/:id", controller.GetRecordTimeIn)
@@ -169,6 +168,7 @@ func main() {
 
 	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
 
+	// // ---------------------------------- ระบบบันทึกการใช้รถขาออกเข้าของพนักงาน -------------------------------
 	r.GET("/recordtimeouts", controller.ListRecordTimeOuts)
 	r.GET("/recordtimeout/:id", controller.GetRecordTimeOut)
 	r.POST("/recordtimeout", controller.CreateRecordTimeOut)
@@ -179,8 +179,7 @@ func main() {
 	r.GET("/cases", controller.GetCase)
 	r.GET("/cases/:case_id", controller.GetCaseByID)
 
-	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-
+	
 	r.GET("/vehicleinspections", controller.ListVehicleInspections)
 	r.GET("/vehicleinspection/:id", controller.GetVehicleInspection)
 	r.POST("/vehicleinspection", controller.CreateVehicleInspection)

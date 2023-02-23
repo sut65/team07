@@ -10,6 +10,7 @@ function RouterDisinfection() {
   return (
     <Router>
       <Navbar />
+      <div className="container-router">
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/DisinfectionCreate" element={<DisinfectionCreate />} />
@@ -17,6 +18,7 @@ function RouterDisinfection() {
         <Route path="/DisinfectionDelete" element={<DisinfectionDelete />} />
         <Route path="/DisinfectionUpdate" element={<DisinfectionUpdate />} />
       </Routes>
+      </div>
     </Router>
   );
 }
