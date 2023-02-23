@@ -9,7 +9,7 @@ async function ListAmbulanceStores() {
             "Content-Type": "application/json",
         }
     }
-    let res = await fetch(`${apiUrl}/ambulanceStores`, reqOpt)
+    let res = await fetch(`${apiUrl}/nurse/ambulanceStores`, reqOpt)
         .then((response) => response.json())
         .then((res) => {
             if (res) {
@@ -29,7 +29,7 @@ async function GetAmbulanceStore(ID: string | undefined) {
         }
     }
 
-    let res = await fetch(`${apiUrl}/ambulanceStore/${ID}`, reqOpt)
+    let res = await fetch(`${apiUrl}/nurse/ambulanceStore/${ID}`, reqOpt)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -83,7 +83,7 @@ async function UpdateAmbulanceStore(ambStore : Partial<AmbulanceStoreInterface>)
         body: JSON.stringify(data)
     }
 
-    let res = await fetch(`${apiUrl}/ambulanceStore`, reqOpt)
+    let res = await fetch(`${apiUrl}/nurse/ambulanceStore`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res){
@@ -113,7 +113,7 @@ async function CreateAmbulanceStore(abl: any) {
     }
 
 
-    let res = await fetch(`${apiUrl}/ambulanceStore`, reqOpt)
+    let res = await fetch(`${apiUrl}/nurse/ambulanceStore`, reqOpt)
         .then((response) => response.json())
         .then((res) => {
             return res
@@ -134,7 +134,7 @@ async function GetMedicineByID(ID : string | undefined) {
         },
     };
 
-    let res = await fetch(`${apiUrl}/medicine/${ID}`, requestOptions)
+    let res = await fetch(`${apiUrl}/nurse/medicine/${ID}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -157,7 +157,7 @@ async function DeleteAmbulanceByID(ID : any){
         },
     };
 
-    let res = await fetch(`${apiUrl}/ambulanceStore/${ID}`, requestOptions)
+    let res = await fetch(`${apiUrl}/nurse/ambulanceStore/${ID}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
