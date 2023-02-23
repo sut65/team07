@@ -98,6 +98,9 @@ func main() {
 	r.GET("/abl/:abl_id", controller.GetAmbulanceByAblID)
 	r.GET("/cases", controller.GetCase)
 	r.GET("/cases/:case_id", controller.GetCaseByID)
+	// ---------------- Medicine -----------------
+	// List medicine
+	r.GET("/medicines", controller.ListMedicines)
 
 	// Path ทุกคนใช้ร่วมกันทั้งหมด
 
@@ -173,7 +176,7 @@ func main() {
 			protected.POST("/recordtimeout", controller.CreateRecordTimeOut)
 			protected.DELETE("/recordtimeout/:id", controller.DeleteRecordTimeOut)
 			protected.PATCH("/recordtimeout", controller.UpdateRecordTimeOut)
-			
+
 		}
 	}
 
@@ -291,7 +294,6 @@ func main() {
 	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
 
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาออกเข้าของพนักงาน -------------------------------
-	
 
 	r.GET("/vehicleinspections", controller.ListVehicleInspections)
 	r.GET("/vehicleinspection/:id", controller.GetVehicleInspection)
@@ -332,9 +334,6 @@ func main() {
 	// Get by eid
 	r.GET("/ambulanceUses/:eid", controller.GetAmbulanceUseByEmployee)
 	// Create
-
-	// List medicine
-	r.GET("/medicines", controller.ListMedicines)
 
 	// ---------------------------------- ระบบใชยาบนรถพยาบาล -------------------------------
 
