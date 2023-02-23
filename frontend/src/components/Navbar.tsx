@@ -187,6 +187,7 @@ function Navbar() {
     localStorage.clear();
     setTimeout(() => {
       window.location.reload();
+      window.location.href = "/";
     }, 500);
   };
 
