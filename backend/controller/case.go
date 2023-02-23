@@ -66,7 +66,7 @@ func CreateEmercase(c *gin.Context) {
 func GetEmercase(c *gin.Context) {
 	var emercase entity.Case
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM cases WHERE id = ?", id).Scan(&emercase).Error; err != nil {
+	if err := entity.DB().Preload("Emergency").Preload("Gender").Preload("Employee").Raw("SELECT * FROM cases WHERE id = ?", id).Find(&emercase).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -100,6 +100,7 @@ func DeleteEmercase(c *gin.Context) {
 func UpdateEmercase(c *gin.Context) {
 
 	var emercase entity.Case
+	var emercaseold entity.Case
 	var emergency entity.Emergency
 	var gender entity.Gender
 	var employee entity.Employee
@@ -109,27 +110,28 @@ func UpdateEmercase(c *gin.Context) {
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", emercase.ID).First(&emercase); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", emercase.ID).First(&emercaseold); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "emercase not found"})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", emergency.ID).First(&emergency); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "emergency not found"})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", gender.ID).First(&gender); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", emercase.GenderID).First(&gender); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", employee.ID).First(&employee); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", emercase.EmployeeID).First(&employee); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
 		return
 	}
 
 	UpdateEmercase := entity.Case{
+		Model:     emercase.Model,
 		Location:  emercase.Location,
 		Patient:   emercase.Patient,
 		Age:       emercase.Age,
@@ -139,8 +141,9 @@ func UpdateEmercase(c *gin.Context) {
 		Employee:  employee,  // โยงความสัมพันธ์กับ Entity Employee
 		Datetime:  emercase.Datetime,
 	}
+	// fmt.Print(UpdateEmercase.Status)
 
-	if err := entity.DB().Where("id = ?", emercase.ID).Updates(&UpdateEmercase).Error; err != nil {
+	if err := entity.DB().Save(&UpdateEmercase).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

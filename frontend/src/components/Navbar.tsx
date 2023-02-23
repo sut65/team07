@@ -70,109 +70,109 @@ function Navbar() {
 
   if (localStorage.getItem("role") === "Admin") {
     menu = [
-      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      { name: "หน้าแรก", icon: <HomeIcon  color="primary"/>, path: "/" },
       {
         name: "ข้อมูลพนักงาน",
-        icon: <PeopleIcon />,
+        icon: <PeopleIcon  color="primary"/>,
         path: "/Employee",
       },
     ];
   } else if (localStorage.getItem("role") === "Nurse") {
     menu = [
-      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      { name: "หน้าแรก", icon: <HomeIcon  color="primary"/>, path: "/" },
       {
         name: "ข้อมูลการใช้ยา",
-        icon: <MedicalServicesIcon />,
+        icon: <MedicalServicesIcon  color="primary"/>,
         path: "/AmbulanceUse",
       },
       {
         name: "เบิกยาเข้ารถพยาบาล",
-        icon: <LocalHospitalIcon />,
+        icon: <LocalHospitalIcon  color="primary"/>,
         path: "/ambulance-store",
       },
     ];
   } else if (localStorage.getItem("role") === "Driver") {
     menu = [
-      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      { name: "หน้าแรก", icon: <HomeIcon  color="primary"/>, path: "/" },
       {
         name: "รายการบันทึกข้อมูลใช้รถ",
-        icon: <TimeToLeaveIcon />,
+        icon: <TimeToLeaveIcon  color="primary"/>,
         path: "/RecordTimeOutHistory",
       },
       {
         name: "รายการใช้รถขาเข้าของพนักงานขับรถ",
-        icon: <DirectionsCarTwoToneIcon />,
+        icon: <DirectionsCarTwoToneIcon  color="primary"/>,
         path: "/RecordTimeInHistory",
       },
       {
         name: "ที่จอดรถพยาบาล",
-        icon: <LocalParkingIcon />,
+        icon: <LocalParkingIcon  color="primary"/>,
         path: "/carDepot",
       },
       {
         name: "การล้างรถพยาบาล",
-        icon: <LocalCarWashIcon />,
+        icon: <LocalCarWashIcon  color="primary"/>,
         path: "/carWash",
       },
     ];
   } else if (localStorage.getItem("role") === "CarBuyer") {
     menu = [
-      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      { name: "หน้าแรก", icon: <HomeIcon  color="primary"/>, path: "/" },
 
       {
         name: "รายการข้อมูลจัดซื้อรถพยาบาล",
-        icon: <AirportShuttleIcon />,
+        icon: <AirportShuttleIcon  color="primary"/>,
         path: "/Ambulance",
       },
     ];
   } else if (localStorage.getItem("role") === "DisinfectionStaff") {
     menu = [
-      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      { name: "หน้าแรก", icon: <HomeIcon  color="primary"/>, path: "/" },
       {
         name: "รายการฆ่าเชื้อรถพยาบาล",
-        icon: <SanitizerIcon />,
+        icon: <SanitizerIcon  color="primary"/>,
         path: "/DisinfectionHistory",
       },
     ];
   } else if (localStorage.getItem("role") === "NotificationStaff") {
     menu = [
-      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      { name: "หน้าแรก", icon: <HomeIcon  color="primary"/>, path: "/" },
       {
         name: "รายการเหตุฉุกเฉิน",
-        icon: <HealingIcon />,
+        icon: <HealingIcon  color="primary"/>,
         path: "/Case",
       },
     ];
   } else if (localStorage.getItem("role") === "CarManager") {
     menu = [
-      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      { name: "หน้าแรก", icon: <HomeIcon  color="primary"/>, path: "/" },
 
       {
         name: "รายการตรวจเช็คสภาพรถ",
-        icon: <LibraryBooksIcon />,
+        icon: <LibraryBooksIcon  color="primary"/>,
         path: "/VehicleInspectionHistory",
       },
       {
         name: "รายการเเจ้งซ่อม",
-        icon: <CarRepairIcon />,
+        icon: <CarRepairIcon  color="primary"/>,
         path: "/Carcare",
       },
     ];
   }else {
     menu = [
-      { name: "หน้าแรก", icon: <HomeIcon />, path: "/" },
+      { name: "หน้าแรก", icon: <HomeIcon  color="primary"/>, path: "/" },
     ]
   }
 
   const list = [
     {
       name: "Profile",
-      icon: <PersonOutlineTwoToneIcon />,
+      icon: <PersonOutlineTwoToneIcon  color="primary"/>,
       click: () => profile(),
     },
     {
       name: "Logout",
-      icon: <LogoutTwoToneIcon />,
+      icon: <LogoutTwoToneIcon  color="primary"/>,
       click: () => signout(),
     },
   ];

@@ -240,7 +240,9 @@ func main() {
 		protected := NotiApi.Use(middlewares.Authorizes())
 		protected.Use(middlewares.CheckNoti())
 		{
-
+			protected.POST("/emercase", controller.CreateEmercase)
+			protected.DELETE("/emercase/:id", controller.DeleteEmercase)
+			protected.PATCH("/emercases", controller.UpdateEmercase)
 		}
 	}
 
@@ -254,6 +256,10 @@ func main() {
 			protected.POST("/vehicleinspection", controller.CreateVehicleInspection)
 			protected.DELETE("/vehicleinspection/:id", controller.DeleteVehicleInspection)
 			protected.PATCH("/vehicleinspection", controller.UpdateVehicleInspection)
+
+			protected.POST("/carcare", controller.CreateCarcare)
+			protected.DELETE("/carcare/:id", controller.DeleteCarcare)
+			protected.PATCH("/carcares", controller.UpdateCarcare)
 		}
 	}
 
@@ -306,9 +312,7 @@ func main() {
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 	r.GET("/emercases", controller.ListEmercase)
 	r.GET("/emercase/:id", controller.GetEmercase)
-	r.POST("/emercase", controller.CreateEmercase)
-	r.DELETE("/emercase/:id", controller.DeleteEmercase)
-	r.PATCH("/emercases", controller.UpdateEmercase)
+	
 
 	r.GET("/emergencies", controller.GetEmergency)
 
@@ -318,9 +322,7 @@ func main() {
 	// ---------------------------------- ระบบเเจ้งซ่อม -------------------------------
 	r.GET("/carcares", controller.ListCarcare)
 	r.GET("/carcare/:id", controller.GetCarcare)
-	r.POST("/carcare", controller.CreateCarcare)
-	r.DELETE("/carcare/:id", controller.DeleteCarcare)
-	r.PATCH("/carcares", controller.UpdateCarcare)
+	
 
 	r.GET("/carstats", controller.Getcarstat)
 	// ---------------------------------- ระบบเเจ้งซ่อม -------------------------------
