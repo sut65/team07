@@ -27,6 +27,7 @@ import {
     GetCarstat,
     GetVehicleInspection,
 } from '../../services/carcare_system_services/HttpClientService';
+import react from "react";
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -39,21 +40,27 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 function CarCareCreate() {
 
     const [carstats, setCarStats] = useState<CarStatInterface[]>([]);
-    const [vehicleInspections, setVehicleInspection] = useState<VehicleInspectionInterface[]>([]);
+    const [vehicleInspections, setVehicleInspections] = useState<VehicleInspectionInterface[]>([]);
     const [carcare, setCarcare] = useState<CarcareInterface>({
-
         SendDate: new Date(),
         ReciveDate: new Date(),
         Bill: 0,
         Note: "",
         SaveDate: new Date(),
+    });
 
+    const [vehicleInspection, setVehicleInspection] = useState<VehicleInspectionInterface>({
+        ID: 0,
+        Fail: "",
+        OdoMeter: 0,
+        VehicleInspectionDatetime: new Date(),
     });
 
     const getVehicleInspection = async () => {
         let res = await GetVehicleInspection();
         if (res) {
-            setVehicleInspection(res);
+            setVehicleInspections(res);
+            console.log(res)
         }
     };
 
@@ -86,6 +93,22 @@ function CarCareCreate() {
 
     const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof carcare;
+        console.log(vehicleInspection)
+        if (name == "VehicleInspectionID") {
+            if (parseInt(event.target.value)) {
+
+                setVehicleInspection(vehicleInspections[parseInt(event.target.value)-1]);
+            }
+            else {
+                setVehicleInspection({
+                    ID: 0,
+                    Fail: "",
+                    OdoMeter: 0,
+                    VehicleInspectionDatetime: new Date(),
+                })
+            }
+
+        }
         setCarcare({
             ...carcare,
             [name]: event.target.value,
@@ -94,6 +117,7 @@ function CarCareCreate() {
 
     const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name as keyof typeof carcare;
+        console.log(event.target.value)
         setCarcare({
             ...carcare,
             [name]: event.target.value,
@@ -123,9 +147,6 @@ function CarCareCreate() {
         } else {
             setError(true);
         }
-    }
-    function dayjs(arg0: string): Date | (() => Date | null) | null {
-        throw new Error("Function not implemented.");
     }
 
     return (
@@ -170,15 +191,15 @@ function CarCareCreate() {
                         <FormControl fullWidth>
                             <p>vehicleInspections ID</p>
                             <Select
-                                id="vehicleInspections"
+                                id="VehicleInspectionID"
                                 native
                                 value={carcare.VehicleInspectionID + ""}
                                 onChange={handleChange}
                                 inputProps={{
-                                    name: "VehicleInspectionInterfaceID",
+                                    name: "VehicleInspectionID",
                                 }}
                             >
-                                {<option aria-label="None" >---VehicleID---</option>}
+                                {<option aria-label="None" >---VehicleinspectionID---</option>}
                                 {vehicleInspections.map((item: VehicleInspectionInterface) => (
                                     <option key={item.ID} value={`${item.ID}`}>{item.ID}</option>
                                 ))}
@@ -190,7 +211,7 @@ function CarCareCreate() {
                         <FormControl fullWidth>
                             <p>Status</p>
                             <Select
-                                id="carstat"
+                                id="CarstatID"
                                 native
                                 value={carcare.CarStatID + ""}
                                 onChange={handleChange}
@@ -212,7 +233,8 @@ function CarCareCreate() {
                             <TextField
                                 id="brand"
                                 variant="filled"
-                                onChange={handleChangeTextField}
+                                value={vehicleInspection.Ambulance?.CarBrand}
+                                // onChange={handleChangeTextField}
                                 disabled
                             />
                         </FormControl>
@@ -224,8 +246,10 @@ function CarCareCreate() {
                             <TextField
                                 id="Regitration"
                                 variant="filled"
-                                onChange={handleChangeTextField}
+                                value={vehicleInspection.Ambulance?.Clp}
+                                //onChange={handleChangeTextField}
                                 disabled
+
                             />
                         </FormControl>
                     </Grid>
@@ -236,7 +260,8 @@ function CarCareCreate() {
                             <TextField
                                 id="ODO"
                                 variant="filled"
-                                onChange={handleChangeTextField}
+                                value={vehicleInspection.OdoMeter}
+                                //onChange={handleChangeTextField}
                                 disabled
                             />
                         </FormControl>
@@ -248,7 +273,8 @@ function CarCareCreate() {
                             <TextField
                                 id="Ambulance Part Name"
                                 variant="filled"
-                                onChange={handleChangeTextField}
+                                value={vehicleInspection.AmbulancePart?.PartName + ""}
+                                //onChange={handleChangeTextField}
                                 disabled
                             />
                         </FormControl>
@@ -260,7 +286,8 @@ function CarCareCreate() {
                             <TextField
                                 id="Damage Detail"
                                 variant="filled"
-                                onChange={handleChangeTextField}
+                                value={vehicleInspection.Fail}
+                                //onChange={handleChangeTextField}
                                 disabled
                             />
                         </FormControl>
@@ -308,10 +335,15 @@ function CarCareCreate() {
                         <FormControl fullWidth variant="filled" disabled>
                             <p>Bill</p>
                             <TextField
-                                id="bill"
+                                name="Bill"
+                                type="number"
+                                value={carcare.Bill || ""}
                                 onChange={handleChangeTextField}
                                 InputProps={{
-                                    startAdornment: <InputAdornment position="start">฿</InputAdornment>,
+                                    inputProps: {
+                                        min: 1,
+                                        max: 100
+                                    }
                                 }}
                             />
                         </FormControl>

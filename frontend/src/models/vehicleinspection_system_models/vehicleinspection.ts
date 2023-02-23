@@ -13,7 +13,7 @@ export interface VehicleInspectionInterface {
   StatusCheck?: StatusCheckInterface;
 
   AmbulancePartID?: number;
-  AmbulancesPart?: AmbulancePartInterface;
+  AmbulancePart?: AmbulancePartInterface;
 
   EmployeeID?: number;
   Employee?: EmployeeInterface;

@@ -117,7 +117,7 @@ async function DeleteCaseByID(ID : any){
 }
 
 async function GetEmercaseByID() {
-  let cid = localStorage.getItem("cid");
+  let cid = localStorage.getItem("ec_id");
   const requestOptions = {
       method: "GET",
       headers: {
@@ -157,11 +157,9 @@ async function UpdateUpdateCase(data: CaseInterface) {
   let res = await fetch(`${apiUrl}/staff/emercases`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-          if (res.data) {
-              return res.data
-          } else {
-              return false
-          }
+          if (res) {
+              return res
+          } 
       })
   return res
 }

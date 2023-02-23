@@ -10,7 +10,7 @@ import (
 // POST /caroder
 func CreateCarcare(c *gin.Context) {
 
-	var caroder entity.Oder
+	var caroder entity.Carcare
 	var carstat entity.Carstat
 	var employee entity.Employee
 	var vehicleinspection entity.VehicleInspection
@@ -41,7 +41,7 @@ func CreateCarcare(c *gin.Context) {
 	}
 
 	// 11: สร้าง caroder
-	st := entity.Oder{
+	st := entity.Carcare{
 		SaveDate:          caroder.SaveDate,
 		ReciveDate:        caroder.ReciveDate,
 		Bill:              caroder.Bill,
@@ -63,9 +63,9 @@ func CreateCarcare(c *gin.Context) {
 
 // GET /caroder/:id
 func GetCarcare(c *gin.Context) {
-	var caroder entity.Oder
+	var caroder entity.Carcare
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM carcares WHERE id = ?", id).Scan(&caroder).Error; err != nil {
+	if err := entity.DB().Preload("CarStat").Preload("VehicleInspection").Preload("Employee").Raw("SELECT * FROM carcares WHERE id = ?", id).Find(&caroder).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -75,8 +75,8 @@ func GetCarcare(c *gin.Context) {
 
 // GET /carcares
 func ListCarcare(c *gin.Context) {
-	var carcares []entity.Oder
-	if err := entity.DB().Raw("SELECT * FROM carcares").Scan(&carcares).Error; err != nil {
+	var carcares []entity.Carcare
+	if err := entity.DB().Preload("CarStat").Preload("VehicleInspection").Preload("Employee").Raw("SELECT * FROM carcares").Scan(&carcares).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -98,7 +98,7 @@ func DeleteCarcare(c *gin.Context) {
 // PATCH /carcares
 func UpdateCarcare(c *gin.Context) {
 
-	var caroder entity.Oder
+	var caroder entity.Carcare
 	var carstat entity.Carstat
 	var vehicleinspection entity.VehicleInspection
 	var employee entity.Employee
@@ -128,7 +128,7 @@ func UpdateCarcare(c *gin.Context) {
 		return
 	}
 
-	UpdateCarcare := entity.Oder{
+	UpdateCarcare := entity.Carcare{
 		CarStat:    carstat,
 		SendDate:   caroder.SendDate,
 		ReciveDate: caroder.ReciveDate,
