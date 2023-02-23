@@ -88,7 +88,7 @@ func ListCarcare(c *gin.Context) {
 func DeleteCarcare(c *gin.Context) {
 	id := c.Param("id")
 	if tx := entity.DB().Exec("DELETE FROM carcares WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "caroder not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "carcare not found"})
 		return
 	}
 
