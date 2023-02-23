@@ -8,7 +8,6 @@ import { AmbulancesInterface } from '../../models/ambulance_system_models/ambula
 import { EmployeeInterface } from '../../models/employeeSystemModel/IEmployee'
 import { CreateAmbulanceStore, GetAmbulanceWithID } from '../../services/ambulanceStoreSystemServices/AmbulanceStoreHttpClientServices'
 import { ListMedicines } from '../../services/ambulanceUse_system_services/HttpClientService'
-import { GetAmbulanceByID, ListAmbulances } from '../../services/ambulance_system_services/HttpClientService'
 import { GetEmployee } from '../../services/employeeSystemServices/EmployeeHttpClient'
 import { convertType } from '../../services/utility'
 
@@ -62,7 +61,7 @@ export default function AmbulanceStoreCreate() {
   const [selectMedicine, setSelectMedicine] = React.useState<MedicineInterface>()
 
   // For clear Medicine 
-  const [clearMedicine, _] = React.useState<MedicineInterface>()
+  const [clearMedicine, ] = React.useState<MedicineInterface>()
 
   React.useEffect(() => {
     getMedicine()
