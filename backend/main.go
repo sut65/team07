@@ -205,6 +205,14 @@ func main() {
 			protected.DELETE("/ambulanceStore/:id", controller.DeleteAmbulanceStore)
 
 			// --------------------------------- ระบบเบิกยาเข้าสู่รถพยาบาล -----------------------------
+
+			// --------------------------------- ระบบใช้ยาบนรถพยาบาล -----------------------------
+			protected.POST("/ambulanceUse", controller.CreateAmbulanceUse)
+			// DELETE
+			protected.DELETE("/ambulanceUse/:id", controller.DeleteAmbulanceUse)
+			// UPDATE
+			protected.PATCH("/ambulanceUse", controller.UpdateAmbulanceUse)
+			// --------------------------------- ระบบใช้ยาบนรถพยาบาล -----------------------------
 		}
 	}
 
@@ -237,6 +245,12 @@ func main() {
 		protected := buyerApi.Use(middlewares.Authorizes())
 		protected.Use(middlewares.CheckCarBuyer())
 		{
+			// Create
+			protected.POST("/ambulance", controller.CreateAmbulance)
+			// DELETE
+			protected.DELETE("/ambulance/:id", controller.DeleteAmbulance)
+			// UPDATE
+			protected.PATCH("/ambulance", controller.UpdateAmbulance)
 
 		}
 	}
@@ -252,12 +266,6 @@ func main() {
 
 	// Get by eid
 	r.GET("/ambulance/:eid", controller.GetAmbulanceByEmployee)
-	// Create
-	r.POST("/ambulance", controller.CreateAmbulance)
-	// DELETE
-	r.DELETE("/ambulance/:id", controller.DeleteAmbulance)
-	// UPDATE
-	r.PATCH("/ambulance", controller.UpdateAmbulance)
 
 	// List companies
 	r.GET("/companies", controller.ListCompanies)
@@ -320,11 +328,6 @@ func main() {
 	// Get by eid
 	r.GET("/ambulanceUses/:eid", controller.GetAmbulanceUseByEmployee)
 	// Create
-	r.POST("/ambulanceUse", controller.CreateAmbulanceUse)
-	// DELETE
-	r.DELETE("/ambulanceUse/:id", controller.DeleteAmbulanceUse)
-	// UPDATE
-	r.PATCH("/ambulanceUse", controller.UpdateAmbulanceUse)
 
 	// List medicine
 	r.GET("/medicines", controller.ListMedicines)
