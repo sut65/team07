@@ -50,7 +50,7 @@ function DisinfectionCreate() {
       };
       const getDisinfectant = async () => {
         try {
-          let res = await HttpClientServices.get("/disinfactants");
+          let res = await HttpClientServices.get("/disinfectionStaff/disinfactants");
           setDisinfeatant(res.data);
           console.log(res.data);
         } catch (err) {
@@ -111,7 +111,7 @@ function DisinfectionCreate() {
             DisinfactantID: convertType(disinfection?.DisinfactantID) ?? 0,
         };
         console.log(data)
-        let res = await HttpClientServices.post("/disinfection", data);
+        let res = await HttpClientServices.post("/disinfectionStaff/disinfection", data);
             if (!res.error) {
               setSuccess(true);
               console.log(res);

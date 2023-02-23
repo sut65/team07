@@ -38,7 +38,7 @@ export default function DisinfectionDelete(props: any) {
   
   async function submit() {
     try {
-      let res = await HttpClientServices.delete(`/recordtimein/${params}`);
+      let res = await HttpClientServices.delete(`/driver/recordtimein/${params}`);
       console.log(res.data);
       setSuccess(true);
       setTimeout(() => {

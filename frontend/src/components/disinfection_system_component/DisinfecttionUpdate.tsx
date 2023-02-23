@@ -102,7 +102,7 @@ function DisinfectionUpdate(props: any) {
     };
     console.log(data)
 
-    let res = await HttpClientServices.patch("/disinfection", data);
+    let res = await HttpClientServices.patch("/disinfectionStaff/disinfection", data);
             if (!res.error) {
               setSuccess(true);
               console.log(res);
