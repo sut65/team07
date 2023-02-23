@@ -9,7 +9,7 @@ async function ListAmbulanceStores() {
             "Content-Type": "application/json",
         }
     }
-    let res = await fetch(`${apiUrl}/nurse/ambulanceStores`, reqOpt)
+    let res = await fetch(`${apiUrl}/ambulanceStores`, reqOpt)
         .then((response) => response.json())
         .then((res) => {
             if (res) {
@@ -29,7 +29,7 @@ async function GetAmbulanceStore(ID: string | undefined) {
         }
     }
 
-    let res = await fetch(`${apiUrl}/nurse/ambulanceStore/${ID}`, reqOpt)
+    let res = await fetch(`${apiUrl}/ambulanceStore/${ID}`, reqOpt)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -134,7 +134,7 @@ async function GetMedicineByID(ID : string | undefined) {
         },
     };
 
-    let res = await fetch(`${apiUrl}/nurse/medicine/${ID}`, requestOptions)
+    let res = await fetch(`${apiUrl}/medicine/${ID}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -148,7 +148,7 @@ async function GetMedicineByID(ID : string | undefined) {
 }
 
 
-async function DeleteAmbulanceByID(ID : any){
+async function DeleteAmbulanceStoreByID(ID : any){
     const requestOptions = {
         method: "DELETE",
         headers: {
@@ -171,7 +171,7 @@ async function DeleteAmbulanceByID(ID : any){
 }
 
 export {
-    DeleteAmbulanceByID,
+    DeleteAmbulanceStoreByID,
     UpdateAmbulanceStore,
     GetMedicineByID,
     CreateAmbulanceStore,

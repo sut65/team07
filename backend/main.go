@@ -93,6 +93,14 @@ func main() {
 
 		r.POST("/signin", controller.Signin)
 
+		// Get Medicine by id
+		r.GET("/medicine/:id", controller.GetMedicine)
+
+		// List ambulance Store
+		r.GET("/ambulanceStores", controller.ListAmbulanceStore)
+		// Get Ambulance Store
+		r.GET("/ambulanceStore/:id", controller.GetAmbulanceStore)
+
 	}
 
 	// ตำแหน่ง Admin จัดการโดย เพชร
@@ -180,8 +188,6 @@ func main() {
 			// --------------------------------- Medicine Controller ------------------------------
 			// List Medicine in line 176
 
-			// Get Medicine by id
-			protected.GET("/medicine/:id", controller.GetMedicine)
 			// Create Medicine
 			protected.POST("/medicine", controller.CreateMedicine)
 			// Update Medicine
@@ -190,10 +196,7 @@ func main() {
 			protected.DELETE("/medicine/:id", controller.DeleteMedicine)
 
 			// --------------------------------- Ambulance Store Controller ------------------------------
-			// List ambulance Store
-			protected.GET("/ambulanceStores", controller.ListAmbulanceStore)
-			// Get Ambulance Store
-			protected.GET("/ambulanceStore/:id", controller.GetAmbulanceStore)
+
 			// Create Ambulance Store
 			protected.POST("/ambulanceStore", controller.CreateAmbulanceStore)
 			// Update Ambulance Store

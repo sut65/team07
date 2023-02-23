@@ -10,7 +10,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { AmbulanceStoreInterface } from '../../models/ambulanceStoreModels/IAmbulanceStore'
 import { AmbulancesInterface } from '../../models/ambulance_system_models/ambulance'
-import { DeleteAmbulanceByID, GetAmbulanceWithID, ListAmbulanceStores } from '../../services/ambulanceStoreSystemServices/AmbulanceStoreHttpClientServices'
+import { DeleteAmbulanceStoreByID, GetAmbulanceWithID, ListAmbulanceStores } from '../../services/ambulanceStoreSystemServices/AmbulanceStoreHttpClientServices'
 import { Link as RouterLink } from "react-router-dom";
 
 
@@ -74,7 +74,7 @@ export default function AmbulanceStoreManage() {
     }, [])
 
     const handleDelete = async () => {
-        let res = await DeleteAmbulanceByID(deleteID)
+        let res = await DeleteAmbulanceStoreByID(deleteID)
         if(res){
             console.log(res.data)
         }else{
