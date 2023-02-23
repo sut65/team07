@@ -22,6 +22,7 @@ function RouterDriver() {
   return (
     <Router>
       <Navbar/>
+      <div className="container-router">
       <Routes>
       <Route path="/" element={<Home />} />
         <Route
@@ -47,6 +48,7 @@ function RouterDriver() {
         <Route path="/CarWash/CarWashCreate" element={<CarWashCreate />} />
         <Route path="/CarWash/CarWashUpdate" element={<CarWashUpdate />} />
       </Routes>
+      </div>
     </Router>
   );
 }

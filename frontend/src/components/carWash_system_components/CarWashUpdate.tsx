@@ -85,7 +85,7 @@ function CarWashUpdate() {
         let data = {
             ID: convertType(localStorage.getItem("cid")),
             StatusAmID: convertType(carWash.StatusAmID),
-            AmbulanceID: convertType(localStorage.getItem("id")), //Math.floor(Math.random() * 10)+1,
+            AmbulanceID: convertType(carWash.AmbulanceID), //Math.floor(Math.random() * 10)+1,
             EmployeeID: convertType(localStorage.getItem("id")), //Math.floor(Math.random() * 10)+1,
             ComName: carWash.ComName,
             ComTel: carWash.ComTel,

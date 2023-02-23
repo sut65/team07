@@ -30,7 +30,7 @@ function DisinfectionHistory() {
 
   const getDisinfections = async () => {
     try {
-      let res = await HttpClientServices.get("/disinfections");
+      let res = await HttpClientServices.get("/disinfectionStaff/disinfections");
       setDisinfection(res.data);
       // console.log(res.data);
     } catch (err) {

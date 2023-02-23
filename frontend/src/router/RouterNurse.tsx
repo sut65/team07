@@ -16,6 +16,8 @@ function RouterNurse() {
   return (
     <Router>
       <Navbar />
+      <div className="container-router">
+
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/ambulance-store" element={<AmbulanceStoreHome />} />
@@ -38,6 +40,7 @@ function RouterNurse() {
           element={<AmblanceUseCreate />}
         />
       </Routes>
+      </div>
     </Router>
   );
 }

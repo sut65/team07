@@ -324,17 +324,17 @@ func SetupDatabase() {
 	// ระบบที่จอดรถพยาบาล ---------------------------------------------
 	P1 := Park{
 		Name:     "Srinakarin",
-		Capacity: 100,
+		Capacity: 200,
 	}
 
 	P2 := Park{
 		Name:     "Suranaree",
-		Capacity: 50,
+		Capacity: 200,
 	}
 
 	P3 := Park{
 		Name:     "Sawaddee",
-		Capacity: 50,
+		Capacity: 200,
 	}
 
 	db.Model(&Park{}).Create(&P1)

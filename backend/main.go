@@ -86,6 +86,13 @@ func main() {
 	r.GET("/employees", controller.ListEmployee)
 	// Get by id
 	r.GET("/employee/:id", controller.GetEmployee)
+
+	// ----------------- Ambulance ทีคนอื่นใช้ด้วย ----------------------
+	// List ambulances
+	r.GET("/ambulances", controller.ListAmbulances)
+	// Get by id
+	r.GET("/ambulances/:id", controller.GetAmbulance)
+
 	adminApi := r.Group("/admin")
 	{
 		protected := adminApi.Use(middlewares.Authorizes())
@@ -104,14 +111,48 @@ func main() {
 		}
 	}
 
+	DriverApi := r.Group("/disinfectionStaff")
+	{
+		protected := DriverApi.Use(middlewares.Authorizes())
+
+		// Admin Checking
+		protected.Use(middlewares.CheckDriver())
+		{
+			// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
+			protected.GET("/recordtimeins", controller.ListRecordTimeIns)
+			protected.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
+			protected.GET("/recordtimeins/:id", controller.GetRecordTimeIn)
+			protected.POST("/recordtimein", controller.CreateRecordTimeIn)
+			protected.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
+			protected.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
+		}
+	}
+
+	DisinfectionStaffApi := r.Group("/disinfectionStaff")
+	{
+		protected := DisinfectionStaffApi.Use(middlewares.Authorizes())
+
+		// Admin Checking
+		protected.Use(middlewares.CheckDisinfectionStaff())
+		{
+			protected.GET("/disinfections", controller.ListDisinfactions)
+			protected.GET("/disinfection/:id", controller.GetDisinfection)
+			protected.POST("/disinfection", controller.CreateDisinfection)
+			protected.DELETE("/disinfection/:id", controller.DeleteDisinfection)
+			protected.PATCH("/disinfection", controller.UpdateDisinfection)
+			protected.GET("/disinfactants", controller.ListDisinfectants)
+		}
+	}
+
 	// --------------------------------- ระบบบันทึกข้อมูลพนักงาน -----------------------------
 
 	// ---------------------------------- ระบบจัดซื้อรถพยาบาล -------------------------------
 
-	// List ambulances
-	r.GET("/ambulances", controller.ListAmbulances)
-	// Get by id
-	r.GET("/ambulances/:id", controller.GetAmbulance)
+	// List ambulances อันที่ปิดไปอยู่ข้างบนแล้วนะ
+	// r.GET("/ambulances", controller.ListAmbulances)
+	// // Get by id
+	// r.GET("/ambulances/:id", controller.GetAmbulance)
+
 	// Get by eid
 	r.GET("/ambulance/:eid", controller.GetAmbulanceByEmployee)
 	// Create
@@ -137,13 +178,7 @@ func main() {
 	r.GET("/abl/:abl_id", controller.GetAmbulanceByAblID)
 	r.GET("/cases", controller.GetCase)
 	r.GET("/cases/:case_id", controller.GetCaseByID)
-	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
-	r.GET("/recordtimeins", controller.ListRecordTimeIns)
-	r.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
-	r.GET("/recordtimeins/:id", controller.GetRecordTimeIn)
-	r.POST("/recordtimein", controller.CreateRecordTimeIn)
-	r.DELETE("/recordtimein/:id", controller.DeleteRecordTimeIn)
-	r.PATCH("/recordtimein", controller.UpdateRecordTimeIn)
+
 	// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
 
 	r.GET("/vehicleinspections", controller.ListVehicleInspections)
@@ -158,12 +193,7 @@ func main() {
 	r.GET("/ambulanceparts", controller.ListAmbulanceParts)
 	r.GET("/ambulancepart/:id", controller.GetAmbulancePart)
 
-	r.GET("/disinfections", controller.ListDisinfactions)
-	r.GET("/disinfection/:id", controller.GetDisinfection)
-	r.POST("/disinfection", controller.CreateDisinfection)
-	r.DELETE("/disinfection/:id", controller.DeleteDisinfection)
-	r.PATCH("/disinfection", controller.UpdateDisinfection)
-	r.GET("/disinfactants", controller.ListDisinfectants)
+	
 
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 	r.GET("/emercases", controller.ListEmercase)

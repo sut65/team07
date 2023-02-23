@@ -113,7 +113,7 @@ function RecordTimeInUpdate() {
     //     setError(true);
     // }
 
-    let res = await HttpClientServices.patch(`/recordtimein`, data);
+    let res = await HttpClientServices.patch(`/driver/recordtimein`, data);
     if (!res.error) {
       setSuccess(true);
       console.log(res);
