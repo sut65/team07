@@ -118,7 +118,6 @@ func main() {
 		// Admin Checking
 		protected.Use(middlewares.CheckDriver())
 		{
-			// // ---------------------------------- ระบบบันทึกการใช้รถขาเข้าของพนักงาน -------------------------------
 			protected.GET("/recordtimeins", controller.ListRecordTimeIns)
 			protected.GET("/recordtimein/:id", controller.GetRecordTimeInByEmployee)
 			protected.GET("/recordtimeins/:id", controller.GetRecordTimeIn)
