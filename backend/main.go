@@ -344,12 +344,6 @@ func main() {
 	r.GET("/carDepots/:id", controller.GetCarDepot)
 	// Get by empid
 	r.GET("/carDepot/:empid", controller.GetCarDepotByEmployee)
-	// Create
-	r.POST("/carDepot", controller.CreateCarDepot)
-	// DELETE
-	r.DELETE("/carDepot/:id", controller.DeleteCarDepot)
-	// UPDATE
-	r.PATCH("/carDepot", controller.UpdateCarDepot)
 
 	// List park
 	r.GET("/parks", controller.ListParks)
@@ -363,12 +357,6 @@ func main() {
 	r.GET("/carWashs/:id", controller.GetCarWash)
 	// Get by empid
 	r.GET("/carWash/:empid", controller.GetCarWashByEmployee)
-	// Create
-	r.POST("/carWash", controller.CreateCarWash)
-	// DELETE
-	r.DELETE("/carWash/:id", controller.DeleteCarWash)
-	// UPDATE
-	r.PATCH("/carWash", controller.UpdateCarWash)
 
 	// List statusAms
 	r.GET("/statusAms", controller.ListStatusAms)

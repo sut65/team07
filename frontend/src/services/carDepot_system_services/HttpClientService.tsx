@@ -12,7 +12,7 @@ async function CreatCarDepots(data:any) {
         body: JSON.stringify(data),
     };
 
-    let res = await fetch(`${apiUrl}/carDepot`, requestOptions)
+    let res = await fetch(`${apiUrl}/driver/carDepot`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -158,7 +158,7 @@ async function UpdateCarDepot(data: CarDepotsInterface) {
         body: JSON.stringify(data)
     }
 
-    let res = await fetch(`${apiUrl}/carDepot`, requestOptions)
+    let res = await fetch(`${apiUrl}/driver/carDepot`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -183,7 +183,7 @@ async function DeleteCarDepot(ID:number) {
         }
     };
     
-    let res = await fetch(`${apiUrl}/carDepot/${ID}`, reqOpt)
+    let res = await fetch(`${apiUrl}/driver/carDepot/${ID}`, reqOpt)
     .then((response) => response.json())
     .then((res) => {
         if(res.data){
