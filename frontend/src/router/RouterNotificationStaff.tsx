@@ -9,6 +9,7 @@ function RouterNotificationStaff() {
   return (
     <Router>
       <Navbar />{" "}
+      <div className="container-router">
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/Case" element={<Case />} />
@@ -16,6 +17,7 @@ function RouterNotificationStaff() {
         <Route path="/CaseCreate" element={<CaseCreate />} />
         <Route path="/CaseUpdate" element={<CaseUpdate />} />
       </Routes>
+      </div>
     </Router>
   );
 }

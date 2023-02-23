@@ -16,6 +16,7 @@ function RouterCarManager() {
   return (
     <Router>
       <Navbar />
+      <div className="container-router">
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/AmbulanceCreate" element={<AmbulanceCreate />} />
@@ -41,6 +42,7 @@ function RouterCarManager() {
           element={<VehicleInspectionHistory />}
         />
       </Routes>
+      </div>
     </Router>
   );
 }
