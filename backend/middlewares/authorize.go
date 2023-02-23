@@ -50,9 +50,9 @@ func CheckAdmin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		role := c.GetString("role_name")
 
-		if role != "admin" {
+		if role != "Admin" {
 			c.JSON(http.StatusBadGateway, gin.H{
-				"error": "you is not admin",
+				"error": "you is not Admin",
 			})
 			c.Abort()
 			return
