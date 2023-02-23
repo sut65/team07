@@ -40,9 +40,8 @@ func main() {
 	//Controller
 
 	// --------------------------- Auth System --------------------------
-	r.POST("/role", controller.CreateRole)
+
 	r.GET("/roles", controller.ListRole)
-	r.POST("/signup", controller.Signup)
 	r.GET("/users", controller.ListUser)
 
 	r.POST("/signin", controller.Signin)
@@ -59,12 +58,7 @@ func main() {
 	r.GET("/workingareas", controller.ListWorkingArea)
 	// Get by id
 	r.GET("/workingarea/:id", controller.GetWorkingArea)
-	// Create
-	r.POST("/workingarea", controller.CreateWorkingArea)
-	// UPDATE
-	r.PATCH("/workingarea", controller.UpdateWorkingArea)
-	// Delete
-	r.DELETE("/workingarea/:id", controller.DeleteWorkingArea)
+
 	// ----------------- Working Area ----------------------------
 
 	// ----------------- Education ------------------------
@@ -93,6 +87,13 @@ func main() {
 	// Get by id
 	r.GET("/ambulances/:id", controller.GetAmbulance)
 
+	// Path ทุกคนใช้ร่วมกันทั้งหมด
+
+	{
+
+	}
+
+	// ตำแหน่ง Admin จัดการโดย เพชร
 	adminApi := r.Group("/admin")
 	{
 		protected := adminApi.Use(middlewares.Authorizes())
@@ -100,6 +101,19 @@ func main() {
 		// Admin Checking
 		protected.Use(middlewares.CheckAdmin())
 		{
+
+			r.POST("/role", controller.CreateRole)
+			r.POST("/signup", controller.Signup)
+
+			{
+				/* Working Area With admin edit */
+				// Create
+				r.POST("/workingarea", controller.CreateWorkingArea)
+				// UPDATE
+				r.PATCH("/workingarea", controller.UpdateWorkingArea)
+				// Delete
+				r.DELETE("/workingarea/:id", controller.DeleteWorkingArea)
+			}
 
 			// Create
 			protected.POST("/employee", controller.CreateEmployee)
@@ -111,6 +125,7 @@ func main() {
 		}
 	}
 
+	// ตำแหน่ง Driver จัดการโดย พี่ปาล์ม พี่แบม เอ
 	DriverApi := r.Group("/driver")
 	{
 		protected := DriverApi.Use(middlewares.Authorizes())
@@ -127,6 +142,7 @@ func main() {
 		}
 	}
 
+	// ตำแหน่ง คนฆ่าเชื้อ จัดการโดย พี่ปาล์ม
 	DisinfectionStaffApi := r.Group("/disinfectionStaff")
 	{
 		protected := DisinfectionStaffApi.Use(middlewares.Authorizes())
@@ -179,7 +195,6 @@ func main() {
 	r.GET("/cases", controller.GetCase)
 	r.GET("/cases/:case_id", controller.GetCaseByID)
 
-	
 	r.GET("/vehicleinspections", controller.ListVehicleInspections)
 	r.GET("/vehicleinspection/:id", controller.GetVehicleInspection)
 	r.POST("/vehicleinspection", controller.CreateVehicleInspection)
@@ -191,8 +206,6 @@ func main() {
 	r.GET("/statuscheck/:id", controller.GetStatusCheck)
 	r.GET("/ambulanceparts", controller.ListAmbulanceParts)
 	r.GET("/ambulancepart/:id", controller.GetAmbulancePart)
-
-	
 
 	// ---------------------------------- ระบบบันทึกเหตุฉุกเฉิน -------------------------------
 	r.GET("/emercases", controller.ListEmercase)
@@ -215,7 +228,7 @@ func main() {
 
 	r.GET("/carstats", controller.Getcarstat)
 	// ---------------------------------- ระบบเเจ้งซ่อม -------------------------------
-	
+
 	// ---------------------------------- ระบบใช้ยารถพยาบาล -------------------------------
 
 	// List ambulanceUses
