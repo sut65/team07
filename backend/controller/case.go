@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -110,50 +111,126 @@ func UpdateEmercase(c *gin.Context) {
 		return
 	}
 
+	// Check emercase is haved ?
 	if tx := entity.DB().Where("id = ?", emercase.ID).First(&emercaseold); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "emercase not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Carcare id = %d not found", emercase.ID)})
+		c.Abort()
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "emergency not found"})
-		return
+	if emercase.Datetime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		emercase.Datetime = emercaseold.Datetime
 	}
 
-	if tx := entity.DB().Where("id = ?", emercase.GenderID).First(&gender); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
-		return
+	if emercase.Location == "" {
+		emercase.Location = emercaseold.Location
 	}
 
-	if tx := entity.DB().Where("id = ?", emercase.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
-		return
+	if emercase.Patient == "" {
+		emercase.Patient = emercaseold.Patient
 	}
 
-	UpdateEmercase := entity.Case{
-		Model:     emercase.Model,
-		Location:  emercase.Location,
-		Patient:   emercase.Patient,
-		Age:       emercase.Age,
-		Status:    emercase.Status,
-		Emergency: emergency, // โยงความสัมพันธ์กับ Entity Emergency
-		Gender:    gender,    // โยงความสัมพันธ์กับ Entity Gender
-		Employee:  employee,  // โยงความสัมพันธ์กับ Entity Employee
-		Datetime:  emercase.Datetime,
+	if emercase.Status == "" {
+		emercase.Status = emercaseold.Status
 	}
-	// fmt.Print(UpdateEmercase.Status)
 
-	if err := entity.DB().Save(&UpdateEmercase).Error; err != nil {
+	if emercase.Age == 0 {
+		emercase.Age = emercaseold.Age
+	}
+
+
+	if emercase.EmergencyID != nil {
+		if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found emergency"})
+			return
+		}
+		fmt.Print("NOT NULL")
+		emercase.Emergency = emergency
+	} else {
+		if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found emergency"})
+			return
+		}
+		fmt.Print("NULL")
+		emercase.Emergency = emergency
+	}
+
+		if emercase.GenderID != nil {
+		if tx := entity.DB().Where("id = ?", emercase.GenderID).First(&gender); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found gender"})
+			return
+		}
+		fmt.Print("NOT NULL")
+		emercase.Gender = gender
+	} else {
+		if tx := entity.DB().Where("id = ?", emercase.GenderID).First(&gender); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found gender"})
+			return
+		}
+		fmt.Print("NULL")
+		emercase.Gender = gender
+	}
+
+	if emercase.EmployeeID != nil {
+		if tx := entity.DB().Where("id = ?", emercase.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
+			return
+		}
+		fmt.Print("NOT NULL")
+		emercase.Employee = employee
+	} else {
+		if tx := entity.DB().Where("id = ?", emercase.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not found employee"})
+			return
+		}
+		fmt.Print("NULL")
+		emercase.Employee = employee
+	}
+
+	// if tx := entity.DB().Where("id = ?", emercase.ID).First(&emercaseold); tx.RowsAffected == 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "emercase not found"})
+	// 	return
+	// }
+
+	// if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "emergency not found"})
+	// 	return
+	// }
+
+	// if tx := entity.DB().Where("id = ?", emercase.GenderID).First(&gender); tx.RowsAffected == 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
+	// 	return
+	// }
+
+	// if tx := entity.DB().Where("id = ?", emercase.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
+	// 	return
+	// }
+
+	// UpdateEmercase := entity.Case{
+	// 	Model:     emercase.Model,
+	// 	Location:  emercase.Location,
+	// 	Patient:   emercase.Patient,
+	// 	Age:       emercase.Age,
+	// 	Status:    emercase.Status,
+	// 	Emergency: emergency, // โยงความสัมพันธ์กับ Entity Emergency
+	// 	Gender:    gender,    // โยงความสัมพันธ์กับ Entity Gender
+	// 	Employee:  employee,  // โยงความสัมพันธ์กับ Entity Employee
+	// 	Datetime:  emercase.Datetime,
+	// }
+	// // fmt.Print(UpdateEmercase.Status)
+
+	if err := entity.DB().Save(&emercase).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status": "update successful!!",
-		"data":   UpdateEmercase,
+		"data":   emercase,
 	})
 }
 
-// GET /emergencys
+// GET /carstat
 func GetEmergency(c *gin.Context) {
 	var emergencies []entity.Emergency
 	if err := entity.DB().Raw("SELECT * FROM emergencies").Scan(&emergencies).Error; err != nil {

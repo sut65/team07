@@ -229,7 +229,7 @@ func UpdateCarcare(c *gin.Context) {
 	})
 }
 
-// GET /emergencys
+// GET /carstat
 func Getcarstat(c *gin.Context) {
 	var carstats []entity.Carstat
 	if err := entity.DB().Raw("SELECT * FROM carstats").Scan(&carstats).Error; err != nil {
