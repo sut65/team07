@@ -122,9 +122,9 @@ function CaseCreate() {
         if (res.data) {
             setSuccess(true);
             setAlertMessage("บันทึกข้อมูลสำเร็จ");
-            setTimeout(() => {
-                navigator("/Case")
-            }, 1200)
+            // setTimeout(() => {
+            //     navigator("/Case")
+            // }, 1200)
         } else {
             setAlertMessage(res.error);
             setError(true);
