@@ -96,7 +96,7 @@ function DisinfectionCreate() {
             WorkTime: disinfection?.WorkTime ?? new Date(),
             Note: disinfection?.Note ?? "",
             AmountDisinfectant: convertType(disinfection?.AmountDisinfectant) ?? 0,
-            EmployeeID: convertType(disinfection?.EmployeeID) ?? 1,
+            EmployeeID: convertType(localStorage.getItem("id")),
             AmbulanceID: convertType(disinfection?.AmbulanceID) ?? 0,
             DisinfactantID: convertType(disinfection?.DisinfactantID) ?? 0,
         };
