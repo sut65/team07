@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -19,6 +20,12 @@ func CreateEmercase(c *gin.Context) {
 	// bind เข้าตัวแปร emercase
 	if err := c.ShouldBindJSON(&emercase); err != nil {
 
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// แทรกการ validate controller
+	if _, err := govalidator.ValidateStruct(emercase); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -138,7 +145,6 @@ func UpdateEmercase(c *gin.Context) {
 		emercase.Age = emercaseold.Age
 	}
 
-
 	if emercase.EmergencyID != nil {
 		if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found emergency"})
@@ -155,7 +161,7 @@ func UpdateEmercase(c *gin.Context) {
 		emercase.Emergency = emergency
 	}
 
-		if emercase.GenderID != nil {
+	if emercase.GenderID != nil {
 		if tx := entity.DB().Where("id = ?", emercase.GenderID).First(&gender); tx.RowsAffected == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found gender"})
 			return
@@ -187,38 +193,11 @@ func UpdateEmercase(c *gin.Context) {
 		emercase.Employee = employee
 	}
 
-	// if tx := entity.DB().Where("id = ?", emercase.ID).First(&emercaseold); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "emercase not found"})
-	// 	return
-	// }
-
-	// if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "emergency not found"})
-	// 	return
-	// }
-
-	// if tx := entity.DB().Where("id = ?", emercase.GenderID).First(&gender); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
-	// 	return
-	// }
-
-	// if tx := entity.DB().Where("id = ?", emercase.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
-	// 	return
-	// }
-
-	// UpdateEmercase := entity.Case{
-	// 	Model:     emercase.Model,
-	// 	Location:  emercase.Location,
-	// 	Patient:   emercase.Patient,
-	// 	Age:       emercase.Age,
-	// 	Status:    emercase.Status,
-	// 	Emergency: emergency, // โยงความสัมพันธ์กับ Entity Emergency
-	// 	Gender:    gender,    // โยงความสัมพันธ์กับ Entity Gender
-	// 	Employee:  employee,  // โยงความสัมพันธ์กับ Entity Employee
-	// 	Datetime:  emercase.Datetime,
-	// }
-	// // fmt.Print(UpdateEmercase.Status)
+	// แทรกการ validate controller
+	if _, err := govalidator.ValidateStruct(emercase); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	if err := entity.DB().Save(&emercase).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

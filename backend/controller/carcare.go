@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team07/entity"
 )
@@ -24,6 +25,13 @@ func CreateCarcare(c *gin.Context) {
 		return
 	}
 
+
+	// แทรกการ validate controller
+	if _, err := govalidator.ValidateStruct(carcare); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	
 	// ค้นหา carstat ด้วย id
 	if tx := entity.DB().Where("id = ?", carcare.CarStatID).First(&carstat); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "carstat not found"})
@@ -187,36 +195,11 @@ func UpdateCarcare(c *gin.Context) {
 		carcare.VehicleInspection = vehicleinspection
 	}
 
-	// if tx := entity.DB().Where("id = ?", carcare.ID).First(&carcare); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "carcare not found"})
-	// 	return
-	// }
-
-	// if tx := entity.DB().Where("id = ?", carcare.CarStatID).First(&carstat); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "carstat not found"})
-	// 	return
-	// }
-
-	// if tx := entity.DB().Where("id = ?", carcare.VehicleInspectionID).First(&vehicleinspection); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "vehicleInspection not found"})
-	// 	return
-	// }
-
-	// if tx := entity.DB().Where("id = ?", carcare.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
-	// 	return
-	// }
-
-	// UpdateCarcare := entity.Carcare{
-	// 	SaveDate:          carcare.SaveDate,
-	// 	SendDate:		   carcare.SendDate,
-	// 	ReciveDate:        carcare.ReciveDate,
-	// 	Bill:              carcare.Bill,
-	// 	Note:              carcare.Note,
-	// 	CarStat:           carstat,
-	// 	VehicleInspection: vehicleinspection,
-	// 	Employee:          employee,
-	// }
+	// แทรกการ validate controller
+	if _, err := govalidator.ValidateStruct(carcare); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	if err := entity.DB().Save(&carcare).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
