@@ -121,7 +121,7 @@ function CaseUpdate() {
             Patient: emercase.Patient,
             Age: convertType(emercase.Age),
             Status: emercase.Status,
-            Date: emercase.Datetime,
+            Datetime: emercase.Datetime,
         };
         console.log(data)
 
@@ -212,6 +212,7 @@ function CaseUpdate() {
                                 className='StyledTextField'
                                 value={emercase.Datetime}
                                 onChange={(newValue) => {
+                                    console.log(newValue)
                                     setCase({
                                         ...emercase,
                                         Datetime: newValue,
