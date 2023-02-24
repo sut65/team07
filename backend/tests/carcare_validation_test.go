@@ -108,3 +108,43 @@ func TestSavedateNotFuture(t *testing.T) {
 
 	g.Expect(err.Error()).To(Equal("ห้ามวันที่เป็นอนาคต"))
 }
+
+func TestSenddateNotPast(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	carcare := entity.Carcare{
+		Bill:       10,
+		Note:       "tor", 
+		SendDate:   time.Now().Add(time.Minute * -30), // ผิด
+		ReciveDate: time.Now(),
+		SaveDate:   time.Now(),
+	}
+
+	ok, err := govalidator.ValidateStruct(carcare)
+
+	g.Expect(ok).ToNot(BeTrue())
+
+	g.Expect(err).ToNot(BeNil())
+
+	g.Expect(err.Error()).To(Equal("Send Date not Past"))
+}
+
+func TestRecivedateNotPast(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	carcare := entity.Carcare{
+		Bill:       10,
+		Note:       "tor", 
+		SendDate:   time.Now(),
+		ReciveDate: time.Now().Add(time.Minute * -30), // ผิด
+		SaveDate:   time.Now(),
+	}
+
+	ok, err := govalidator.ValidateStruct(carcare)
+
+	g.Expect(ok).ToNot(BeTrue())
+
+	g.Expect(err).ToNot(BeNil())
+
+	g.Expect(err.Error()).To(Equal("Recive Date not Past"))
+}

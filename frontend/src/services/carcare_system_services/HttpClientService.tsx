@@ -60,11 +60,7 @@ async function CreateCarecare(data: CarcareInterface) {
   let res = await fetch(`${apiUrl}/car-manager/carcare`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
-      if (res.data) {
-        return res.data;
-      } else {
-        return false;
-      }
+        return res;
     });
 
   return res;
@@ -132,9 +128,7 @@ async function UpdateCarcare(data: CarcareInterface) {
   let res = await fetch(`${apiUrl}/car-manager/carcares`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-          if (res) {
-              return res
-          } 
+        return res;
       })
   return res
 }

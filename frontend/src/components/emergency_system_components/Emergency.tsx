@@ -35,6 +35,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function CaseCreate() {
 
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [emergencys, setEmergencys] = useState<EmergencyInterface[]>([]);
     const [genders, setGenders] = useState<GenderInterface[]>([]);
     const [emercase, setCase] = useState<CaseInterface>({
@@ -117,12 +118,15 @@ function CaseCreate() {
         };
         console.log(data)
         let res = await CreateEmercase(data);
-        if (res) {
+        console.log(res)
+        if (res.data) {
             setSuccess(true);
+            setAlertMessage("บันทึกข้อมูลสำเร็จ");
             setTimeout(() => {
                 navigator("/Case")
             }, 1200)
         } else {
+            setAlertMessage(res.error);
             setError(true);
         }
     }
@@ -136,12 +140,12 @@ function CaseCreate() {
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                    complet
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
-                    fail
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Paper>
@@ -187,20 +191,20 @@ function CaseCreate() {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                        <p>Date Time</p>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-                                className='StyledTextField'
-                                value={emercase.Datetime}
-                                onChange={(newValue) => {
-                                    setCase({
-                                        ...emercase,
-                                        Datetime: newValue,
-                                    });
-                                }}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                        </LocalizationProvider>
+                            <p>Date Time</p>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    className='StyledTextField'
+                                    value={emercase.Datetime}
+                                    onChange={(newValue) => {
+                                        setCase({
+                                            ...emercase,
+                                            Datetime: newValue,
+                                        });
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
                         </FormControl>
                     </Grid>
 
@@ -261,12 +265,12 @@ function CaseCreate() {
                                 type="number"
                                 value={emercase.Age || ""}
                                 onChange={handleChangeTextField}
-                                    InputProps={{
-                                        inputProps: {
-                                            min: 1,
-                                            max: 100
-                                        }
-                                    }}
+                                InputProps={{
+                                    inputProps: {
+                                        min: 1,
+                                        max: 100
+                                    }
+                                }}
                             />
                         </FormControl>
                     </Grid>

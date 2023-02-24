@@ -13,7 +13,6 @@ import (
 func CreateCarcare(c *gin.Context) {
 
 	var carcare entity.Carcare
-
 	var carstat entity.Carstat
 	var employee entity.Employee
 	var vehicleinspection entity.VehicleInspection
@@ -25,13 +24,12 @@ func CreateCarcare(c *gin.Context) {
 		return
 	}
 
-
 	// แทรกการ validate controller
-	if _, err := govalidator.ValidateStruct(carcare); err != nil {
+	if _, err := govalidator.ValidateStruct(&carcare); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	// ค้นหา carstat ด้วย id
 	if tx := entity.DB().Where("id = ?", carcare.CarStatID).First(&carstat); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "carstat not found"})
@@ -127,26 +125,6 @@ func UpdateCarcare(c *gin.Context) {
 		return
 	}
 
-	if carcare.SendDate.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		carcare.SendDate = carcareold.SendDate
-	}
-
-	if carcare.ReciveDate.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		carcare.ReciveDate = carcareold.ReciveDate
-	}
-
-	if carcare.Bill == 0 {
-		carcare.Bill = carcareold.Bill
-	}
-
-	if carcare.Note == "" {
-		carcare.Note = carcareold.Note
-	}
-
-	if carcare.SaveDate.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		carcare.SaveDate = carcareold.SaveDate
-	}
-
 	if carcare.CarStatID != nil {
 		if tx := entity.DB().Where("id = ?", carcare.CarStatID).First(&carstat); tx.RowsAffected == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found carstat"})
@@ -196,7 +174,7 @@ func UpdateCarcare(c *gin.Context) {
 	}
 
 	// แทรกการ validate controller
-	if _, err := govalidator.ValidateStruct(carcare); err != nil {
+	if _, err := govalidator.ValidateStruct(&carcare); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

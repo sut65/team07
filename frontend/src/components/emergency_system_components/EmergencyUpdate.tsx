@@ -39,6 +39,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function CaseUpdate() {
 
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [emergencys, setEmergencys] = useState<EmergencyInterface[]>([]);
 
     const getEmergencys = async () => {
@@ -50,7 +51,7 @@ function CaseUpdate() {
 
     const [genders, setGenders] = useState<GenderInterface[]>([]);
 
-        const getGenders = async () => {
+    const getGenders = async () => {
         let res = await GetGender();
         if (res) {
             setGenders(res);
@@ -126,15 +127,18 @@ function CaseUpdate() {
         console.log(data)
 
         let res = await UpdateCase(data);
+        console.log(res)
         if (res.data) {
             setSuccess(true);
+            setAlertMessage("บันทึกข้อมูลสำเร็จ");
             console.log(res.data)
             setTimeout(() => {
                 navigator("/Case")
             }, 1200)
         } else {
-            setError(true);
             console.log(res.error)
+            setAlertMessage(res.error)
+            setError(true);
         }
     }
 
@@ -143,8 +147,8 @@ function CaseUpdate() {
         getGenders();
         getEmergencys();
         GetEmercaseDataByID();
-        
-    }, []) 
+
+    }, [])
 
     return (
         <Container maxWidth="md">
@@ -155,12 +159,12 @@ function CaseUpdate() {
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                    complet
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
-                    fail
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Paper>
@@ -206,21 +210,21 @@ function CaseUpdate() {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                        <p>Date Time</p>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-                                className='StyledTextField'
-                                value={emercase.Datetime}
-                                onChange={(newValue) => {
-                                    console.log(newValue)
-                                    setCase({
-                                        ...emercase,
-                                        Datetime: newValue,
-                                    });
-                                }}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                        </LocalizationProvider>
+                            <p>Date Time</p>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    className='StyledTextField'
+                                    value={emercase.Datetime}
+                                    onChange={(newValue) => {
+                                        console.log(newValue)
+                                        setCase({
+                                            ...emercase,
+                                            Datetime: newValue,
+                                        });
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
                         </FormControl>
                     </Grid>
 
@@ -283,12 +287,12 @@ function CaseUpdate() {
                                 type="number"
                                 value={emercase.Age || ""}
                                 onChange={handleChangeTextField}
-                                    InputProps={{
-                                        inputProps: {
-                                            min: 1,
-                                            max: 100
-                                        }
-                                    }}
+                                InputProps={{
+                                    inputProps: {
+                                        min: 1,
+                                        max: 100
+                                    }
+                                }}
                             />
                         </FormControl>
                     </Grid>

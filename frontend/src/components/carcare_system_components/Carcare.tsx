@@ -39,6 +39,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function CarCareCreate() {
 
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [carstats, setCarStats] = useState<CarStatInterface[]>([]);
     const [vehicleInspections, setVehicleInspections] = useState<VehicleInspectionInterface[]>([]);
     const [carcare, setCarcare] = useState<CarcareInterface>({
@@ -97,7 +98,7 @@ function CarCareCreate() {
         if (name == "VehicleInspectionID") {
             if (parseInt(event.target.value)) {
 
-                setVehicleInspection(vehicleInspections[parseInt(event.target.value)-1]);
+                setVehicleInspection(vehicleInspections[parseInt(event.target.value) - 1]);
             }
             else {
                 setVehicleInspection({
@@ -146,12 +147,14 @@ function CarCareCreate() {
 
         let res = await CreateCarecare(data);
         console.log(res)
-        if (res) {
+        if (res.data) {
             setSuccess(true);
-            setTimeout(() => {
-                navigator("/Carcare")
-            }, 1200)
+            setAlertMessage("บันทึกข้อมูลสำเร็จ");
+            // setTimeout(() => {
+            //     navigator("/Carcare")
+            // }, 1200)
         } else {
+            setAlertMessage(res.error);
             setError(true);
         }
     }
@@ -165,12 +168,12 @@ function CarCareCreate() {
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                    complet
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
-                    fail
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Paper>
@@ -240,7 +243,7 @@ function CarCareCreate() {
                             <TextField
                                 id="brand"
                                 variant="filled"
-                                value={vehicleInspection.Ambulance?.CarBrand}
+                                value={vehicleInspection.Ambulance?.CarBrand || ""}
                                 // onChange={handleChangeTextField}
                                 disabled
                             />
@@ -253,7 +256,7 @@ function CarCareCreate() {
                             <TextField
                                 id="Regitration"
                                 variant="filled"
-                                value={vehicleInspection.Ambulance?.Clp}
+                                value={vehicleInspection.Ambulance?.Clp || ""}
                                 //onChange={handleChangeTextField}
                                 disabled
 
@@ -267,7 +270,7 @@ function CarCareCreate() {
                             <TextField
                                 id="ODO"
                                 variant="filled"
-                                value={vehicleInspection.OdoMeter}
+                                value={vehicleInspection.OdoMeter || ""}
                                 //onChange={handleChangeTextField}
                                 disabled
                             />
@@ -280,7 +283,7 @@ function CarCareCreate() {
                             <TextField
                                 id="Ambulance Part Name"
                                 variant="filled"
-                                value={vehicleInspection.AmbulancePart?.PartName + ""}
+                                value={vehicleInspection.AmbulancePart?.PartName || ""}
                                 //onChange={handleChangeTextField}
                                 disabled
                             />

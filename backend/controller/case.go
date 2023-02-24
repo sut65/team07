@@ -125,26 +125,6 @@ func UpdateEmercase(c *gin.Context) {
 		return
 	}
 
-	if emercase.Datetime.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		emercase.Datetime = emercaseold.Datetime
-	}
-
-	if emercase.Location == "" {
-		emercase.Location = emercaseold.Location
-	}
-
-	if emercase.Patient == "" {
-		emercase.Patient = emercaseold.Patient
-	}
-
-	if emercase.Status == "" {
-		emercase.Status = emercaseold.Status
-	}
-
-	if emercase.Age == 0 {
-		emercase.Age = emercaseold.Age
-	}
-
 	if emercase.EmergencyID != nil {
 		if tx := entity.DB().Where("id = ?", emercase.EmergencyID).First(&emergency); tx.RowsAffected == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not found emergency"})

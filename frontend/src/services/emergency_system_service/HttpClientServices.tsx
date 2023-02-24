@@ -47,23 +47,19 @@ async function GetGender() {
 
 async function CreateEmercase(data: CaseInterface) {
   const requestOptions = {
-      method: "POST",
-      headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   };
 
   let res = await fetch(`${apiUrl}/staff/emercase`, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-          if (res.data) {
-              return res.data;
-          } else {
-              return false;
-          }
-      });
+    .then((response) => response.json())
+    .then((res) => {
+      return res;
+    });
 
   return res;
 }
@@ -94,24 +90,24 @@ async function GetEmercaseAll() {
   return res;
 }
 
-async function DeleteCaseByID(ID : any){
+async function DeleteCaseByID(ID: any) {
   const requestOptions = {
-      method: "DELETE",
-      headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-      },
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
   };
 
   let res = await fetch(`${apiUrl}/staff/emercase/${ID}`, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-          if (res.data) {
-              return res.data;
-          } else {
-              return false;
-          }
-      });
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
 
   return res;
 }
@@ -119,48 +115,46 @@ async function DeleteCaseByID(ID : any){
 async function GetEmercaseByID() {
   let ecid = localStorage.getItem("ec_id");
   const requestOptions = {
-      method: "GET",
-      headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-      },
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
   };
 
   let res = await fetch(
-      `${apiUrl}/emercase/${ecid}`,
-      requestOptions
+    `${apiUrl}/emercase/${ecid}`,
+    requestOptions
   )
-      .then((response) => response.json())
-      .then((res) => {
-          if (res.data) {
-              return res.data;
-          } else {
-              return false;
-          }
-      });
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
 
   return res;
 
 }
 
 async function UpdateCase(data: CaseInterface) {
-    
+
   const requestOptions = {
-      method: "PATCH",
-      headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data)
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data)
   }
 
   let res = await fetch(`${apiUrl}/staff/emercases`, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-          if (res) {
-              return res
-          } 
-      })
+    .then((response) => response.json())
+    .then((res) => {
+      return res
+    })
   return res
 }
 
@@ -168,8 +162,8 @@ export {
   GetGender,
   GetEmergency,
   CreateEmercase,
-  GetEmercaseAll, 
+  GetEmercaseAll,
   DeleteCaseByID,
   GetEmercaseByID,
- UpdateCase,
+  UpdateCase,
 };

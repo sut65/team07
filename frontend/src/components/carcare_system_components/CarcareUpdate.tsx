@@ -38,6 +38,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function CarCareUpdate() {
 
+    const [alertmessage, setAlertMessage] = React.useState("");
     const [carstats, setCarStats] = useState<CarStatInterface[]>([]);
     const [vehicleInspections, setVehicleInspections] = useState<VehicleInspectionInterface[]>([]);
     const [carcare, setCarcare] = useState<CarcareInterface>({
@@ -70,7 +71,7 @@ function CarCareUpdate() {
         }
     };
 
-   const GetCarcareDataByID = async () => {
+    const GetCarcareDataByID = async () => {
         let res = await GetCarcareByID();
         if (res) {
             setCarcare(res);
@@ -155,7 +156,7 @@ function CarCareUpdate() {
             CarStatID: convertType(carcare.CarStatID),
             SendDate: carcare.SendDate,
             ReciveDate: carcare.ReciveDate,
-            Bill: typeof carcare.Bill == "string" ? parseInt(carcare.Bill) : 0,
+            Bill: typeof carcare.Bill == "string" ? parseInt(carcare.Bill) : carcare.Bill,
             Note: carcare.Note,
             Savedate: carcare.SaveDate,
         }
@@ -164,11 +165,13 @@ function CarCareUpdate() {
         let res = await UpdateCarcare(data);
         if (res.data) {
             setSuccess(true);
+            setAlertMessage("บันทึกข้อมูลสำเร็จ")
             console.log(res.data)
             setTimeout(() => {
                 navigator("/Carcare")
             }, 1200)
         } else {
+            setAlertMessage(res.error);
             setError(true);
             console.log(res.error)
         }
@@ -183,12 +186,12 @@ function CarCareUpdate() {
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
                 <Alert onClose={handleClose} severity="success">
-                    complet
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
-                    fail
+                    {alertmessage}
                 </Alert>
             </Snackbar>
             <Paper>
