@@ -12,7 +12,7 @@
 
 @tonphaii B6215576 นางสาวบุษกร คารมย์ :sushi:
 
-@torguzer B6117603 นายธีรวัฒน์ อื้อศรีวงศ์ :rice_ball:
+@ThirawatEu B6117603 นายธีรวัฒน์ อื้อศรีวงศ์ :rice_ball:
 
 @Pet002 B6309343 ธนโชติ ศักดิ์ธรรมเจริญ :four_leaf_clover:
 
